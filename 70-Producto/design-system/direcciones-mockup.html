@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mapa Inestable · Comparador de direcciones</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Alfa+Slab+One&family=Fraunces:opsz,wght,SOFT@9..144,400..900,0..100&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     COMPARADOR DE DIRECCIONES — Mapa Inestable
+     Tres tratamientos de la misma home, lado a lado.
+     ============================================================ */
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: #1a1a1a;
+    color: #f5f5f5;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+
+  /* ---------- Nav fija de comparación ---------- */
+  .compare-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(20,20,20,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 24px;
+    display: flex; align-items: center; gap: 24px;
+    font-size: 13px;
+  }
+  .compare-nav .brand {
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.06em;
+    color: #C5663A;
+    font-weight: 500;
+  }
+  .compare-nav .label {
+    color: #999; text-transform: uppercase;
+    letter-spacing: 0.12em; font-size: 11px;
+  }
+  .compare-nav .pills { display: flex; gap: 8px; margin-left: auto; }
+  .compare-nav .pills a {
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    color: #ddd;
+    text-decoration: none;
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+  .compare-nav .pills a:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.3);
+  }
+
+  /* ---------- Annotation between sections ---------- */
+  .rationale {
+    background: #0f0f0f;
+    color: #aaa;
+    padding: 64px 48px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .rationale .grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 200px 1fr 1fr 1fr; gap: 40px;
+  }
+  .rationale h3 {
+    color: #C5663A;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 12px;
+    margin: 0 0 16px;
+  }
+  .rationale h2 {
+    color: #fff; font-family: 'Spectral', serif; font-weight: 600;
+    font-size: 28px; margin: 0; line-height: 1.2;
+  }
+  .rationale .meta { color: #888; }
+  .rationale code {
+    color: #E8C58A; background: rgba(255,255,255,0.04);
+    padding: 1px 6px; border-radius: 3px; font-size: 12px;
+  }
+
+  /* ============================================================
+     DIRECCIÓN A — Editorial denso (Anfibia / Crisis / La Agenda)
+     ============================================================ */
+  .dir-A {
+    --bg: #F4EDE0;
+    --paper: #ECE3D2;
+    --ink: #1A1814;
+    --ink-soft: #57514A;
+    --rule: #C8BFAB;
+    --terra: #B85C2F;
+    --olive: #4A5C30;
+    --gold: #C8993E;
+
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.55;
+    padding: 0 0 80px;
+  }
+  .dir-A .meta-bar {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 6px 32px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex; gap: 24px;
+  }
+  .dir-A .meta-bar .now { color: var(--terra); }
+  .dir-A header.site {
+    border-bottom: 2px solid var(--ink);
+    padding: 32px 32px 24px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: end;
+    gap: 24px;
+  }
+  .dir-A .masthead {
+    grid-column: 2;
+    text-align: center;
+  }
+  .dir-A .masthead .name {
+    font-family: 'Spectral', serif;
+    font-weight: 800;
+    font-size: 64px;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    margin: 0;
+  }
+  .dir-A .masthead .name em {
+    font-style: italic; font-weight: 400;
+    color: var(--terra);
+  }
+  .dir-A .masthead .tagline {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--ink-soft);
+    margin: 12px 0 0;
+  }
+  .dir-A .header-side {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .dir-A .header-side.right { text-align: right; }
+  .dir-A nav.primary {
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 32px;
+    display: flex; gap: 32px; justify-content: center;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px; letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .dir-A nav.primary a { color: var(--ink); text-decoration: none; }
+  .dir-A nav.primary a.active { color: var(--terra); }
+
+  .dir-A .container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 48px 32px;
+  }
+
+  .dir-A .hero {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 56px;
+    align-items: stretch;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 48px;
+  }
+  .dir-A .hero-art {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 40px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 420px;
+    position: relative;
+  }
+  .dir-A .hero-art::after {
+    content: '';
+    position: absolute; inset: 6px;
+    border: 1px solid rgba(244,237,224,0.15);
+    pointer-events: none;
+  }
+  .dir-A .hero-art .country-mark {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--terra);
+  }
+  .dir-A .hero-art .country-big {
+    font-family: 'Spectral', serif;
+    font-weight: 800;
+    font-size: 92px;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    margin: 16px 0;
+  }
+  .dir-A .hero-art .country-meta {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(244,237,224,0.65);
+    line-height: 1.7;
+  }
+  .dir-A .hero-text .kicker {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 18px;
+    display: flex; gap: 14px; align-items: center;
+  }
+  .dir-A .hero-text .kicker::before {
+    content: ''; width: 32px; height: 1px; background: var(--terra);
+  }
+  .dir-A .hero-text h1 {
+    font-family: 'Spectral', serif;
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 24px;
+    color: var(--ink);
+  }
+  .dir-A .hero-text h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--terra);
+  }
+  .dir-A .hero-text .lede {
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0 0 28px;
+    max-width: 56ch;
+  }
+  .dir-A .hero-text .lede::first-letter {
+    font-size: 4.2em; float: left; line-height: 0.85;
+    margin: 6px 12px 0 0;
+    font-weight: 700;
+    color: var(--terra);
+  }
+  .dir-A .hero-text .byline {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-soft);
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+    display: flex; gap: 24px;
+  }
+  .dir-A .hero-text .byline strong { color: var(--ink); font-weight: 600; }
+
+  .dir-A .grid-section {
+    margin-top: 56px;
+  }
+  .dir-A .grid-section .section-title {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    text-align: center;
+    margin: 0 0 32px;
+    position: relative;
+  }
+  .dir-A .grid-section .section-title::before,
+  .dir-A .grid-section .section-title::after {
+    content: ''; display: inline-block;
+    width: 60px; height: 1px;
+    background: var(--rule);
+    vertical-align: middle;
+    margin: 0 16px;
+  }
+  .dir-A .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+  .dir-A .card {
+    border-top: 2px solid var(--ink);
+    padding-top: 16px;
+  }
+  .dir-A .card .country {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--terra);
+    margin-bottom: 10px;
+  }
+  .dir-A .card h3 {
+    font-family: 'Spectral', serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.15;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+  .dir-A .card .desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin: 0 0 16px;
+  }
+  .dir-A .card .footer {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--olive);
+    display: flex; justify-content: space-between;
+    border-top: 1px dotted var(--rule);
+    padding-top: 10px;
+  }
+  .dir-A .axis-pill {
+    display: inline-block;
+    background: var(--olive);
+    color: var(--bg);
+    padding: 2px 8px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+
+  .dir-A footer.site {
+    margin-top: 80px;
+    border-top: 4px double var(--ink);
+    padding: 48px 32px 0;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px;
+  }
+  .dir-A footer.site h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin: 0 0 16px;
+  }
+  .dir-A footer.site .col p {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0;
+  }
+  .dir-A footer.site ul { list-style: none; padding: 0; margin: 0; line-height: 1.9; font-size: 14px; }
+  .dir-A footer.site ul a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--rule); }
+
+  /* ============================================================
+     DIRECCIÓN B — Grabado / Taller de Gráfica Popular
+     ============================================================ */
+  .dir-B {
+    --bg: #C5663A;
+    --bg-warm: #B45729;
+    --ink: #1F2A12;
+    --ink-soft: #3D4A26;
+    --paper: #E8DCC4;
+    --gold: #E8C58A;
+    --cream: #F4E9D2;
+
+    background:
+      radial-gradient(ellipse at top right, rgba(232,197,138,0.12), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(31,42,18,0.08), transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: 'Lora', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.6;
+    padding: 0 0 80px;
+    position: relative;
+  }
+  /* textura de grabado sutil */
+  .dir-B::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 3px, rgba(31,42,18,0.025) 3px 4px),
+      repeating-linear-gradient(90deg, transparent 0 7px, rgba(31,42,18,0.02) 7px 8px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .dir-B > * { position: relative; z-index: 1; }
+
+  .dir-B header.site {
+    padding: 36px 40px 28px;
+    border-bottom: 3px solid var(--ink);
+    display: flex; align-items: center;
+    gap: 32px;
+  }
+  .dir-B .logo-mark {
+    width: 64px; height: 64px;
+    flex-shrink: 0;
+  }
+  .dir-B .masthead-block {
+    flex: 1;
+  }
+  .dir-B .masthead-block .name {
+    font-family: 'Alfa Slab One', serif;
+    font-size: 52px;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .dir-B .masthead-block .tagline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 6px 0 0;
+  }
+  .dir-B nav.primary {
+    margin-left: auto;
+    display: flex; gap: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .dir-B nav.primary a {
+    color: var(--ink);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 2px solid transparent;
+  }
+  .dir-B nav.primary a.active {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .dir-B .container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 56px 40px;
+  }
+
+  .dir-B .hero {
+    border: 3px solid var(--ink);
+    padding: 0;
+    background: var(--cream);
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    box-shadow: 12px 12px 0 var(--ink);
+    margin-bottom: 56px;
+  }
+  .dir-B .hero-art {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 48px 40px;
+    position: relative;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 460px;
+  }
+  .dir-B .hero-art .stamp {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 4px 10px;
+    align-self: flex-start;
+  }
+  .dir-B .hero-art .country-display {
+    font-family: 'Alfa Slab One', serif;
+    font-size: 110px;
+    line-height: 0.85;
+    letter-spacing: -0.03em;
+    color: var(--bg);
+    margin: 24px 0;
+    text-transform: uppercase;
+    text-shadow: 4px 4px 0 var(--gold);
+  }
+  .dir-B .hero-art .source-block {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream);
+    line-height: 1.8;
+    border-top: 1px solid rgba(244,233,210,0.25);
+    padding-top: 18px;
+  }
+  .dir-B .hero-art .source-block strong { color: var(--gold); font-weight: 500; }
+  .dir-B .hero-text {
+    padding: 48px 40px;
+  }
+  .dir-B .hero-text .axis-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--ink);
+    display: inline-block;
+    padding: 4px 10px;
+    margin-bottom: 24px;
+  }
+  .dir-B .hero-text h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "SOFT" 60, "opsz" 144;
+    font-size: 52px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 20px;
+  }
+  .dir-B .hero-text .lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+  }
+  .dir-B .hero-text .read {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 4px;
+  }
+
+  .dir-B .grid-title {
+    font-family: 'Alfa Slab One', serif;
+    font-size: 28px;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 0 0 24px;
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 12px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .dir-B .grid-title small {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+  }
+  .dir-B .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .dir-B .card {
+    background: var(--cream);
+    border: 2px solid var(--ink);
+    padding: 24px;
+    display: flex; flex-direction: column;
+    box-shadow: 6px 6px 0 var(--ink);
+    transition: all 0.15s;
+  }
+  .dir-B .card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--ink);
+  }
+  .dir-B .card .country {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--ink);
+    padding: 3px 8px;
+    align-self: flex-start;
+    margin-bottom: 16px;
+  }
+  .dir-B .card h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-variation-settings: "SOFT" 50, "opsz" 96;
+    font-size: 22px;
+    line-height: 1.1;
+    color: var(--ink);
+    margin: 0 0 12px;
+  }
+  .dir-B .card .desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin: 0 0 16px;
+    flex: 1;
+  }
+  .dir-B .card .meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-top: 1px dashed var(--ink);
+    padding-top: 10px;
+    display: flex; justify-content: space-between;
+  }
+  .dir-B .card .axis {
+    color: var(--ink); font-weight: 500;
+  }
+
+  .dir-B footer.site {
+    margin-top: 72px;
+    background: var(--ink);
+    color: var(--cream);
+    border: 3px solid var(--ink);
+    padding: 48px 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  .dir-B footer.site h4 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 14px;
+  }
+  .dir-B footer.site .manifesto {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--cream);
+    margin: 0;
+  }
+  .dir-B footer.site ul { list-style: none; padding: 0; margin: 0; line-height: 2; font-size: 13px; font-family: 'IBM Plex Mono', monospace; }
+  .dir-B footer.site ul a { color: var(--cream); text-decoration: none; }
+  .dir-B footer.site ul a:hover { color: var(--gold); }
+
+  /* ============================================================
+     DIRECCIÓN C — Sobrio editorial latino (Granta + ADN del logo)
+     ============================================================ */
+  .dir-C {
+    --bg: #FAF7F2;
+    --paper: #F2EDE4;
+    --ink: #18181A;
+    --ink-soft: #5D5B57;
+    --rule: #D9D2C5;
+    --terra: #B85C2F;
+    --olive: #4A5C30;
+
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.55;
+    padding: 0 0 80px;
+  }
+  .dir-C header.site {
+    padding: 28px 48px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    border-bottom: 1px solid var(--rule);
+  }
+  .dir-C .header-aux {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .dir-C .header-aux.right { text-align: right; }
+  .dir-C .masthead {
+    text-align: center;
+  }
+  .dir-C .masthead .name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 38px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .dir-C .masthead .name strong {
+    font-style: normal;
+    font-weight: 600;
+  }
+  .dir-C .masthead .tagline {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin: 4px 0 0;
+  }
+  .dir-C nav.primary {
+    border-bottom: 1px solid var(--rule);
+    padding: 16px 48px;
+    display: flex; gap: 36px; justify-content: center;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px; letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .dir-C nav.primary a { color: var(--ink); text-decoration: none; }
+  .dir-C nav.primary a.active { color: var(--terra); }
+
+  .dir-C .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 72px 48px;
+  }
+
+  .dir-C .hero {
+    text-align: center;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 56px;
+    margin-bottom: 56px;
+  }
+  .dir-C .hero .kicker {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 28px;
+  }
+  .dir-C .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 72px;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 24px;
+    max-width: 22ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .dir-C .hero h1 em {
+    font-style: italic; color: var(--terra);
+  }
+  .dir-C .hero .lede {
+    font-family: 'Crimson Pro', serif;
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    margin: 0 auto 32px;
+  }
+  .dir-C .hero .byline {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex; justify-content: center; gap: 24px;
+  }
+  .dir-C .hero .byline strong { color: var(--ink); font-weight: 500; }
+  .dir-C .hero .axis-line {
+    margin-top: 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--olive);
+  }
+  .dir-C .hero .axis-line::before {
+    content: '— '; color: var(--olive);
+  }
+
+  .dir-C .grid-section {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    border-top: 1px solid var(--rule);
+    padding-top: 48px;
+  }
+  .dir-C .grid-section .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 26px;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.1;
+  }
+  .dir-C .grid-section .section-title small {
+    display: block;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 12px;
+  }
+  .dir-C .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 48px;
+    row-gap: 40px;
+  }
+  .dir-C .card {
+    border-top: 1px solid var(--rule);
+    padding-top: 18px;
+  }
+  .dir-C .card .country {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 10px;
+  }
+  .dir-C .card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0 0 12px;
+  }
+  .dir-C .card .desc {
+    font-family: 'Crimson Pro', serif;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+  }
+  .dir-C .card .meta {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--olive);
+    display: flex; gap: 16px;
+    padding-top: 8px;
+    border-top: 1px dotted var(--rule);
+  }
+
+  .dir-C footer.site {
+    margin-top: 96px;
+    border-top: 1px solid var(--rule);
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 56px;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .dir-C footer.site h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin: 0 0 16px;
+  }
+  .dir-C footer.site .manifesto {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0;
+    max-width: 38ch;
+  }
+  .dir-C footer.site ul { list-style: none; padding: 0; margin: 0; line-height: 2; font-size: 14px; }
+  .dir-C footer.site ul a { color: var(--ink); text-decoration: none; }
+  .dir-C footer.site ul a:hover { color: var(--terra); }
+
+  /* ---------- Mapa invertido SVG marker compartido ---------- */
+  .map-mini { width: 32px; height: 40px; }
+
+  /* ---------- Color swatches (annotations) ---------- */
+  .swatches { display: flex; gap: 6px; margin-top: 8px; }
+  .swatch { width: 32px; height: 32px; border: 1px solid rgba(255,255,255,0.1); }
+
+  @media (max-width: 900px) {
+    .dir-A .hero, .dir-B .hero, .dir-C .grid-section { grid-template-columns: 1fr; }
+    .dir-A .grid, .dir-B .grid, .dir-C .grid { grid-template-columns: 1fr 1fr; }
+    .rationale .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============= NAV FIJA DE COMPARACIÓN ============= -->
+<nav class="compare-nav">
+  <span class="brand">Mapa Inestable</span>
+  <span class="label">Design system · Comparador de direcciones</span>
+  <div class="pills">
+    <a href="#dir-A">A · Editorial denso</a>
+    <a href="#dir-B">B · Grabado</a>
+    <a href="#dir-C">C · Sobrio editorial</a>
+  </div>
+</nav>
+
+<!-- ============= INTRO ============= -->
+<section class="rationale" style="padding-top: 100px;">
+  <div class="grid">
+    <h3>Comparador</h3>
+    <div style="grid-column: 2 / -1;">
+      <h2>Tres direcciones para el sistema visual de Mapa Inestable</h2>
+      <p style="margin-top: 16px; font-size: 15px; max-width: 70ch;">
+        Mismo contenido en las tres: el home con un análisis featured de Colombia y una grilla de cuatro países más.
+        Lo que cambia es el tratamiento — color, tipografía, densidad, jerarquía, voz visual. Cada una toma una decisión distinta sobre
+        <em style="color:#fff;">cuánto del logo trasladar al sistema</em> y <em style="color:#fff;">qué tradición editorial reclamar</em>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============= DIRECCIÓN A ============= -->
+<section class="rationale" id="dir-A-intro">
+  <div class="grid">
+    <h3>Dirección A</h3>
+    <div>
+      <h2>Editorial denso latinoamericano</h2>
+      <p class="meta" style="margin-top:12px;">Anfibia · Crisis · La Agenda · Le Monde Diplomatique</p>
+      <p style="margin-top:16px;">Doblemente latinoamericano: la materia (papel crema, terracota, verde oliva) <em style="color:#fff;">y</em> el formato (revista política impresa, grilla densa, dropcap, italianas para citas). El logo opera como <em style="color:#fff;">cabecera de revista</em>, no como brand.</p>
+    </div>
+    <div>
+      <h3>Tipografía</h3>
+      <p><code>Spectral</code> 700/800 para títulos<br><code>Spectral</code> 400 para body<br><code>IBM Plex Sans</code> para metadata</p>
+      <h3 style="margin-top: 20px;">Tono</h3>
+      <p>Denso, materialista, crítico. Le habla a alguien que ya leía Crisis en 1974.</p>
+    </div>
+    <div>
+      <h3>Tokens</h3>
+      <div class="swatches">
+        <div class="swatch" style="background:#F4EDE0" title="bg"></div>
+        <div class="swatch" style="background:#1A1814" title="ink"></div>
+        <div class="swatch" style="background:#B85C2F" title="terra"></div>
+        <div class="swatch" style="background:#4A5C30" title="olive"></div>
+        <div class="swatch" style="background:#C8993E" title="gold"></div>
+      </div>
+      <h3 style="margin-top:20px;">Riesgo</h3>
+      <p>Puede leerse como <em style="color:#fff;">demasiado de izquierda académica</em> — generacional. Cierra audiencias.</p>
+    </div>
+  </div>
+</section>
+
+<section class="dir-A" id="dir-A">
+  <div class="meta-bar">
+    <span class="now">Lunes 27 abr 2026</span>
+    <span>Año II · Edición 47</span>
+    <span style="margin-left:auto;">Buenos Aires · Bogotá · Santiago</span>
+  </div>
+  <header class="site">
+    <div class="header-side">
+      Análisis<br>estructural<br>de Sudamérica
+    </div>
+    <div class="masthead">
+      <h1 class="name">Mapa <em>Inestable</em></h1>
+      <p class="tagline">Cartografía política del sur</p>
+    </div>
+    <div class="header-side right">
+      Hipótesis<br>cuestionables<br>sobre lo real
+    </div>
+  </header>
+  <nav class="primary">
+    <a href="#" class="active">Inicio</a>
+    <a href="#">Análisis</a>
+    <a href="#">Despachos</a>
+    <a href="#">Ejes</a>
+    <a href="#">Archivo</a>
+    <a href="#">Acerca de</a>
+  </nav>
+
+  <div class="container">
+    <article class="hero">
+      <div class="hero-art">
+        <div>
+          <div class="country-mark">— País / Colombia</div>
+          <div class="country-big">Colombia</div>
+        </div>
+        <div class="country-meta">
+          A 103 días<br>
+          del fin del mandato<br>
+          <span style="color:#C8993E;">Eje crónico:</span> Desorientación<br>
+          <span style="color:#C8993E;">Activado:</span> Desrepresentación
+        </div>
+      </div>
+      <div class="hero-text">
+        <div class="kicker">Análisis · 27 abr 2026</div>
+        <h1>La <em>sospecha</em> antes del voto</h1>
+        <p class="lede">Petro pone en duda la transparencia de la elección que decidirá su sucesión. Lo nuevo no es el discurso —es de Trump, Bolsonaro, Milei— sino que ahora sea pronunciado por la izquierda. Cuando ambos lados de la política operan bajo sospecha permanente, el voto deja de ser un acto democrático y se vuelve una formalidad bajo asedio.</p>
+        <div class="byline">
+          <span>Por <strong>Mapa Inestable</strong></span>
+          <span>Fuente · La Silla Vacía</span>
+          <span>~ 8 min de lectura</span>
+        </div>
+      </div>
+    </article>
+
+    <section class="grid-section">
+      <h2 class="section-title">La semana en cuatro países</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="country">— Argentina</div>
+          <h3>El revés de la motosierra</h3>
+          <p class="desc">Los gobernadores que sostuvieron al ajuste empiezan a despegarse. La pregunta es quién media entre el palacio y el territorio.</p>
+          <div class="footer">
+            <span class="axis-pill">Erosión de mediaciones</span>
+            <span>Infobae</span>
+          </div>
+        </article>
+        <article class="card">
+          <div class="country">— Chile</div>
+          <h3>La constitución que no fue, otra vez</h3>
+          <p class="desc">Tres procesos fallidos. La pregunta ya no es qué constitución, sino si todavía hay un demos para escribirla.</p>
+          <div class="footer">
+            <span class="axis-pill">Desrepresentación</span>
+            <span>CIPER</span>
+          </div>
+        </article>
+        <article class="card">
+          <div class="country">— Brasil</div>
+          <h3>Fluminense y los nuevos altares</h3>
+          <p class="desc">El club como única estructura de pertenencia funcional. Cuando todo se desarma, queda el escudo.</p>
+          <div class="footer">
+            <span class="axis-pill">Estetización</span>
+            <span>Folha</span>
+          </div>
+        </article>
+        <article class="card">
+          <div class="country">— Bolivia</div>
+          <h3>El MAS sin Evo, sin Arce, sin destino</h3>
+          <p class="desc">Dos décadas de hegemonía se desarman sin que aparezca quién venga después. La izquierda boliviana frente al vacío.</p>
+          <div class="footer">
+            <span class="axis-pill">Erosión de mediaciones</span>
+            <span>Los Tiempos</span>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <footer class="site">
+    <div class="col">
+      <h4>Hipótesis</h4>
+      <p>Vivimos una transición donde las estructuras que organizaban la vida colectiva pierden capacidad de mediación. Mapa Inestable rastrea esa pérdida país por país.</p>
+    </div>
+    <div class="col">
+      <h4>Los seis ejes</h4>
+      <ul>
+        <li><a href="#">Deculturación</a></li>
+        <li><a href="#">Erosión de mediaciones</a></li>
+        <li><a href="#">Desrepresentación</a></li>
+        <li><a href="#">Estetización</a></li>
+        <li><a href="#">Desorientación</a></li>
+        <li><a href="#">Atención</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Países</h4>
+      <ul>
+        <li><a href="#">Argentina · Brasil</a></li>
+        <li><a href="#">Chile · Colombia</a></li>
+        <li><a href="#">Bolivia · Perú</a></li>
+        <li><a href="#">Uruguay · Paraguay</a></li>
+        <li><a href="#">Ecuador · Venezuela</a></li>
+      </ul>
+    </div>
+  </footer>
+</section>
+
+<!-- ============= DIRECCIÓN B ============= -->
+<section class="rationale" id="dir-B-intro">
+  <div class="grid">
+    <h3>Dirección B</h3>
+    <div>
+      <h2>Grabado / Taller de Gráfica Popular</h2>
+      <p class="meta" style="margin-top:12px;">Antonio Berni · TGP · Torres García · panfletos políticos del cono sur</p>
+      <p style="margin-top:16px;">Doblar la apuesta del logo. Toda la pantalla es <em style="color:#fff;">terracota impresa</em>. La identidad sale del marco del avatar y se vuelve interfaz. Aesthetic <em style="color:#fff;">manifiesto</em>: bordes gruesos, sombras duras, tipografía slab/tallada. Riesgo alto, recompensa alta.</p>
+    </div>
+    <div>
+      <h3>Tipografía</h3>
+      <p><code>Alfa Slab One</code> para display<br><code>Fraunces</code> SOFT axis para titulares<br><code>Lora</code> para body<br><code>IBM Plex Mono</code> para metadata</p>
+      <h3 style="margin-top: 20px;">Tono</h3>
+      <p>Materialidad, oficio, política como producción gráfica. Reclama una tradición que el logo ya invoca.</p>
+    </div>
+    <div>
+      <h3>Tokens</h3>
+      <div class="swatches">
+        <div class="swatch" style="background:#C5663A" title="bg"></div>
+        <div class="swatch" style="background:#1F2A12" title="ink"></div>
+        <div class="swatch" style="background:#E8C58A" title="gold"></div>
+        <div class="swatch" style="background:#F4E9D2" title="cream"></div>
+      </div>
+      <h3 style="margin-top:20px;">Riesgo</h3>
+      <p>Cansa en sesiones largas. El terracota dominante es <em style="color:#fff;">fuerte</em>. Puede leerse como folk si no se calibra.</p>
+    </div>
+  </div>
+</section>
+
+<section class="dir-B" id="dir-B">
+  <header class="site">
+    <svg class="logo-mark" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
+      <!-- mapa invertido estilizado -->
+      <path d="M30 4 L42 12 L46 22 L48 36 L42 50 L36 62 L32 76 L28 62 L22 50 L18 36 L20 22 L24 12 Z"
+            fill="#1F2A12" />
+      <circle cx="36" cy="36" r="3" fill="#E8C58A" />
+    </svg>
+    <div class="masthead-block">
+      <h1 class="name">Mapa Inestable</h1>
+      <p class="tagline">Cartografía política del sur · Año II</p>
+    </div>
+    <nav class="primary">
+      <a href="#" class="active">Inicio</a>
+      <a href="#">Análisis</a>
+      <a href="#">Despachos</a>
+      <a href="#">Archivo</a>
+      <a href="#">Acerca</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <article class="hero">
+      <div class="hero-art">
+        <div class="stamp">Análisis · 27 abr 2026</div>
+        <div class="country-display">Colombia</div>
+        <div class="source-block">
+          <div><strong>País</strong> · Colombia</div>
+          <div><strong>Eje activado</strong> · Desorientación</div>
+          <div><strong>Fuente</strong> · La Silla Vacía</div>
+          <div><strong>A 103 días</strong> del fin del mandato</div>
+        </div>
+      </div>
+      <div class="hero-text">
+        <span class="axis-tag">Desorientación epistemológica</span>
+        <h1>La sospecha antes del voto</h1>
+        <p class="lede">Petro pone en duda la transparencia de la elección que decidirá su sucesión. Lo nuevo no es el discurso —es de Trump, Bolsonaro, Milei— sino que ahora sea pronunciado por la izquierda. Cuando ambos lados operan bajo sospecha permanente, el voto deja de ser un acto democrático.</p>
+        <a href="#" class="read">Leer análisis completo →</a>
+      </div>
+    </article>
+
+    <h2 class="grid-title">La semana <small>· cuatro países</small></h2>
+    <div class="grid">
+      <article class="card">
+        <span class="country">Argentina</span>
+        <h3>El revés de la motosierra</h3>
+        <p class="desc">Los gobernadores que sostuvieron al ajuste empiezan a despegarse. La pregunta es quién media entre el palacio y el territorio.</p>
+        <div class="meta">
+          <span class="axis">Erosión de mediaciones</span>
+          <span>Infobae</span>
+        </div>
+      </article>
+      <article class="card">
+        <span class="country">Chile</span>
+        <h3>La constitución que no fue, otra vez</h3>
+        <p class="desc">Tres procesos fallidos. La pregunta ya no es qué constitución, sino si hay un demos para escribirla.</p>
+        <div class="meta">
+          <span class="axis">Desrepresentación</span>
+          <span>CIPER</span>
+        </div>
+      </article>
+      <article class="card">
+        <span class="country">Brasil</span>
+        <h3>Fluminense y los nuevos altares</h3>
+        <p class="desc">El club como única estructura de pertenencia funcional. Cuando todo se desarma, queda el escudo.</p>
+        <div class="meta">
+          <span class="axis">Estetización</span>
+          <span>Folha</span>
+        </div>
+      </article>
+      <article class="card">
+        <span class="country">Bolivia</span>
+        <h3>El MAS sin Evo, sin Arce, sin destino</h3>
+        <p class="desc">Dos décadas de hegemonía se desarman sin que aparezca quién venga después.</p>
+        <div class="meta">
+          <span class="axis">Erosión de mediaciones</span>
+          <span>Los Tiempos</span>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <footer class="site" style="max-width:1240px; margin-left:auto; margin-right:auto;">
+    <div class="col">
+      <h4>Hipótesis</h4>
+      <p class="manifesto">Las estructuras que organizaban la vida colectiva pierden capacidad de mediación. Mapa Inestable rastrea esa pérdida.</p>
+    </div>
+    <div class="col">
+      <h4>Ejes</h4>
+      <ul>
+        <li><a href="#">Deculturación</a></li>
+        <li><a href="#">Mediaciones</a></li>
+        <li><a href="#">Desrepresentación</a></li>
+        <li><a href="#">Estetización</a></li>
+        <li><a href="#">Desorientación</a></li>
+        <li><a href="#">Atención</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Países</h4>
+      <ul>
+        <li><a href="#">AR · BR · CL</a></li>
+        <li><a href="#">CO · BO · PE</a></li>
+        <li><a href="#">UY · PY · EC · VE</a></li>
+      </ul>
+    </div>
+  </footer>
+</section>
+
+<!-- ============= DIRECCIÓN C ============= -->
+<section class="rationale" id="dir-C-intro">
+  <div class="grid">
+    <h3>Dirección C</h3>
+    <div>
+      <h2>Sobrio editorial latino</h2>
+      <p class="meta" style="margin-top:12px;">Granta · The Dial · n+1 · La Pública · Revista Otra Parte</p>
+      <p style="margin-top:16px;">El contenido es protagonista. El logo y los colores existen pero <em style="color:#fff;">no compiten</em>. Aire generoso, tipografía clásica con ADN latino (Cormorant), terracota y verde solo como puntos de tensión. Lectura serena, ensayística. La promesa: <em style="color:#fff;">esto se puede leer 30 minutos</em>.</p>
+    </div>
+    <div>
+      <h3>Tipografía</h3>
+      <p><code>Cormorant Garamond</code> para títulos<br><code>Crimson Pro</code> para body<br><code>IBM Plex Sans</code> small caps para UI</p>
+      <h3 style="margin-top: 20px;">Tono</h3>
+      <p>Pensativo, ensayístico. Le habla a alguien que también lee el FT y la LRB.</p>
+    </div>
+    <div>
+      <h3>Tokens</h3>
+      <div class="swatches">
+        <div class="swatch" style="background:#FAF7F2" title="bg"></div>
+        <div class="swatch" style="background:#18181A" title="ink"></div>
+        <div class="swatch" style="background:#B85C2F" title="terra (acento)"></div>
+        <div class="swatch" style="background:#4A5C30" title="olive (acento)"></div>
+      </div>
+      <h3 style="margin-top:20px;">Riesgo</h3>
+      <p>Puede ser <em style="color:#fff;">indistinguible</em> de cualquier sitio editorial premium. La marca pierde diferenciación.</p>
+    </div>
+  </div>
+</section>
+
+<section class="dir-C" id="dir-C">
+  <header class="site">
+    <div class="header-aux">Lunes 27 abr 2026</div>
+    <div class="masthead">
+      <h1 class="name">Mapa <strong>Inestable</strong></h1>
+      <p class="tagline">Análisis estructural de Sudamérica</p>
+    </div>
+    <div class="header-aux right">Año II · Edición 47</div>
+  </header>
+  <nav class="primary">
+    <a href="#" class="active">Inicio</a>
+    <a href="#">Análisis</a>
+    <a href="#">Despachos</a>
+    <a href="#">Ejes</a>
+    <a href="#">Archivo</a>
+    <a href="#">Acerca</a>
+  </nav>
+
+  <div class="container">
+    <article class="hero">
+      <div class="kicker">Colombia · 27 abr 2026 · Análisis</div>
+      <h1>La <em>sospecha</em> antes del voto</h1>
+      <p class="lede">A 103 días del fin del mandato, Petro pone en duda la transparencia de la elección que decidirá su sucesión. Lo nuevo no es el discurso —es de Trump, Bolsonaro, Milei— sino que ahora sea pronunciado por la izquierda. Cuando ambos lados de la política operan bajo sospecha permanente, el voto deja de ser un acto democrático y se vuelve una formalidad bajo asedio.</p>
+      <div class="byline">
+        <span>Por <strong>Mapa Inestable</strong></span>
+        <span>Fuente · <strong>La Silla Vacía</strong></span>
+        <span>8 min</span>
+      </div>
+      <div class="axis-line">Eje activado: <em>Desorientación epistemológica</em></div>
+    </article>
+
+    <section class="grid-section">
+      <h2 class="section-title">
+        La semana
+        <small>Cuatro países · cuatro ejes</small>
+      </h2>
+      <div class="grid">
+        <article class="card">
+          <div class="country">Argentina</div>
+          <h3>El revés de la motosierra</h3>
+          <p class="desc">Los gobernadores que sostuvieron al ajuste empiezan a despegarse. La pregunta es quién media entre el palacio y el territorio.</p>
+          <div class="meta"><span>Erosión de mediaciones</span><span>· Infobae</span></div>
+        </article>
+        <article class="card">
+          <div class="country">Chile</div>
+          <h3>La constitución que no fue, otra vez</h3>
+          <p class="desc">Tres procesos fallidos. La pregunta ya no es qué constitución, sino si todavía hay un demos para escribirla.</p>
+          <div class="meta"><span>Desrepresentación</span><span>· CIPER</span></div>
+        </article>
+        <article class="card">
+          <div class="country">Brasil</div>
+          <h3>Fluminense y los nuevos altares</h3>
+          <p class="desc">El club como única estructura de pertenencia funcional. Cuando todo se desarma, queda el escudo.</p>
+          <div class="meta"><span>Estetización</span><span>· Folha</span></div>
+        </article>
+        <article class="card">
+          <div class="country">Bolivia</div>
+          <h3>El MAS sin Evo, sin Arce, sin destino</h3>
+          <p class="desc">Dos décadas de hegemonía se desarman sin que aparezca quién venga después.</p>
+          <div class="meta"><span>Erosión de mediaciones</span><span>· Los Tiempos</span></div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <footer class="site">
+    <div class="col">
+      <h4>Hipótesis</h4>
+      <p class="manifesto">Vivimos una transición donde las estructuras que organizaban la vida colectiva pierden capacidad de mediación. Mapa Inestable rastrea esa pérdida país por país.</p>
+    </div>
+    <div class="col">
+      <h4>Los seis ejes</h4>
+      <ul>
+        <li><a href="#">Deculturación</a></li>
+        <li><a href="#">Erosión de mediaciones</a></li>
+        <li><a href="#">Desrepresentación</a></li>
+        <li><a href="#">Estetización</a></li>
+        <li><a href="#">Desorientación</a></li>
+        <li><a href="#">Atención</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Países</h4>
+      <ul>
+        <li><a href="#">Argentina · Brasil</a></li>
+        <li><a href="#">Chile · Colombia</a></li>
+        <li><a href="#">Bolivia · Perú</a></li>
+        <li><a href="#">Uruguay · Paraguay</a></li>
+        <li><a href="#">Ecuador · Venezuela</a></li>
+      </ul>
+    </div>
+  </footer>
+</section>
+
+<!-- ============= CIERRE ============= -->
+<section class="rationale" style="border-top: 1px solid rgba(255,255,255,0.08);">
+  <div class="grid">
+    <h3>Próximo paso</h3>
+    <div style="grid-column: 2 / -1; max-width: 70ch;">
+      <h2 style="font-size: 22px;">¿Cuál te tira más?</h2>
+      <p style="margin-top: 12px;">Decime A, B o C — o un híbrido (por ejemplo "A pero con la materialidad del logo de B"). Una vez elegida la dirección, escribo el documento de design system completo (tokens, componentes, voz visual, uso del logo) más un prototipo final del home con mapa invertido funcional.</p>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

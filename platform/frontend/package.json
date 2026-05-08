@@ -1,0 +1,29 @@
+{
+  "name": "mapa-inestable",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "d3": "^7.9.0",
+    "d3-geo": "^3.1.1",
+    "gray-matter": "^4.0.3",
+    "marked": "^18.0.3",
+    "next": "15.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "swr": "^2.2.5",
+    "topojson-client": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@types/topojson-client": "^3.1.4",
+    "typescript": "^5.6.3"
+  }
+}

@@ -1,0 +1,21 @@
+# Obsidian
+.obsidian/
+
+# Next.js
+platform/frontend/.next/
+platform/frontend/node_modules/
+platform/frontend/.env*.local
+
+# Backend Python
+platform/backend/__pycache__/
+platform/backend/**/__pycache__/
+platform/backend/*.pyc
+platform/backend/**/*.pyc
+platform/backend/.env
+platform/backend/venv/
+platform/backend/.venv/
+
+# General
+.DS_Store
+Thumbs.db
+*.log

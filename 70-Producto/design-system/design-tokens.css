@@ -1,0 +1,157 @@
+/* ==============================================================
+   Mapa Inestable · Design Tokens
+   Dirección: Grabado · v1.0 · 2026-04-27
+
+   Listo para pegar en el futuro proyecto Next.js / SvelteKit.
+   Importar Google Fonts en el <head>:
+   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Fraunces:opsz,wght,SOFT@9..144,400..900,0..100&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+   ============================================================== */
+
+:root {
+
+  /* === COLOR ====================================================
+     Terracota como dominante. Verde-negro como tinta.
+     Crema como papel. Oro como acento de tensión.
+     ============================================================ */
+
+  /* Fondos */
+  --mi-bg:        #C5663A;  /* Terracota — fondo dominante del sistema */
+  --mi-bg-warm:   #B45729;  /* Terracota más profundo — hover, énfasis */
+  --mi-bg-paper:  #F4E9D2;  /* Crema cálido — cards, surfaces sobre terracota */
+  --mi-bg-cream:  #ECE0C5;  /* Crema apagado — contenedores secundarios */
+  --mi-bg-dark:   #1F2A12;  /* Verde-negro — secciones inversas, footer */
+
+  /* Tinta */
+  --mi-ink:       #1F2A12;  /* Tinta principal (no negro puro) */
+  --mi-ink-soft:  #3D4A26;  /* Texto secundario, lede */
+  --mi-ink-mute:  #5C6638;  /* Metadata, fechas */
+
+  /* Acentos */
+  --mi-accent-gold: #E8C58A;  /* Amarillo del trepador — highlight, énfasis */
+  --mi-accent-warn: #B45729;  /* Errores, alertas, badges urgentes */
+
+  /* Líneas y bordes */
+  --mi-rule:        var(--mi-ink);
+  --mi-rule-soft:   #C8B894;
+
+  /* === TIPOGRAFÍA ===============================================
+     Alfa Slab One: el grito (brand, country, hero).
+     Fraunces (SOFT axis): los títulos pensados.
+     Lora: la prosa larga.
+     IBM Plex Mono: la maquinaria (metadata, fuentes, fechas).
+     ============================================================ */
+
+  --mi-font-display: 'Alfa Slab One', 'Bree Serif', Georgia, serif;
+  --mi-font-title:   'Fraunces', Georgia, serif;
+  --mi-font-body:    'Lora', Georgia, serif;
+  --mi-font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Escala tipográfica */
+  --mi-text-xs:      11px;
+  --mi-text-sm:      13px;
+  --mi-text-base:    17px;
+  --mi-text-lg:      19px;
+  --mi-text-xl:      22px;
+  --mi-text-2xl:     28px;
+  --mi-text-3xl:     36px;
+  --mi-text-4xl:     52px;
+  --mi-text-5xl:     72px;
+  --mi-text-display: 110px;
+
+  /* Line-height */
+  --mi-leading-tight:   0.95;
+  --mi-leading-snug:    1.1;
+  --mi-leading-normal:  1.55;
+  --mi-leading-relaxed: 1.7;
+
+  /* Letter-spacing */
+  --mi-tracking-tight:  -0.02em;
+  --mi-tracking-normal: 0;
+  --mi-tracking-wide:   0.15em;
+  --mi-tracking-wider:  0.2em;
+  --mi-tracking-widest: 0.28em;
+
+  /* === ESPACIADO (8px grid) ===================================== */
+
+  --mi-space-0: 0;
+  --mi-space-1: 4px;
+  --mi-space-2: 8px;
+  --mi-space-3: 16px;
+  --mi-space-4: 24px;
+  --mi-space-5: 32px;
+  --mi-space-6: 48px;
+  --mi-space-7: 72px;
+  --mi-space-8: 96px;
+  --mi-space-9: 128px;
+
+  /* === BORDES =================================================== */
+
+  --mi-border-hair:   1px solid var(--mi-rule);
+  --mi-border-soft:   1px solid var(--mi-rule-soft);
+  --mi-border-thick:  2px solid var(--mi-ink);
+  --mi-border-bold:   3px solid var(--mi-ink);
+  --mi-border-dashed: 1px dashed var(--mi-ink);
+
+  --mi-radius: 0;  /* La dirección es bordes duros: nunca redondear. */
+
+  /* === SOMBRA (firma del sistema) ===============================
+     Las sombras son sólidas, no difusas. Replican el offset
+     del registro en grabado. Son el trace.
+     ============================================================ */
+
+  --mi-shadow-card:      6px 6px 0 var(--mi-ink);
+  --mi-shadow-card-lift: 8px 8px 0 var(--mi-ink);
+  --mi-shadow-hero:      12px 12px 0 var(--mi-ink);
+
+  /* === LAYOUT =================================================== */
+
+  --mi-container:        1240px;
+  --mi-container-narrow: 920px;
+  --mi-container-prose:  720px;
+
+  /* === MOTION ===================================================
+     Movimientos cortos. Esto no es una app SaaS.
+     ============================================================ */
+
+  --mi-ease:            cubic-bezier(0.2, 0, 0, 1);
+  --mi-duration-quick:  120ms;
+  --mi-duration-normal: 200ms;
+
+  /* === SEMÁNTICA POR EJE ========================================
+     Cada uno de los seis ejes tiene un color asociado.
+     Se usa en pills, badges, y en la coloración del mapa
+     según qué eje está activo en cada país esa semana.
+     ============================================================ */
+
+  --mi-axis-deculturacion:    #6B4A38;
+  --mi-axis-mediaciones:      #4A5C30;
+  --mi-axis-desrepresentacion:#8A4A55;
+  --mi-axis-estetizacion:     #B45729;
+  --mi-axis-desorientacion:   #2D4A6B;
+  --mi-axis-atencion:         #C8993E;
+}
+
+/* === TEXTURA DE GRABADO =========================================
+   Mixin de fondo aplicable a cualquier sección con clase .mi-grain.
+   Líneas paralelas a baja opacidad — simula el grano del papel.
+   ============================================================== */
+
+.mi-grain {
+  background-image:
+    repeating-linear-gradient(0deg,  transparent 0 3px, rgba(31,42,18,0.025) 3px 4px),
+    repeating-linear-gradient(90deg, transparent 0 7px, rgba(31,42,18,0.020) 7px 8px);
+}
+
+/* === RESET MÍNIMO DEL SISTEMA =================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--mi-bg);
+  color: var(--mi-ink);
+  font-family: var(--mi-font-body);
+  font-size: var(--mi-text-base);
+  line-height: var(--mi-leading-normal);
+  -webkit-font-smoothing: antialiased;
+}

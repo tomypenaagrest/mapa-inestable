@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mapa Inestable · Home (prototipo)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Fraunces:opsz,wght,SOFT@9..144,400..900,0..100&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Design tokens del sistema -->
+<link rel="stylesheet" href="design-tokens.css">
+
+<style>
+/* ============================================================
+   Mapa Inestable · Home (prototipo)
+   Aplica el design system en una página completa.
+   Todos los valores de color/tipo/espacio vienen de design-tokens.css.
+   ============================================================ */
+
+a { color: inherit; }
+
+/* ============= HEADER ============= */
+.site-header {
+  background: var(--mi-bg);
+  border-bottom: var(--mi-border-bold);
+  position: sticky; top: 0; z-index: 50;
+}
+.site-header.mi-grain { /* aplica textura de grabado */ }
+
+.site-header-inner {
+  max-width: var(--mi-container);
+  margin: 0 auto;
+  padding: var(--mi-space-3) var(--mi-space-6);
+  display: flex; align-items: center; gap: var(--mi-space-5);
+}
+
+.brand {
+  display: flex; align-items: center; gap: var(--mi-space-3);
+  text-decoration: none;
+  color: var(--mi-ink);
+}
+.brand-mark {
+  width: 44px; height: 56px;
+  flex-shrink: 0;
+}
+.brand-name {
+  font-family: var(--mi-font-display);
+  font-size: var(--mi-text-2xl);
+  line-height: var(--mi-leading-tight);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.brand-tagline {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: var(--mi-tracking-wider);
+  text-transform: uppercase;
+  color: var(--mi-ink-soft);
+  margin: 2px 0 0;
+}
+
+.site-nav {
+  margin-left: auto;
+  display: flex; gap: var(--mi-space-1);
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+}
+.site-nav a {
+  color: var(--mi-ink);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 2px solid transparent;
+  transition: all var(--mi-duration-quick) var(--mi-ease);
+}
+.site-nav a:hover { border-color: var(--mi-ink); }
+.site-nav a.active {
+  background: var(--mi-ink);
+  color: var(--mi-bg-paper);
+  border-color: var(--mi-ink);
+}
+
+.site-search {
+  background: transparent;
+  border: 2px solid var(--mi-ink);
+  padding: 6px 12px 6px 30px;
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  width: 160px;
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%231F2A12' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='7'/%3E%3Cline x1='15' y1='15' x2='21' y2='21'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 8px center;
+}
+.site-search::placeholder { color: var(--mi-ink-soft); opacity: 0.7; }
+
+/* ============= META BAR ============= */
+.meta-bar {
+  background: var(--mi-bg-dark);
+  color: var(--mi-bg-paper);
+  padding: 6px var(--mi-space-6);
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  display: flex; gap: var(--mi-space-4);
+}
+.meta-bar .now { color: var(--mi-accent-gold); }
+.meta-bar .right { margin-left: auto; }
+
+/* ============= CONTAINER ============= */
+.container {
+  max-width: var(--mi-container);
+  margin: 0 auto;
+  padding: var(--mi-space-7) var(--mi-space-6);
+}
+
+/* ============= HERO ============= */
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  border: var(--mi-border-bold);
+  background: var(--mi-bg-paper);
+  box-shadow: var(--mi-shadow-hero);
+  margin-bottom: var(--mi-space-9);
+}
+.hero-art {
+  background: var(--mi-bg-dark);
+  color: var(--mi-bg-paper);
+  padding: var(--mi-space-6) var(--mi-space-6);
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+  min-height: 480px;
+}
+.hero-art::before {
+  /* textura de grabado sobre verde-negro */
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,  transparent 0 3px, rgba(232,197,138,0.04) 3px 4px),
+    repeating-linear-gradient(90deg, transparent 0 7px, rgba(232,197,138,0.03) 7px 8px);
+  pointer-events: none;
+}
+.hero-stamp {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-widest);
+  text-transform: uppercase;
+  color: var(--mi-accent-gold);
+  border: 1px solid var(--mi-accent-gold);
+  padding: 4px 10px;
+  align-self: flex-start;
+}
+.hero-country {
+  font-family: var(--mi-font-display);
+  font-size: var(--mi-text-display);
+  line-height: 0.85;
+  letter-spacing: var(--mi-tracking-tight);
+  color: var(--mi-bg);
+  margin: var(--mi-space-4) 0;
+  text-transform: uppercase;
+  text-shadow: 4px 4px 0 var(--mi-accent-gold);
+}
+.hero-source {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-bg-paper);
+  line-height: 1.85;
+  border-top: 1px solid rgba(232,219,193,0.25);
+  padding-top: var(--mi-space-3);
+}
+.hero-source dt { color: var(--mi-accent-gold); display: inline; font-weight: 500; }
+.hero-source dd { display: inline; margin: 0; }
+.hero-source dd::after { content: ''; display: block; }
+
+.hero-text { padding: var(--mi-space-6); display: flex; flex-direction: column; }
+.hero-axis-tag {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-bg-paper);
+  background: var(--mi-axis-desorientacion);
+  padding: 4px 10px;
+  align-self: flex-start;
+  margin-bottom: var(--mi-space-4);
+}
+.hero-text h1 {
+  font-family: var(--mi-font-title);
+  font-weight: 700;
+  font-variation-settings: "SOFT" 60, "opsz" 144;
+  font-size: var(--mi-text-4xl);
+  line-height: 1.0;
+  letter-spacing: var(--mi-tracking-tight);
+  color: var(--mi-ink);
+  margin: 0 0 var(--mi-space-3);
+}
+.hero-text h1 em {
+  font-style: italic; font-weight: 600;
+  color: var(--mi-bg-warm);
+}
+.hero-text .lede {
+  font-family: var(--mi-font-body);
+  font-size: var(--mi-text-lg);
+  line-height: 1.55;
+  color: var(--mi-ink-soft);
+  margin: 0 0 var(--mi-space-4);
+  flex: 1;
+}
+.hero-text .lede::first-letter {
+  font-family: var(--mi-font-display);
+  font-size: 3.2em;
+  float: left; line-height: 0.9;
+  margin: 4px 10px 0 0;
+  color: var(--mi-bg-warm);
+}
+.hero-cta {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--mi-ink);
+  padding-bottom: 4px;
+  align-self: flex-start;
+}
+
+/* ============= SECTION HEAD ============= */
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  border-bottom: var(--mi-border-bold);
+  padding-bottom: var(--mi-space-3);
+  margin-bottom: var(--mi-space-5);
+}
+.section-head h2 {
+  font-family: var(--mi-font-display);
+  font-size: var(--mi-text-3xl);
+  line-height: var(--mi-leading-tight);
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  margin: 0;
+}
+.section-head .meta {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-ink-soft);
+}
+
+/* ============= MAPA INVERTIDO ============= */
+.mapa-section {
+  margin-bottom: var(--mi-space-9);
+}
+.mapa-frame {
+  background: var(--mi-bg-paper);
+  border: var(--mi-border-bold);
+  box-shadow: var(--mi-shadow-hero);
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  min-height: 520px;
+}
+.mapa-svg-wrap {
+  background: var(--mi-bg);
+  position: relative;
+  border-right: var(--mi-border-bold);
+}
+.mapa-svg-wrap .mapa-label {
+  position: absolute;
+  top: var(--mi-space-3);
+  left: var(--mi-space-3);
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: var(--mi-tracking-widest);
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  background: var(--mi-bg-paper);
+  border: 2px solid var(--mi-ink);
+  padding: 4px 8px;
+}
+.mapa-svg-wrap .mapa-rotulo {
+  position: absolute;
+  bottom: var(--mi-space-3);
+  right: var(--mi-space-3);
+  font-family: var(--mi-font-display);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  text-align: right;
+  line-height: 1.3;
+  opacity: 0.7;
+}
+.mapa-svg { width: 100%; height: 100%; display: block; }
+
+.country-shape {
+  stroke: var(--mi-ink);
+  stroke-width: 1.4;
+  cursor: pointer;
+  transition: all var(--mi-duration-quick) var(--mi-ease);
+}
+.country-shape:not([fill]) { fill: var(--mi-bg-paper); }
+.country-shape.is-active { stroke-width: 2; }
+.country-shape:hover { stroke-width: 3; filter: brightness(0.95); }
+.country-dot {
+  fill: var(--mi-accent-gold);
+  stroke: var(--mi-ink);
+  stroke-width: 1.5;
+  pointer-events: none;
+  filter: drop-shadow(2px 2px 0 var(--mi-ink));
+}
+.country-label {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  fill: var(--mi-ink);
+  pointer-events: none;
+}
+
+.mapa-side {
+  padding: var(--mi-space-5);
+  display: flex; flex-direction: column;
+  background: var(--mi-bg-paper);
+}
+.mapa-side h3 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 50, "opsz" 96;
+  font-size: var(--mi-text-2xl);
+  line-height: 1.1;
+  color: var(--mi-ink);
+  margin: 0 0 var(--mi-space-3);
+}
+.mapa-side .mapa-intro {
+  font-family: var(--mi-font-body);
+  font-size: var(--mi-text-base);
+  line-height: 1.55;
+  color: var(--mi-ink-soft);
+  margin: 0 0 var(--mi-space-4);
+}
+.mapa-active-list {
+  list-style: none;
+  padding: 0; margin: 0;
+  border-top: var(--mi-border-thick);
+}
+.mapa-active-list li {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: var(--mi-space-3);
+  align-items: center;
+  padding: var(--mi-space-3) 0;
+  border-bottom: var(--mi-border-dashed);
+}
+.mapa-active-list .axis-dot {
+  width: 14px; height: 14px;
+  border: 2px solid var(--mi-ink);
+}
+.mapa-active-list .pais {
+  font-family: var(--mi-font-display);
+  font-size: var(--mi-text-base);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.mapa-active-list .eje {
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-ink-soft);
+}
+
+/* tooltip flotante */
+.mapa-tooltip {
+  position: fixed;
+  z-index: 200;
+  background: var(--mi-bg-dark);
+  color: var(--mi-bg-paper);
+  border: 2px solid var(--mi-ink);
+  padding: var(--mi-space-2) var(--mi-space-3);
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  pointer-events: none;
+  box-shadow: var(--mi-shadow-card);
+  display: none;
+  white-space: nowrap;
+}
+.mapa-tooltip.show { display: block; }
+.mapa-tooltip .tt-axis { color: var(--mi-accent-gold); margin-top: 4px; }
+
+/* ============= GRID DE ANÁLISIS ============= */
+.semana-section { margin-bottom: var(--mi-space-9); }
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--mi-space-4);
+}
+.card {
+  background: var(--mi-bg-paper);
+  border: var(--mi-border-thick);
+  padding: var(--mi-space-4);
+  box-shadow: var(--mi-shadow-card);
+  display: flex; flex-direction: column;
+  text-decoration: none;
+  color: var(--mi-ink);
+  transition: all var(--mi-duration-quick) var(--mi-ease);
+}
+.card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--mi-shadow-card-lift);
+}
+.card .country {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-bg);
+  background: var(--mi-ink);
+  padding: 3px 8px;
+  align-self: flex-start;
+  margin-bottom: var(--mi-space-3);
+}
+.card h3 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 50, "opsz" 96;
+  font-size: var(--mi-text-xl);
+  line-height: 1.1;
+  margin: 0 0 var(--mi-space-2);
+}
+.card .desc {
+  font-family: var(--mi-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--mi-ink-soft);
+  margin: 0 0 var(--mi-space-3);
+  flex: 1;
+}
+.card-footer {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mi-ink-soft);
+  border-top: var(--mi-border-dashed);
+  padding-top: var(--mi-space-2);
+  display: flex; justify-content: space-between;
+}
+.card-footer .axis { color: var(--mi-ink); font-weight: 500; }
+
+/* ============= LOS SEIS EJES ============= */
+.ejes-section { margin-bottom: var(--mi-space-9); }
+.ejes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: var(--mi-border-bold);
+  background: var(--mi-bg-paper);
+}
+.eje-card {
+  padding: var(--mi-space-5);
+  border-right: var(--mi-border-thick);
+  border-bottom: var(--mi-border-thick);
+  position: relative;
+  display: flex; flex-direction: column; gap: var(--mi-space-2);
+}
+.eje-card:nth-child(3n) { border-right: 0; }
+.eje-card:nth-child(n+4) { /* second row */ }
+.eje-card:nth-last-child(-n+3) { border-bottom: 0; }
+
+.eje-num {
+  font-family: var(--mi-font-display);
+  font-size: var(--mi-text-3xl);
+  line-height: 1;
+  color: var(--mi-bg);
+}
+.eje-name {
+  font-family: var(--mi-font-title);
+  font-weight: 700;
+  font-variation-settings: "SOFT" 50, "opsz" 96;
+  font-size: var(--mi-text-xl);
+  margin: 0;
+  color: var(--mi-ink);
+}
+.eje-card p {
+  font-family: var(--mi-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--mi-ink-soft);
+  margin: 0;
+}
+.eje-color-swatch {
+  position: absolute; top: 0; right: 0;
+  width: 32px; height: 32px;
+  border-left: var(--mi-border-thick);
+  border-bottom: var(--mi-border-thick);
+}
+
+/* ============= DESPACHOS ============= */
+.despachos-section { margin-bottom: var(--mi-space-9); }
+.despachos-list {
+  list-style: none; padding: 0; margin: 0;
+  border-top: var(--mi-border-bold);
+}
+.despachos-list li {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: var(--mi-space-5);
+  align-items: baseline;
+  padding: var(--mi-space-4) 0;
+  border-bottom: var(--mi-border-thick);
+}
+.despachos-list .num {
+  font-family: var(--mi-font-display);
+  font-size: var(--mi-text-2xl);
+  color: var(--mi-bg);
+  letter-spacing: -0.02em;
+}
+.despachos-list h3 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 50, "opsz" 96;
+  font-size: var(--mi-text-2xl);
+  line-height: 1.15;
+  color: var(--mi-ink);
+  margin: 0 0 6px;
+}
+.despachos-list .countries {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-ink-soft);
+}
+.despachos-list .date {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-ink-soft);
+  white-space: nowrap;
+}
+
+/* ============= NEWSLETTER ============= */
+.newsletter-section {
+  background: var(--mi-bg-dark);
+  color: var(--mi-bg-paper);
+  border: var(--mi-border-bold);
+  padding: var(--mi-space-6);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--mi-space-6);
+  align-items: center;
+  margin-bottom: var(--mi-space-9);
+  position: relative; overflow: hidden;
+  box-shadow: var(--mi-shadow-hero);
+}
+.newsletter-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(232,197,138,0.05) 3px 4px);
+  pointer-events: none;
+}
+.newsletter-section .content { position: relative; }
+.newsletter-section .stamp {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-widest);
+  text-transform: uppercase;
+  color: var(--mi-accent-gold);
+  margin-bottom: var(--mi-space-3);
+}
+.newsletter-section h3 {
+  font-family: var(--mi-font-display);
+  font-size: var(--mi-text-3xl);
+  line-height: var(--mi-leading-tight);
+  text-transform: uppercase;
+  color: var(--mi-bg-paper);
+  margin: 0 0 var(--mi-space-3);
+}
+.newsletter-section p {
+  font-family: var(--mi-font-body);
+  font-style: italic;
+  font-size: var(--mi-text-lg);
+  line-height: 1.5;
+  color: var(--mi-bg-paper);
+  opacity: 0.9;
+  margin: 0;
+}
+.newsletter-form { display: flex; flex-direction: column; gap: var(--mi-space-3); position: relative; }
+.newsletter-form input {
+  background: var(--mi-bg-paper);
+  border: var(--mi-border-thick);
+  padding: var(--mi-space-3);
+  font-family: var(--mi-font-body);
+  font-size: var(--mi-text-base);
+  color: var(--mi-ink);
+}
+.newsletter-form input::placeholder { color: var(--mi-ink-soft); }
+.newsletter-form button {
+  background: var(--mi-bg);
+  border: var(--mi-border-thick);
+  border-color: var(--mi-bg-paper);
+  padding: var(--mi-space-3);
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wider);
+  text-transform: uppercase;
+  color: var(--mi-bg-paper);
+  cursor: pointer;
+  box-shadow: 6px 6px 0 var(--mi-bg-paper);
+  transition: all var(--mi-duration-quick) var(--mi-ease);
+}
+.newsletter-form button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--mi-bg-paper);
+}
+
+/* ============= FOOTER ============= */
+.site-footer {
+  background: var(--mi-bg-dark);
+  color: var(--mi-bg-paper);
+  padding: var(--mi-space-7) var(--mi-space-6) var(--mi-space-5);
+  margin-top: 0;
+}
+.footer-inner {
+  max-width: var(--mi-container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--mi-space-6);
+}
+.footer-inner h4 {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wider);
+  text-transform: uppercase;
+  color: var(--mi-accent-gold);
+  margin: 0 0 var(--mi-space-3);
+}
+.footer-inner .manifesto {
+  font-family: var(--mi-font-title);
+  font-style: italic;
+  font-variation-settings: "SOFT" 70;
+  font-size: var(--mi-text-lg);
+  line-height: 1.5;
+  color: var(--mi-bg-paper);
+  margin: 0;
+}
+.footer-inner ul {
+  list-style: none; padding: 0; margin: 0;
+  font-family: var(--mi-font-mono);
+  font-size: 12px;
+  line-height: 2;
+}
+.footer-inner ul a { color: var(--mi-bg-paper); text-decoration: none; }
+.footer-inner ul a:hover { color: var(--mi-accent-gold); }
+.footer-bottom {
+  max-width: var(--mi-container);
+  margin: var(--mi-space-6) auto 0;
+  padding-top: var(--mi-space-3);
+  border-top: 1px solid rgba(232,219,193,0.18);
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: rgba(232,219,193,0.6);
+  display: flex; gap: var(--mi-space-4);
+}
+.footer-bottom .right { margin-left: auto; }
+
+/* ============= RESPONSIVE ============= */
+@media (max-width: 1000px) {
+  .hero, .mapa-frame, .newsletter-section { grid-template-columns: 1fr; }
+  .cards-grid { grid-template-columns: 1fr 1fr; }
+  .ejes-grid { grid-template-columns: 1fr 1fr; }
+  .ejes-grid .eje-card:nth-child(3n) { border-right: var(--mi-border-thick); }
+  .ejes-grid .eje-card:nth-child(2n) { border-right: 0; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .site-search { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== META BAR ===== -->
+<div class="meta-bar">
+  <span class="now">Lunes 27 abr 2026</span>
+  <span>Año II · Edición 47</span>
+  <span class="right">Buenos Aires · Bogotá · Santiago</span>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header mi-grain">
+  <div class="site-header-inner">
+    <a href="/" class="brand">
+      <!-- Logo mark: figura trepando el continente invertido -->
+      <svg class="brand-mark" viewBox="0 0 44 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- continente invertido (chunky woodcut) -->
+        <path d="M22 4 L30 8 L34 14 L36 22 L34 30 L32 38 L30 46 L26 52 L22 50 L20 44 L18 38 L16 30 L14 22 L16 14 L19 8 Z"
+              fill="var(--mi-ink)" />
+        <!-- figura trepadora (referencia al logo) -->
+        <circle cx="14" cy="28" r="2.5" fill="var(--mi-accent-gold)" />
+        <path d="M14 30 L11 36 M14 30 L17 35 M14 31 L13 38 M14 31 L15 38"
+              stroke="var(--mi-accent-gold)" stroke-width="1.5" fill="none" stroke-linecap="round" />
+      </svg>
+      <div>
+        <h1 class="brand-name">Mapa Inestable</h1>
+        <p class="brand-tagline">Cartografía política del sur</p>
+      </div>
+    </a>
+    <nav class="site-nav">
+      <a href="#" class="active">Inicio</a>
+      <a href="#">Análisis</a>
+      <a href="#">Despachos</a>
+      <a href="#">Ejes</a>
+      <a href="#">Archivo</a>
+      <a href="#">Acerca</a>
+    </nav>
+    <input type="search" class="site-search" placeholder="Buscar país, eje…">
+  </div>
+</header>
+
+<!-- ===== CONTAINER ===== -->
+<main class="container">
+
+  <!-- ===== HERO ===== -->
+  <article class="hero">
+    <aside class="hero-art">
+      <span class="hero-stamp">Análisis · Lunes 27 abr</span>
+      <div class="hero-country">Colombia</div>
+      <dl class="hero-source">
+        <dt>País</dt>·<dd>Colombia</dd><br>
+        <dt>Eje activado</dt>·<dd>Desorientación</dd><br>
+        <dt>Fuente</dt>·<dd>La Silla Vacía</dd><br>
+        <dt>A 103 días</dt>·<dd>del fin del mandato</dd>
+      </dl>
+    </aside>
+    <div class="hero-text">
+      <span class="hero-axis-tag">Desorientación epistemológica</span>
+      <h1>La <em>sospecha</em> antes del voto</h1>
+      <p class="lede">Petro pone en duda la transparencia de la elección que decidirá su sucesión. Lo nuevo no es el discurso —es de Trump, Bolsonaro, Milei— sino que ahora sea pronunciado por la izquierda. Cuando ambos lados de la política operan bajo sospecha permanente, el voto deja de ser un acto democrático.</p>
+      <a href="#" class="hero-cta">Leer análisis completo →</a>
+    </div>
+  </article>
+
+  <!-- ===== MAPA INVERTIDO ===== -->
+  <section class="mapa-section">
+    <div class="section-head">
+      <h2>El mapa de la semana</h2>
+      <span class="meta">5 países · 4 ejes activados · Edición 47</span>
+    </div>
+
+    <div class="mapa-frame">
+      <div class="mapa-svg-wrap">
+        <span class="mapa-label">Sudamérica · sur arriba</span>
+        <span class="mapa-rotulo">según<br>Torres García<br>1943</span>
+        <svg class="mapa-svg" viewBox="0 0 320 480" xmlns="http://www.w3.org/2000/svg">
+          <!-- Aplicar inversión Torres García al grupo entero -->
+          <g transform="translate(0, 480) scale(1, -1)">
+
+            <!-- Silueta general estilizada de Sudamérica (woodcut chunky) -->
+            <path d="M 75 50
+                     L 110 35 L 145 28 L 175 30 L 215 40 L 245 55
+                     L 270 80 L 280 115 L 275 150 L 270 185
+                     L 255 215 L 240 245 L 225 275 L 210 305
+                     L 200 335 L 195 365 L 185 395 L 175 425
+                     L 160 450 L 145 458 L 135 450 L 130 425
+                     L 130 395 L 125 365 L 115 335 L 105 305
+                     L 95 275 L 85 245 L 75 215 L 65 180
+                     L 60 145 L 60 110 L 65 80 L 75 50 Z"
+                  fill="var(--mi-bg)"
+                  stroke="var(--mi-ink)"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                  opacity="0.4" />
+
+            <!-- Países individuales (clickeables) -->
+            <!-- coordenadas dibujadas en orientación N-arriba; el group las invierte -->
+
+            <!-- Colombia (NW) -->
+            <path class="country-shape is-active" data-pais="Colombia" data-eje="Desorientación"
+                  data-titulo="La sospecha antes del voto"
+                  fill="var(--mi-axis-desorientacion)"
+                  d="M 95 55 L 130 45 L 155 55 L 165 75 L 160 100 L 145 115 L 120 115 L 100 105 L 88 85 L 90 65 Z" />
+
+            <!-- Venezuela (N) -->
+            <path class="country-shape" data-pais="Venezuela"
+                  d="M 165 40 L 215 38 L 240 50 L 250 70 L 240 90 L 215 95 L 190 92 L 170 78 L 165 60 Z" />
+
+            <!-- Ecuador (NW small) -->
+            <path class="country-shape" data-pais="Ecuador"
+                  d="M 75 95 L 100 90 L 108 110 L 100 125 L 80 128 L 70 115 L 73 100 Z" />
+
+            <!-- Peru (W) -->
+            <path class="country-shape" data-pais="Perú"
+                  d="M 75 130 L 120 120 L 145 145 L 155 175 L 145 215 L 125 225 L 100 220 L 80 195 L 68 165 L 70 140 Z" />
+
+            <!-- Bolivia (center) -->
+            <path class="country-shape is-active" data-pais="Bolivia"
+                  data-eje="Erosión de mediaciones"
+                  data-titulo="El MAS sin Evo, sin Arce, sin destino"
+                  fill="var(--mi-axis-mediaciones)"
+                  d="M 145 195 L 195 192 L 210 220 L 200 250 L 175 260 L 150 250 L 140 225 Z" />
+
+            <!-- Brazil (E enorme) -->
+            <path class="country-shape is-active" data-pais="Brasil"
+                  data-eje="Estetización"
+                  data-titulo="Fluminense y los nuevos altares"
+                  fill="var(--mi-axis-estetizacion)"
+                  d="M 190 75 L 235 65 L 265 85 L 280 115 L 282 150 L 275 185 L 260 215 L 240 240 L 215 255 L 200 245 L 195 220 L 200 195 L 205 165 L 200 135 L 190 105 L 190 75 Z" />
+
+            <!-- Paraguay -->
+            <path class="country-shape" data-pais="Paraguay"
+                  d="M 175 235 L 215 230 L 220 260 L 200 280 L 180 270 L 172 250 Z" />
+
+            <!-- Chile (W strip) -->
+            <path class="country-shape is-active" data-pais="Chile"
+                  data-eje="Desrepresentación"
+                  data-titulo="La constitución que no fue, otra vez"
+                  fill="var(--mi-axis-desrepresentacion)"
+                  d="M 95 220 L 125 220 L 132 270 L 132 320 L 128 370 L 122 415 L 115 445 L 108 455 L 102 445 L 100 415 L 100 370 L 102 320 L 100 270 Z" />
+
+            <!-- Argentina -->
+            <path class="country-shape is-active" data-pais="Argentina"
+                  data-eje="Erosión de mediaciones"
+                  data-titulo="El revés de la motosierra"
+                  fill="var(--mi-axis-mediaciones)"
+                  d="M 132 240 L 180 235 L 200 260 L 210 295 L 205 335 L 200 380 L 190 420 L 175 445 L 160 455 L 145 445 L 138 420 L 138 380 L 132 335 L 132 295 L 132 260 Z" />
+
+            <!-- Uruguay -->
+            <path class="country-shape" data-pais="Uruguay"
+                  d="M 215 295 L 245 290 L 250 315 L 240 330 L 220 328 L 210 312 Z" />
+
+            <!-- Marcadores dorados sobre países activos -->
+            <!-- Estos también deben invertirse, así que están en el mismo group -->
+            <circle class="country-dot" cx="125" cy="80" r="4.5"/>      <!-- Colombia -->
+            <circle class="country-dot" cx="175" cy="225" r="4.5"/>     <!-- Bolivia -->
+            <circle class="country-dot" cx="240" cy="155" r="4.5"/>     <!-- Brasil -->
+            <circle class="country-dot" cx="115" cy="335" r="4.5"/>     <!-- Chile -->
+            <circle class="country-dot" cx="170" cy="345" r="4.5"/>     <!-- Argentina -->
+
+            <!-- Etiquetas de país (deben re-invertirse para que se lean derechas) -->
+            <g transform="translate(0, 480) scale(1, -1)">
+              <!-- pero las coordenadas estaban en sistema "normal", así que ahora las re-volteo en torno al punto correcto -->
+            </g>
+          </g>
+
+          <!-- Etiquetas separadas, ya en el espacio invertido pero re-volteadas para legibilidad -->
+          <!-- En sistema visual final (post-inversion), Argentina-tip queda arriba, Venezuela queda abajo -->
+          <text class="country-label" x="125" y="420" text-anchor="middle">Colombia</text>
+          <text class="country-label" x="200" y="430" text-anchor="middle">Venezuela</text>
+          <text class="country-label" x="105" y="395" text-anchor="middle">Ecuador</text>
+          <text class="country-label" x="115" y="320" text-anchor="middle">Perú</text>
+          <text class="country-label" x="240" y="345" text-anchor="middle">Brasil</text>
+          <text class="country-label" x="175" y="255" text-anchor="middle">Bolivia</text>
+          <text class="country-label" x="195" y="225" text-anchor="middle">Paraguay</text>
+          <text class="country-label" x="225" y="170" text-anchor="middle">Uruguay</text>
+          <text class="country-label" x="115" y="145" text-anchor="middle">Chile</text>
+          <text class="country-label" x="170" y="135" text-anchor="middle">Argentina</text>
+        </svg>
+      </div>
+
+      <aside class="mapa-side">
+        <h3>La estructura activa esta semana</h3>
+        <p class="mapa-intro">Cinco países cruzados por cuatro ejes. Hovereá un país sobre el mapa para ver el análisis correspondiente.</p>
+        <ul class="mapa-active-list">
+          <li>
+            <span class="axis-dot" style="background: var(--mi-axis-desorientacion);"></span>
+            <span>
+              <span class="pais">Colombia</span><br>
+              <span class="eje">Desorientación · La sospecha antes del voto</span>
+            </span>
+            <span class="eje">↗</span>
+          </li>
+          <li>
+            <span class="axis-dot" style="background: var(--mi-axis-mediaciones);"></span>
+            <span>
+              <span class="pais">Argentina</span><br>
+              <span class="eje">Mediaciones · El revés de la motosierra</span>
+            </span>
+            <span class="eje">↗</span>
+          </li>
+          <li>
+            <span class="axis-dot" style="background: var(--mi-axis-desrepresentacion);"></span>
+            <span>
+              <span class="pais">Chile</span><br>
+              <span class="eje">Desrepresentación · La constitución que no fue, otra vez</span>
+            </span>
+            <span class="eje">↗</span>
+          </li>
+          <li>
+            <span class="axis-dot" style="background: var(--mi-axis-estetizacion);"></span>
+            <span>
+              <span class="pais">Brasil</span><br>
+              <span class="eje">Estetización · Fluminense y los nuevos altares</span>
+            </span>
+            <span class="eje">↗</span>
+          </li>
+          <li>
+            <span class="axis-dot" style="background: var(--mi-axis-mediaciones);"></span>
+            <span>
+              <span class="pais">Bolivia</span><br>
+              <span class="eje">Mediaciones · El MAS sin Evo, sin Arce, sin destino</span>
+            </span>
+            <span class="eje">↗</span>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== LA SEMANA EN ANÁLISIS ===== -->
+  <section class="semana-section">
+    <div class="section-head">
+      <h2>La semana en análisis</h2>
+      <span class="meta">Cuatro países · Cuatro ejes</span>
+    </div>
+    <div class="cards-grid">
+      <a href="#" class="card">
+        <span class="country">Argentina</span>
+        <h3>El revés de la motosierra</h3>
+        <p class="desc">Los gobernadores que sostuvieron al ajuste empiezan a despegarse. La pregunta es quién media entre el palacio y el territorio.</p>
+        <div class="card-footer">
+          <span class="axis">Mediaciones</span>
+          <span>Infobae</span>
+        </div>
+      </a>
+      <a href="#" class="card">
+        <span class="country">Chile</span>
+        <h3>La constitución que no fue, otra vez</h3>
+        <p class="desc">Tres procesos fallidos. La pregunta ya no es qué constitución, sino si todavía hay un demos para escribirla.</p>
+        <div class="card-footer">
+          <span class="axis">Desrepresentación</span>
+          <span>CIPER</span>
+        </div>
+      </a>
+      <a href="#" class="card">
+        <span class="country">Brasil</span>
+        <h3>Fluminense y los nuevos altares</h3>
+        <p class="desc">El club como única estructura de pertenencia funcional. Cuando todo se desarma, queda el escudo.</p>
+        <div class="card-footer">
+          <span class="axis">Estetización</span>
+          <span>Folha</span>
+        </div>
+      </a>
+      <a href="#" class="card">
+        <span class="country">Bolivia</span>
+        <h3>El MAS sin Evo, sin Arce, sin destino</h3>
+        <p class="desc">Dos décadas de hegemonía se desarman sin que aparezca quién venga después.</p>
+        <div class="card-footer">
+          <span class="axis">Mediaciones</span>
+          <span>Los Tiempos</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== LOS SEIS EJES ===== -->
+  <section class="ejes-section">
+    <div class="section-head">
+      <h2>Los seis ejes</h2>
+      <span class="meta">El marco conceptual de Mapa Inestable</span>
+    </div>
+    <div class="ejes-grid">
+      <div class="eje-card">
+        <span class="eje-color-swatch" style="background: var(--mi-axis-deculturacion);"></span>
+        <span class="eje-num">01</span>
+        <h4 class="eje-name">Deculturación</h4>
+        <p>La cultura pasa de estructura normativa a repertorio simbólico. Los códigos compartidos se vuelven citas sueltas.</p>
+      </div>
+      <div class="eje-card">
+        <span class="eje-color-swatch" style="background: var(--mi-axis-mediaciones);"></span>
+        <span class="eje-num">02</span>
+        <h4 class="eje-name">Erosión de mediaciones</h4>
+        <p>Partidos, medios, iglesia, comunidad pierden peso. Los reemplazan algoritmos, redes, plataformas.</p>
+      </div>
+      <div class="eje-card">
+        <span class="eje-color-swatch" style="background: var(--mi-axis-desrepresentacion);"></span>
+        <span class="eje-num">03</span>
+        <h4 class="eje-name">Desrepresentación</h4>
+        <p>Las instituciones políticas existen pero pierden densidad simbólica. Representan en formalidad, no en sustancia.</p>
+      </div>
+      <div class="eje-card">
+        <span class="eje-color-swatch" style="background: var(--mi-axis-estetizacion);"></span>
+        <span class="eje-num">04</span>
+        <h4 class="eje-name">Estetización</h4>
+        <p>Los símbolos circulan sin anclaje histórico. Se vuelven consumibles, intercambiables, virales.</p>
+      </div>
+      <div class="eje-card">
+        <span class="eje-color-swatch" style="background: var(--mi-axis-desorientacion);"></span>
+        <span class="eje-num">05</span>
+        <h4 class="eje-name">Desorientación epistemológica</h4>
+        <p>Se debilita la capacidad de distinguir lo real, lo verdadero, lo relevante. La sospecha generalizada se vuelve método.</p>
+      </div>
+      <div class="eje-card">
+        <span class="eje-color-swatch" style="background: var(--mi-axis-atencion);"></span>
+        <span class="eje-num">06</span>
+        <h4 class="eje-name">Atención <em style="font-style:italic; color: var(--mi-ink-soft); font-weight: 400;">(transversal)</em></h4>
+        <p>La atención es la mediación invisible. Organiza la experiencia del mundo bajo criterios que no son los del mundo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DESPACHOS PREVIOS ===== -->
+  <section class="despachos-section">
+    <div class="section-head">
+      <h2>Despachos previos</h2>
+      <span class="meta">Integraciones semanales</span>
+    </div>
+    <ul class="despachos-list">
+      <li>
+        <span class="num">№ 46</span>
+        <div>
+          <h3>Cuando los símbolos sobreviven a las instituciones</h3>
+          <span class="countries">AR · BR · UY · VE · PE</span>
+        </div>
+        <span class="date">20 abr 2026</span>
+      </li>
+      <li>
+        <span class="num">№ 45</span>
+        <div>
+          <h3>El sur sin centro, otra vez</h3>
+          <span class="countries">AR · CL · BO · CO · EC</span>
+        </div>
+        <span class="date">13 abr 2026</span>
+      </li>
+      <li>
+        <span class="num">№ 44</span>
+        <div>
+          <h3>Las urnas que no convocan</h3>
+          <span class="countries">PE · BO · CO · BR</span>
+        </div>
+        <span class="date">06 abr 2026</span>
+      </li>
+      <li>
+        <span class="num">№ 43</span>
+        <div>
+          <h3>Repertorios sueltos: cómo se desarman las identidades</h3>
+          <span class="countries">AR · BR · UY · CL · PY</span>
+        </div>
+        <span class="date">30 mar 2026</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ===== NEWSLETTER ===== -->
+  <section class="newsletter-section">
+    <div class="content">
+      <p class="stamp">Lunes a la mañana · 10 minutos</p>
+      <h3>El despacho semanal</h3>
+      <p>Una integración de los análisis de la semana. La cartografía completa, en el inbox, una vez por semana. Sin ruido.</p>
+    </div>
+    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Prototipo: en producción esto suscribe vía Substack o ConvertKit.');">
+      <input type="email" placeholder="tu@correo.com" required>
+      <button type="submit">Suscribirme al despacho</button>
+    </form>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <h4>Hipótesis</h4>
+      <p class="manifesto">Vivimos una transición donde las estructuras que organizaban la vida colectiva pierden capacidad de mediación. Mapa Inestable rastrea esa pérdida país por país.</p>
+    </div>
+    <div>
+      <h4>Los seis ejes</h4>
+      <ul>
+        <li><a href="#">Deculturación</a></li>
+        <li><a href="#">Mediaciones</a></li>
+        <li><a href="#">Desrepresentación</a></li>
+        <li><a href="#">Estetización</a></li>
+        <li><a href="#">Desorientación</a></li>
+        <li><a href="#">Atención</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Países</h4>
+      <ul>
+        <li><a href="#">Argentina · Brasil</a></li>
+        <li><a href="#">Chile · Colombia</a></li>
+        <li><a href="#">Bolivia · Perú</a></li>
+        <li><a href="#">Uruguay · Paraguay</a></li>
+        <li><a href="#">Ecuador · Venezuela</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Mapa Inestable</h4>
+      <ul>
+        <li><a href="#">Acerca</a></li>
+        <li><a href="#">Método</a></li>
+        <li><a href="#">Archivo</a></li>
+        <li><a href="#">Substack</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Mapa Inestable</span>
+    <span>Año II · 47 ediciones</span>
+    <span class="right">Hecho con tinta y sospecha</span>
+  </div>
+</footer>
+
+<!-- Tooltip flotante -->
+<div class="mapa-tooltip" id="mapa-tt"></div>
+
+<script>
+  // ============================================================
+  // Tooltip del mapa invertido
+  // ============================================================
+  const tt = document.getElementById('mapa-tt');
+  document.querySelectorAll('.country-shape').forEach(el => {
+    const pais = el.dataset.pais;
+    const eje = el.dataset.eje;
+    const titulo = el.dataset.titulo;
+
+    el.addEventListener('mouseenter', e => {
+      let html = `<div><strong>${pais}</strong></div>`;
+      if (titulo) html += `<div style="font-style:normal;text-transform:none;letter-spacing:0;font-family:var(--mi-font-body);font-size:13px;margin-top:4px;">${titulo}</div>`;
+      if (eje) html += `<div class="tt-axis">${eje}</div>`;
+      else html += `<div class="tt-axis" style="opacity:0.5;">Sin análisis esta semana</div>`;
+      tt.innerHTML = html;
+      tt.classList.add('show');
+    });
+    el.addEventListener('mousemove', e => {
+      tt.style.left = (e.clientX + 14) + 'px';
+      tt.style.top = (e.clientY + 14) + 'px';
+    });
+    el.addEventListener('mouseleave', () => {
+      tt.classList.remove('show');
+    });
+  });
+</script>
+
+</body>
+</html>
