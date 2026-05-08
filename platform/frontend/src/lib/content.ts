@@ -3,7 +3,12 @@ import path from "path";
 import matter from "gray-matter";
 import { marked } from "marked";
 
-const VAULT_ROOT = path.join(process.cwd(), "..", "..");
+// Dev: lee directamente del vault de Obsidian (cambios reflejados de inmediato).
+// Prod (Vercel): lee de src/content/, que el script prebuild popula antes del build.
+const VAULT_ROOT =
+  process.env.NODE_ENV === "production"
+    ? path.join(process.cwd(), "src", "content")
+    : path.join(process.cwd(), "..", "..");
 
 function safeMatter(raw: string): { data: Record<string, unknown>; content: string } {
   try {

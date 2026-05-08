@@ -5,6 +5,7 @@
 platform/frontend/.next/
 platform/frontend/node_modules/
 platform/frontend/.env*.local
+platform/frontend/src/content/
 
 # Backend Python
 platform/backend/__pycache__/
