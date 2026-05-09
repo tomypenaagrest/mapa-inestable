@@ -1,3 +1,60 @@
+export type FootnoteType = "autor" | "concepto" | "fuente" | "estadistica" | "analisis";
+
+export interface Footnote {
+  id: string;
+  type: FootnoteType;
+  stepKey: "step_disparador" | "step_desplazamiento" | "step_conceptualizacion" | "step_apertura";
+  paraIndex?: number;     // 0-indexed within the step, defaults to 0
+  // Autor
+  nombre?: string;
+  obra?: string;
+  year?: number;
+  slug?: string;
+  // Concepto
+  definicion?: string;
+  acunadoPor?: string;
+  conceptoSlug?: string;
+  // Fuente
+  url?: string;
+  medio?: string;
+  fecha?: string;
+  autorNota?: string;
+  // Estadistica
+  indicador?: string;
+  valor?: string;
+  fuenteNombre?: string;
+  indicadorSlug?: string;
+  // Analisis previo
+  titulo?: string;
+  semana?: number;
+  countrySlugRef?: string;
+  analisisSlug?: string;
+}
+
+export const FOOTNOTE_SYMBOLS: Record<FootnoteType, string | null> = {
+  autor:       null,   // sequential superscript number
+  concepto:    null,   // sequential superscript number
+  fuente:      "›",
+  estadistica: "■",
+  analisis:    "⌖",
+};
+
+export function computeFootnoteMarks(footnotes: Footnote[]): Map<string, string> {
+  const marks = new Map<string, string>();
+  const sup = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+  let seq = 0;
+  for (const fn of footnotes) {
+    const symbol = FOOTNOTE_SYMBOLS[fn.type];
+    if (symbol === null) {
+      seq++;
+      marks.set(fn.id, String(seq).split("").map(d => sup[+d]).join(""));
+    } else {
+      marks.set(fn.id, symbol);
+    }
+  }
+  return marks;
+}
+
 export interface AnalisisEntry {
   slug: string;
   countrySlug: string;
@@ -15,6 +72,7 @@ export interface AnalisisEntry {
   step_desplazamiento: string;
   step_conceptualizacion: string;
   step_apertura: string;
+  footnotes?: Footnote[];
 }
 
 export const PAISES_LIST = [
@@ -49,6 +107,26 @@ export const ANALISIS_ALL: AnalisisEntry[] = [
     step_desplazamiento: "Lo que revela la portada no es el triunfo del Frente Amplio sino la distancia entre el discurso dominante previo a las elecciones uruguayas y el resultado real. La desorientación epistemológica opera en ambas direcciones: el error no fue del público, sino de los marcos interpretativos que organizaron la percepción.",
     step_conceptualizacion: "Cuando los medios de referencia no pueden anticipar el resultado democrático en Uruguay, no es solo un problema de encuestas fallidas. Es una señal de que los sistemas de interpretación de la realidad política perdieron contacto con algo fundamental en el territorio.",
     step_apertura: "¿Puede un sistema informativo seguir funcionando como árbitro de la realidad cuando sistemáticamente falla en anticipar las mayorías que existen en el territorio?",
+    footnotes: [
+      {
+        id: "uy-2026-w18-f1",
+        type: "fuente" as const,
+        stepKey: "step_disparador" as const,
+        paraIndex: 0,
+        url: "https://carasycareatas.net/",
+        medio: "Caras y Caretas",
+        fecha: "8 may 2026",
+      },
+      {
+        id: "uy-2026-w18-f2",
+        type: "concepto" as const,
+        stepKey: "step_desplazamiento" as const,
+        paraIndex: 0,
+        definicion: "Debilitamiento de la capacidad colectiva de distinguir lo real, lo verdadero y lo relevante en el espacio público.",
+        acunadoPor: "Mapa Inestable",
+        conceptoSlug: "desorientacion-epistemologica",
+      },
+    ],
   },
   {
     slug: "la-sospecha-antes-del-voto",
@@ -67,6 +145,28 @@ export const ANALISIS_ALL: AnalisisEntry[] = [
     step_desplazamiento: "Lo que Petro hace no es describir una amenaza real de fraude electoral: está instalando el marco. Cuando un candidato introduce la sospecha sistemática antes del voto, cualquier resultado adverso puede leerse como confirmación de esa sospecha.",
     step_conceptualizacion: "El eje de Desorientación epistemológica se activa aquí en su forma más aguda: no como confusión involuntaria, sino como estrategia deliberada que transforma el procedimiento electoral en escenario de disputa donde la verdad del resultado queda en suspenso indefinido.",
     step_apertura: "¿Puede una democracia sostenerse cuando el procedimiento que la funda —el voto— ya no opera como árbitro compartido?",
+    footnotes: [
+      {
+        id: "co-2026-w17-f1",
+        type: "fuente" as const,
+        stepKey: "step_disparador" as const,
+        paraIndex: 0,
+        url: "https://x.com/petrogustavo",
+        medio: "X / @petrogustavo",
+        fecha: "22 abr 2026",
+        autorNota: "Gustavo Petro",
+      },
+      {
+        id: "co-2026-w17-f2",
+        type: "autor" as const,
+        stepKey: "step_conceptualizacion" as const,
+        paraIndex: 0,
+        nombre: "Ivan Krastev",
+        obra: "Is It Tomorrow Yet? Paradoxes of the Pandemic",
+        year: 2020,
+        slug: "ivan-krastev",
+      },
+    ],
   },
   {
     slug: "fluminense-y-los-nuevos-altares",

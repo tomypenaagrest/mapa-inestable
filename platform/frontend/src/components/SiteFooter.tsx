@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FooterResetState from "./FooterResetState";
 
 const EJES: [string, string][] = [
   ["Deculturación", "deculturacion"],
@@ -92,6 +93,11 @@ export default function SiteFooter() {
             <li><Link href="/conceptos" className="mi-footer-link">Conceptos</Link></li>
             <li><Link href="/metodo" className="mi-footer-link">Método</Link></li>
             <li><Link href="/acerca" className="mi-footer-link">Acerca</Link></li>
+            <li>
+              <Link href="/leer-despues" className="mi-footer-link">
+                ★ Leer después
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -115,10 +121,11 @@ export default function SiteFooter() {
         color: "var(--mi-ink-mute)",
       }}>
         <span>Mapa Inestable · Cartografía política del sur</span>
-        <div style={{ display: "flex", gap: "var(--mi-space-4)" }}>
+        <div style={{ display: "flex", gap: "var(--mi-space-4)", alignItems: "center", flexWrap: "wrap" }}>
           <Link href="/despachos" className="mi-footer-link">Despachos</Link>
           <Link href="/analisis" className="mi-footer-link">Archivo</Link>
           <Link href="/ensayos" className="mi-footer-link">Ensayos</Link>
+          <FooterResetState />
         </div>
         <span>Sur arriba — siempre</span>
       </div>

@@ -4,6 +4,8 @@ import { getAllConceptos } from "@/lib/conceptos";
 import CarruselEditorial, { type CarruselSlide } from "@/components/CarruselEditorial";
 import MapaHeatmapSection from "@/components/MapaHeatmapSection";
 import HomeClientLayout from "@/components/HomeClientLayout";
+import NewSinceLastVisit from "@/components/NewSinceLastVisit";
+import WhileYouWereAway from "@/components/WhileYouWereAway";
 import type { HeatmapCell, WeekLabel } from "@/components/HeatmapEjes";
 import type { WeeklyCountryData } from "@/components/MapaCentrico";
 
@@ -29,6 +31,7 @@ const WEEK_ANALYSES: CarruselSlide[] = [
     title: "La sospecha antes del voto",
     lede: "A 103 días del fin del mandato, Petro pone en duda la transparencia de la elección que decidirá su sucesión. Cuando ambos lados operan bajo sospecha permanente, el voto deja de ser un acto democrático.",
     date: "27 abr 2026",
+    publishedIso: "2026-04-27",
   },
   {
     slug: "el-reves-de-la-motosierra",
@@ -37,6 +40,7 @@ const WEEK_ANALYSES: CarruselSlide[] = [
     title: "El revés de la motosierra",
     lede: "Los gobernadores que sostuvieron el ajuste empiezan a despegarse. La pregunta es quién media entre el palacio y el territorio cuando el consenso se fractura.",
     date: "19 abr 2026",
+    publishedIso: "2026-04-19",
   },
   {
     slug: "la-constitucion-que-no-fue",
@@ -45,6 +49,7 @@ const WEEK_ANALYSES: CarruselSlide[] = [
     title: "La constitución que no fue, otra vez",
     lede: "Tres procesos fallidos. La pregunta ya no es qué constitución, sino si todavía hay un demos para escribirla.",
     date: "14 abr 2026",
+    publishedIso: "2026-04-14",
   },
   {
     slug: "fluminense-y-los-nuevos-altares",
@@ -53,6 +58,7 @@ const WEEK_ANALYSES: CarruselSlide[] = [
     title: "Fluminense y los nuevos altares",
     lede: "El club como única estructura de pertenencia funcional. Cuando todo se desarma, queda el escudo.",
     date: "21 abr 2026",
+    publishedIso: "2026-04-21",
   },
   {
     slug: "el-mas-sin-evo-sin-arce",
@@ -61,6 +67,7 @@ const WEEK_ANALYSES: CarruselSlide[] = [
     title: "El MAS sin Evo, sin Arce, sin destino",
     lede: "Dos décadas de hegemonía se desarman sin que aparezca quién venga después. La izquierda boliviana frente al vacío.",
     date: "12 abr 2026",
+    publishedIso: "2026-04-12",
   },
 ];
 
@@ -149,8 +156,20 @@ const LAST_DISPATCH = {
 export default function HomePage() {
   const conceptos = getAllConceptos().map(c => ({ slug: c.slug, name: c.name }));
 
+  const whileAwaySlides = WEEK_ANALYSES.map(s => ({
+    slug: s.slug,
+    countrySlug: s.countrySlug,
+    country: s.country,
+    axisKey: s.axisKey,
+    axisName: s.axis,
+    publishedIso: s.publishedIso ?? "",
+  }));
+
   return (
     <HomeClientLayout conceptos={conceptos} weeklyCountrySlugs={WEEKLY_SLUGS}>
+
+      {/* Mientras estuviste fuera — aparece si ≥14 días sin visitar */}
+      <WhileYouWereAway slides={whileAwaySlides} year={YEAR} week={WEEK} />
 
       {/* Bloque "Esta semana" */}
       <section style={{
@@ -158,6 +177,9 @@ export default function HomePage() {
         padding: "var(--mi-space-4) var(--mi-space-5)",
         background: "var(--mi-bg-paper)",
       }}>
+        {/* Novedades desde última visita */}
+        <NewSinceLastVisit slides={WEEK_ANALYSES.map(s => ({ slug: s.slug, publishedIso: s.publishedIso ?? "" }))} />
+
         <div style={{
           fontFamily: "var(--mi-font-mono)",
           fontSize: "var(--mi-text-xs)",

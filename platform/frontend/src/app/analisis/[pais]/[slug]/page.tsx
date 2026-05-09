@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { AXIS_KEY_TO_SLUG } from "@/lib/ejes";
 import { ANALISIS_ALL } from "@/lib/analisis";
+import FrameStripInline from "@/components/FrameStripInline";
+import AnalisisContent from "@/components/AnalisisContent";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ pais: string; slug: string }> }
@@ -24,65 +26,6 @@ export function generateStaticParams() {
   return ANALISIS_ALL.map(a => ({ pais: a.countrySlug, slug: a.slug }));
 }
 
-/* === COMPONENTES ================================================ */
-
-const STEPS = [
-  { key: "step_disparador" as const,        num: "01", label: "Disparador" },
-  { key: "step_desplazamiento" as const,    num: "02", label: "Desplazamiento" },
-  { key: "step_conceptualizacion" as const, num: "03", label: "Conceptualización" },
-  { key: "step_apertura" as const,          num: "04", label: "Apertura" },
-];
-
-function StepBlock({ num, label, body }: { num: string; label: string; body: string }) {
-  return (
-    <div style={{
-      border: "var(--mi-border-thick)",
-      boxShadow: "var(--mi-shadow-card)",
-      background: "var(--mi-bg-paper)",
-      marginBottom: "var(--mi-space-5)",
-    }}>
-      <div style={{
-        borderBottom: "var(--mi-border-dashed)",
-        padding: "var(--mi-space-3) var(--mi-space-4)",
-        display: "flex",
-        alignItems: "baseline",
-        gap: "var(--mi-space-3)",
-      }}>
-        <span style={{
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: "var(--mi-text-3xl)",
-          fontWeight: 400,
-          color: "var(--mi-bg-cream)",
-          lineHeight: 1,
-          userSelect: "none",
-        }}>
-          {num}
-        </span>
-        <span style={{
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: "var(--mi-text-xs)",
-          letterSpacing: "var(--mi-tracking-widest)",
-          textTransform: "uppercase",
-          color: "var(--mi-ink-mute)",
-        }}>
-          {label}
-        </span>
-      </div>
-
-      <div style={{
-        padding: "var(--mi-space-4) var(--mi-space-4) var(--mi-space-5)",
-        fontFamily: "var(--mi-font-body)",
-        fontSize: "var(--mi-text-base)",
-        lineHeight: "var(--mi-leading-relaxed)",
-        color: "var(--mi-ink)",
-      }}>
-        {body}
-      </div>
-    </div>
-  );
-}
-
-
 /* === PAGE ====================================================== */
 
 export default async function AnalisisPage(
@@ -92,7 +35,7 @@ export default async function AnalisisPage(
   const a = ANALISIS_ALL.find(x => x.countrySlug === pais && x.slug === slug);
   if (!a) notFound();
 
-  const axisColor = `var(--mi-axis-${a.axisKey})`;
+  const axisSlug = AXIS_KEY_TO_SLUG[a.axisKey] ?? a.axisKey;
 
   return (
     <div style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
@@ -111,6 +54,7 @@ export default async function AnalisisPage(
       }}>
         <span style={{ color: "var(--mi-accent-gold)" }}>{a.published_at}</span>
         <span>Análisis</span>
+        <span>Semana {a.week} · {a.year}</span>
       </div>
 
       {/* Hero textual */}
@@ -160,6 +104,11 @@ export default async function AnalisisPage(
           {a.lede}
         </p>
 
+        {/* Frame strip inline — siempre visible */}
+        <FrameStripInline
+          axes={[{ name: a.axisName, key: a.axisKey, slug: axisSlug }]}
+        />
+
         {/* Byline */}
         <div style={{
           fontFamily: "var(--mi-font-mono)",
@@ -179,91 +128,118 @@ export default async function AnalisisPage(
         </div>
       </div>
 
-      {/* Contenido: aside + 4 pasos */}
-      <div className="mi-container--narrow" style={{
-        display: "grid",
-        gridTemplateColumns: "200px 1fr",
-        gap: "var(--mi-space-7)",
-        paddingBottom: "var(--mi-space-8)",
-        alignItems: "start",
-      }}>
+      {/* Contenido: meta aside + 4 pasos + footnote aside */}
+      <AnalisisContent a={a} />
 
-        {/* Aside sticky */}
-        <aside style={{
-          position: "sticky",
-          top: "var(--mi-space-6)",
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: "var(--mi-text-xs)",
-          letterSpacing: "var(--mi-tracking-wide)",
-          textTransform: "uppercase",
+      {/* Cross-reference panel */}
+      <div className="mi-container--narrow" style={{ paddingBottom: "var(--mi-space-8)" }}>
+        <div style={{
+          borderTop: "var(--mi-border-bold)",
+          paddingTop: "var(--mi-space-5)",
         }}>
-          <dl style={{ lineHeight: "var(--mi-leading-relaxed)" }}>
-            <dt style={{ color: "var(--mi-ink-mute)", marginTop: "var(--mi-space-3)" }}>País</dt>
-            <dd>
-              <Link href={`/pais/${a.countrySlug}`} style={{ color: "var(--mi-ink)", fontWeight: 500 }}>
-                {a.country}
-              </Link>
-            </dd>
-
-            <dt style={{ color: "var(--mi-ink-mute)", marginTop: "var(--mi-space-3)" }}>Eje</dt>
-            <dd>
-              <Link
-                href={`/ejes/${AXIS_KEY_TO_SLUG[a.axisKey] ?? a.axisKey}`}
-                style={{
-                  display: "inline-block",
-                  background: axisColor,
-                  color: "var(--mi-bg-paper)",
-                  padding: "2px 6px",
-                  fontSize: "var(--mi-text-xs)",
-                  marginTop: "var(--mi-space-1)",
-                }}
-              >
-                {a.axisName}
-              </Link>
-            </dd>
-
-            <dt style={{ color: "var(--mi-ink-mute)", marginTop: "var(--mi-space-3)" }}>Fuente</dt>
-            <dd style={{ color: "var(--mi-ink-mute)", fontStyle: "italic" }}>Pendiente</dd>
-
-            <dt style={{ color: "var(--mi-ink-mute)", marginTop: "var(--mi-space-3)" }}>Fecha</dt>
-            <dd style={{ color: "var(--mi-ink)" }}>{a.published_at}</dd>
-          </dl>
-
           <div style={{
-            marginTop: "var(--mi-space-6)",
-            paddingTop: "var(--mi-space-3)",
-            borderTop: "var(--mi-border-dashed)",
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: "var(--mi-text-xs)",
+            letterSpacing: "var(--mi-tracking-widest)",
+            textTransform: "uppercase",
+            color: "var(--mi-ink-mute)",
+            marginBottom: "var(--mi-space-4)",
           }}>
-            <Link
-              href="/metodo"
-              style={{
+            Más análisis
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--mi-space-4)" }}>
+            {/* Same country */}
+            <div>
+              <div style={{
                 fontFamily: "var(--mi-font-mono)",
                 fontSize: "var(--mi-text-xs)",
                 letterSpacing: "var(--mi-tracking-wide)",
                 textTransform: "uppercase",
                 color: "var(--mi-ink-mute)",
-                display: "block",
-                lineHeight: "var(--mi-leading-relaxed)",
-              }}
-            >
-              → Cómo leemos
-            </Link>
+                marginBottom: "var(--mi-space-3)",
+              }}>
+                Del mismo país
+              </div>
+              {ANALISIS_ALL
+                .filter(x => x.countrySlug === a.countrySlug && x.slug !== a.slug)
+                .slice(0, 3)
+                .map(x => (
+                  <Link
+                    key={x.slug}
+                    href={`/analisis/${x.countrySlug}/${x.slug}`}
+                    style={{
+                      display: "block",
+                      fontFamily: "var(--mi-font-body)",
+                      fontSize: "var(--mi-text-sm)",
+                      color: "var(--mi-ink)",
+                      marginBottom: "var(--mi-space-2)",
+                      borderBottom: "var(--mi-border-soft)",
+                      paddingBottom: "var(--mi-space-2)",
+                    }}
+                  >
+                    {x.title}
+                    <span style={{
+                      display: "block",
+                      fontFamily: "var(--mi-font-mono)",
+                      fontSize: "var(--mi-text-xs)",
+                      color: "var(--mi-ink-mute)",
+                      marginTop: "2px",
+                      letterSpacing: "var(--mi-tracking-wide)",
+                      textTransform: "uppercase",
+                    }}>
+                      {x.published_at}
+                    </span>
+                  </Link>
+                ))}
+            </div>
+            {/* Same axis */}
+            <div>
+              <div style={{
+                fontFamily: "var(--mi-font-mono)",
+                fontSize: "var(--mi-text-xs)",
+                letterSpacing: "var(--mi-tracking-wide)",
+                textTransform: "uppercase",
+                color: "var(--mi-ink-mute)",
+                marginBottom: "var(--mi-space-3)",
+              }}>
+                Del mismo eje
+              </div>
+              {ANALISIS_ALL
+                .filter(x => x.axisKey === a.axisKey && x.slug !== a.slug)
+                .slice(0, 3)
+                .map(x => (
+                  <Link
+                    key={x.slug}
+                    href={`/analisis/${x.countrySlug}/${x.slug}`}
+                    style={{
+                      display: "block",
+                      fontFamily: "var(--mi-font-body)",
+                      fontSize: "var(--mi-text-sm)",
+                      color: "var(--mi-ink)",
+                      marginBottom: "var(--mi-space-2)",
+                      borderBottom: "var(--mi-border-soft)",
+                      paddingBottom: "var(--mi-space-2)",
+                    }}
+                  >
+                    {x.title}
+                    <span style={{
+                      display: "block",
+                      fontFamily: "var(--mi-font-mono)",
+                      fontSize: "var(--mi-text-xs)",
+                      color: "var(--mi-ink-mute)",
+                      marginTop: "2px",
+                      letterSpacing: "var(--mi-tracking-wide)",
+                      textTransform: "uppercase",
+                    }}>
+                      {x.country} · {x.published_at}
+                    </span>
+                  </Link>
+                ))}
+            </div>
           </div>
-        </aside>
-
-        {/* 4 pasos */}
-        <div>
-          {STEPS.map(step => (
-            <StepBlock
-              key={step.key}
-              num={step.num}
-              label={step.label}
-              body={a[step.key]}
-            />
-          ))}
         </div>
-
       </div>
+
     </div>
   );
 }

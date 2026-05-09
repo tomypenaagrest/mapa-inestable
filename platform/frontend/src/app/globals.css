@@ -129,6 +129,33 @@ img, svg {
   max-width: 100%;
 }
 
+/* === HEADER COUNTRIES BAR ======================================= */
+
+.mi-country-week-link {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: 0.04em;
+  color: var(--mi-ink-soft);
+  text-transform: lowercase;
+  transition: color var(--mi-duration-quick) var(--mi-ease);
+}
+
+.mi-country-week-link:hover {
+  color: var(--mi-ink);
+}
+
+/* === HEADER WEEK LABEL ========================================== */
+
+.mi-header-week {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .mi-header-week {
+    display: block;
+  }
+}
+
 /* === NAV ======================================================== */
 
 .mi-nav-link {
@@ -740,5 +767,42 @@ img, svg {
 
   .mi-mapa-heatmap-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* === ANALISIS CONTENT GRID ===================================== */
+
+.mi-analisis-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--mi-space-7);
+  padding-bottom: var(--mi-space-8);
+  align-items: start;
+}
+
+.mi-analisis-grid--3col {
+  grid-template-columns: 200px 1fr 240px;
+}
+
+.mi-footnote-aside-col {
+  /* always visible at ≥960px */
+}
+
+@media (max-width: 959px) {
+  .mi-analisis-grid--3col {
+    grid-template-columns: 200px 1fr;
+  }
+  .mi-footnote-aside-col {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .mi-analisis-grid,
+  .mi-analisis-grid--3col {
+    grid-template-columns: 1fr;
+  }
+  .mi-analisis-meta {
+    display: none;
   }
 }
