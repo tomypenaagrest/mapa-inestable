@@ -3,6 +3,8 @@ tags: [autor]
 tipo: autor
 nacionalidad: italiano
 disciplina: economía política, sistema-mundo, sociología histórica
+publicar: true
+slug: giovanni-arrighi
 ---
 
 # Giovanni Arrighi

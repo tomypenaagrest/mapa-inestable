@@ -8,6 +8,8 @@ ejes_relacionados:
   - "[[03 - Desrepresentación]]"
   - "[[02 - Erosión de las mediaciones]]"
 eje_candidato: false
+publicar: true
+slug: hegemonia
 ---
 
 # Hegemonía

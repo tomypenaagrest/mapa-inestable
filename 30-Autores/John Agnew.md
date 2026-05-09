@@ -3,6 +3,8 @@ tags: [autor]
 tipo: autor
 nacionalidad: británico-estadounidense
 disciplina: geografía política, soberanía, globalización
+publicar: true
+slug: john-agnew
 ---
 
 # John Agnew

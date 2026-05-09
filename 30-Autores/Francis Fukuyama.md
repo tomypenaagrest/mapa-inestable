@@ -3,6 +3,8 @@ tags: [autor]
 tipo: autor
 nacionalidad: estadounidense
 disciplina: ciencia política, teoría del Estado, instituciones
+publicar: true
+slug: francis-fukuyama
 ---
 
 # Francis Fukuyama

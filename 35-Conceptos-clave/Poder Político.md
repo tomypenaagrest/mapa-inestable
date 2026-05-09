@@ -34,13 +34,13 @@ Es clave para entender la fragilidad de los Estados sudamericanos que poseen "po
 
 ## Conceptos vinculados
 
-- [[Poder infraestructural]] — *pendiente de extracción; concepto más fino para Mapa Inestable*
-- [[Poder despótico]] — *pendiente de extracción*
+- [[Poder Infraestructural]] — concepto más fino y operativo para Mapa Inestable; característica del Poder Político
+- *[[Poder despótico]] — pendiente de extracción; contraparte del infraestructural*
 - [[Hegemonía]]
 
 ## Nota editorial
 
-NotebookLM extrajo "Poder Político" como categoría general de Mann. El concepto verdaderamente distintivo de Mann para Mapa Inestable es la distinción **poder despótico vs. poder infraestructural** (capacidad de penetrar la sociedad y extraer recursos / proveer servicios), que aparece mencionada en la aplicabilidad pero no fue extraída como ficha propia. Pendiente: pedir una segunda ronda a NotebookLM enfocada en esa distinción.
+Esta ficha cubre la **categoría general** de Poder Político como una de las cuatro fuentes IEMP de Mann (ideológica, económica, militar, política). La distinción más útil para Mapa Inestable —**poder despótico vs. poder infraestructural**— está extraída como ficha separada en [[Poder Infraestructural]]. Pendiente todavía: extracción del Poder Despótico como ficha propia y del modelo IEMP completo.
 
 ## Fuente
 

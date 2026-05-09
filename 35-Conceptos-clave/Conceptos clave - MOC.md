@@ -27,7 +27,7 @@ Eje del sistema          → 10-Ejes/[NN - Eje].md
 
 Promover un concepto a eje es un acto editorial visible: se crea el archivo en `10-Ejes/` y se mantiene la ficha en `35-Conceptos-clave/` como referencia teórica.
 
-## Conceptos teóricos (RR.II. y poder)
+## Conceptos teóricos (RR.II., poder, larga duración)
 
 Conceptos extraídos de la base de libros canónicos (NotebookLM, mayo 2026):
 
@@ -35,10 +35,14 @@ Conceptos extraídos de la base de libros canónicos (NotebookLM, mayo 2026):
 |----------|---------------|--------|
 | [[Hegemonía]] | Arrighi | concepto |
 | [[Poder Político]] | Mann | concepto |
+| [[Poder Infraestructural]] | Mann | concepto |
 | [[Overstretch]] | Kennedy | concepto |
 | [[Decadencia política]] | Fukuyama | concepto |
 | [[Trampa territorial]] | Agnew | concepto |
 | [[Fuerzas profundas]] | Renouvin | concepto |
+| [[Tradición Inventada]] | Hobsbawm | concepto |
+| [[Equilibrio de Poder]] | Kissinger | concepto |
+| [[Causas últimas]] | Diamond | concepto (contrapunto) |
 
 ## Ejes candidatos
 
@@ -62,10 +66,10 @@ Conceptos propuestos para sumarse al sistema de ejes. Pendientes de decisión ed
 
 Libros del set canónico que aún no fueron procesados a fondo y pueden generar nuevos conceptos / ejes candidatos:
 
-- Hobsbawm — *Historia del siglo XX* / *La Era del Imperio*
-- Kissinger — *Diplomacia*
-- Diamond — *Armas, gérmenes y acero*
+- Hobsbawm — *La invención de la tradición* (1983, ed. con Ranger; origen primario del concepto de tradición inventada)
+- Mann — *Las fuentes del poder social*, vols. II-IV
 - Zorgbibe — *Historia de las relaciones internacionales* (dos tomos)
+- Conceptos pendientes específicos: Poder Despótico (Mann), modelo IEMP (Mann), Comunidad Imaginada (Anderson), ciclo sistémico de acumulación (Arrighi), dominio sin hegemonía (Arrighi)
 
 ## Ver también
 

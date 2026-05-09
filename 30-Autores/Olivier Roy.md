@@ -3,6 +3,8 @@ tags: [autor]
 tipo: autor
 nacionalidad: francés
 disciplina: ciencia política, estudios sobre Islam y secularización
+publicar: true
+slug: olivier-roy
 ---
 
 # Olivier Roy

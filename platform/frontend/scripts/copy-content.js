@@ -6,7 +6,7 @@ const path = require("path");
 const VAULT = path.join(__dirname, "..", "..", "..");
 const OUT = path.join(__dirname, "..", "src", "content");
 
-const DIRS = ["15-Países", "60-Borradores"];
+const DIRS = ["15-Países", "60-Borradores", "30-Autores", "35-Conceptos-clave"];
 
 for (const dir of DIRS) {
   const src = path.join(VAULT, dir);

@@ -1,10 +1,13 @@
 import Link from "next/link";
+import Logo from "./Logo";
 
 const NAV_LINKS = [
   { href: "/", label: "Inicio" },
   { href: "/despachos", label: "Despachos" },
   { href: "/ensayos", label: "Ensayos" },
+  { href: "/analisis", label: "Archivo" },
   { href: "/mapa", label: "Mapa" },
+  { href: "/metodo", label: "Método" },
   { href: "/acerca", label: "Acerca" },
 ];
 
@@ -19,16 +22,7 @@ export default function SiteHeader() {
     }}>
       <div style={{ flex: 1 }}>
         <Link href="/" style={{ display: "inline-block" }}>
-          <div style={{
-            fontFamily: "var(--mi-font-display)",
-            fontSize: "var(--mi-text-4xl)",
-            lineHeight: "var(--mi-leading-tight)",
-            letterSpacing: "-0.01em",
-            color: "var(--mi-ink)",
-            textTransform: "uppercase",
-          }}>
-            Mapa Inestable
-          </div>
+          <Logo variant="full" size="sm" />
           <div style={{
             fontFamily: "var(--mi-font-mono)",
             fontSize: "var(--mi-text-xs)",
@@ -37,7 +31,7 @@ export default function SiteHeader() {
             color: "var(--mi-ink-soft)",
             marginTop: "var(--mi-space-1)",
           }}>
-            Cartografía política del sur · Año II
+            Cartografía política del sur
           </div>
         </Link>
       </div>

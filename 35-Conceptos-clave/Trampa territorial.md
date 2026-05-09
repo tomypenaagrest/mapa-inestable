@@ -8,6 +8,8 @@ ejes_relacionados:
   - "[[02 - Erosión de las mediaciones]]"
   - "[[01 - Deculturación]]"
 eje_candidato: false
+publicar: true
+slug: trampa-territorial
 ---
 
 # Trampa territorial

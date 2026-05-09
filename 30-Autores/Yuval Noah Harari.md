@@ -3,6 +3,8 @@ tags: [autor]
 tipo: autor
 nacionalidad: israelí
 disciplina: historia, divulgación
+publicar: true
+slug: yuval-noah-harari
 ---
 
 # Yuval Noah Harari

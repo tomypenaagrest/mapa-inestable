@@ -1,4 +1,10 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Despachos",
+  description: "Integración semanal de los análisis de Mapa Inestable. Una lectura del período que pone en relación lo que ocurrió en distintos países bajo el mismo marco conceptual.",
+};
 
 /* === TIPOS ====================================================== */
 
@@ -198,7 +204,7 @@ export default function DespachoListPage() {
       {/* Grilla */}
       <div className="mi-container" style={{
         paddingTop: "var(--mi-space-7)",
-        paddingBottom: "var(--mi-space-8)",
+        paddingBottom: "var(--mi-space-5)",
         display: "grid",
         gridTemplateColumns: "repeat(2, 1fr)",
         gap: "var(--mi-space-5)",
@@ -206,6 +212,46 @@ export default function DespachoListPage() {
         {MOCK_DISPATCHES.map(d => (
           <DispatchCard key={`${d.year}-${d.week}`} d={d} />
         ))}
+      </div>
+
+      {/* Recibir por email */}
+      <div className="mi-container" style={{ paddingBottom: "var(--mi-space-8)" }}>
+        <div style={{
+          borderTop: "var(--mi-border-dashed)",
+          paddingTop: "var(--mi-space-5)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "var(--mi-space-5)",
+          flexWrap: "wrap",
+        }}>
+          <p style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: "var(--mi-text-xs)",
+            letterSpacing: "var(--mi-tracking-wide)",
+            textTransform: "uppercase",
+            color: "var(--mi-bg-paper)",
+            opacity: 0.7,
+          }}>
+            Los despachos también llegan por email
+          </p>
+          <a
+            href="https://mapainestable.substack.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: "var(--mi-text-xs)",
+              letterSpacing: "var(--mi-tracking-wider)",
+              textTransform: "uppercase",
+              color: "var(--mi-accent-gold)",
+              borderBottom: "1px solid var(--mi-accent-gold)",
+              paddingBottom: 2,
+            }}
+          >
+            Suscribirse en Substack ↗
+          </a>
+        </div>
       </div>
 
     </div>

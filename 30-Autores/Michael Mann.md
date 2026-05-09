@@ -3,6 +3,8 @@ tags: [autor]
 tipo: autor
 nacionalidad: británico
 disciplina: sociología histórica, teoría del Estado, poder social
+publicar: true
+slug: michael-mann
 ---
 
 # Michael Mann
@@ -18,14 +20,16 @@ Sociólogo histórico británico (1942-). Su obra magna *Las fuentes del poder s
 
 *Pendiente de desarrollo. Los conceptos extraídos hasta ahora:*
 
-- [[../35-Conceptos-clave/Poder Político]] — regulación centralizada, institucionalizada y territorial
-- *Poder despótico vs. infraestructural — pendiente de extracción específica (concepto más fino para Mapa Inestable)*
+- [[../35-Conceptos-clave/Poder Político]] — regulación centralizada, institucionalizada y territorial (categoría general)
+- [[../35-Conceptos-clave/Poder Infraestructural]] — capacidad del Estado de penetrar la sociedad y ejecutar decisiones (concepto más fino para Mapa Inestable)
+- *Poder despótico — pendiente de extracción (contraparte del infraestructural)*
 - *Las cuatro fuentes IEMP — pendiente de extracción*
 - *Enjaulamiento social — pendiente de extracción*
 
 ## Conceptos vinculados
 
 - [[../35-Conceptos-clave/Poder Político]]
+- [[../35-Conceptos-clave/Poder Infraestructural]]
 - [[../35-Conceptos-clave/Desterritorialización]] (eje candidato; el "enjaulamiento incompleto")
 
 ## Conexiones con ejes

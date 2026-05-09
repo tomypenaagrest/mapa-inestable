@@ -1,5 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getAllEssays } from "@/lib/content";
+
+export const metadata: Metadata = {
+  title: "Ensayos",
+  description: "Piezas de largo aliento que trabajan un eje conceptual en profundidad. El análisis extendido que la forma del despacho no permite.",
+};
 
 export default function EnsayosPage() {
   const essays = getAllEssays();

@@ -1,4 +1,23 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import { AXIS_KEY_TO_SLUG } from "@/lib/ejes";
+import { ANALISIS_ALL } from "@/lib/analisis";
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ pais: string; slug: string }> }
+): Promise<Metadata> {
+  const { slug } = await params;
+  const a = ANALISIS_ALL.find(x => x.slug === slug);
+  if (!a) return {};
+  return {
+    title: { absolute: `${a.title} — Mapa Inestable` },
+    description: a.lede,
+    openGraph: {
+      title: `${a.title} — Mapa Inestable`,
+      description: a.lede,
+    },
+  };
+}
 
 /* === TIPOS ====================================================== */
 
@@ -296,16 +315,19 @@ export default function AnalisisPage() {
 
             <dt style={{ color: "var(--mi-ink-mute)", marginTop: "var(--mi-space-3)" }}>Eje</dt>
             <dd>
-              <span style={{
-                display: "inline-block",
-                background: axisColor,
-                color: "var(--mi-bg-paper)",
-                padding: "2px 6px",
-                fontSize: "var(--mi-text-xs)",
-                marginTop: "var(--mi-space-1)",
-              }}>
+              <Link
+                href={`/ejes/${AXIS_KEY_TO_SLUG[a.axisKey] ?? a.axisKey}`}
+                style={{
+                  display: "inline-block",
+                  background: axisColor,
+                  color: "var(--mi-bg-paper)",
+                  padding: "2px 6px",
+                  fontSize: "var(--mi-text-xs)",
+                  marginTop: "var(--mi-space-1)",
+                }}
+              >
                 {a.axis}
-              </span>
+              </Link>
             </dd>
 
             <dt style={{ color: "var(--mi-ink-mute)", marginTop: "var(--mi-space-3)" }}>Fuente</dt>
@@ -324,6 +346,27 @@ export default function AnalisisPage() {
             <dt style={{ color: "var(--mi-ink-mute)", marginTop: "var(--mi-space-3)" }}>Fecha</dt>
             <dd style={{ color: "var(--mi-ink)" }}>{a.source_primary.published_at}</dd>
           </dl>
+
+          <div style={{
+            marginTop: "var(--mi-space-6)",
+            paddingTop: "var(--mi-space-3)",
+            borderTop: "var(--mi-border-dashed)",
+          }}>
+            <Link
+              href="/metodo"
+              style={{
+                fontFamily: "var(--mi-font-mono)",
+                fontSize: "var(--mi-text-xs)",
+                letterSpacing: "var(--mi-tracking-wide)",
+                textTransform: "uppercase",
+                color: "var(--mi-ink-mute)",
+                display: "block",
+                lineHeight: "var(--mi-leading-relaxed)",
+              }}
+            >
+              → Cómo leemos
+            </Link>
+          </div>
         </aside>
 
         {/* 4 pasos + citation */}

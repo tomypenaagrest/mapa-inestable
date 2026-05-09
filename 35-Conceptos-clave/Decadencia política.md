@@ -8,6 +8,8 @@ ejes_relacionados:
   - "[[03 - Desrepresentación]]"
   - "[[05 - Desorientación epistemológica]]"
 eje_candidato: false
+publicar: true
+slug: decadencia-politica
 ---
 
 # Decadencia política

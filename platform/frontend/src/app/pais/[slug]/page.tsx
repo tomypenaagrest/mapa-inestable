@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getCountrySections, findSection, otherSections } from "@/lib/content";
 import {
   COUNTRY_EJES,
@@ -9,6 +10,22 @@ import {
   type Source,
   type AnalysisSummary,
 } from "@/lib/country-data";
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
+  const { slug } = await params;
+  const name = COUNTRY_NAMES[slug];
+  if (!name) return {};
+  return {
+    title: { absolute: `${name} — Mapa Inestable` },
+    description: `Perfil estructural de ${name}. Los seis ejes activados, los procesos en curso y el análisis semanal de Mapa Inestable.`,
+    openGraph: {
+      title: `${name} — Mapa Inestable`,
+      description: `Perfil estructural de ${name}. Los seis ejes activados, los procesos en curso y el análisis semanal de Mapa Inestable.`,
+    },
+  };
+}
 
 const SOURCE_TYPE_LABEL: Record<Source["type"], string> = {
   hegemonic:   "Hegemónico",
@@ -284,7 +301,33 @@ export default async function PaisPage({ params }: { params: Promise<{ slug: str
 
           {/* Análisis publicados */}
           <section>
-            <h2 style={sectionTitle}>Análisis publicados</h2>
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
+              borderBottom: "var(--mi-border-bold)",
+              paddingBottom: "var(--mi-space-2)",
+              marginBottom: "var(--mi-space-5)",
+            }}>
+              <h2 style={{ ...sectionTitle, borderBottom: "none", paddingBottom: 0, marginBottom: 0 }}>
+                Análisis publicados
+              </h2>
+              <Link
+                href={`/analisis?pais=${slug}`}
+                style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: "var(--mi-text-xs)",
+                  letterSpacing: "var(--mi-tracking-wide)",
+                  textTransform: "uppercase",
+                  color: "var(--mi-ink-mute)",
+                  borderBottom: "1px solid var(--mi-ink-mute)",
+                  paddingBottom: 1,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Ver todos en archivo →
+              </Link>
+            </div>
             {analyses.length > 0 ? (
               <div style={{ display: "flex", flexDirection: "column", gap: "var(--mi-space-4)" }}>
                 {analyses.map(a => (

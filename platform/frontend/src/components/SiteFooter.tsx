@@ -1,12 +1,12 @@
 import Link from "next/link";
 
-const EJES = [
-  "Deculturación",
-  "Erosión de mediaciones",
-  "Desrepresentación",
-  "Estetización",
-  "Desorientación epistemológica",
-  "Atención",
+const EJES: [string, string][] = [
+  ["Deculturación", "deculturacion"],
+  ["Erosión de mediaciones", "erosion-de-mediaciones"],
+  ["Desrepresentación", "desrepresentacion"],
+  ["Estetización", "estetizacion"],
+  ["Desorientación epistemológica", "desorientacion-epistemologica"],
+  ["Atención", "atencion"],
 ];
 
 const PAISES: [string, string][] = [
@@ -40,7 +40,7 @@ export default function SiteFooter() {
         maxWidth: "var(--mi-container)",
         marginInline: "auto",
         display: "grid",
-        gridTemplateColumns: "2fr 1fr 1fr",
+        gridTemplateColumns: "2fr 1fr 1fr 1fr",
         gap: "var(--mi-space-7)",
       }}>
 
@@ -61,13 +61,11 @@ export default function SiteFooter() {
         <div>
           <span style={labelStyle}>Los seis ejes</span>
           <ul style={{ listStyle: "none", lineHeight: 2 }}>
-            {EJES.map(eje => (
-              <li key={eje} style={{
-                fontFamily: "var(--mi-font-mono)",
-                fontSize: "var(--mi-text-sm)",
-                color: "var(--mi-bg-paper)",
-              }}>
-                {eje}
+            {EJES.map(([nombre, slug]) => (
+              <li key={slug}>
+                <Link href={`/ejes/${slug}`} className="mi-footer-link">
+                  {nombre}
+                </Link>
               </li>
             ))}
           </ul>
@@ -86,6 +84,17 @@ export default function SiteFooter() {
           </ul>
         </div>
 
+        <div>
+          <span style={labelStyle}>Marco</span>
+          <ul style={{ listStyle: "none", lineHeight: 2 }}>
+            <li><Link href="/ejes" className="mi-footer-link">Los seis ejes</Link></li>
+            <li><Link href="/autores" className="mi-footer-link">Autores</Link></li>
+            <li><Link href="/conceptos" className="mi-footer-link">Conceptos</Link></li>
+            <li><Link href="/metodo" className="mi-footer-link">Método</Link></li>
+            <li><Link href="/acerca" className="mi-footer-link">Acerca</Link></li>
+          </ul>
+        </div>
+
       </div>
 
       <div style={{
@@ -97,6 +106,8 @@ export default function SiteFooter() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        gap: "var(--mi-space-5)",
+        flexWrap: "wrap",
         fontFamily: "var(--mi-font-mono)",
         fontSize: "var(--mi-text-xs)",
         letterSpacing: "var(--mi-tracking-wide)",
@@ -104,6 +115,11 @@ export default function SiteFooter() {
         color: "var(--mi-ink-mute)",
       }}>
         <span>Mapa Inestable · Cartografía política del sur</span>
+        <div style={{ display: "flex", gap: "var(--mi-space-4)" }}>
+          <Link href="/despachos" className="mi-footer-link">Despachos</Link>
+          <Link href="/analisis" className="mi-footer-link">Archivo</Link>
+          <Link href="/ensayos" className="mi-footer-link">Ensayos</Link>
+        </div>
         <span>Sur arriba — siempre</span>
       </div>
     </footer>

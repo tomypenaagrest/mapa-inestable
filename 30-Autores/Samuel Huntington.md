@@ -4,6 +4,8 @@ tipo: autor
 nacionalidad: estadounidense
 disciplina: ciencia política
 estado: figura-de-contraste
+publicar: true
+slug: samuel-huntington
 ---
 
 # Samuel Huntington

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 
 /* === TIPOS ====================================================== */
 
@@ -83,6 +84,15 @@ const MOCK_DISPATCH: Dispatch = {
   ],
   cierre: "Los dos análisis de esta semana comparten una misma lógica de fondo: el vaciamiento de los procedimientos que organizan la vida política. No es que el fraude exista o que el Estado llegue —es que la creencia en que el procedimiento puede funcionar se erosiona. Cuando esa creencia cede, el vacío lo llena quien pueda.",
   pregunta_semana: "¿En qué momento el debilitamiento de los procedimientos se vuelve irreversible?",
+};
+
+export const metadata: Metadata = {
+  title: { absolute: `Despacho Nº ${MOCK_DISPATCH.num} — Mapa Inestable` },
+  description: MOCK_DISPATCH.entrada.slice(0, 160),
+  openGraph: {
+    title: `Despacho Nº ${MOCK_DISPATCH.num} — ${MOCK_DISPATCH.title}`,
+    description: MOCK_DISPATCH.entrada.slice(0, 160),
+  },
 };
 
 /* === COMPONENTES ================================================ */
@@ -370,9 +380,50 @@ export default function DespachoPage() {
               lineHeight: "var(--mi-leading-relaxed)",
               color: "var(--mi-bg-paper)",
             }}>
-              "{d.pregunta_semana}"
+              &ldquo;{d.pregunta_semana}&rdquo;
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* Recibir por email */}
+      <div style={{
+        borderTop: "1px solid rgba(244,233,210,0.15)",
+        padding: "var(--mi-space-5) var(--mi-space-6)",
+      }}>
+        <div className="mi-container--narrow" style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "var(--mi-space-5)",
+          flexWrap: "wrap",
+        }}>
+          <p style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: "var(--mi-text-xs)",
+            letterSpacing: "var(--mi-tracking-wide)",
+            textTransform: "uppercase",
+            color: "var(--mi-bg-paper)",
+            opacity: 0.6,
+          }}>
+            Recibir el próximo despacho por email
+          </p>
+          <a
+            href="https://mapainestable.substack.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: "var(--mi-text-xs)",
+              letterSpacing: "var(--mi-tracking-wider)",
+              textTransform: "uppercase",
+              color: "var(--mi-accent-gold)",
+              borderBottom: "1px solid var(--mi-accent-gold)",
+              paddingBottom: 2,
+            }}
+          >
+            Suscribirse en Substack ↗
+          </a>
         </div>
       </div>
 

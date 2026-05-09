@@ -1,6 +1,24 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import Logo from "@/components/Logo";
+import { AXIS_KEY_TO_SLUG } from "@/lib/ejes";
+
+export const metadata: Metadata = {
+  title: { absolute: "Mapa Inestable · Cartografía política del sur" },
+  description: "Análisis estructural de Sudamérica. Los procesos que transforman la política, la cultura y la percepción de la realidad en diez países.",
+  openGraph: {
+    title: "Mapa Inestable · Cartografía política del sur",
+    description: "Análisis estructural de Sudamérica. Los procesos que transforman la política, la cultura y la percepción de la realidad en diez países.",
+  },
+};
 
 /* === DATOS MOCK (reemplazar por fetch al backend) ============== */
+
+const COUNTRY_TO_CAPITAL: Record<string, string> = {
+  ar: "Buenos Aires", br: "Brasília", cl: "Santiago", co: "Bogotá",
+  bo: "La Paz", pe: "Lima", uy: "Montevideo", py: "Asunción",
+  ec: "Quito", ve: "Caracas",
+};
 
 const FEATURED = {
   country: "Colombia",
@@ -48,6 +66,16 @@ const GRID_ANALYSES = [
     slug: "el-mas-sin-evo-sin-arce",
   },
 ];
+
+const WEEK_COUNTRY_SLUGS = [
+  FEATURED.countrySlug,
+  ...GRID_ANALYSES.map(a => a.countrySlug),
+].filter((slug, idx, arr) => arr.indexOf(slug) === idx);
+
+const WEEK_CITIES = WEEK_COUNTRY_SLUGS.map(s => COUNTRY_TO_CAPITAL[s]).filter(Boolean);
+const CITIES_DISPLAY = WEEK_CITIES.length <= 4
+  ? WEEK_CITIES.join(" · ")
+  : WEEK_CITIES.slice(0, 4).join(" · ") + ` + ${WEEK_CITIES.length - 4} más`;
 
 /* === COMPONENTES ================================================ */
 
@@ -217,12 +245,13 @@ function AnalysisCard({ a }: { a: typeof GRID_ANALYSES[0] }) {
         gap: "var(--mi-space-2)",
         flexWrap: "wrap",
       }}>
-        <span
+        <Link
+          href={`/ejes/${AXIS_KEY_TO_SLUG[a.axisKey] ?? a.axisKey}`}
           className="mi-axis-pill"
           style={{ background: `var(--mi-axis-${a.axisKey})` }}
         >
           {a.axis}
-        </span>
+        </Link>
         <span style={{
           fontFamily: "var(--mi-font-mono)",
           fontSize: "var(--mi-text-xs)",
@@ -234,6 +263,46 @@ function AnalysisCard({ a }: { a: typeof GRID_ANALYSES[0] }) {
         </span>
       </div>
     </article>
+  );
+}
+
+/* === MASTHEAD ================================================== */
+
+function Masthead() {
+  return (
+    <section style={{
+      background: "var(--mi-bg)",
+      minHeight: "clamp(160px, 20vw, 200px)",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "var(--mi-space-2)",
+      padding: "var(--mi-space-5) var(--mi-space-6)",
+      borderBottom: "var(--mi-border-bold)",
+    }}>
+      <Logo variant="icon" size="lg" color="var(--mi-bg-paper)" />
+      <div style={{
+        fontFamily: "var(--mi-font-display)",
+        fontSize: "clamp(48px, 7vw, var(--mi-text-5xl))",
+        letterSpacing: "-0.03em",
+        textTransform: "uppercase",
+        color: "var(--mi-bg-paper)",
+        lineHeight: 1,
+      }}>
+        Mapa Inestable
+      </div>
+      <div style={{
+        fontFamily: "var(--mi-font-mono)",
+        fontSize: "var(--mi-text-xs)",
+        letterSpacing: "var(--mi-tracking-widest)",
+        textTransform: "uppercase",
+        color: "var(--mi-accent-gold)",
+        marginTop: "var(--mi-space-1)",
+      }}>
+        Cartografía política del sur
+      </div>
+    </section>
   );
 }
 
@@ -255,8 +324,10 @@ export default function HomePage() {
         gap: "var(--mi-space-6)",
       }}>
         <span style={{ color: "var(--mi-accent-gold)" }}>Semana 19 · 2026</span>
-        <span>Buenos Aires · Bogotá · Santiago</span>
+        <span>{CITIES_DISPLAY}</span>
       </div>
+
+      <Masthead />
 
       <div className="mi-container" style={{ paddingTop: "var(--mi-space-7)", paddingBottom: "var(--mi-space-7)" }}>
 

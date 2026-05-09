@@ -409,6 +409,40 @@ img, svg {
   padding: var(--mi-space-4);
 }
 
+/* === ARCHIVO =================================================== */
+
+.mi-archive-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0;
+  align-items: start;
+}
+
+.mi-archive-panel {
+  border-right: var(--mi-border-thick);
+  padding-right: var(--mi-space-5);
+  display: block;
+}
+
+.mi-archive-mobile-filters {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mi-archive-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .mi-archive-panel {
+    display: none;
+  }
+
+  .mi-archive-mobile-filters {
+    display: block;
+    margin-bottom: var(--mi-space-4);
+  }
+}
+
 /* Dropcap para entradas de despacho */
 .mi-dropcap::first-letter {
   float: left;

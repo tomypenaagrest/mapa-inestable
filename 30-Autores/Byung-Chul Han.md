@@ -3,6 +3,8 @@ tags: [autor]
 tipo: autor
 nacionalidad: alemán-coreano
 disciplina: filosofía
+publicar: true
+slug: byung-chul-han
 ---
 
 # Byung-Chul Han
