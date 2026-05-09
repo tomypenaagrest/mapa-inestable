@@ -11,7 +11,9 @@ import {
   type AnalysisSummary,
 } from "@/lib/country-data";
 import { getCountryIndicators, LB_META, COVERED_COUNTRIES, axisDisplayKey } from "@/lib/latinobarometro";
+import { getCountryMacro, MACRO_FAMILIES, MACRO_META } from "@/lib/macro-indicators";
 import IndicatorCard from "@/components/IndicatorCard";
+import MacroIndicatorCard from "@/components/MacroIndicatorCard";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
@@ -167,6 +169,7 @@ export default async function PaisPage({ params }: { params: Promise<{ slug: str
 
   const isCovered = (COVERED_COUNTRIES as readonly string[]).includes(slug);
   const lbIndicators = isCovered ? getCountryIndicators(slug) : [];
+  const macroIndicators = getCountryMacro(slug);
 
   const tensiones = findSection(sections, ["tensiones"]);
   const pregunta  = findSection(sections, ["pregunta"]);
@@ -437,6 +440,139 @@ export default async function PaisPage({ params }: { params: Promise<{ slug: str
                 >
                   Informe completo →
                 </a>
+              </div>
+            </section>
+          )}
+
+          {/* Estructura material · indicadores macro */}
+          {macroIndicators.length > 0 && (
+            <section style={{ marginBottom: "var(--mi-space-7)" }}>
+              {/* Header de sección */}
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                alignItems: "end",
+                gap: "var(--mi-space-4)",
+                borderBottom: "var(--mi-border-bold)",
+                paddingBottom: "var(--mi-space-3)",
+                marginBottom: "var(--mi-space-5)",
+              }}>
+                <div>
+                  <div style={{
+                    fontFamily: "var(--mi-font-mono)",
+                    fontSize: "var(--mi-text-xs)",
+                    letterSpacing: "var(--mi-tracking-widest)",
+                    textTransform: "uppercase",
+                    color: "var(--mi-ink-mute)",
+                    marginBottom: "var(--mi-space-2)",
+                  }}>
+                    Evidencia cuantitativa
+                  </div>
+                  <h2 style={{ ...sectionTitle, borderBottom: "none", paddingBottom: 0, marginBottom: 0 }}>
+                    Estructura material
+                  </h2>
+                </div>
+                <div style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: "var(--mi-text-xs)",
+                  letterSpacing: "var(--mi-tracking-wide)",
+                  textTransform: "uppercase",
+                  textAlign: "right",
+                  color: "var(--mi-ink-soft)",
+                  lineHeight: 1.5,
+                }}>
+                  {macroIndicators.length} indicadores<br />
+                  Series {MACRO_META.year_start}–{MACRO_META.year_end}
+                </div>
+              </div>
+
+              {/* Intro */}
+              <p style={{
+                fontFamily: "var(--mi-font-body)",
+                fontSize: "var(--mi-text-base)",
+                lineHeight: "var(--mi-leading-normal)",
+                color: "var(--mi-ink)",
+                marginBottom: "var(--mi-space-5)",
+                maxWidth: "60ch",
+              }}>
+                Indicadores estructurales de la economía y la sociedad de {name}, agrupados en cuatro familias. Cada cifra muestra el valor más reciente, la trayectoria histórica y la variación respecto a hace cinco años.
+              </p>
+
+              {/* Familias */}
+              {MACRO_FAMILIES.map(family => {
+                const group = macroIndicators.filter(
+                  ind => ind.family === family.key
+                );
+                if (group.length === 0) return null;
+                return (
+                  <div key={family.key} style={{ marginBottom: "var(--mi-space-6)" }}>
+                    {/* Family header */}
+                    <div style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "var(--mi-space-3)",
+                      marginBottom: "var(--mi-space-3)",
+                    }}>
+                      <div style={{
+                        width: 12, height: 12,
+                        background: "var(--mi-ink)",
+                        flexShrink: 0,
+                      }} />
+                      <span style={{
+                        fontFamily: "var(--mi-font-mono)",
+                        fontSize: "var(--mi-text-xs)",
+                        letterSpacing: "var(--mi-tracking-widest)",
+                        textTransform: "uppercase",
+                        color: "var(--mi-ink)",
+                      }}>
+                        {family.label}
+                      </span>
+                      <span style={{
+                        fontFamily: "var(--mi-font-mono)",
+                        fontSize: "var(--mi-text-xs)",
+                        letterSpacing: "var(--mi-tracking-wide)",
+                        textTransform: "uppercase",
+                        color: "var(--mi-ink-mute)",
+                      }}>
+                        {group.length} {group.length === 1 ? "indicador" : "indicadores"}
+                      </span>
+                    </div>
+                    {/* Grid de cards */}
+                    <div style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(3, 1fr)",
+                      gap: "var(--mi-space-3)",
+                    }}>
+                      {group.map(ind => (
+                        <MacroIndicatorCard
+                          key={ind.id}
+                          indicator={ind}
+                          country={ind.country}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Footer */}
+              <div style={{
+                marginTop: "var(--mi-space-5)",
+                padding: "var(--mi-space-4)",
+                background: "var(--mi-bg-cream)",
+                border: "var(--mi-border-thick)",
+              }}>
+                <div style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: "var(--mi-text-xs)",
+                  letterSpacing: "var(--mi-tracking-wide)",
+                  textTransform: "uppercase",
+                  color: "var(--mi-ink)",
+                  lineHeight: 1.8,
+                }}>
+                  <strong>Fuentes</strong> · Banco Mundial WDI · FMI WEO · OIT ILOSTAT<br />
+                  Datos al {MACRO_META.computed_at} · <em style={{ textTransform: "none", fontStyle: "italic", fontFamily: "var(--mi-font-body)" }}>est.</em> = estimado · <em style={{ textTransform: "none", fontStyle: "italic", fontFamily: "var(--mi-font-body)" }}>cong.</em> = última observación disponible
+                </div>
               </div>
             </section>
           )}

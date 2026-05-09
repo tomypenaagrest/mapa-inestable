@@ -1,24 +1,27 @@
 ---
-spec: 14
+spec: 15
 titulo: Capas de contexto y journey del lector recurrente
-estado: borrador
+estado: borrador-r1
 autor: Tomás (con Claude)
 fecha: 2026-05-09
+revision: 2026-05-09 (r1) — 13 decisiones despejadas en sesión, ver §13 Decisiones tomadas
 depende_de: [01, 04, 05, 06, 07, 08, 11, 12, 13]
 implementa: capa-contexto, retencion-sin-login, multi-layer-reading
 ---
 
-# 14 · Capas de contexto y journey del lector recurrente
+# 15 · Capas de contexto y journey del lector recurrente
 
 ## Resumen ejecutivo
 
 Esta spec **no redefine** vistas ya especificadas. Aporta tres cosas que ninguna spec previa cubre:
 
-1. **Modelo "Panel multi-capa"** — formaliza cómo cinco capas de información (noticia · estadística · historia · análisis · marco conceptual) coexisten en cada artículo y se vuelven accesibles sin romper la lectura.
+1. **Modelo "Panel multi-capa"** — formaliza cómo cinco capas de información (noticia · estadística · proceso · análisis · marco conceptual) coexisten en cada artículo y se vuelven accesibles sin romper la lectura.
 2. **Journey del lector recurrente end-to-end** — define los nueve momentos del recorrido habitual y mapea qué bloque de UI los resuelve.
-3. **Sistema de retención sin login** — localStorage como memoria del lector: visto/no visto, última visita, reading list, hilo conceptual.
+3. **Sistema de retención sin login** — localStorage como memoria del lector: visto/no visto, última visita, reading list, marcadores.
 
-Trabaja por encima del corpus existente y resuelve cuatro contradicciones detectadas entre specs 01, 05 y 11. La implementación se propone en tres fases (§12) y agrega ~9 componentes al design system "Grabado" v1.1 (§7).
+Trabaja por encima del corpus existente y resuelve cuatro contradicciones detectadas entre specs 01, 05 y 11. La implementación se propone en tres fases (§11) y agrega ~9 componentes al design system "Grabado" v1.1 (§6).
+
+**Estado:** revisión r1 (2026-05-09) — 13 decisiones despejadas en sesión, ver §13.
 
 **Persona objetivo:** lector recurrente (vuelve cada semana, conoce el marco conceptual, espera ver la evolución por país y por eje). No optimiza para primer-time visitor — eso queda para una spec separada de onboarding.
 
@@ -65,33 +68,32 @@ Nueve momentos del lector recurrente. Cada uno tiene una necesidad explícita y 
 
 | # | Momento | Necesidad | UI que la cubre | Spec |
 |---|---|---|---|---|
-| 1 | Aterriza desde mail del despacho | Saltar al análisis específico mencionado | Anchor links en el despacho | 01 + 14 §4.7 |
-| 2 | Llega al home un martes | Ver "qué hay nuevo desde mi última visita" | Bloque `Esta semana, lo nuevo para vos` (§5.1) | 14 §5.1 |
-| 3 | Quiere leer un análisis | Lectura sin fricción + capas accesibles | Layout multi-capa (§3) | 14 §3 + §6 |
-| 4 | Encuentra una afirmación citada | Verificar fuente o profundizar concepto | Footnote inline + aside expandible (§3.3) | 14 §3 + §7 |
-| 5 | Quiere comparar países | Saltar de análisis a comparativa | Conector `Comparar →` desde indicador o cita | 13 + 14 §5.4 |
-| 6 | Quiere encontrar algo viejo | Búsqueda por país, eje, tiempo o concepto | Buscador con facets (Spec 05) + atajo `/` (§5.5) | 5 |
-| 7 | Quiere citar un fragmento | Compartir un párrafo o "Apertura" puntual | Quote-as-card + URL con anchor (§7.5) | 14 §7.5 |
-| 8 | Vuelve después de un mes | Ver el resumen de lo perdido | `Mientras estuviste fuera` widget (§5.2) | 14 §5.2 |
-| 9 | Construye comprensión sostenida | Saber qué hila con qué | Hilos conceptuales y de país (§5.3) | 14 §5.3 + 7 |
+| 1 | Aterriza desde mail del despacho | Saltar al análisis específico mencionado | Anchor links en el despacho | 01 + 15 §4.7 |
+| 2 | Llega al home un martes | Ver "qué hay nuevo desde mi última visita" | Bloque `Esta semana, lo nuevo para vos` (§5.1) | 15 §5.1 |
+| 3 | Quiere leer un análisis | Lectura sin fricción + capas accesibles | Layout multi-capa (§3) | 15 §3 + §6 |
+| 4 | Encuentra una afirmación citada | Verificar fuente o profundizar concepto | Footnote inline + aside expandible (§3.3) | 15 §3 + §7 |
+| 5 | Quiere comparar países | Saltar de análisis a comparativa | Conector `Comparar →` desde indicador o cita | 13 + 15 §5.4 |
+| 6 | Quiere encontrar algo viejo | Búsqueda por país, eje, tiempo o concepto | Buscador con facets (Spec 05) + atajo `/` (§4.3) | 5 |
+| 7 | Quiere citar un fragmento | Compartir un párrafo o "Apertura" puntual | Quote-as-card + URL con anchor (§4.7) | 15 §4.7 |
+| 8 | Vuelve después de 14+ días | Ver el resumen de lo perdido | `Mientras estuviste fuera` widget (§5.5) | 15 §5.5 |
+| 9 | Aterriza desde redes/Google sin contexto | Anclar el marco rápido | Frame strip inline siempre visible (§4.2 r1) | 15 §4.2 |
 
 ### 2.1 Diagrama del journey
 
 ```
-[mail despacho] ──▶ análisis individual ─┐
-                                         ├──▶ aside autor / concepto
-[Google search] ──▶ análisis individual ─┤            │
-                                         ├──▶ footnote ▾ fuente original
-[home martes] ────▶ "lo nuevo para vos"  │            │
-                            │            ├──▶ ficha de país (§12)
-                            └▶ análisis ─┤            │
-                                         ├──▶ comparativa indicador (§13)
-                                         │            │
-                                         ├──▶ otro análisis del eje
-                                         │            │
-                                         └──▶ ensayo del eje (§07)
+[mail despacho] ──▶ análisis individual ─▶ frame strip ─┐
+                                                        │
+[Google search] ──▶ análisis individual ─▶ frame strip ─┤
+                                                        ├──▶ aside autor / concepto
+[home martes] ────▶ "lo nuevo para vos" ──▶ análisis ──▶┤
+                                                        ├──▶ footnote ▾ fuente original
+                                                        │
+                                                        ├──▶ ficha de país (§12)
+                                                        ├──▶ comparativa indicador (§13)
+                                                        ├──▶ otro análisis del eje
+                                                        └──▶ ensayo del eje (Spec 07)
 
-[cualquier vista] ◂─── atajo "/" ───▶ buscador
+[cualquier vista] ◂─── atajo "/" ───▶ buscador / palette
 [cualquier vista] ◂─── atajo "?" ───▶ ayuda atajos
 ```
 
@@ -107,7 +109,7 @@ Cada análisis es la articulación de cinco capas de información. La spec las n
 |---|---|---|---|
 | **L1 · Noticia** | El disparador concreto: titular, hecho, fecha | Fuentes RSS / curaduría | Citation block primario |
 | **L2 · Estadística** | Datos cuantitativos invocados (Latinobarómetro, encuestas, indicadores) | Vault `35-Conceptos-clave/` y dataset LB | `<IndicatorCard>` inline (§7.1) |
-| **L3 · Historia** | El proceso histórico que la noticia revela | Cuerpo del análisis (paso 02 desplazamiento) | Prose con footnotes (§7.2) |
+| **L3 · Proceso** | La trayectoria estructural que la noticia revela (paso 02 del método: desplazamiento del evento al proceso) | Cuerpo del análisis | Prose con footnotes (§7.2) |
 | **L4 · Análisis** | La interpretación a través de los ejes | Cuerpo del análisis (paso 03 conceptualización) | Prose con axis pills y aside |
 | **L5 · Marco conceptual** | Los ejes, autores, conceptos que dan sentido | Vault `10-Ejes/` `30-Autores/` `35-Conceptos-clave/` | Aside expandible (§3.3) + cross-reference panel |
 
@@ -156,7 +158,7 @@ Las marcas son intencionalmente extrañas (no superíndices arábigos genéricos
 
 ### 3.5 Reglas de invocación
 
-- **Máximo cinco footnotes por análisis.** El método pide densidad, no aparato académico. Lo que no entra en cinco se mueve a "lecturas relacionadas".
+- **Sugerencia editorial de cinco footnotes por análisis** (no regla dura). El método pide densidad, no aparato académico. Si un análisis necesita más, pueden agregarse hasta ~7-8; del sexto en adelante el editor evalúa si conviene mover excedentes a una sección "Lecturas" al pie del artículo en lugar de seguir poblando footnotes con aside. La sección "Lecturas" usa la misma estructura visual del aside (tipos, marcas) pero apilada como lista al final del cuerpo.
 - **Las primeras dos invocaciones de un autor o concepto en el corpus** disparan footnote; a partir de la tercera, solo link inline subrayado.
 - **Las estadísticas siempre llevan footnote** — esto es regla editorial dura, alineada con la trazabilidad obligatoria del CLAUDE.md raíz.
 
@@ -186,33 +188,33 @@ Las marcas son intencionalmente extrañas (no superíndices arábigos genéricos
 
 **Componente:** `<NewSinceLastVisit>` (§7.6)
 
-### 4.2 F2 — Aterrizaje sin contexto (search/redes)
+### 4.2 F2 — Marco siempre visible al inicio del análisis (Frame strip inline)
 
-**Cuando:** el lector llega a un análisis desde Google/X/WhatsApp sin haber pasado por el home.
+**Cuando:** todo el tiempo. No depende de `referrer` ni de detección de first-time visitor.
 
-**Flujo:**
+**Decisión r1:** convertimos el bloque puente al marco en un **strip editorial sutil al inicio del cuerpo del análisis** que se muestra a todos los lectores, recurrentes y nuevos por igual. Es información estructural del análisis, no un onboarding condicional.
 
-1. Detección de `document.referrer` ≠ origin propio Y no hay `localStorage.lastVisit`.
-2. Al pie del análisis, antes del cross-reference panel, aparece un **bloque puente al marco** (`<FrameOnboardingBridge>`, §7.7):
+**Anatomía del strip:**
 
-   ```
-   ┌──────────────────────────────────────────────┐
-   │ ESTE ANÁLISIS USA UN MARCO PROPIO            │
-   │                                              │
-   │ Mapa Inestable lee la coyuntura a través de  │
-   │ seis ejes estructurales. Este se activa en   │
-   │ el eje **DESORIENTACIÓN EPISTEMOLÓGICA**.    │
-   │                                              │
-   │ ┌──────────────┐ ┌──────────────┐            │
-   │ │ Sobre el eje │ │ El método   │            │
-   │ └──────────────┘ └──────────────┘            │
-   └──────────────────────────────────────────────┘
-   ```
+```
+─────────────────────────────────────────────────────────
+ESTE ANÁLISIS SE ACTIVA EN  DESORIENTACIÓN EPISTEMOLÓGICA
+                            [→ Sobre el eje]  [→ El método]
+─────────────────────────────────────────────────────────
+```
 
-3. Si el lector hace click en cualquiera, se marca `localStorage.frameSeen = true` y el bloque no vuelve a aparecer en otros análisis (durante 30 días).
-4. El bloque NO se muestra al lector recurrente (`lastVisit` existe). No es onboarding repetitivo — es puente puntual.
+- Aparece entre el lede y el citation block primario (L1).
+- Tipografía: mono uppercase 13px (`--mi-font-mono`), color `--mi-ink-mute` para "ESTE ANÁLISIS SE ACTIVA EN", axis pill para el eje, mono links subrayados para "Sobre el eje" y "El método".
+- Background `--mi-bg-paper`, borde superior e inferior thick `--mi-rule-soft`.
+- Si el análisis activa más de un eje, mostrar todos separados por `·`.
+- En mobile: el strip se mantiene; los dos links se apilan a la derecha o pasan a línea siguiente.
 
-**Decisión editorial:** este bloque es la única concesión a "lector primer-time" dentro de esta spec. Lo demás se asume marco internalizado.
+**Por qué inline siempre:**
+1. El marco es parte de la editorialidad de cada pieza. Mostrarlo siempre lo normaliza, no lo trata como onboarding excepcional.
+2. Cero detección de referrer / state. Más simple de implementar; cero condicionales en la UI.
+3. Para el lector recurrente cumple función de "anclaje rápido del eje" — útil incluso sabiendo el marco.
+
+**Componente:** `<FrameStripInline>` (renombrado de `<FrameOnboardingBridge>`). Reemplaza el componente anterior; reduce el sistema de retención del lado de detección de first-time (no se necesita `frameSeen` en `localStorage`).
 
 ### 4.3 F3 — Búsqueda dirigida (extiende Spec 05)
 
@@ -234,6 +236,10 @@ Spec 05 ya cubre la página `/analisis`. Esta spec agrega:
 │  HEADER: país · semana · ejes · fecha                     │
 │  TÍTULO h1 (Fraunces 52px)                                │
 │  LEDE (Lora 22px, 2-3 oraciones)                          │
+└───────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────┐
+│  FRAME STRIP INLINE (§4.2 r1) — siempre visible           │
+│  ESTE ANÁLISIS SE ACTIVA EN [eje] · [Sobre el eje]        │
 └───────────────────────────────────────────────────────────┘
 ┌────────────────────────────────────┬──────────────────────┐
 │  CITATION BLOCK PRIMARIO (L1)      │   ASIDE STICKY      │
@@ -257,45 +263,25 @@ Spec 05 ya cubre la página `/analisis`. Esta spec agrega:
 │                                    │   (no lift)          │
 └────────────────────────────────────┴──────────────────────┘
 ┌───────────────────────────────────────────────────────────┐
-│  HILO CONCEPTUAL (§5.3)                                   │
-│  Otros análisis donde aparecen estos conceptos juntos     │
-└───────────────────────────────────────────────────────────┘
-┌───────────────────────────────────────────────────────────┐
 │  CROSS-REFERENCE PANEL (Spec 01 §5.2)                     │
 │  3 del país + 3 del eje                                   │
-└───────────────────────────────────────────────────────────┘
-┌───────────────────────────────────────────────────────────┐
-│  FRAME ONBOARDING BRIDGE — solo si F2 aplica              │
 └───────────────────────────────────────────────────────────┘
 ```
 
 **Decisión:** la ficha de país (Spec 12) usa indicadores Latinobarómetro como bloque expandido fijo. Acá los indicadores aparecen **inline contextual**: el cuerpo invoca uno, aparece la card, se sigue leyendo. Los componentes (`<IndicatorCard>`) se reusan; cambia la regla de invocación.
 
-### 4.5 F5 — Profundización encadenada (hilo conceptual)
+### 4.5 F5 — Profundización encadenada (POSTERGADO A v2)
 
-**Problema:** el cross-reference de Spec 01 muestra 3 análisis del mismo país y 3 del mismo eje. Eso es navegación tipológica, no temporal ni temática.
+**Decisión r1:** el componente `<ConceptualThread>` queda postergado a v2 de la spec.
 
-**Solución:** un bloque adicional **hilo conceptual** que muestra los análisis donde **se invocan los mismos conceptos** que en este. La intersección, no la categoría.
+**Razón:** depende de poblar el campo `conceptos_invocados[]` (Spec 07 §5) en el corpus, y ese trabajo de etiquetado retroactivo no entra en el scope de v1. Sin data, el bloque queda vacío para casi todos los análisis y empuja a una experiencia rota.
 
-```
-HILO CONCEPTUAL · 3 ANÁLISIS COMPARTEN ESTOS CONCEPTOS
-[hegemonía] [financiarización] [desterritorialización]
+**Lo que sigue cubriendo la profundización en v1:**
+- Cross-reference panel de Spec 01 §5.2: 3 análisis del mismo país + 3 del mismo eje (navegación tipológica).
+- Footnote tipo `⌖` "análisis previo" (§3.4) cuando el cuerpo del análisis cita explícitamente otro: el lector llega curado, uno por vez, no por listado automático.
+- Página de eje (Spec 04, ya implementada): listado cronológico de "análisis donde se activó".
 
-▸ Brasil · sem 47 — La economía sin centro
-  Comparte: hegemonía, financiarización
-  Lectura recomendada antes que este
-
-▸ Argentina · sem 12 — Mapas que ya no orientan
-  Comparte: hegemonía, desterritorialización
-  Lectura recomendada después
-
-▸ Chile · sem 33 — El plebiscito como síntoma
-  Comparte: financiarización, desterritorialización
-```
-
-La etiqueta "antes / después / paralelo" se decide por la **fecha de publicación**, no por una curaduría manual obligatoria. Tomás puede sobrescribirla en el frontmatter del análisis con `hilo_orden: [pre, post, par]`.
-
-**Componente:** `<ConceptualThread>` (§7.9). Depende del campo `conceptos_invocados[]` del modelo Analysis ya extendido en Spec 07.
+**Backlog para v2:** retomar `<ConceptualThread>` cuando exista bandwidth para etiquetar conceptos del corpus (top 20 análisis canon o el corpus completo, según se decida en su momento). Spec 07 sección 5 sigue siendo la base del modelo de datos requerido.
 
 ### 4.6 F6 — Memoria del lector (client-side)
 
@@ -345,16 +331,17 @@ Mapa Inestable rechaza explícitamente login y personalización agresiva (Spec 0
   lastVisit: "2026-05-09T11:32:00Z",       // ISO timestamp
   read: ["arg-2026-w15", "bra-2026-w15"],  // slugs de análisis leídos
   saved: ["chi-2026-w12"],                  // reading list manual
-  frameSeen: true,                          // bloque F2 ya mostrado
-  frameSeenAt: "2026-04-12T...",
-  followedCountries: ["argentina"],         // opcional, para F8 §5.4
+  followedCountries: ["argentina"],         // opcional, para §5.4 y §8.2
   followedAxes: ["desorientacion"],
   preferences: {
     reduceMotion: false,                    // respeta media query si null
+    sidebarState: "collapsed",               // r1: 'collapsed' | 'expanded' | 'auto'
     theme: "auto"                           // futuro
   }
 }
 ```
+
+**Nota r1:** los campos `frameSeen` / `frameSeenAt` se eliminaron porque el frame strip ahora aparece siempre (§4.2 r1).
 
 ### 5.3 Reglas de uso
 
@@ -376,15 +363,15 @@ Tres estados visibles, no más. El sistema no muestra "porcentaje leído" ni pro
 
 ### 5.5 "Mientras estuviste fuera" widget
 
-**Cuando:** el lector vuelve después de ≥21 días.
+**Cuando:** el lector vuelve después de ≥14 días (decisión r1: dos despachos perdidos como umbral).
 
 **Dónde:** strip al tope del home, sobre "Esta semana".
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│ MIENTRAS ESTUVISTE FUERA · 6 SEMANAS, 23 ANÁLISIS        │
+│ MIENTRAS ESTUVISTE FUERA · 2 SEMANAS, 8 ANÁLISIS         │
 │                                                          │
-│ Lo más activo: ARGENTINA (8) · DESORIENTACIÓN (11)       │
+│ Lo más activo: ARGENTINA (3) · DESORIENTACIÓN (4)        │
 │ Lo nuevo: el eje ESTETIZACIÓN volvió tras 4 semanas      │
 │                                                          │
 │ Ver despachos perdidos →    Ir al home →                 │
@@ -423,9 +410,13 @@ Estado activo: border-bold `--mi-bg-warm` + shadow-card-lift.
 
 Reusa `<IndicatorCard>` de Spec 12 H3 con prop `inline: true`: max-width 480px, alignment center horizontal dentro del column de prosa, `margin-block: 32px 48px`. Borde solo top y bottom (`border-block: 2px solid var(--mi-rule-soft)`), sin laterales — se siente como un quote pull, no como un widget externo.
 
-### 6.4 `<ConceptualThread>`
+### 6.4 `<ConceptualThread>` — POSTERGADO A v2
 
-**Anatomía:** sección con título "HILO CONCEPTUAL · N ANÁLISIS" (mono uppercase 13px), strip horizontal de chips de concepto bajo el título (axis pill style pero sin color fill, solo border thick + texto eje), tres cards en grid (vertical en mobile). Cada card: orden cronológico relativo (`Lectura recomendada antes / después / en paralelo`) en mono xs.
+Componente removido de v1 (ver §4.5). Se documenta su anatomía esperada para retomarlo:
+
+> Sección con título "HILO CONCEPTUAL · N ANÁLISIS" (mono uppercase 13px), strip horizontal de chips de concepto bajo el título (axis pill style pero sin color fill, solo border thick + texto eje), tres cards en grid (vertical en mobile). Cada card: orden cronológico relativo (`Lectura recomendada antes / después / en paralelo`) en mono xs.
+
+Requiere etiquetado del campo `conceptos_invocados[]` en el corpus para producir output útil.
 
 ### 6.5 `<ParagraphShare>` y anchor `#p-N`
 
@@ -446,9 +437,9 @@ Botón `Descargar PNG` (1080×1350 — ratio Instagram story) y `Descargar 1200�
 
 Strip mono uppercase 13px sobre la sección "Esta semana" del home. Detecta `lastVisit` y `published_at` de los análisis. Si la diff entre last visit y hoy es ≥3 días Y hay análisis nuevos: muestra count. Else: muestra "Tu última visita fue [fecha relativa]".
 
-### 6.8 `<FrameOnboardingBridge>`
+### 6.8 `<FrameStripInline>` (renombrado)
 
-Card cream con border-bold y shadow-hero. Texto de máximo 3 líneas. Dos botones primary tamaño normal. Solo aparece bajo condiciones de §4.2 (referrer externo + sin `frameSeen`).
+Strip horizontal full-width entre el lede y el citation block primario del análisis. Background `--mi-bg-paper`, border-block thick `--mi-rule-soft`, padding 16px 0. Tipografía mono uppercase 13px en `--mi-ink-mute`. Axis pill prominente con color del eje. Dos links subrayados: "Sobre el eje" (apunta a `/ejes/[slug]`) y "El método" (apunta a `/metodo`). Sin condicionales — aparece en todos los análisis a todos los lectores. Reemplaza al `<FrameOnboardingBridge>` original.
 
 ### 6.9 `<CommandPalette>`
 
@@ -469,17 +460,42 @@ Strip horizontal, full-width, padding 32px. Background `--mi-bg-cream` con `mi-g
 - **Home (Spec 11):** mapa con click → panel lateral de país. Sin filtros laterales. Es overview navegable.
 - **`/mapa`:** mapa full-screen con filtros laterales sticky 240px (eje, semana, año, país). Es exploración cartográfica profunda. Tienen UIs distintas y propósitos distintos: no es contradicción, es jerarquía. Spec 01 §5.5 se mantiene tal cual; Spec 11 §4.5 se mantiene tal cual; esta spec solo declara que ambos coexisten.
 
-### 7.2 Sidebar persistente alcance (decisión pendiente Spec 11 §12.3)
+### 7.2 Sidebar persistente alcance (decisión r1)
 
-**Resolución propuesta: solo en home y en `/analisis` (corpus views).** Páginas de lectura larga (`/analisis/[pais]/[slug]`, `/despachos/[año]/[semana]`, `/ejes/[slug]`, ensayos) no tienen sidebar — el aside de la spec 14 §3.3 ocupa ese espacio.
+**Resolución r1: sidebar colapsable en todas las páginas.** Estado por default: colapsado a 48px (solo iconos verticales: Países, Ejes, Buscador, Conceptos). Click en cualquier ícono o en un toggle dedicado expande a 240px con labels.
 
-**Razón:** densidad navegable cuando estás explorando; densidad informativa cuando estás leyendo. El sidebar persistente es una herramienta de navegación; en lectura la herramienta es el aside contextual.
+**Estado expandido vs colapsado:**
+- En home y `/analisis` (corpus views) el sidebar arranca **expandido** por default. Es la página donde el lector está explorando.
+- En páginas de lectura larga (`/analisis/[pais]/[slug]`, `/despachos/[año]/[semana]`, `/ejes/[slug]`, ensayos, página de país) el sidebar arranca **colapsado**. La densidad va al cuerpo y al aside contextual.
+- El estado del sidebar (colapsado/expandido) se persiste en `localStorage.preferences.sidebarState` por usuario, con override por página: el lector puede expandirlo en una página de lectura y se mantiene durante esa sesión.
 
-### 7.3 Header de ciudades (Spec 08 §2.2)
+**Compatibilidad con el aside (§3.3):**
+- En desktop ≥1240px: sidebar 48px + cuerpo 720px + aside 240px = 1008px contenido + márgenes. Cabe.
+- En desktop 960-1239px: sidebar colapsado obligatorio (no se puede expandir sin que se rompa el layout) — botón de expand abre el sidebar como overlay temporal sobre el contenido.
+- En tablet/mobile: sidebar es drawer.
 
-**Resolución propuesta:** la línea sobrevive al rediseño pero se vuelve **dinámica desde data**: las ciudades mostradas son las capitales de los países que tienen análisis publicados en la última semana. Se actualiza a cada despacho.
+**Componente:** `<CollapsibleSidebar>`. Estado en `useReaderState()` hook (§5.2). Iconografía: usar las marcas mono del proyecto, no librerías de íconos genéricas.
 
-Si la lista supera 4 ciudades, rota a las 4 primeras alfabéticamente; el `+N` mostraría el resto en hover. Si hay menos de 4, ocupa el espacio centrado sin rellenar.
+### 7.3 Header de ciudades (decisión r1)
+
+**Resolución r1: la línea hardcoded "BA · Bogotá · Santiago" sale del header.** En su lugar, el header muestra los **países cubiertos esta semana**, sin capitales — solo nombres de país en mono lowercase, separados por `·`.
+
+**Anatomía:**
+
+```
+mapa inestable                    año II · sem 18 · 4 países
+
+cartografía política del sur
+
+argentina · brasil · chile · méxico
+```
+
+- Tipografía: mono regular 13px, color `--mi-ink-mute`, letter-spacing 0.04em.
+- Hover sobre un país: link a `/pais/[slug]`.
+- Si no hay despacho esta semana, muestra los países del despacho más reciente con strip pequeño "última semana publicada: sem 17".
+- Si supera 5 países, mostrar los primeros 5 alfabéticamente y `+N` con hover/click que abre dropdown con el resto.
+
+**Costo de implementación:** la conexión data → header requiere que el rediseño de Spec 11 incluya un endpoint o build-time data que liste países publicados por semana. Bajo costo (los datos ya viven en los frontmatter de los análisis).
 
 ### 7.4 `/acerca` implementación parcial (Spec 06 vs estado actual)
 
@@ -577,27 +593,29 @@ Tres fases. Cada una entregable de forma independiente.
 
 1. Schema localStorage + helper hook `useReaderState()` (§5.2).
 2. `<NewSinceLastVisit>` y dot dorado en cards de Spec 11 (§4.1, §5.4).
-3. Anchors `#p-N` en todos los `<p>` de análisis. `<ParagraphShare>` mínimo (copiar link, sin imagen) (§4.7).
-4. `<FrameOnboardingBridge>` (§4.2).
+3. Anchors `#p-N` en todos los `<p>` de análisis. `<ParagraphShare>` mínimo (copiar link) (§4.7).
+4. `<FrameStripInline>` siempre visible al inicio del análisis (§4.2 r1).
+5. Header: línea de países dinámica reemplazando ciudades hardcoded (§7.3 r1).
+6. `<CollapsibleSidebar>` con estado por página y persistencia (§7.2 r1).
 
-**Por qué primero:** son aditivos, no reemplazan ningún componente existente, y desbloquean el modelo "lector recurrente" de la persona.
+**Por qué primero:** son aditivos, no reemplazan ningún componente existente (salvo la línea hardcoded del header), y desbloquean el modelo "lector recurrente" de la persona.
 
 ### Fase B — Capas dentro del artículo (3-4 sprints)
 
 1. Sistema de footnote tipado (§3.4) en frontmatter del análisis: `footnotes: [{type, ref, pos}]`.
 2. `<AsideCard>` con scroll-spy (§3.3).
 3. `<IndicatorCardInline>` reusando Spec 12 (§6.3).
-4. `<ConceptualThread>` (§4.5, §6.4) — depende de que Spec 07 esté implementada (autores y conceptos).
-5. Bottom-sheet en mobile para footnotes (§4.8).
+4. Bottom-sheet en mobile para footnotes (§4.8).
+5. Sección "Lecturas" al pie cuando excede ~5 footnotes (§3.5 r1).
 
-**Por qué después:** dependen del puente vault → sitio (Spec 07) y del sistema de footnotes en el modelo.
+**Por qué después:** dependen del puente vault → sitio (Spec 07) y del sistema de footnotes en el modelo. Importante: `<ConceptualThread>` postergado a v2 (§4.5 r1) — no entra en fase B.
 
 ### Fase C — Distribución y memoria larga (2-3 sprints)
 
-1. `<QuoteCardGenerator>` con SVG-to-PNG canvas (§4.7).
+1. `<QuoteCardGenerator>` con SVG-to-PNG canvas, ambos formatos (1080×1350 + 1200×630) (§4.7 r1).
 2. `<CommandPalette>` con atajo `/` (§4.3).
-3. `<WhileYouWereAway>` (§5.5).
-4. Reading list `/leer-despues` (§5.6).
+3. `<WhileYouWereAway>` con umbral 14 días (§5.5 r1).
+4. Reading list `/leer-despues` versión completa, con botón guardar en cards y aside (§5.6 r1).
 5. `followedCountries` y `followedAxes` (§5.2 y §8.2 con curaduría editorial de "otros lectores también miran").
 
 **Por qué último:** son refinamientos de retención y distribución que ganan valor con corpus mayor.
@@ -620,18 +638,31 @@ Todas las métricas son **agregadas y anónimas**. Nada de IDs persistentes, nad
 
 ---
 
-## 13. Decisiones pendientes (para Tomás)
+## 13. Decisiones tomadas (sesión r1, 2026-05-09)
 
-Antes de cerrar la spec hace falta resolver:
+Trece decisiones despejadas en sesión y aplicadas a esta revisión de la spec:
 
-1. **§3.5 — máximo 5 footnotes por análisis.** ¿Es regla dura o sugerencia? Si es dura, ¿qué pasa si un análisis necesita más? Notas de pie expandibles vs sección "Lecturas".
-2. **§4.5 — `<ConceptualThread>` necesita el campo `conceptos_invocados[]`.** Ya está propuesto en Spec 07 sección 5. Confirmar prioridad y cuándo poblarlo (retroactivo para los 60+ análisis publicados, o solo nuevos desde X fecha).
-3. **§5.4 — bookmark `★` antes del título.** ¿Choca visualmente con el sistema de iconografía mono de footnotes? Probar mockup.
-4. **§5.5 — umbral de "mientras estuviste fuera" en 21 días.** Confirmar; alternativa 14 días para newsletter weekly.
-5. **§7.3 — header de ciudades dinámico.** Implica conexión data → header. Confirmar si vale la pena el costo de implementación o si "BA · Bogotá · Santiago" hardcoded está bien.
-6. **§4.2 — Frame Onboarding Bridge.** Decidir si aparece en TODOS los análisis a primer-time visitors o solo cuando el referrer es externo conocido (Twitter, Google). Dos cosas distintas en términos de cobertura.
-7. **§7.5 — Generar imagen para compartir.** Confirmar si vale el bundle extra (canvas + svg2png) o si la primera versión es solo "copiar link".
-8. **§5.6 — reading list.** ¿Vale la pena para v1 o se posterga a Año III?
+| # | Tema | Decisión | Sección |
+|---|---|---|---|
+| 1 | Footnotes max | Sugerencia editorial de 5, no regla dura. Excedentes pasan a sección "Lecturas" al pie | §3.5 |
+| 2 | `<ConceptualThread>` | Postergado a v2. Razón: requiere etiquetado de `conceptos_invocados[]` que no entra en scope v1 | §4.5, §6.4 |
+| 3 | Frame strip al inicio | Inline siempre visible, sin condicionales. Renombrado `<FrameStripInline>` | §4.2, §6.8 |
+| 4 | Reading list | Sí en v1, versión completa con botón en cards y aside, página `/leer-despues` | §5.6 |
+| 5 | "Mientras estuviste fuera" | Umbral 14 días (dos despachos perdidos) | §5.5 |
+| 6 | Marcadores de lectura | Tres estados confirmados: sin marca / dot dorado nuevo / título mute leído. Bookmark `★` para reading list | §5.4 |
+| 7 | Header ciudades | La línea hardcoded sale. Reemplazo: países cubiertos esta semana, dinámico, sin capitales | §7.3 |
+| 8 | Quote-as-card PNG | Sí en v1, formato completo (1080×1350 Instagram + 1200×630 Twitter) | §4.7, §6.6 |
+| 9 | Sidebar persistente | Colapsable en todas las páginas (48px → 240px). Default expandido en home/`/analisis`, colapsado en lectura | §7.2 |
+| 10 | Mapa dual | Confirmado: home overview (sin filtros) + `/mapa` explorer (con filtros laterales) | §7.1 |
+| 11 | Roadmap | Orden A → B → C confirmado | §11 |
+| 12 | Modelo 5 capas | L3 renombrado de "Historia" a "Proceso" (alinea con paso 02 del método) | §3.1 |
+| 13 | Marcas footnote | Set completo de 5 confirmado: ¹ ² › ■ ⌖ | §3.4 |
+
+## 13.1 Decisiones aún pendientes
+
+1. **`/acerca` — verificar implementación parcial.** Pendiente revisar el código actual para confirmar si existe ya y completar siguiendo Spec 06.
+2. **§4.7 quote generator — ¿servidor o cliente?** Decisión técnica de implementación: el PNG se genera client-side (canvas en browser) o server-side (endpoint). La decisión 8 confirmó "sí en v1" pero no la arquitectura. Recomendación: cliente, salvo que el bundle exceda los 80kb target de §10.2.
+3. **§5.2 schema — `followedCountries` y `followedAxes`.** El schema reserva los campos pero no se implementó UX para agregarlos. Decidir en qué punto del journey aparecen los toggles "seguir" (en página de país, en página de eje, en footer del análisis).
 
 ---
 

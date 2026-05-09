@@ -1,11 +1,13 @@
 # Spec 14 — Integración de indicadores estructurales (económicos y sociales)
 
-**Estado:** marco general · pendiente decantar en 14A (curaduría) y 14B (pipeline)
-**Depende de:** Spec 01 (arquitectura), Spec 09 §3 (Capa 1 — captura de visión), Spec 12 (ficha-país), Spec 13 (página comparativa)
+**Estado:** marco general · pendiente decantar en 14A (curaduría — completada en sesión, ver archivo aparte) y 14B (pipeline)
+**Depende de:** Spec 01 (arquitectura), Spec 09 §3 (Capa 1 — captura de visión)
 **Hermana de:** Spec 10 (Latinobarómetro). Esta es la ejecución de la **Capa 1** lo que aquélla es para la Capa 2.
-**Prioridad:** media — segunda fuente de datos cuantitativos del proyecto, posterior al ciclo LB
+**No modifica:** Spec 12 (ficha-país LB), Spec 13 (comparativa LB). Convive con ambas — ver §7.
+**Prioridad:** media — segunda fuente de datos cuantitativos del proyecto, posterior al ciclo LB. Post-v1.
 **Tipo:** ingesta de datos + visualización editorial
 **Tamaño estimado:** L (subdividido en 14A + 14B)
+**Posición en roadmap:** después del cierre del ciclo Spec 11 + 12 + 13 + ajustes a v1.
 
 ---
 
@@ -54,12 +56,12 @@ Esta posición editorial es parte del trabajo, no un "caveat técnico". El propi
 
 ### 3.1. Entra (v1)
 
-- Importación curada de **20-25 indicadores estructurales** repartidos en 4 familias (sección 4).
+- Importación curada de **24 indicadores estructurales** repartidos en 4 familias de 6 (sección 4 — set cerrado en sesión de curaduría, ver Spec 14A).
 - Pipeline `build_indicators_macro.py` que pulla de las APIs públicas y produce `indicators-macro.json` estático committeado.
 - Cobertura de los **10 países** que el proyecto cubre (los 17 de LB no aplican: Mapa Inestable es Sudamérica).
-- Series históricas de al menos **10 años** por indicador donde la fuente lo permite (no solo el último valor).
-- Ficha-país (Spec 12) extiende su sección "Pulso ciudadano" con una sección "Estructura material" que muestra los indicadores con sub-secciones por familia.
-- Página comparativa (Spec 13) consume el mismo JSON.
+- Series históricas de **10-15 años** por indicador donde la fuente lo permite.
+- Ficha-país agrega una sección **paralela** a "Pulso ciudadano" (Spec 12), llamada "Estructura material", que muestra los indicadores con sub-secciones por familia. Esta spec no modifica el contrato de Spec 12 — convive como sección hermana, idealmente debajo o lateral.
+- **No se modifica Spec 13.** La comparativa LB se mantiene en su scope (17 países, edición 2024). Una comparativa macro equivalente queda planteada como **Spec 15 futura**, posterior al cierre de 14B y a una decisión sobre si conviene replicar el patrón de la 13 con un dataset de 10 países.
 
 ### 3.2. No entra (queda para v2 o más)
 
@@ -91,7 +93,7 @@ Cada familia se elige porque alimenta directamente uno o más ejes y porque tien
 | A3 | Composición sectorial del VAB (primario / manufacturero / servicios) | % | anual | Banco Mundial WDI |
 | A4 | Productividad laboral (PBI / ocupado) | índice base 2010 | anual | OIT ILOSTAT / CEPAL |
 | A5 | Inversión bruta interna / PBI | % | anual | Banco Mundial WDI / FMI WEO |
-| A6 | Concentración de las exportaciones (índice Herfindahl por producto) | índice | anual | UNCTAD / CEPAL |
+| A6 | Inflación IPC anual | % anual | anual | FMI WEO + reemplazo CEPAL para AR 2007-2015 y VE post-2014 |
 
 ### 4.2. B · Vínculos de comercio exterior
 
@@ -147,12 +149,11 @@ Cada familia se elige porque alimenta directamente uno o más ejes y porque tien
 | D1 | Pobreza (línea regional comparable) | % población | anual | CEPALSTAT |
 | D2 | Indigencia (línea regional comparable) | % población | anual | CEPALSTAT |
 | D3 | Coeficiente de Gini (ingreso) | índice | anual | Banco Mundial / CEPAL |
-| D4 | IDH | índice | anual | PNUD |
 | D5 | Mortalidad infantil | por 1.000 nacidos vivos | anual | Banco Mundial / OPS |
-| D6 | Homicidios | por 100.000 habitantes | anual | UNODC |
+| D6 | Homicidios | por 100.000 habitantes | anual | UNODC + OVV para VE post-2014 |
 | D7 | Presión tributaria (proxy capacidad estatal) | % PBI | anual | CEPALSTAT / OECD |
 
-Total preliminar: **24 indicadores en 4 familias**. La curaduría 14A puede recortar a 20-22 si encuentra solapamientos.
+**Set cerrado: 24 indicadores en 4 familias de 6.** Curaduría completa documentada en Spec 14A.
 
 ---
 
@@ -296,7 +297,9 @@ La spec 12 obligaba a un techo de 12 indicadores por la curaduría dura. Acá la
 
 ### 7.2. Comparativa cross-país
 
-Spec 13 ya consume `indicators.json` de LB. Se extiende para consumir también `indicators-macro.json`. Permite ver "todos los países en una variable" o "un país en todas las variables".
+**Esta spec no modifica Spec 13.** Spec 13 está scope-cerrada: 17 países, edición 2024, ranking por indicador LB. Mezclar 17 países (LB) con 10 países (macro) en la misma página rompe el contrato visual y temporal.
+
+Cuando 14B esté ejecutada y haya 24 indicadores macro × 10 países disponibles, corresponde decidir si conviene una **Spec 15 (comparativa macro)** que replique el patrón de la 13 con su propio scope. La decisión se posterga: con material en mano la pregunta cambia ("¿qué patrón cross-país quiero exponer?"), y conviene tomarla con el JSON ya generado, no antes.
 
 ### 7.3. Mapa
 
@@ -385,7 +388,66 @@ Etapa 4 — Decisión sobre el mapa
 
 ---
 
-## 12. Notas finales
+## 12. Garantías de trazabilidad
+
+Un proyecto sobre desorientación epistemológica no puede operar sin trazabilidad declarada. Lo que la Spec 01 pidió para los eventos (fuente primaria + URL + fecha + autor obligatorios) tiene su versión cuantitativa en ocho mecanismos que aplican al pipeline 14B y que conviene fijar acá para que no queden a discreción del momento de implementación.
+
+### 12.1. Schema obligatorio
+
+Cada datapoint declara `source.name`, `source.code` (variable exacta del dataset), `source.url`, `pulled_at`, `methodology`, `quality`. El script falla si falta cualquiera. No hay valor sin procedencia. Schema completo en §6.2.
+
+### 12.2. Pulls cacheados con timestamp
+
+`raw/<fuente>/<fecha>/` guarda la respuesta cruda de cada pull, no solo el resultado normalizado. Si un dato se cuestiona meses después, queda reproducible el contexto del pull original. Es la diferencia entre confiar y poder defender.
+
+### 12.3. Validación cruzada contra documento ancla
+
+Patrón ya probado por Spec 12B con LB (validación ±1pp contra el PDF oficial). Para macro, cada fuente tiene un documento ancla equivalente — *World Development Report* del BM, *Panorama Social* de CEPAL, *World Economic Outlook* del FMI, *Informe Mundial sobre Drogas* de UNODC. La 14B incluye validación contra ese ancla por indicador, no contra "lo que devuelve la API". Si API y documento divergen, el script falla y pide intervención humana.
+
+### 12.4. Diff vs versión committeada anterior
+
+Cada re-pull genera changelog: qué datapoints cambiaron, en cuánto, en qué dirección. Cambios mayores a un umbral (3σ histórico de la serie, o 5pp absolutos para %) salen como warnings y no se aceptan automáticamente. Detecta tanto correcciones legítimas de la fuente como errores del propio pull.
+
+### 12.5. Detección de quiebres metodológicos
+
+El campo `methodology` se hashea por pull. Si una fuente cambia metodología, el hash cambia y el script **rehúsa machacar el JSON**. Pide intervención humana: nueva serie reemplaza, convive como serie B, o se rompe en dos series con marca temporal.
+
+### 12.6. Política regional > nacional, escrita
+
+Decisión ya tomada (§2.3): cuando hay divergencia BM/CEPAL vs INDEC/INE, gana la regional con documentación de la diferencia. Evita que el dato cambie porque alguien decidió "esta vez parece más razonable la oficial". La política se escribe en el README del pipeline.
+
+### 12.7. Trazabilidad pública en la UI
+
+Cuando un análisis cite un indicador, la ficha-país muestra `source.url` directo. El lector puede chequearlo. Es control de calidad distribuido — el sistema más fuerte que existe para mantener honesta una fuente, porque cualquiera puede ponerla en duda con un click.
+
+### 12.8. Política editorial de uso pre-publicación
+
+Antes de citar un indicador en un despacho semanal, el flujo es: re-pull manual de ese indicador específico → diff contra el JSON committeado → si cambió, re-validar contra documento ancla → publicar. Tres minutos por indicador citado. No es automatización, es disciplina operativa que el proyecto asume como parte del proceso.
+
+### 12.9. Lo que estos mecanismos NO garantizan
+
+Que la fuente original esté bien medida. Banco Mundial puede publicar mal, OIT puede tener un error, CEPAL puede arrastrar un dato nacional viciado sin advertirlo. Para eso el único mecanismo es **leer el dato con sospecha estructural cuando se mueve fuerte**: leer el comunicado de la fuente, leer la nota técnica de las revisiones retroactivas. Trabajo editorial que no se automatiza.
+
+---
+
+## 13. Indicadores compuestos descartados explícitamente
+
+Para que la decisión quede documentada y no haya que re-debatirla cuando aparezca otro candidato similar, dejo lista cerrada de los compuestos evaluados y la razón de exclusión.
+
+| Indicador | Fuente | Razón de exclusión |
+|-----------|--------|---------------------|
+| IDH (Índice de Desarrollo Humano) | PNUD | Compuesto. Sus tres dimensiones (mortalidad, educación, ingreso) ya están cubiertas por separado en el set. Promedio aritmético entre dimensiones inconmensurables. |
+| Herfindahl de exportaciones | UNCTAD | Compuesto. La concentración exportadora la cuentan B1 (% primarias) + B2 + B3 + B4 (top socios) sin esconder composición. |
+| V-Dem / Polity / Bertelsmann TI / WJP Rule of Law | Centros académicos | Compuestos. Lente liberal-democrático occidental. Si aparece necesidad editorial, se citan ad hoc, no entran al tablero. |
+| **Ease of Doing Business (EDB)** | Banco Mundial | **Descontinuado en septiembre 2021** tras investigación WilmerHale por manipulación deliberada de rankings (China, Arabia Saudita, Azerbaiyán, EAU). El sucesor B-READY cubre solo 50 países en oleada 2024 (Sudamérica: Chile, Colombia, Perú; resto en oleadas posteriores). Doble razón de exclusión: cobertura insuficiente + compuesto. **El propio escándalo del EDB es material editorial** sobre el eje erosión de mediaciones — vale guardarlo como disparador eventual, no como dato de tablero. |
+| Índice de Libertad Económica (Heritage / Fraser) | Think tanks libertarios | Compuesto + sesgo institucional explícito. No entra. |
+| Riesgo país EMBI | JPMorgan | Latencia diaria, dato de mercado. Pertenece a Capa 3 (risk management) — la advertencia de Spec 09 §8 sobre resistir Capa 3 entrando por la puerta de atrás aplica directamente. |
+
+La regla de exclusión es **observaciones primarias sobre compuestos**, con única excepción declarada del Gini (no tiene sustituto operativo para comparar países).
+
+---
+
+## 14. Notas finales
 
 **Una.** El precedente del Latinobarómetro funcionó porque la curaduría editorial (12A) precedió al pipeline (12B). Acá conviene mantener el orden: 14A antes que 14B. La tentación de empezar por el pipeline porque "los datos están en API" omite el paso editorial que hace que estos datos cuenten una historia y no sean ruido.
 
@@ -393,7 +455,10 @@ Etapa 4 — Decisión sobre el mapa
 
 **Tres.** Esta spec es estrictamente Capa 1 de la Spec 09. Cuando empiece a tentar "agregar alertas, scoring compuesto, riesgo país agregado", esa tentación es Capa 3 (risk management) entrando por la puerta de atrás. Vale resistir hasta que la decisión de Capa 3 se tome de frente — es la advertencia explícita de Spec 09 §8.
 
+**Cuatro.** Esta spec **no entra en conflicto con specs 11-13**, que están en ejecución activa. La 11 (home) explícitamente postergó "atlas + indicadores" a post-v1. La 12 (pulso ciudadano) define una sección de la ficha-país que esta spec complementa con una sección hermana, no la sobrescribe. La 13 (comparativa LB) mantiene su scope cerrado de 17 países × 12 indicadores LB. Toda extensión comparativa de macro queda como Spec 15 futura.
+
 ---
 
 **Fecha de captura:** 9 mayo 2026
-**Próxima iteración:** Spec 14A (curaduría definitiva) cuando se decida arrancar.
+**Curaduría completada:** 9 mayo 2026 — ver Spec 14A.
+**Próxima iteración:** Spec 14B (pipeline) cuando v1 esté estable y se decida arrancar.
