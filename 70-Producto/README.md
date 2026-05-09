@@ -25,7 +25,8 @@ El sitio vive en producción en Vercel. El vault de conocimiento vive en Obsidia
 ├── 60-Borradores/         Piezas en desarrollo
 ├── 70-Producto/           ← ESTÁS ACÁ
 │   ├── README.md          Este archivo
-│   ├── specs/             Especificaciones de features (01-09)
+│   ├── specs/             Especificaciones de features (01-13)
+│   ├── mockups/           Previews HTML de componentes (referencia visual antes de implementar)
 │   └── design-system/     Tokens CSS, guía visual, prototipo HTML
 └── platform/              La plataforma web
     ├── START.md            Instrucciones de arranque (dev local)
@@ -34,7 +35,9 @@ El sitio vive en producción en Vercel. El vault de conocimiento vive en Obsidia
     │   ├── src/components/ Componentes reutilizables
     │   ├── src/lib/        Datos y lógica compartida
     │   └── public/         Estáticos (favicon.svg, GeoJSON del mapa)
-    └── backend/            FastAPI + PostgreSQL (pendiente de completar)
+    ├── backend/            FastAPI + PostgreSQL (pendiente de completar)
+    └── data/               Datasets externos procesados (Latinobarómetro, futuros)
+        └── latinobarometro-2024/    Pipeline Python + indicators.json (ver Spec 12B)
 ```
 
 ---
@@ -93,6 +96,18 @@ El sitio vive en producción en Vercel. El vault de conocimiento vive en Obsidia
 | `lib/country-data.ts` | Perfiles de países: ejes crónicos, fuentes monitoreadas, análisis mock |
 | `lib/content.ts` | Parser de archivos `.md` del vault para páginas de país |
 | `lib/api.ts` | Cliente HTTP preparado para el backend (no activo) |
+
+---
+
+## Datasets externos (`platform/data/`)
+
+Datos de fuentes externas procesados con Python y serializados a JSON para consumo del frontend. Cada dataset vive en su propio subdirectorio con: el código del pipeline, el output JSON committed al repo, un README con metodología, y los archivos crudos en `raw/` (gitignored).
+
+| Carpeta | Contenido | Estado | Spec |
+|---|---|---|---|
+| `latinobarometro-2024/` | Microdatos LB 2024 → 12 indicadores × 17 países (`indicators.json`, 30 KB) | ✓ Generado y validado | [12B](specs/12B-pipeline-lb2024.md) |
+
+**Convención:** los CSV/PDF crudos se mantienen fuera del repo (`.gitignore`). El JSON producido sí se committea — es chico, reproducible desde el pipeline, y debe estar disponible para el frontend en build sin pasos adicionales.
 
 ---
 
@@ -217,9 +232,16 @@ Este requisito es estructural. El proyecto trata sobre desorientación epistemol
 | `specs/07-puente-vault-sitio.md` | Puente vault → sitio | Pendiente |
 | `specs/08-coherencia-editorial.md` | Coherencia editorial | Pendiente |
 | `specs/09-vision-proximo-desarrollo.md` | Visión próximo desarrollo | Referencia futura (no scope inmediato) |
-| `specs/10-integracion-latinobarometro.md` | Integración Latinobarómetro | Referencia futura |
+| `specs/10-integracion-latinobarometro.md` | Integración Latinobarómetro (marco general) | Referencia base para Spec 12 |
+| `specs/11-rediseno-home-dashboard.md` | Rediseño de home como dashboard | Pendiente |
+| `specs/12-pulso-ciudadano-ficha-pais.md` | Pulso ciudadano LB 2024 en ficha de país | Datos listos · UI pendiente |
+| `specs/12A-curaduria-12-indicadores.md` | Anexo 12A — curaduría de los 12 indicadores | ✓ Cerrada |
+| `specs/12B-pipeline-lb2024.md` | Anexo 12B — pipeline de carga de microdatos | ✓ Ejecutada |
+| `specs/13-pagina-comparativa-paises.md` | Página comparativa cross-país (LB 2024) | Pendiente · post-Spec 12 |
 
 Para ejecutar una spec: leer el archivo completo antes de escribir una línea de código. Las specs definen el layout, los datos requeridos y los criterios de aceptación.
+
+**Mockups:** referencia visual de componentes en `mockups/`. Convención: `NN-{nombre}-mockup.html`, donde `NN` corresponde al número de spec asociada.
 
 ---
 
@@ -233,6 +255,17 @@ npm run dev
 ```
 
 El backend no es necesario para el frontend actual — los datos son hardcoded en `src/lib/`.
+
+### Cómo regenerar los datasets externos
+
+Si se actualiza un CSV crudo en `platform/data/<dataset>/raw/`, regenerar el JSON con:
+
+```bash
+cd platform/data/latinobarometro-2024
+python3 build_indicators.py
+```
+
+Tiempo de ejecución <2 segundos. Output: `indicators.json` actualizado. Validación cruda contra el informe oficial documentada en el README del subdirectorio.
 
 ---
 

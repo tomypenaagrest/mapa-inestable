@@ -1,0 +1,50 @@
+{
+  "apoyo-democracia": {
+    "sintesis": "Recuperación histórica tras 14 años de caída: el apoyo a la democracia alcanzó el 52% regional en 2024, su mayor nivel desde 2010.",
+    "por_que_importa": "La brecha entre Argentina (75%) y Guatemala (35%) revela que el repunte no es uniforme. La narrativa «La democracia resiliente» del informe se construye sobre este número."
+  },
+  "no-representado-parlamento": {
+    "sintesis": "Ningún país tiene mayoría que se sienta representada por su parlamento. El 75% regional —5 puntos más que en 2023— es el indicador más directo de desrepresentación.",
+    "por_que_importa": "Las instituciones parlamentarias cumplen funciones formales pero han perdido la capacidad de producir adhesión. La forma persiste; la densidad simbólica no."
+  },
+  "sociedad-cambio-radical": {
+    "sintesis": "Uno de cada cuatro latinoamericanos considera que la sociedad debe cambiarse radicalmente. Sumado a quienes piden reformas profundas, la demanda de cambio supera el 50% en casi toda la región.",
+    "por_que_importa": "Bolivia (40%) y Honduras (38%) encabezan el rechazo al statu quo. Uruguay (10%) y El Salvador (11%) son las excepciones. El cambio es demanda masiva, no marginal."
+  },
+  "confianza-partidos": {
+    "sintesis": "Los partidos políticos son la institución con menor confianza de la democracia latinoamericana: solo el 17% confía en ellos.",
+    "por_que_importa": "Colombia y Perú marcan el piso con el 9%. La institución diseñada para mediar entre ciudadanos y Estado ha perdido su razón de ser para la mayoría."
+  },
+  "confianza-congreso": {
+    "sintesis": "El 24% de confianza en el congreso —cerca del mínimo histórico de 19% en 2017— confirma la crisis de representación institucional.",
+    "por_que_importa": "La brecha entre Uruguay (49%) y Perú (7%) ilustra que la crisis no es uniforme: hay países con instituciones que aún funcionan y países donde la mediación ya se rompió."
+  },
+  "confianza-judicial": {
+    "sintesis": "Menos de 3 de cada 10 latinoamericanos confía en el poder judicial. El informe identifica el patrón subyacente: justicia percibida como instrumento de los poderosos, no como árbitro neutral.",
+    "por_que_importa": "Bolivia (13%) y Ecuador (18%) marcan el piso. El Salvador (51%) y Uruguay (50%) son los únicos con mayoría de confianza —ambos con contextos muy distintos entre sí."
+  },
+  "info-falsa-redes": {
+    "sintesis": "Tres de cada cuatro latinoamericanos perciben mucha o alguna información falsa en redes sociales. La conciencia del problema es casi universal.",
+    "por_que_importa": "Esa conciencia no impide que las redes sigan siendo el medio dominante de información política. Saber que el entorno informacional está fragmentado no genera anticuerpos automáticos."
+  },
+  "elecciones-fraudulentas": {
+    "sintesis": "Doce de los 17 países encuestados tienen mayoría que considera sus elecciones fraudulentas. El promedio regional es 61%.",
+    "por_que_importa": "Cuando se erosiona la creencia en el mecanismo electoral, se pierde el suelo epistémico de la democracia: el mandato ya no es legítimo aunque las formas se respeten. Honduras y Bolivia lideran con 87%."
+  },
+  "sin-religion": {
+    "sintesis": "El porcentaje sin religión se quintuplicó en 30 años: del 4% en 1995 al 19% en 2024. Es la transformación cultural de largo plazo más consistente que registra Latinobarómetro.",
+    "por_que_importa": "Uruguay (52%) y Chile (37%) lideran el proceso. La cultura pasa de marco normativo compartido a opción personal: es el indicador más limpio de deculturación disponible en este dataset."
+  },
+  "izquierda-derecha": {
+    "sintesis": "América Latina se corrió 0,2 puntos a la derecha en 2024, alcanzando un promedio de 5,6. El movimiento es sostenido en los últimos años.",
+    "por_que_importa": "El dato más revelador no es el promedio sino el margen: el 13% de encuestados no se ubica en la escala (vs. 7% en años anteriores). La mediación ideológica izquierda-derecha pierde tracción como organizador del espacio político."
+  },
+  "confianza-redes": {
+    "sintesis": "Solo 1 de cada 3 latinoamericanos confía en las redes sociales, pero son el medio principal de consumo de información política en la región.",
+    "por_que_importa": "Esa contradicción —desconfianza sin alternativa— es la materia del eje Atención: la atención se entrega a plataformas en las que no se confía porque no hay otros mediadores disponibles."
+  },
+  "aprobacion-gobierno": {
+    "sintesis": "La aprobación presidencial oscila entre el 87% de El Salvador (Bukele) y el 5% de Perú (Boluarte). El promedio regional de 43% oculta más de lo que revela.",
+    "por_que_importa": "Variable de control para leer los demás indicadores: la baja confianza institucional o el descrédito electoral tienen texturas muy distintas según si el gobierno es aprobado o rechazado por la ciudadanía."
+  }
+}

@@ -1,9 +1,15 @@
 # Spec 10 — Integración Latinobarómetro
 
-**Estado:** pendiente
+**Estado:** marco general · ejecución concreta en specs 12, 12A, 12B, 13
 **Depende de:** Spec 01 (arquitectura), Spec 04 (páginas de eje), Spec 09 (visión — capa 2)
 **Prioridad:** media — primera fuente de datos cuantitativos del proyecto
 **Tipo:** ingesta de datos + visualización editorial
+
+**Implementación concreta — oleada 2024:**
+- [Spec 12](12-pulso-ciudadano-ficha-pais.md) — Pulso ciudadano en la ficha de país (UI pendiente)
+- [Spec 12A](12A-curaduria-12-indicadores.md) — Curaduría de los 12 indicadores ✓
+- [Spec 12B](12B-pipeline-lb2024.md) — Pipeline de microdatos ✓
+- [Spec 13](13-pagina-comparativa-paises.md) — Página comparativa cross-país (post-Spec 12)
 
 ---
 

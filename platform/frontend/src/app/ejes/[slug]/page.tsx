@@ -3,6 +3,130 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { EJES, EJES_BY_SLUG, MOCK_EJE_ANALYSES } from "@/lib/ejes";
 import { getConceptosByEje } from "@/lib/conceptos";
+import {
+  getIndicatorsByAxis,
+  LB_META,
+  COVERED_COUNTRIES,
+  formatValue,
+  type Indicator,
+} from "@/lib/latinobarometro";
+
+/* === COMPONENTES LATINOBARÓMETRO ================================= */
+
+const COUNTRY_LABEL: Record<string, string> = {
+  ar: "Argentina", bo: "Bolivia", br: "Brasil", cl: "Chile",
+  co: "Colombia", ec: "Ecuador", py: "Paraguay", pe: "Perú",
+  uy: "Uruguay", ve: "Venezuela",
+};
+
+function IndicatorTable({ indicator, accentColor }: { indicator: Indicator; accentColor: string }) {
+  const rows = COVERED_COUNTRIES.map(slug => {
+    const d = indicator.by_country[slug.toUpperCase()];
+    return d ? { slug, ...d } : null;
+  }).filter(Boolean) as Array<{ slug: string; name: string; value: number; n: number; rank: number }>;
+
+  rows.sort((a, b) => b.value - a.value);
+  const max = indicator.unit === "escala 0-10" ? 10 : 100;
+  const regional = indicator.regional_value;
+
+  return (
+    <div style={{
+      border: "var(--mi-border-thick)",
+      background: "var(--mi-bg-paper)",
+      boxShadow: "var(--mi-shadow-card)",
+      overflow: "hidden",
+    }}>
+      {/* Header */}
+      <div style={{
+        background: "var(--mi-bg-dark)",
+        padding: "var(--mi-space-3) var(--mi-space-4)",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "baseline",
+        gap: "var(--mi-space-4)",
+      }}>
+        <span style={{
+          fontFamily: "var(--mi-font-mono)",
+          fontSize: "var(--mi-text-xs)",
+          letterSpacing: "var(--mi-tracking-wide)",
+          textTransform: "uppercase",
+          color: "var(--mi-bg-paper)",
+        }}>
+          {indicator.label}
+        </span>
+        <span style={{
+          fontFamily: "var(--mi-font-mono)",
+          fontSize: "10px",
+          letterSpacing: "var(--mi-tracking-wide)",
+          textTransform: "uppercase",
+          color: "var(--mi-ink-mute)",
+          whiteSpace: "nowrap",
+        }}>
+          n={indicator.regional_n.toLocaleString("es-AR")} · LATAM: {formatValue(indicator, regional)}
+        </span>
+      </div>
+
+      {/* Filas */}
+      <div>
+        {rows.map((row, i) => {
+          const pct = (row.value / max) * 100;
+          const refPct = (regional / max) * 100;
+          return (
+            <div key={row.slug} style={{
+              padding: "var(--mi-space-2) var(--mi-space-4)",
+              borderTop: i > 0 ? "var(--mi-border-hair)" : undefined,
+              display: "grid",
+              gridTemplateColumns: "130px 1fr 60px",
+              gap: "var(--mi-space-3)",
+              alignItems: "center",
+            }}>
+              <Link
+                href={`/pais/${row.slug}`}
+                style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: "var(--mi-text-xs)",
+                  letterSpacing: "var(--mi-tracking-wide)",
+                  textTransform: "uppercase",
+                  color: "var(--mi-ink)",
+                  borderBottom: "1px solid transparent",
+                }}
+                onMouseOver={undefined}
+              >
+                {COUNTRY_LABEL[row.slug] ?? row.slug.toUpperCase()}
+              </Link>
+              <div style={{ position: "relative", height: 6, background: "var(--mi-bg-cream)", border: "var(--mi-border-hair)" }}>
+                <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${pct}%`, background: accentColor, opacity: 0.85 }} />
+                <div style={{ position: "absolute", top: -2, bottom: -2, left: `${refPct}%`, width: 2, background: "var(--mi-ink)", opacity: 0.3 }} />
+              </div>
+              <span style={{
+                fontFamily: "var(--mi-font-mono)",
+                fontSize: "var(--mi-text-xs)",
+                color: "var(--mi-ink)",
+                textAlign: "right",
+              }}>
+                {formatValue(indicator, row.value)}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Pie trazabilidad */}
+      <div style={{
+        borderTop: "var(--mi-border-dashed)",
+        padding: "var(--mi-space-2) var(--mi-space-4)",
+        fontFamily: "var(--mi-font-mono)",
+        fontSize: "10px",
+        letterSpacing: "var(--mi-tracking-wide)",
+        color: "var(--mi-ink-mute)",
+      }}>
+        <span style={{ color: "var(--mi-ink)", textTransform: "uppercase" }}>Pregunta</span>
+        {" "}· {indicator.question_text}
+        {" "}· Var. {indicator.questionnaire_var}
+      </div>
+    </div>
+  );
+}
 
 /* === STATIC PARAMS ============================================== */
 
@@ -84,6 +208,7 @@ export default async function EjePage({ params }: { params: Promise<{ slug: stri
   const analyses = MOCK_EJE_ANALYSES[slug] ?? [];
   const conceptos = getConceptosByEje(slug);
   const accentColor = `var(--mi-axis-${eje.axisKey})`;
+  const lbIndicators = getIndicatorsByAxis(eje.axisKey);
   const numStr = String(eje.num).padStart(2, "0");
   const totalEjes = EJES.length;
 
@@ -261,6 +386,45 @@ export default async function EjePage({ params }: { params: Promise<{ slug: stri
             </p>
           )}
         </section>
+
+        {/* Indicadores asociados · Latinobarómetro */}
+        {lbIndicators.length > 0 && (
+          <section>
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
+              marginBottom: "var(--mi-space-5)",
+            }}>
+              <span style={{ ...sectionLabel, marginBottom: 0 }}>Indicadores asociados</span>
+              <span style={{
+                fontFamily: "var(--mi-font-mono)",
+                fontSize: "10px",
+                letterSpacing: "var(--mi-tracking-wide)",
+                textTransform: "uppercase",
+                color: "var(--mi-ink-mute)",
+              }}>
+                {LB_META.wave_label}
+              </span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--mi-space-4)" }}>
+              {lbIndicators.map(ind => (
+                <IndicatorTable key={ind.id} indicator={ind} accentColor={accentColor} />
+              ))}
+            </div>
+            <div style={{
+              marginTop: "var(--mi-space-4)",
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: "10px",
+              letterSpacing: "var(--mi-tracking-wide)",
+              textTransform: "uppercase",
+              color: "var(--mi-ink-mute)",
+            }}>
+              <span style={{ color: "var(--mi-ink)" }}>Fuente</span>
+              {" "}· {LB_META.citation}
+            </div>
+          </section>
+        )}
 
         {/* Conceptos vinculados */}
         <section>

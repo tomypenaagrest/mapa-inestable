@@ -1,0 +1,1412 @@
+{
+  "version": "lb2024-v20250817",
+  "computed_at": "2026-05-09",
+  "n_total": 19214,
+  "n_countries": 17,
+  "indicators": [
+    {
+      "id": "apoyo-democracia",
+      "label": "Apoyo a la democracia",
+      "axis": "desrepresentacion",
+      "section_pdf": "4.1",
+      "page_pdf": 30,
+      "questionnaire_var": "P11STGBS",
+      "question_text": "La democracia es preferible a cualquier otra forma de gobierno",
+      "compute": "% valor = 1 (preferible), ponderado por WT",
+      "unit": "%",
+      "regional_value": 51.6,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 74.6,
+          "n": 1210,
+          "rank": 1
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 46.8,
+          "n": 1200,
+          "rank": 11
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 45.3,
+          "n": 1204,
+          "rank": 12
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 60.5,
+          "n": 1200,
+          "rank": 4
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 48.2,
+          "n": 1200,
+          "rank": 9
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 62.7,
+          "n": 1000,
+          "rank": 3
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 55.4,
+          "n": 1000,
+          "rank": 6
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 42.4,
+          "n": 1200,
+          "rank": 15
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 47.2,
+          "n": 1000,
+          "rank": 10
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 34.5,
+          "n": 1000,
+          "rank": 17
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 36.0,
+          "n": 1000,
+          "rank": 16
+        },
+        "MX": {
+          "name": "México",
+          "value": 49.4,
+          "n": 1200,
+          "rank": 8
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 53.9,
+          "n": 1000,
+          "rank": 7
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 42.8,
+          "n": 1200,
+          "rank": 14
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 44.2,
+          "n": 1200,
+          "rank": 13
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 70.1,
+          "n": 1200,
+          "rank": 2
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 60.0,
+          "n": 1200,
+          "rank": 5
+        }
+      }
+    },
+    {
+      "id": "no-representado-parlamento",
+      "label": "No se siente representado en el parlamento",
+      "axis": "desrepresentacion",
+      "section_pdf": "4.11.8",
+      "page_pdf": 78,
+      "questionnaire_var": "P25ST",
+      "question_text": "¿Usted se siente políticamente representado en el parlamento/congreso?",
+      "compute": "% valor = 2 (No), ponderado por WT",
+      "unit": "%",
+      "regional_value": 74.6,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 72.9,
+          "n": 1210,
+          "rank": 11
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 78.8,
+          "n": 1200,
+          "rank": 6
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 73.4,
+          "n": 1204,
+          "rank": 10
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 78.5,
+          "n": 1200,
+          "rank": 8
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 82.9,
+          "n": 1200,
+          "rank": 3
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 79.5,
+          "n": 1000,
+          "rank": 5
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 56.4,
+          "n": 1000,
+          "rank": 17
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 87.8,
+          "n": 1200,
+          "rank": 2
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 64.3,
+          "n": 1000,
+          "rank": 14
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 71.4,
+          "n": 1000,
+          "rank": 12
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 80.8,
+          "n": 1000,
+          "rank": 4
+        },
+        "MX": {
+          "name": "México",
+          "value": 59.3,
+          "n": 1200,
+          "rank": 15
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 71.4,
+          "n": 1000,
+          "rank": 13
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 78.2,
+          "n": 1200,
+          "rank": 9
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 90.6,
+          "n": 1200,
+          "rank": 1
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 59.2,
+          "n": 1200,
+          "rank": 16
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 78.7,
+          "n": 1200,
+          "rank": 7
+        }
+      }
+    },
+    {
+      "id": "sociedad-cambio-radical",
+      "label": "La sociedad debe cambiarse radicalmente",
+      "axis": "desrepresentacion",
+      "section_pdf": "III",
+      "page_pdf": 28,
+      "questionnaire_var": "P4ST",
+      "question_text": "¿Con cuál de las siguientes frases sobre la sociedad está más de acuerdo?",
+      "compute": "% valor = 4 (debe cambiarse radicalmente), ponderado por WT",
+      "unit": "%",
+      "regional_value": 26.5,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 24.5,
+          "n": 1210,
+          "rank": 10
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 39.6,
+          "n": 1200,
+          "rank": 1
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 25.8,
+          "n": 1204,
+          "rank": 8
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 21.9,
+          "n": 1200,
+          "rank": 13
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 23.1,
+          "n": 1200,
+          "rank": 11
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 19.9,
+          "n": 1000,
+          "rank": 14
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 25.7,
+          "n": 1000,
+          "rank": 9
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 35.9,
+          "n": 1200,
+          "rank": 5
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 11.2,
+          "n": 1000,
+          "rank": 16
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 27.6,
+          "n": 1000,
+          "rank": 7
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 37.8,
+          "n": 1000,
+          "rank": 2
+        },
+        "MX": {
+          "name": "México",
+          "value": 19.0,
+          "n": 1200,
+          "rank": 15
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 22.1,
+          "n": 1000,
+          "rank": 12
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 29.5,
+          "n": 1200,
+          "rank": 6
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 36.8,
+          "n": 1200,
+          "rank": 3
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 10.4,
+          "n": 1200,
+          "rank": 17
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 36.8,
+          "n": 1200,
+          "rank": 4
+        }
+      }
+    },
+    {
+      "id": "confianza-partidos",
+      "label": "Confianza en los partidos políticos",
+      "axis": "erosion-mediaciones",
+      "section_pdf": "4.9.2.6",
+      "page_pdf": 63,
+      "questionnaire_var": "P14ST.G",
+      "question_text": "¿Cuánta confianza tiene Ud. en los partidos políticos?",
+      "compute": "% valor ∈ {1, 2} (mucha + algo), ponderado por WT",
+      "unit": "%",
+      "regional_value": 16.9,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 17.7,
+          "n": 1210,
+          "rank": 6
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 10.0,
+          "n": 1200,
+          "rank": 15
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 15.6,
+          "n": 1204,
+          "rank": 7
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 12.1,
+          "n": 1200,
+          "rank": 13
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 8.7,
+          "n": 1200,
+          "rank": 17
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 14.9,
+          "n": 1000,
+          "rank": 8
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 27.7,
+          "n": 1000,
+          "rank": 3
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 12.5,
+          "n": 1200,
+          "rank": 12
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 21.4,
+          "n": 1000,
+          "rank": 4
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 13.7,
+          "n": 1000,
+          "rank": 10
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 11.4,
+          "n": 1000,
+          "rank": 14
+        },
+        "MX": {
+          "name": "México",
+          "value": 29.6,
+          "n": 1200,
+          "rank": 2
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 13.3,
+          "n": 1000,
+          "rank": 11
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 13.9,
+          "n": 1200,
+          "rank": 9
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 8.8,
+          "n": 1200,
+          "rank": 16
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 35.6,
+          "n": 1200,
+          "rank": 1
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 19.8,
+          "n": 1200,
+          "rank": 5
+        }
+      }
+    },
+    {
+      "id": "confianza-congreso",
+      "label": "Confianza en el congreso/parlamento",
+      "axis": "erosion-mediaciones",
+      "section_pdf": "4.9.2.5",
+      "page_pdf": 62,
+      "questionnaire_var": "P14ST.D",
+      "question_text": "¿Cuánta confianza tiene Ud. en el Congreso/Parlamento?",
+      "compute": "% valor ∈ {1, 2} (mucha + algo), ponderado por WT",
+      "unit": "%",
+      "regional_value": 24.5,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 25.2,
+          "n": 1210,
+          "rank": 6
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 19.8,
+          "n": 1200,
+          "rank": 11
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 26.1,
+          "n": 1204,
+          "rank": 5
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 19.2,
+          "n": 1200,
+          "rank": 12
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 16.5,
+          "n": 1200,
+          "rank": 15
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 24.5,
+          "n": 1000,
+          "rank": 7
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 40.9,
+          "n": 1000,
+          "rank": 2
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 17.9,
+          "n": 1200,
+          "rank": 14
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 40.5,
+          "n": 1000,
+          "rank": 3
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 20.4,
+          "n": 1000,
+          "rank": 10
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 15.7,
+          "n": 1000,
+          "rank": 16
+        },
+        "MX": {
+          "name": "México",
+          "value": 32.0,
+          "n": 1200,
+          "rank": 4
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 21.9,
+          "n": 1000,
+          "rank": 9
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 22.8,
+          "n": 1200,
+          "rank": 8
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 7.4,
+          "n": 1200,
+          "rank": 17
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 48.7,
+          "n": 1200,
+          "rank": 1
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 19.2,
+          "n": 1200,
+          "rank": 13
+        }
+      }
+    },
+    {
+      "id": "confianza-judicial",
+      "label": "Confianza en el poder judicial",
+      "axis": "erosion-mediaciones",
+      "section_pdf": "4.9.2.4",
+      "page_pdf": 61,
+      "questionnaire_var": "P14ST.F",
+      "question_text": "¿Cuánta confianza tiene Ud. en el Poder Judicial?",
+      "compute": "% valor ∈ {1, 2} (mucha + algo), ponderado por WT",
+      "unit": "%",
+      "regional_value": 28.5,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 22.2,
+          "n": 1210,
+          "rank": 11
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 12.9,
+          "n": 1200,
+          "rank": 17
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 35.2,
+          "n": 1204,
+          "rank": 5
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 18.1,
+          "n": 1200,
+          "rank": 15
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 22.5,
+          "n": 1200,
+          "rank": 10
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 45.9,
+          "n": 1000,
+          "rank": 3
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 39.7,
+          "n": 1000,
+          "rank": 4
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 17.9,
+          "n": 1200,
+          "rank": 16
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 50.5,
+          "n": 1000,
+          "rank": 1
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 22.6,
+          "n": 1000,
+          "rank": 9
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 19.2,
+          "n": 1000,
+          "rank": 12
+        },
+        "MX": {
+          "name": "México",
+          "value": 35.1,
+          "n": 1200,
+          "rank": 6
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 33.1,
+          "n": 1000,
+          "rank": 7
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 28.2,
+          "n": 1200,
+          "rank": 8
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 18.4,
+          "n": 1200,
+          "rank": 14
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 50.1,
+          "n": 1200,
+          "rank": 2
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 19.0,
+          "n": 1200,
+          "rank": 13
+        }
+      }
+    },
+    {
+      "id": "info-falsa-redes",
+      "label": "Información falsa en redes sociales",
+      "axis": "desorientacion-epistemologica",
+      "section_pdf": "4.12.3",
+      "page_pdf": 83,
+      "questionnaire_var": "P47ST.D",
+      "question_text": "¿Cuánta información falsa hay en las redes sociales?",
+      "compute": "% valor ∈ {1, 2} (mucha + alguna), ponderado por WT",
+      "unit": "%",
+      "regional_value": 76.0,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 78.2,
+          "n": 1210,
+          "rank": 7
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 71.2,
+          "n": 1200,
+          "rank": 13
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 83.2,
+          "n": 1204,
+          "rank": 3
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 84.3,
+          "n": 1200,
+          "rank": 2
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 83.1,
+          "n": 1200,
+          "rank": 4
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 80.8,
+          "n": 1000,
+          "rank": 6
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 83.1,
+          "n": 1000,
+          "rank": 5
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 77.4,
+          "n": 1200,
+          "rank": 8
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 72.9,
+          "n": 1000,
+          "rank": 11
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 63.0,
+          "n": 1000,
+          "rank": 17
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 69.8,
+          "n": 1000,
+          "rank": 14
+        },
+        "MX": {
+          "name": "México",
+          "value": 67.8,
+          "n": 1200,
+          "rank": 15
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 74.7,
+          "n": 1000,
+          "rank": 10
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 76.3,
+          "n": 1200,
+          "rank": 9
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 65.8,
+          "n": 1200,
+          "rank": 16
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 86.8,
+          "n": 1200,
+          "rank": 1
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 71.7,
+          "n": 1200,
+          "rank": 12
+        }
+      }
+    },
+    {
+      "id": "elecciones-fraudulentas",
+      "label": "Las elecciones son fraudulentas",
+      "axis": "desorientacion-epistemologica",
+      "section_pdf": "4.11.7",
+      "page_pdf": 76,
+      "questionnaire_var": "P27ST",
+      "question_text": "¿Las elecciones en su país son limpias o son fraudulentas?",
+      "compute": "% valor = 2 (fraudulentas), ponderado por WT",
+      "unit": "%",
+      "regional_value": 60.6,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 42.2,
+          "n": 1210,
+          "rank": 13
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 86.9,
+          "n": 1200,
+          "rank": 2
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 60.5,
+          "n": 1204,
+          "rank": 9
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 15.6,
+          "n": 1200,
+          "rank": 17
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 78.1,
+          "n": 1200,
+          "rank": 6
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 35.3,
+          "n": 1000,
+          "rank": 14
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 55.5,
+          "n": 1000,
+          "rank": 11
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 80.8,
+          "n": 1200,
+          "rank": 5
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 35.0,
+          "n": 1000,
+          "rank": 15
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 77.8,
+          "n": 1000,
+          "rank": 7
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 87.4,
+          "n": 1000,
+          "rank": 1
+        },
+        "MX": {
+          "name": "México",
+          "value": 53.1,
+          "n": 1200,
+          "rank": 12
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 56.9,
+          "n": 1000,
+          "rank": 10
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 84.0,
+          "n": 1200,
+          "rank": 3
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 83.6,
+          "n": 1200,
+          "rank": 4
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 21.3,
+          "n": 1200,
+          "rank": 16
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 73.4,
+          "n": 1200,
+          "rank": 8
+        }
+      }
+    },
+    {
+      "id": "sin-religion",
+      "label": "Sin religión",
+      "axis": "deculturacion",
+      "section_pdf": "7.1",
+      "page_pdf": 114,
+      "questionnaire_var": "S1",
+      "question_text": "¿Cuál es su religión?",
+      "compute": "% valor = 97 (Ninguna), ponderado por WT",
+      "unit": "%",
+      "regional_value": 18.6,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 20.4,
+          "n": 1210,
+          "rank": 5
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 8.5,
+          "n": 1200,
+          "rank": 16
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 16.9,
+          "n": 1204,
+          "rank": 10
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 37.1,
+          "n": 1200,
+          "rank": 2
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 20.1,
+          "n": 1200,
+          "rank": 6
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 17.5,
+          "n": 1000,
+          "rank": 9
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 24.6,
+          "n": 1000,
+          "rank": 3
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 12.5,
+          "n": 1200,
+          "rank": 13
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 20.7,
+          "n": 1000,
+          "rank": 4
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 18.2,
+          "n": 1000,
+          "rank": 8
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 19.2,
+          "n": 1000,
+          "rank": 7
+        },
+        "MX": {
+          "name": "México",
+          "value": 14.8,
+          "n": 1200,
+          "rank": 11
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 10.6,
+          "n": 1000,
+          "rank": 14
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 0.0,
+          "n": 1200,
+          "rank": 17
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 8.8,
+          "n": 1200,
+          "rank": 15
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 52.1,
+          "n": 1200,
+          "rank": 1
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 14.4,
+          "n": 1200,
+          "rank": 12
+        }
+      }
+    },
+    {
+      "id": "izquierda-derecha",
+      "label": "Autoposicionamiento izquierda-derecha",
+      "axis": "deculturacion",
+      "section_pdf": "4.11.1",
+      "page_pdf": 70,
+      "questionnaire_var": "P16ST",
+      "question_text": "En una escala donde 00 es la izquierda y 10 la derecha, ¿dónde se ubicaría Ud.?",
+      "compute": "promedio ponderado escala 0-10, excluyendo NS/NR",
+      "unit": "escala 0-10",
+      "regional_value": 5.6,
+      "regional_n": 16832,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 5.41,
+          "n": 997,
+          "rank": 10
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 5.07,
+          "n": 998,
+          "rank": 14
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 5.87,
+          "n": 1057,
+          "rank": 6
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 5.02,
+          "n": 891,
+          "rank": 15
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 5.26,
+          "n": 1088,
+          "rank": 12
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 5.74,
+          "n": 927,
+          "rank": 7
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 6.22,
+          "n": 961,
+          "rank": 3
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 5.54,
+          "n": 1096,
+          "rank": 8
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 6.8,
+          "n": 894,
+          "rank": 1
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 5.52,
+          "n": 842,
+          "rank": 9
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 6.13,
+          "n": 860,
+          "rank": 4
+        },
+        "MX": {
+          "name": "México",
+          "value": 4.41,
+          "n": 996,
+          "rank": 17
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 6.12,
+          "n": 903,
+          "rank": 5
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 5.26,
+          "n": 1117,
+          "rank": 13
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 5.38,
+          "n": 1027,
+          "rank": 11
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 5.01,
+          "n": 1115,
+          "rank": 16
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 6.64,
+          "n": 1063,
+          "rank": 2
+        }
+      }
+    },
+    {
+      "id": "confianza-redes",
+      "label": "Confianza en las redes sociales",
+      "axis": "atencion",
+      "section_pdf": "4.9.4.3",
+      "page_pdf": 67,
+      "questionnaire_var": "P14ST.L",
+      "question_text": "¿Cuánta confianza tiene Ud. en las redes sociales?",
+      "compute": "% valor ∈ {1, 2} (mucha + algo), ponderado por WT",
+      "unit": "%",
+      "regional_value": 33.6,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 31.4,
+          "n": 1210,
+          "rank": 10
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 31.1,
+          "n": 1200,
+          "rank": 11
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 22.8,
+          "n": 1204,
+          "rank": 17
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 30.7,
+          "n": 1200,
+          "rank": 13
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 30.4,
+          "n": 1200,
+          "rank": 15
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 31.7,
+          "n": 1000,
+          "rank": 9
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 44.7,
+          "n": 1000,
+          "rank": 1
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 35.0,
+          "n": 1200,
+          "rank": 7
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 36.8,
+          "n": 1000,
+          "rank": 6
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 30.8,
+          "n": 1000,
+          "rank": 12
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 29.3,
+          "n": 1000,
+          "rank": 16
+        },
+        "MX": {
+          "name": "México",
+          "value": 33.1,
+          "n": 1200,
+          "rank": 8
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 39.2,
+          "n": 1000,
+          "rank": 3
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 37.8,
+          "n": 1200,
+          "rank": 4
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 37.2,
+          "n": 1200,
+          "rank": 5
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 30.5,
+          "n": 1200,
+          "rank": 14
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 40.8,
+          "n": 1200,
+          "rank": 2
+        }
+      }
+    },
+    {
+      "id": "aprobacion-gobierno",
+      "label": "Aprobación de gobierno",
+      "axis": "contexto",
+      "section_pdf": "4.10",
+      "page_pdf": 69,
+      "questionnaire_var": "P15STGBS",
+      "question_text": "¿Ud. aprueba o no aprueba la gestión del gobierno?",
+      "compute": "% valor = 1 (aprueba), ponderado por WT",
+      "unit": "%",
+      "regional_value": 43.0,
+      "regional_n": 19214,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "value": 38.8,
+          "n": 1210,
+          "rank": 11
+        },
+        "BO": {
+          "name": "Bolivia",
+          "value": 8.7,
+          "n": 1200,
+          "rank": 16
+        },
+        "BR": {
+          "name": "Brasil",
+          "value": 52.7,
+          "n": 1204,
+          "rank": 6
+        },
+        "CL": {
+          "name": "Chile",
+          "value": 33.7,
+          "n": 1200,
+          "rank": 12
+        },
+        "CO": {
+          "name": "Colombia",
+          "value": 32.4,
+          "n": 1200,
+          "rank": 13
+        },
+        "CR": {
+          "name": "Costa Rica",
+          "value": 54.5,
+          "n": 1000,
+          "rank": 5
+        },
+        "DO": {
+          "name": "República Dominicana",
+          "value": 68.3,
+          "n": 1000,
+          "rank": 4
+        },
+        "EC": {
+          "name": "Ecuador",
+          "value": 39.5,
+          "n": 1200,
+          "rank": 10
+        },
+        "SV": {
+          "name": "El Salvador",
+          "value": 86.7,
+          "n": 1000,
+          "rank": 1
+        },
+        "GT": {
+          "name": "Guatemala",
+          "value": 40.1,
+          "n": 1000,
+          "rank": 9
+        },
+        "HN": {
+          "name": "Honduras",
+          "value": 21.9,
+          "n": 1000,
+          "rank": 14
+        },
+        "MX": {
+          "name": "México",
+          "value": 75.0,
+          "n": 1200,
+          "rank": 3
+        },
+        "PA": {
+          "name": "Panamá",
+          "value": 80.1,
+          "n": 1000,
+          "rank": 2
+        },
+        "PY": {
+          "name": "Paraguay",
+          "value": 41.3,
+          "n": 1200,
+          "rank": 8
+        },
+        "PE": {
+          "name": "Perú",
+          "value": 5.2,
+          "n": 1200,
+          "rank": 17
+        },
+        "UY": {
+          "name": "Uruguay",
+          "value": 48.0,
+          "n": 1200,
+          "rank": 7
+        },
+        "VE": {
+          "name": "Venezuela",
+          "value": 19.3,
+          "n": 1200,
+          "rank": 15
+        }
+      }
+    }
+  ]
+}

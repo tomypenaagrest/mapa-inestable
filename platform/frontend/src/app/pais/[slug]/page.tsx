@@ -10,6 +10,8 @@ import {
   type Source,
   type AnalysisSummary,
 } from "@/lib/country-data";
+import { getCountryIndicators, LB_META, COVERED_COUNTRIES, axisDisplayKey } from "@/lib/latinobarometro";
+import IndicatorCard from "@/components/IndicatorCard";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
@@ -140,8 +142,17 @@ const sectionTitle: React.CSSProperties = {
 };
 
 /* Secciones que van expandidas vs. colapsadas */
-const HIGHLIGHT_KEYS  = ["tensiones", "pregunta"];
-const ALL_SKIP_KEYS   = ["tensiones", "pregunta", "outsider", "marco analítico"];
+const ALL_SKIP_KEYS = ["tensiones", "pregunta", "outsider", "marco analítico"];
+
+/* Orden y metadatos de los ejes para la sección Pulso */
+const AXIS_ORDER = [
+  { displayKey: "desrepresentacion", rawKey: "desrepresentacion",             label: "Desrepresentación" },
+  { displayKey: "mediaciones",       rawKey: "erosion-mediaciones",           label: "Erosión de mediaciones" },
+  { displayKey: "desorientacion",    rawKey: "desorientacion-epistemologica", label: "Desorientación epistemológica" },
+  { displayKey: "deculturacion",     rawKey: "deculturacion",                 label: "Deculturación" },
+  { displayKey: "atencion",          rawKey: "atencion",                      label: "Atención" },
+  { displayKey: "contexto",          rawKey: "contexto",                      label: "Contexto · variable de lectura" },
+] as const;
 
 /* === PAGE ====================================================== */
 
@@ -153,6 +164,9 @@ export default async function PaisPage({ params }: { params: Promise<{ slug: str
   const fuentes  = COUNTRY_SOURCES[slug]  ?? [];
   const analyses = COUNTRY_ANALYSES[slug] ?? [];
   const sections = getCountrySections(slug) ?? [];
+
+  const isCovered = (COVERED_COUNTRIES as readonly string[]).includes(slug);
+  const lbIndicators = isCovered ? getCountryIndicators(slug) : [];
 
   const tensiones = findSection(sections, ["tensiones"]);
   const pregunta  = findSection(sections, ["pregunta"]);
@@ -281,6 +295,150 @@ export default async function PaisPage({ params }: { params: Promise<{ slug: str
                 dangerouslySetInnerHTML={{ __html: pregunta.html }}
               />
             </div>
+          )}
+
+          {/* Pulso ciudadano · Latinobarómetro */}
+          {lbIndicators.length > 0 && (
+            <section style={{ marginBottom: "var(--mi-space-7)" }}>
+              {/* Header de sección */}
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                alignItems: "end",
+                gap: "var(--mi-space-4)",
+                borderBottom: "var(--mi-border-bold)",
+                paddingBottom: "var(--mi-space-3)",
+                marginBottom: "var(--mi-space-5)",
+              }}>
+                <div>
+                  <div style={{
+                    fontFamily: "var(--mi-font-mono)",
+                    fontSize: "var(--mi-text-xs)",
+                    letterSpacing: "var(--mi-tracking-widest)",
+                    textTransform: "uppercase",
+                    color: "var(--mi-ink-mute)",
+                    marginBottom: "var(--mi-space-2)",
+                  }}>
+                    Evidencia cuantitativa
+                  </div>
+                  <h2 style={{ ...sectionTitle, borderBottom: "none", paddingBottom: 0, marginBottom: 0 }}>
+                    Pulso ciudadano · 2024
+                  </h2>
+                </div>
+                <div style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: "var(--mi-text-xs)",
+                  letterSpacing: "var(--mi-tracking-wide)",
+                  textTransform: "uppercase",
+                  textAlign: "right",
+                  color: "var(--mi-ink-soft)",
+                  lineHeight: 1.5,
+                }}>
+                  {LB_META.wave_label}<br />
+                  {lbIndicators.length} indicadores · {(lbIndicators[0]?.country.n ?? 0).toLocaleString("es-AR")} entrevistas<br />
+                  Trabajo de campo · {LB_META.fieldwork}
+                </div>
+              </div>
+
+              {/* Intro */}
+              <p style={{
+                fontFamily: "var(--mi-font-body)",
+                fontSize: "var(--mi-text-base)",
+                lineHeight: "var(--mi-leading-normal)",
+                color: "var(--mi-ink)",
+                marginBottom: "var(--mi-space-5)",
+                maxWidth: "60ch",
+              }}>
+                {lbIndicators.length} indicadores curados del {LB_META.wave_label} para {name}, agrupados por los ejes del marco analítico. Cada cifra muestra el valor del país, la posición frente a los otros 16 países encuestados y la comparación con el promedio regional.
+              </p>
+
+              {/* Grupos por eje */}
+              {AXIS_ORDER.map(axis => {
+                const group = lbIndicators.filter(
+                  ind => axisDisplayKey(ind.axis) === axis.displayKey
+                );
+                if (group.length === 0) return null;
+                return (
+                  <div key={axis.displayKey} style={{ marginBottom: "var(--mi-space-5)" }}>
+                    {/* Axis header */}
+                    <div style={{
+                      display: "grid",
+                      gridTemplateColumns: "auto 1fr auto",
+                      alignItems: "center",
+                      gap: "var(--mi-space-3)",
+                      marginBottom: "var(--mi-space-3)",
+                    }}>
+                      <div style={{
+                        width: 12, height: 12,
+                        background: `var(--mi-axis-${axis.displayKey})`,
+                        flexShrink: 0,
+                      }} />
+                      <span style={{
+                        fontFamily: "var(--mi-font-mono)",
+                        fontSize: "var(--mi-text-xs)",
+                        letterSpacing: "var(--mi-tracking-widest)",
+                        textTransform: "uppercase",
+                        color: "var(--mi-ink)",
+                      }}>
+                        {axis.label}
+                      </span>
+                      <span style={{
+                        fontFamily: "var(--mi-font-mono)",
+                        fontSize: "var(--mi-text-xs)",
+                        letterSpacing: "var(--mi-tracking-wide)",
+                        textTransform: "uppercase",
+                        color: "var(--mi-ink-mute)",
+                      }}>
+                        {group.length} {group.length === 1 ? "indicador" : "indicadores"}
+                      </span>
+                    </div>
+                    {/* Grid de cards */}
+                    <div style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(3, 1fr)",
+                      gap: "var(--mi-space-3)",
+                    }}>
+                      {group.map(ind => (
+                        <IndicatorCard key={ind.id} indicator={ind} country={ind.country} />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Footer */}
+              <div style={{
+                marginTop: "var(--mi-space-5)",
+                padding: "var(--mi-space-4)",
+                background: "var(--mi-bg-cream)",
+                border: "var(--mi-border-thick)",
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                gap: "var(--mi-space-4)",
+                alignItems: "center",
+              }}>
+                <div style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: "var(--mi-text-xs)",
+                  letterSpacing: "var(--mi-tracking-wide)",
+                  textTransform: "uppercase",
+                  color: "var(--mi-ink)",
+                  lineHeight: 1.6,
+                }}>
+                  <strong>Fuente</strong> · {LB_META.wave_label} · Informe "La democracia resiliente" · Diciembre 2024<br />
+                  Encuesta presencial a {LB_META.n_total.toLocaleString("es-AR")} personas en 17 países · Margen de error ±3% por país
+                </div>
+                <a
+                  href={LB_META.codebook_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mi-btn"
+                  style={{ whiteSpace: "nowrap" }}
+                >
+                  Informe completo →
+                </a>
+              </div>
+            </section>
           )}
 
           {/* Resto de secciones — colapsables */}

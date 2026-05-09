@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mockup · Pulso ciudadano · Argentina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bree+Serif&family=DM+Mono:wght@400;500&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mi-bg:        #C5663A;
+  --mi-bg-paper:  #F4E9D2;
+  --mi-bg-cream:  #ECE0C5;
+  --mi-bg-dark:   #1F2A12;
+  --mi-ink:       #1F2A12;
+  --mi-ink-soft:  #3D4A26;
+  --mi-ink-mute:  #5C6638;
+  --mi-accent-gold: #E8C58A;
+  --mi-accent-warn: #B45729;
+  --mi-rule-soft: #C8B894;
+
+  --mi-font-display: 'Alfa Slab One', 'Bree Serif', Georgia, serif;
+  --mi-font-title:   'Lora', Georgia, serif;
+  --mi-font-body:    'Lora', Georgia, serif;
+  --mi-font-mono:    'DM Mono', ui-monospace, monospace;
+
+  --mi-text-xs: 11px;
+  --mi-text-sm: 13px;
+  --mi-text-base: 17px;
+  --mi-text-lg: 19px;
+  --mi-text-xl: 22px;
+  --mi-text-2xl: 28px;
+  --mi-text-3xl: 36px;
+
+  --mi-tracking-wide:   0.15em;
+  --mi-tracking-wider:  0.2em;
+  --mi-tracking-widest: 0.28em;
+
+  --mi-space-1: 4px;
+  --mi-space-2: 8px;
+  --mi-space-3: 16px;
+  --mi-space-4: 24px;
+  --mi-space-5: 32px;
+  --mi-space-6: 48px;
+  --mi-space-7: 72px;
+
+  --mi-border-hair:   1px solid var(--mi-ink);
+  --mi-border-thick:  2px solid var(--mi-ink);
+  --mi-border-bold:   3px solid var(--mi-ink);
+  --mi-border-dashed: 1px dashed var(--mi-ink);
+
+  --mi-shadow-card:      6px 6px 0 var(--mi-ink);
+  --mi-shadow-card-lift: 8px 8px 0 var(--mi-ink);
+  --mi-shadow-hero:      12px 12px 0 var(--mi-ink);
+
+  --mi-axis-deculturacion:     #6B4A38;
+  --mi-axis-mediaciones:       #4A5C30;
+  --mi-axis-desrepresentacion: #8A4A55;
+  --mi-axis-estetizacion:      #B45729;
+  --mi-axis-desorientacion:    #2D4A6B;
+  --mi-axis-atencion:          #C8993E;
+  --mi-axis-contexto:          #5C6638;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--mi-bg);
+  color: var(--mi-ink);
+  font-family: var(--mi-font-body);
+  font-size: var(--mi-text-base);
+  line-height: 1.55;
+  padding: var(--mi-space-6);
+  -webkit-font-smoothing: antialiased;
+}
+
+.mi-container {
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+/* === Mini-contexto: dónde se inserta el box ============================ */
+
+.context-rule {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-widest);
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  border-top: var(--mi-border-dashed);
+  padding-top: var(--mi-space-2);
+  margin-bottom: var(--mi-space-7);
+  text-align: center;
+}
+
+/* === BLOQUE PULSO CIUDADANO ============================================ */
+
+.pulso {
+  margin-bottom: var(--mi-space-7);
+}
+
+.pulso-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: var(--mi-space-4);
+  border-bottom: var(--mi-border-bold);
+  padding-bottom: var(--mi-space-3);
+  margin-bottom: var(--mi-space-5);
+}
+
+.pulso-eyebrow {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-widest);
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  margin-bottom: var(--mi-space-2);
+}
+
+.pulso-title {
+  font-family: var(--mi-font-display);
+  font-size: var(--mi-text-3xl);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--mi-ink);
+}
+
+.pulso-meta {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--mi-ink-soft);
+  line-height: 1.5;
+}
+
+.pulso-intro {
+  font-family: var(--mi-font-body);
+  font-size: var(--mi-text-base);
+  line-height: 1.55;
+  color: var(--mi-ink);
+  margin-bottom: var(--mi-space-5);
+  max-width: 60ch;
+}
+
+/* === Eje group ========================================================= */
+
+.axis-group {
+  margin-bottom: var(--mi-space-5);
+}
+
+.axis-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--mi-space-3);
+  margin-bottom: var(--mi-space-3);
+}
+
+.axis-marker {
+  width: 12px;
+  height: 12px;
+  background: var(--axis-color, var(--mi-ink));
+}
+
+.axis-name {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-widest);
+  text-transform: uppercase;
+  color: var(--mi-ink);
+}
+
+.axis-count {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+}
+
+/* === Grid de indicadores =============================================== */
+
+.indicator-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--mi-space-3);
+}
+
+@media (max-width: 900px) {
+  .indicator-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .indicator-grid { grid-template-columns: 1fr; }
+}
+
+/* === Indicator card ==================================================== */
+
+.indicator-card {
+  background: var(--mi-bg-paper);
+  border: var(--mi-border-thick);
+  box-shadow: var(--mi-shadow-card);
+  padding: var(--mi-space-3);
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: var(--mi-space-2);
+  position: relative;
+  min-height: 200px;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+.indicator-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--mi-shadow-card-lift);
+}
+
+.indicator-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  height: 6px;
+  background: var(--axis-color, var(--mi-ink));
+}
+
+.indicator-label {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  margin-top: var(--mi-space-2);
+  line-height: 1.4;
+}
+
+.indicator-value {
+  font-family: var(--mi-font-display);
+  font-size: 44px;
+  line-height: 1;
+  color: var(--mi-ink);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.indicator-unit {
+  font-family: var(--mi-font-display);
+  font-size: 18px;
+  color: var(--mi-ink-mute);
+}
+
+.indicator-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--mi-space-2);
+  flex-wrap: wrap;
+}
+
+.indicator-rank {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  background: var(--mi-ink);
+  color: var(--mi-bg-paper);
+  padding: 2px 8px;
+}
+
+.indicator-rank--top { background: var(--mi-accent-warn); }
+.indicator-rank--bottom { background: var(--mi-bg-dark); }
+
+.indicator-regional {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  color: var(--mi-ink-soft);
+  letter-spacing: 0.04em;
+}
+
+.indicator-cite {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  border-top: var(--mi-border-dashed);
+  padding-top: var(--mi-space-2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.indicator-compare-link {
+  color: var(--mi-ink);
+  border-bottom: 1px solid var(--mi-ink);
+  text-decoration: none;
+}
+
+/* === Footer del box ==================================================== */
+
+.pulso-footer {
+  margin-top: var(--mi-space-5);
+  padding: var(--mi-space-4);
+  background: var(--mi-bg-cream);
+  border: var(--mi-border-thick);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--mi-space-4);
+  align-items: center;
+}
+
+.pulso-footer-text {
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wide);
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  line-height: 1.6;
+}
+
+.pulso-footer-text strong {
+  font-weight: 500;
+  color: var(--mi-ink);
+}
+
+.pulso-footer-link {
+  display: inline-block;
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  letter-spacing: var(--mi-tracking-wider);
+  text-transform: uppercase;
+  background: var(--mi-ink);
+  color: var(--mi-bg-paper);
+  padding: 12px 20px;
+  border: 2px solid var(--mi-ink);
+  box-shadow: var(--mi-shadow-card);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.pulso-footer-link:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--mi-shadow-card-lift);
+}
+
+/* === note de mockup (no va al producto) ================================= */
+
+.mockup-note {
+  background: rgba(255,255,255,0.6);
+  border: var(--mi-border-dashed);
+  padding: var(--mi-space-3);
+  margin-bottom: var(--mi-space-5);
+  font-family: var(--mi-font-mono);
+  font-size: var(--mi-text-xs);
+  color: var(--mi-ink-mute);
+  text-transform: uppercase;
+  letter-spacing: var(--mi-tracking-wide);
+}
+</style>
+</head>
+<body>
+
+<div class="mi-container">
+
+  <div class="mockup-note">
+    Mockup · sección "Pulso ciudadano" como se vería integrada en /pais/argentina entre Pregunta central y Contexto · Datos reales del pipeline E001-B
+  </div>
+
+  <div class="context-rule">↑ Pregunta central</div>
+
+  <!-- ===== BLOQUE PULSO CIUDADANO ===== -->
+  <section class="pulso">
+
+    <header class="pulso-header">
+      <div>
+        <div class="pulso-eyebrow">Evidencia cuantitativa</div>
+        <h2 class="pulso-title">Pulso ciudadano · 2024</h2>
+      </div>
+      <div class="pulso-meta">
+        Latinobarómetro 2024<br>
+        12 indicadores · 1.210 entrevistas<br>
+        Trabajo de campo · 2024
+      </div>
+    </header>
+
+    <p class="pulso-intro">
+      Doce indicadores curados del Latinobarómetro 2024 para Argentina, agrupados por los seis ejes del marco analítico. Cada cifra muestra el valor del país, la posición frente a los otros 16 países encuestados y la comparación con el promedio regional.
+    </p>
+
+    <!-- =========== EJE: DESREPRESENTACIÓN =========== -->
+    <div class="axis-group" style="--axis-color: var(--mi-axis-desrepresentacion);">
+      <div class="axis-header">
+        <div class="axis-marker"></div>
+        <div class="axis-name">Desrepresentación</div>
+        <div class="axis-count">3 indicadores</div>
+      </div>
+      <div class="indicator-grid">
+
+        <article class="indicator-card">
+          <div class="indicator-label">Apoyo a la democracia</div>
+          <div class="indicator-value">74,6<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank indicator-rank--top">↑ #1 de 17</span>
+            <span class="indicator-regional">Reg. 52%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§4.1 · pág. 30</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+        <article class="indicator-card">
+          <div class="indicator-label">No representado por el parlamento</div>
+          <div class="indicator-value">72,9<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#11 de 17</span>
+            <span class="indicator-regional">Reg. 75%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§4.11.8 · pág. 78</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+        <article class="indicator-card">
+          <div class="indicator-label">Sociedad debe cambiarse radicalmente</div>
+          <div class="indicator-value">24,5<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#10 de 17</span>
+            <span class="indicator-regional">Reg. 26%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§III · pág. 28</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- =========== EJE: EROSIÓN DE MEDIACIONES =========== -->
+    <div class="axis-group" style="--axis-color: var(--mi-axis-mediaciones);">
+      <div class="axis-header">
+        <div class="axis-marker"></div>
+        <div class="axis-name">Erosión de mediaciones</div>
+        <div class="axis-count">3 indicadores</div>
+      </div>
+      <div class="indicator-grid">
+
+        <article class="indicator-card">
+          <div class="indicator-label">Confianza en partidos políticos</div>
+          <div class="indicator-value">17,7<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#6 de 17</span>
+            <span class="indicator-regional">Reg. 17%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§4.9.2.6 · pág. 63</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+        <article class="indicator-card">
+          <div class="indicator-label">Confianza en el congreso</div>
+          <div class="indicator-value">25,2<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#6 de 17</span>
+            <span class="indicator-regional">Reg. 24%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§4.9.2.5 · pág. 62</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+        <article class="indicator-card">
+          <div class="indicator-label">Confianza en el poder judicial</div>
+          <div class="indicator-value">22,2<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#11 de 17</span>
+            <span class="indicator-regional">Reg. 28%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§4.9.2.4 · pág. 61</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- =========== EJE: DESORIENTACIÓN EPISTEMOLÓGICA =========== -->
+    <div class="axis-group" style="--axis-color: var(--mi-axis-desorientacion);">
+      <div class="axis-header">
+        <div class="axis-marker"></div>
+        <div class="axis-name">Desorientación epistemológica</div>
+        <div class="axis-count">2 indicadores</div>
+      </div>
+      <div class="indicator-grid">
+
+        <article class="indicator-card">
+          <div class="indicator-label">Información falsa en redes sociales</div>
+          <div class="indicator-value">78,2<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#7 de 17</span>
+            <span class="indicator-regional">Reg. 76%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§4.12.3 · pág. 83</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+        <article class="indicator-card">
+          <div class="indicator-label">Las elecciones son fraudulentas</div>
+          <div class="indicator-value">42,2<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#13 de 17</span>
+            <span class="indicator-regional">Reg. 61%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§4.11.7 · pág. 76</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- =========== EJE: DECULTURACIÓN =========== -->
+    <div class="axis-group" style="--axis-color: var(--mi-axis-deculturacion);">
+      <div class="axis-header">
+        <div class="axis-marker"></div>
+        <div class="axis-name">Deculturación</div>
+        <div class="axis-count">2 indicadores</div>
+      </div>
+      <div class="indicator-grid">
+
+        <article class="indicator-card">
+          <div class="indicator-label">Sin religión</div>
+          <div class="indicator-value">20,4<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#5 de 17</span>
+            <span class="indicator-regional">Reg. 19%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§7.1 · pág. 114</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+        <article class="indicator-card">
+          <div class="indicator-label">Autoposicionamiento izquierda-derecha</div>
+          <div class="indicator-value">5,4<span class="indicator-unit">/10</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#10 de 17</span>
+            <span class="indicator-regional">Reg. 5,6</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§4.11.1 · pág. 70</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- =========== EJE: ATENCIÓN =========== -->
+    <div class="axis-group" style="--axis-color: var(--mi-axis-atencion);">
+      <div class="axis-header">
+        <div class="axis-marker"></div>
+        <div class="axis-name">Atención</div>
+        <div class="axis-count">1 indicador</div>
+      </div>
+      <div class="indicator-grid">
+
+        <article class="indicator-card">
+          <div class="indicator-label">Confianza en redes sociales</div>
+          <div class="indicator-value">31,4<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#10 de 17</span>
+            <span class="indicator-regional">Reg. 34%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§4.9.4.3 · pág. 67</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- =========== CONTEXTO =========== -->
+    <div class="axis-group" style="--axis-color: var(--mi-axis-contexto);">
+      <div class="axis-header">
+        <div class="axis-marker"></div>
+        <div class="axis-name">Contexto · variable de lectura</div>
+        <div class="axis-count">1 indicador</div>
+      </div>
+      <div class="indicator-grid">
+
+        <article class="indicator-card">
+          <div class="indicator-label">Aprobación de gobierno</div>
+          <div class="indicator-value">38,8<span class="indicator-unit">%</span></div>
+          <div class="indicator-meta">
+            <span class="indicator-rank">#11 de 17</span>
+            <span class="indicator-regional">Reg. 43%</span>
+          </div>
+          <div class="indicator-cite">
+            <span>§4.10 · pág. 69</span>
+            <a href="#" class="indicator-compare-link">Comparar →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- =========== FOOTER ============ -->
+    <footer class="pulso-footer">
+      <div class="pulso-footer-text">
+        <strong>Fuente</strong> · Latinobarómetro 2024 · Informe "La democracia resiliente" · Diciembre 2024<br>
+        Encuesta presencial a 19.214 personas en 17 países · Margen de error ±3% por país
+      </div>
+      <a href="https://www.latinobarometro.org/latContents.jsp?CMSID=Datos" class="pulso-footer-link" target="_blank" rel="noopener">
+        Informe completo →
+      </a>
+    </footer>
+
+  </section>
+
+  <div class="context-rule">↓ Sección Contexto (colapsable)</div>
+
+</div>
+
+</body>
+</html>
