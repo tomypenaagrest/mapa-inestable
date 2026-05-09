@@ -12,9 +12,10 @@ interface Props {
   weeklyCountries?: { slug: string; name: string }[];
   currentWeek?: number;
   currentYear?: number;
+  isFallback?: boolean;
 }
 
-export default function SiteHeader({ weeklyCountries = [], currentWeek, currentYear }: Props) {
+export default function SiteHeader({ weeklyCountries = [], currentWeek, currentYear, isFallback }: Props) {
   const yearNum = currentYear ?? new Date().getFullYear();
   const siteYear = yearNum - 2024; // Año I = 2024, Año II = 2025, etc.
   const yearLabel = siteYear > 0 ? `Año ${toRoman(siteYear)}` : "Año I";
@@ -26,7 +27,7 @@ export default function SiteHeader({ weeklyCountries = [], currentWeek, currentY
     <header>
       {/* Main bar */}
       <div style={{
-        padding: "var(--mi-space-4) var(--mi-space-6) var(--mi-space-3)",
+        padding: "var(--mi-space-5) var(--mi-space-6) var(--mi-space-4)",
         borderBottom: weeklyCountries.length > 0 ? "var(--mi-border-soft)" : "var(--mi-border-bold)",
         display: "flex",
         alignItems: "center",
@@ -34,16 +35,15 @@ export default function SiteHeader({ weeklyCountries = [], currentWeek, currentY
       }}>
         <div style={{ flex: 1 }}>
           <Link href="/" style={{ display: "inline-block" }}>
-            <Logo variant="full" size="sm" />
+            <Logo variant="full" size="md" />
             <div style={{
               fontFamily: "var(--mi-font-mono)",
-              fontSize: "var(--mi-text-xs)",
-              letterSpacing: "var(--mi-tracking-wider)",
-              textTransform: "uppercase",
+              fontSize: "12px",
+              letterSpacing: "0.06em",
               color: "var(--mi-ink-soft)",
-              marginTop: "var(--mi-space-1)",
+              marginTop: "var(--mi-space-2)",
             }}>
-              Cartografía política del sur
+              cartografía política del sur
             </div>
           </Link>
         </div>
@@ -118,6 +118,18 @@ export default function SiteHeader({ weeklyCountries = [], currentWeek, currentY
               marginLeft: "var(--mi-space-1)",
             }}>
               +{overflow}
+            </span>
+          )}
+          {isFallback && currentWeek && (
+            <span style={{
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: "10px",
+              color: "var(--mi-ink-mute)",
+              letterSpacing: "0.04em",
+              marginLeft: "auto",
+              opacity: 0.75,
+            }}>
+              última publicada: sem {currentWeek}
             </span>
           )}
         </div>

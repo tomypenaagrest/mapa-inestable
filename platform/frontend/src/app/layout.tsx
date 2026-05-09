@@ -74,9 +74,23 @@ function getCurrentWeekInfo(): { week: number; year: number } | null {
   return { week: latestWeek, year: latestYear };
 }
 
+function getRealISOWeek(): { week: number; year: number } {
+  const d = new Date();
+  const utc = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dayNum = utc.getUTCDay() || 7;
+  utc.setUTCDate(utc.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(utc.getUTCFullYear(), 0, 1));
+  const week = Math.ceil((((utc.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  return { week, year: utc.getUTCFullYear() };
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const weeklyCountries = getWeeklyCountries();
   const weekInfo = getCurrentWeekInfo();
+  const realWeek = getRealISOWeek();
+  const isFallback = !weekInfo
+    ? false
+    : weekInfo.year !== realWeek.year || weekInfo.week !== realWeek.week;
 
   return (
     <html
@@ -88,6 +102,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           weeklyCountries={weeklyCountries}
           currentWeek={weekInfo?.week}
           currentYear={weekInfo?.year}
+          isFallback={isFallback}
         />
         <main>{children}</main>
         <SiteFooter />

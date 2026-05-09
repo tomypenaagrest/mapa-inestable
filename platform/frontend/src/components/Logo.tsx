@@ -12,7 +12,7 @@ interface LogoProps {
 
 const SIZE_PX: Record<Size, number> = {
   sm: 52,
-  md: 80,
+  md: 96,
   lg: 128,
 };
 
