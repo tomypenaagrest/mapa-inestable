@@ -1,59 +1,15 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { DESPACHOS_ALL, type Dispatch } from "@/lib/despachos";
 
 export const metadata: Metadata = {
   title: "Despachos",
   description: "Integración semanal de los análisis de Mapa Inestable. Una lectura del período que pone en relación lo que ocurrió en distintos países bajo el mismo marco conceptual.",
 };
 
-/* === TIPOS ====================================================== */
-
-interface DispatchSummary {
-  year: number;
-  week: number;
-  num: number;
-  title: string;
-  entrada_snippet: string;
-  date_range: string;
-  analysis_count: number;
-}
-
-/* === DATOS MOCK ================================================= */
-
-const MOCK_DISPATCHES: DispatchSummary[] = [
-  {
-    year: 2026, week: 17, num: 47,
-    title: "La sospecha como arma",
-    entrada_snippet: "Esta semana el mapa político de Sudamérica se movió en una dirección que no habíamos visto: la retórica del fraude preventivo cruzó la frontera ideológica. Ya no es solo la derecha populista.",
-    date_range: "21–27 abr 2026",
-    analysis_count: 3,
-  },
-  {
-    year: 2026, week: 15, num: 46,
-    title: "Los territorios sin Estado",
-    entrada_snippet: "Hay zonas en el continente donde el Estado nunca llegó y otras donde llegó pero se retiró. Esta semana se movieron ambas fronteras simultáneamente.",
-    date_range: "7–13 abr 2026",
-    analysis_count: 2,
-  },
-  {
-    year: 2026, week: 13, num: 45,
-    title: "El trabajo que no existe",
-    entrada_snippet: "Las reformas laborales que no avanzan revelan algo más profundo que la resistencia sindical: revelan la mutación del trabajo como categoría organizadora de la vida.",
-    date_range: "24–30 mar 2026",
-    analysis_count: 4,
-  },
-  {
-    year: 2026, week: 10, num: 44,
-    title: "La representación en suspenso",
-    entrada_snippet: "Cuando los partidos no representan y las instituciones se vacían de sentido, la democracia sigue funcionando formalmente pero pierde densidad simbólica.",
-    date_range: "3–9 mar 2026",
-    analysis_count: 3,
-  },
-];
-
 /* === COMPONENTES ================================================ */
 
-function DispatchCard({ d }: { d: DispatchSummary }) {
+function DispatchCard({ d }: { d: Dispatch }) {
   return (
     <article style={{
       border: "var(--mi-border-thick)",
@@ -92,15 +48,17 @@ function DispatchCard({ d }: { d: DispatchSummary }) {
           }}>
             {d.date_range}
           </div>
-          <div style={{
-            fontFamily: "var(--mi-font-mono)",
-            fontSize: "var(--mi-text-xs)",
-            letterSpacing: "var(--mi-tracking-wide)",
-            textTransform: "uppercase",
-            color: "var(--mi-ink-mute)",
-          }}>
-            {d.analysis_count} análisis
-          </div>
+          {d.blocks && (
+            <div style={{
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: "var(--mi-text-xs)",
+              letterSpacing: "var(--mi-tracking-wide)",
+              textTransform: "uppercase",
+              color: "var(--mi-ink-mute)",
+            }}>
+              {d.blocks.filter(b => b.type === "analysis").length} análisis
+            </div>
+          )}
         </div>
       </div>
 
@@ -123,7 +81,7 @@ function DispatchCard({ d }: { d: DispatchSummary }) {
           lineHeight: "var(--mi-leading-relaxed)",
           color: "var(--mi-ink-soft)",
         }}>
-          {d.entrada_snippet}
+          {d.entrada.length > 160 ? d.entrada.slice(0, 157) + "…" : d.entrada}
         </p>
       </div>
 
@@ -168,7 +126,7 @@ export default function DespachoListPage() {
       }}>
         <Link href="/" style={{ color: "var(--mi-ink-mute)" }}>← Inicio</Link>
         <span style={{ color: "var(--mi-accent-gold)" }}>Despachos semanales</span>
-        <span>{MOCK_DISPATCHES.length} ediciones publicadas</span>
+        <span>{DESPACHOS_ALL.length} ediciones publicadas</span>
       </div>
 
       {/* Header */}
@@ -209,7 +167,7 @@ export default function DespachoListPage() {
         gridTemplateColumns: "repeat(2, 1fr)",
         gap: "var(--mi-space-5)",
       }}>
-        {MOCK_DISPATCHES.map(d => (
+        {DESPACHOS_ALL.map(d => (
           <DispatchCard key={`${d.year}-${d.week}`} d={d} />
         ))}
       </div>

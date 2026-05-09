@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { EJES, EJES_BY_SLUG, MOCK_EJE_ANALYSES } from "@/lib/ejes";
+import { EJES, EJES_BY_SLUG } from "@/lib/ejes";
+import { ANALISIS_ALL } from "@/lib/analisis";
 import { getConceptosByEje } from "@/lib/conceptos";
 import {
   getIndicatorsByAxis,
@@ -205,7 +206,7 @@ export default async function EjePage({ params }: { params: Promise<{ slug: stri
   const eje = EJES_BY_SLUG[slug];
   if (!eje) notFound();
 
-  const analyses = MOCK_EJE_ANALYSES[slug] ?? [];
+  const analyses = ANALISIS_ALL.filter(a => a.axisKey === eje.axisKey);
   const conceptos = getConceptosByEje(slug);
   const accentColor = `var(--mi-axis-${eje.axisKey})`;
   const lbIndicators = getIndicatorsByAxis(eje.axisKey);
@@ -562,7 +563,7 @@ export default async function EjePage({ params }: { params: Promise<{ slug: stri
                             gap: "var(--mi-space-3)",
                             alignItems: "center",
                           }}>
-                            <span>{a.date}</span>
+                            <span>{a.published_at}</span>
                             <span style={{
                               color: "var(--mi-bg-paper)",
                               background: "var(--mi-ink)",
@@ -570,9 +571,6 @@ export default async function EjePage({ params }: { params: Promise<{ slug: stri
                             }}>
                               {a.country}
                             </span>
-                            {a.isPrimary === false && (
-                              <span style={{ color: "var(--mi-ink-mute)" }}>secundario</span>
-                            )}
                           </div>
                           <h3 style={{
                             fontFamily: "var(--mi-font-title)",

@@ -1,99 +1,27 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { DESPACHOS_ALL, findDespacho, type AnalysisSnippet, type ConnectorBlock } from "@/lib/despachos";
 
-/* === TIPOS ====================================================== */
-
-interface AnalysisSnippet {
-  num: string;
-  country: string;
-  countrySlug: string;
-  axis: string;
-  axisKey: string;
-  title: string;
-  slug: string;
-  lede: string;
-  apertura: string;
+export function generateStaticParams() {
+  return DESPACHOS_ALL.map(d => ({ ano: String(d.year), semana: String(d.week) }));
 }
 
-interface ConnectorBlock {
-  body: string;
+export async function generateMetadata(
+  { params }: { params: Promise<{ ano: string; semana: string }> }
+): Promise<Metadata> {
+  const { ano, semana } = await params;
+  const d = findDespacho(Number(ano), Number(semana));
+  if (!d) return {};
+  return {
+    title: { absolute: `Despacho Nº ${d.num} — Mapa Inestable` },
+    description: d.entrada.slice(0, 160),
+    openGraph: {
+      title: `Despacho Nº ${d.num} — ${d.title}`,
+      description: d.entrada.slice(0, 160),
+    },
+  };
 }
-
-type DispatchBlock =
-  | { type: "analysis"; data: AnalysisSnippet }
-  | { type: "connector"; data: ConnectorBlock };
-
-interface Dispatch {
-  year: number;
-  week: number;
-  num: number;
-  title: string;
-  date_range: string;
-  year_label: string;
-  entrada: string;
-  blocks: DispatchBlock[];
-  cierre: string;
-  pregunta_semana: string;
-}
-
-/* === DATOS MOCK ================================================= */
-
-const MOCK_DISPATCH: Dispatch = {
-  year: 2026,
-  week: 17,
-  num: 47,
-  title: "La sospecha como arma",
-  date_range: "21–27 abr 2026",
-  year_label: "Año II",
-  entrada: "Esta semana el mapa político de Sudamérica se movió en una dirección que no habíamos visto antes: la retórica del fraude preventivo cruzó la frontera ideológica. Ya no es solo la derecha populista la que siembra la duda antes del resultado —ahora la izquierda también juega esa carta. Lo que estamos viendo no es hipocresía: es la normalización de una técnica. El voto como árbitro de la disputa política pierde densidad cuando todos los actores se reservan el derecho de desconocerlo.",
-  blocks: [
-    {
-      type: "analysis",
-      data: {
-        num: "01",
-        country: "Colombia",
-        countrySlug: "co",
-        axis: "Desorientación epistemológica",
-        axisKey: "desorientacion",
-        title: "La sospecha antes del voto",
-        slug: "la-sospecha-antes-del-voto",
-        lede: "A 103 días del fin del mandato, Petro pone en duda la transparencia de la elección que decidirá su sucesión. Lo nuevo no es el discurso —es de Trump, Bolsonaro, Milei— sino que ahora sea pronunciado por la izquierda.",
-        apertura: "¿Puede una democracia sostenerse cuando el procedimiento que la funda —el voto— ya no opera como árbitro? ¿O estamos ante el comienzo del fin de la idea de que los números cierran la política?",
-      },
-    },
-    {
-      type: "connector",
-      data: {
-        body: "El caso colombiano no es una anomalía regional —es la punta de lanza de un proceso más amplio. En los últimos dieciocho meses hemos registrado cuatro situaciones similares en el continente. La duda sobre el proceso electoral ya no se activa después del resultado: se instala antes.",
-      },
-    },
-    {
-      type: "analysis",
-      data: {
-        num: "02",
-        country: "Colombia",
-        countrySlug: "co",
-        axis: "Erosión de mediaciones",
-        axisKey: "mediaciones",
-        title: "Petro y los territorios sin Estado",
-        slug: "petro-y-los-territorios",
-        lede: "El gobierno que prometió llevar el Estado a los territorios encuentra que el Estado nunca estuvo allí —y que quienes sí estuvieron no piensan retirarse.",
-        apertura: "¿Puede construirse Estado donde solo existió violencia? ¿O la violencia ya es la única forma de Estado posible en esos territorios?",
-      },
-    },
-  ],
-  cierre: "Los dos análisis de esta semana comparten una misma lógica de fondo: el vaciamiento de los procedimientos que organizan la vida política. No es que el fraude exista o que el Estado llegue —es que la creencia en que el procedimiento puede funcionar se erosiona. Cuando esa creencia cede, el vacío lo llena quien pueda.",
-  pregunta_semana: "¿En qué momento el debilitamiento de los procedimientos se vuelve irreversible?",
-};
-
-export const metadata: Metadata = {
-  title: { absolute: `Despacho Nº ${MOCK_DISPATCH.num} — Mapa Inestable` },
-  description: MOCK_DISPATCH.entrada.slice(0, 160),
-  openGraph: {
-    title: `Despacho Nº ${MOCK_DISPATCH.num} — ${MOCK_DISPATCH.title}`,
-    description: MOCK_DISPATCH.entrada.slice(0, 160),
-  },
-};
 
 /* === COMPONENTES ================================================ */
 
@@ -171,7 +99,6 @@ function AnalysisSnippetBlock({ data }: { data: AnalysisSnippet }) {
           {data.lede}
         </p>
 
-        {/* Apertura como blockquote */}
         <blockquote style={{
           borderLeft: "3px solid var(--mi-ink)",
           paddingLeft: "var(--mi-space-3)",
@@ -226,8 +153,12 @@ function Connector({ data }: { data: ConnectorBlock }) {
 
 /* === PAGE ====================================================== */
 
-export default function DespachoPage() {
-  const d = MOCK_DISPATCH;
+export default async function DespachoPage(
+  { params }: { params: Promise<{ ano: string; semana: string }> }
+) {
+  const { ano, semana } = await params;
+  const d = findDespacho(Number(ano), Number(semana));
+  if (!d) notFound();
 
   return (
     <div style={{ background: "var(--mi-bg)", minHeight: "100vh" }}>
@@ -267,7 +198,6 @@ export default function DespachoPage() {
             {d.year_label} · {d.date_range}
           </div>
 
-          {/* Número grande decorativo */}
           <div style={{
             fontFamily: "var(--mi-font-mono)",
             fontSize: "var(--mi-text-display)",
@@ -312,79 +242,95 @@ export default function DespachoPage() {
         </div>
       </div>
 
-      {/* Bloques */}
+      {/* Bloques o placeholder */}
       <div className="mi-container--narrow" style={{
         paddingTop: "var(--mi-space-6)",
         paddingBottom: "var(--mi-space-7)",
       }}>
-        {d.blocks.map((block, i) => {
-          if (block.type === "analysis") {
-            return <AnalysisSnippetBlock key={i} data={block.data} />;
-          }
-          return <Connector key={i} data={block.data} />;
-        })}
+        {d.blocks ? (
+          d.blocks.map((block, i) => {
+            if (block.type === "analysis") {
+              return <AnalysisSnippetBlock key={i} data={block.data} />;
+            }
+            return <Connector key={i} data={block.data} />;
+          })
+        ) : (
+          <p style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: "var(--mi-text-xs)",
+            letterSpacing: "var(--mi-tracking-wide)",
+            textTransform: "uppercase",
+            color: "var(--mi-bg-paper)",
+            opacity: 0.4,
+          }}>
+            Contenido completo próximamente
+          </p>
+        )}
       </div>
 
       {/* Cierre */}
-      <div style={{
-        background: "var(--mi-bg-dark)",
-        borderTop: "var(--mi-border-bold)",
-        borderBottom: "var(--mi-border-bold)",
-        boxShadow: "inset 0 6px 0 rgba(0,0,0,0.15)",
-        padding: "var(--mi-space-7) var(--mi-space-6)",
-      }}>
-        <div className="mi-container--narrow">
-          <div style={{
-            fontFamily: "var(--mi-font-mono)",
-            fontSize: "var(--mi-text-xs)",
-            letterSpacing: "var(--mi-tracking-widest)",
-            textTransform: "uppercase",
-            color: "var(--mi-accent-gold)",
-            marginBottom: "var(--mi-space-4)",
-          }}>
-            Cierre
-          </div>
-          <p style={{
-            fontFamily: "var(--mi-font-title)",
-            fontStyle: "italic",
-            fontSize: "var(--mi-text-lg)",
-            lineHeight: "var(--mi-leading-relaxed)",
-            color: "var(--mi-bg-paper)",
-            maxWidth: "65ch",
-            marginBottom: "var(--mi-space-6)",
-          }}>
-            {d.cierre}
-          </p>
-
-          {/* Pregunta de la semana */}
-          <div style={{
-            border: "2px solid var(--mi-accent-gold)",
-            padding: "var(--mi-space-4) var(--mi-space-5)",
-            maxWidth: "52ch",
-            boxShadow: "6px 6px 0 rgba(232,197,138,0.25)",
-          }}>
+      {d.cierre && (
+        <div style={{
+          background: "var(--mi-bg-dark)",
+          borderTop: "var(--mi-border-bold)",
+          borderBottom: "var(--mi-border-bold)",
+          boxShadow: "inset 0 6px 0 rgba(0,0,0,0.15)",
+          padding: "var(--mi-space-7) var(--mi-space-6)",
+        }}>
+          <div className="mi-container--narrow">
             <div style={{
               fontFamily: "var(--mi-font-mono)",
               fontSize: "var(--mi-text-xs)",
               letterSpacing: "var(--mi-tracking-widest)",
               textTransform: "uppercase",
               color: "var(--mi-accent-gold)",
-              marginBottom: "var(--mi-space-2)",
+              marginBottom: "var(--mi-space-4)",
             }}>
-              La pregunta de la semana
+              Cierre
             </div>
             <p style={{
               fontFamily: "var(--mi-font-title)",
               fontStyle: "italic",
-              fontSize: "var(--mi-text-xl)",
+              fontSize: "var(--mi-text-lg)",
               lineHeight: "var(--mi-leading-relaxed)",
               color: "var(--mi-bg-paper)",
+              maxWidth: "65ch",
+              marginBottom: d.pregunta_semana ? "var(--mi-space-6)" : 0,
             }}>
-              &ldquo;{d.pregunta_semana}&rdquo;
+              {d.cierre}
             </p>
+
+            {d.pregunta_semana && (
+              <div style={{
+                border: "2px solid var(--mi-accent-gold)",
+                padding: "var(--mi-space-4) var(--mi-space-5)",
+                maxWidth: "52ch",
+                boxShadow: "6px 6px 0 rgba(232,197,138,0.25)",
+              }}>
+                <div style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: "var(--mi-text-xs)",
+                  letterSpacing: "var(--mi-tracking-widest)",
+                  textTransform: "uppercase",
+                  color: "var(--mi-accent-gold)",
+                  marginBottom: "var(--mi-space-2)",
+                }}>
+                  La pregunta de la semana
+                </div>
+                <p style={{
+                  fontFamily: "var(--mi-font-title)",
+                  fontStyle: "italic",
+                  fontSize: "var(--mi-text-xl)",
+                  lineHeight: "var(--mi-leading-relaxed)",
+                  color: "var(--mi-bg-paper)",
+                }}>
+                  &ldquo;{d.pregunta_semana}&rdquo;
+                </p>
+              </div>
+            )}
           </div>
         </div>
-      </div>
+      )}
 
       {/* Recibir por email */}
       <div style={{
