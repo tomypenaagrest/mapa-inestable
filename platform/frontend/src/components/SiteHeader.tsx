@@ -2,13 +2,10 @@ import Link from "next/link";
 import Logo from "./Logo";
 
 const NAV_LINKS = [
-  { href: "/", label: "Inicio" },
   { href: "/despachos", label: "Despachos" },
-  { href: "/ensayos", label: "Ensayos" },
-  { href: "/analisis", label: "Archivo" },
-  { href: "/mapa", label: "Mapa" },
-  { href: "/metodo", label: "Método" },
-  { href: "/acerca", label: "Acerca" },
+  { href: "/ensayos",   label: "Ensayos" },
+  { href: "/mapa",      label: "Mapa" },
+  { href: "/acerca",    label: "Acerca" },
 ];
 
 export default function SiteHeader() {
