@@ -19,6 +19,15 @@
   --mi-accent-gold: #E8C58A;
   --mi-accent-warn: #B45729;
 
+  /* Oro de marca (Spec 21 — logo v3 r2, valores reales del SVG vectorizado 2026-05-10) */
+  --mi-brand-gold:      #dc9743;
+  --mi-brand-gold-warm: #c08332;
+  --mi-brand-gold-pale: var(--mi-accent-gold);
+
+  /* Colores complementarios del logo v3 (referencia) */
+  --mi-logo-terra-warm: #bf6d44;
+  --mi-logo-ink-warm:   #404a2b;
+
   --mi-rule:      var(--mi-ink);
   --mi-rule-soft: #C8B894;
 

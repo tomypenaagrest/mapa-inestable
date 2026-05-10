@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Capitales — marca cruces</title>
+<style>
+  :root {
+    --bg: #efe7d7;
+    --ink: #1a1814;
+    --warm: #6b3a1f;
+    --gold: #b8893a;
+    --terra: #c0532e;
+    --rule: #1a1814;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; }
+  body { display: grid; grid-template-columns: 1fr 320px; min-height: 100vh; }
+
+  /* Stage */
+  .stage {
+    padding: 32px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border-right: 2px solid var(--rule);
+  }
+  .frame {
+    position: relative;
+    background: var(--bg);
+    border: 2px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    width: min(820px, calc(100vw - 420px));
+    aspect-ratio: 1280 / 1621;
+    cursor: crosshair;
+    user-select: none;
+  }
+  .frame img.map {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  .overlay {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+
+  /* Crosses */
+  .x {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+  }
+  .x .glyph {
+    font-family: "Courier New", ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--terra);
+    line-height: 1;
+    text-align: center;
+    text-shadow:
+      1px 0 0 var(--bg), -1px 0 0 var(--bg),
+      0 1px 0 var(--bg), 0 -1px 0 var(--bg);
+    cursor: grab;
+  }
+  .x.selected .glyph {
+    color: var(--ink);
+    background: var(--gold);
+    padding: 0 4px;
+  }
+  .x .label {
+    position: absolute;
+    left: 16px; top: -2px;
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--bg);
+    border: 1px solid var(--ink);
+    padding: 2px 6px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* Sidebar */
+  .panel {
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    overflow: auto;
+    background: var(--bg);
+  }
+  .panel h1 {
+    font-family: "Alfa Slab One", "Bodoni 72", Bodoni, "Didot", serif;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .panel .kicker {
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--warm);
+    margin-bottom: 6px;
+  }
+  .panel p.lede {
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.45;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .rule { height: 2px; background: var(--ink); margin: 4px 0; }
+  .rule.thin { height: 1px; }
+
+  .countries {
+    display: flex; flex-direction: column; gap: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--ink);
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+  }
+  .row[data-state="placed"] { background: rgba(184, 137, 58, 0.18); }
+  .row[data-state="active"] { background: var(--ink); color: var(--bg); padding-left: 6px; padding-right: 6px; }
+  .row .code { opacity: 0.6; }
+  .row .coords { font-size: 10px; opacity: 0.7; }
+  .row[data-state="active"] .code,
+  .row[data-state="active"] .coords { opacity: 1; }
+
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  button {
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--bg);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    padding: 8px 12px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 80ms ease, box-shadow 80ms ease;
+  }
+  button:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+  button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+  button.primary { background: var(--ink); color: var(--bg); }
+  button.danger { background: var(--terra); color: var(--bg); }
+
+  .hint {
+    font-size: 12px;
+    line-height: 1.5;
+    border: 1px solid var(--ink);
+    padding: 10px 12px;
+    background: rgba(184, 137, 58, 0.12);
+  }
+  .hint b { font-weight: 700; }
+  .hint kbd {
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 10px;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  .footer-note {
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--warm);
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--ink);
+  }
+
+  @media (max-width: 900px) {
+    body { grid-template-columns: 1fr; }
+    .stage { border-right: none; border-bottom: 2px solid var(--rule); }
+    .frame { width: min(100%, 90vw); }
+  }
+</style>
+</head>
+<body>
+
+<main class="stage">
+  <div class="frame" id="frame">
+    <img class="map" src="assets/torresgarcia40.svg" alt="Mapa Torres-García invertido" />
+    <div class="overlay" id="overlay"></div>
+  </div>
+</main>
+
+<aside class="panel">
+  <div>
+    <div class="kicker">Mapa Inestable · herramienta</div>
+    <h1>Marcá las capitales</h1>
+  </div>
+  <p class="lede">Hacé click sobre el mapa donde creés que está cada capital. Seleccioná un país de la lista para asignarle la próxima cruz, o tocá una cruz colocada para borrarla / moverla.</p>
+
+  <div class="rule"></div>
+
+  <div>
+    <div class="kicker">Países · 10</div>
+    <div class="countries" id="countries"></div>
+  </div>
+
+  <div class="actions">
+    <button id="undo">↺ Deshacer</button>
+    <button id="clear" class="danger">Borrar todo</button>
+    <button id="export" class="primary">↓ Exportar SVG</button>
+    <button id="exportPng">↓ PNG</button>
+  </div>
+
+  <div class="hint">
+    <b>Cómo usar.</b> Seleccioná un país (queda en negro). Hacé click sobre el mapa: aparece una cruz <span style="color: var(--terra); font-family: monospace;">✕</span> con la etiqueta del país. Click en una cruz para seleccionarla; arrastrala para reposicionarla. <kbd>Del</kbd> o doble click la borra. <kbd>Z</kbd> deshace.
+  </div>
+
+  <div class="footer-note">v1 · capitales.html</div>
+</aside>
+
+<script>
+const COUNTRIES = [
+  { code: "AR", name: "Argentina",   capital: "Buenos Aires" },
+  { code: "BO", name: "Bolivia",     capital: "La Paz / Sucre" },
+  { code: "BR", name: "Brasil",      capital: "Brasília" },
+  { code: "CL", name: "Chile",       capital: "Santiago" },
+  { code: "CO", name: "Colombia",    capital: "Bogotá" },
+  { code: "EC", name: "Ecuador",     capital: "Quito" },
+  { code: "PY", name: "Paraguay",    capital: "Asunción" },
+  { code: "PE", name: "Perú",        capital: "Lima" },
+  { code: "UY", name: "Uruguay",     capital: "Montevideo" },
+  { code: "VE", name: "Venezuela",   capital: "Caracas" },
+];
+
+const STORE_KEY = "mapa-inestable-capitales-v1";
+const W = 1280, H = 1621;
+
+const frame   = document.getElementById("frame");
+const overlay = document.getElementById("overlay");
+const list    = document.getElementById("countries");
+
+let state = load();
+let activeCode = COUNTRIES[0].code;
+let history = [];
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (_) { return {}; }
+}
+function save() {
+  localStorage.setItem(STORE_KEY, JSON.stringify(state));
+}
+function pushHistory() {
+  history.push(JSON.stringify(state));
+  if (history.length > 40) history.shift();
+}
+
+function renderList() {
+  list.innerHTML = "";
+  COUNTRIES.forEach(c => {
+    const row = document.createElement("div");
+    row.className = "row";
+    const placed = !!state[c.code];
+    const active = c.code === activeCode;
+    row.dataset.state = active ? "active" : (placed ? "placed" : "empty");
+    row.innerHTML = `
+      <span><span class="code">${c.code}</span> &nbsp; ${c.name}</span>
+      <span class="coords">${placed ? `${Math.round(state[c.code].x)},${Math.round(state[c.code].y)}` : (active ? "← próximo" : "—")}</span>
+    `;
+    row.addEventListener("click", () => {
+      activeCode = c.code;
+      renderList();
+    });
+    list.appendChild(row);
+  });
+}
+
+function renderCrosses() {
+  overlay.innerHTML = "";
+  Object.entries(state).forEach(([code, pos]) => {
+    const c = COUNTRIES.find(x => x.code === code);
+    if (!c) return;
+    const el = document.createElement("div");
+    el.className = "x";
+    el.dataset.code = code;
+    // pos.x/y are in SVG coords (0..1280, 0..1621). Convert to %.
+    el.style.left = (pos.x / W * 100) + "%";
+    el.style.top  = (pos.y / H * 100) + "%";
+    el.innerHTML = `<div class="glyph">✕</div><div class="label">${c.code} · ${c.capital}</div>`;
+    overlay.appendChild(el);
+    attachDrag(el);
+  });
+}
+
+function frameToSvgCoords(clientX, clientY) {
+  const r = frame.getBoundingClientRect();
+  const x = (clientX - r.left) / r.width  * W;
+  const y = (clientY - r.top)  / r.height * H;
+  return { x: Math.max(0, Math.min(W, x)), y: Math.max(0, Math.min(H, y)) };
+}
+
+frame.addEventListener("click", (e) => {
+  // Don't drop a new cross when clicking on an existing one
+  if (e.target.closest(".x")) return;
+  const { x, y } = frameToSvgCoords(e.clientX, e.clientY);
+  pushHistory();
+  state[activeCode] = { x, y };
+  // Auto-advance to next un-placed country
+  const idx = COUNTRIES.findIndex(c => c.code === activeCode);
+  for (let i = 1; i <= COUNTRIES.length; i++) {
+    const next = COUNTRIES[(idx + i) % COUNTRIES.length];
+    if (!state[next.code]) { activeCode = next.code; break; }
+  }
+  save(); renderList(); renderCrosses();
+});
+
+function attachDrag(el) {
+  let dragging = false, moved = false;
+  el.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
+    dragging = true; moved = false;
+    el.classList.add("selected");
+  });
+  window.addEventListener("mousemove", (e) => {
+    if (!dragging) return;
+    moved = true;
+    const { x, y } = frameToSvgCoords(e.clientX, e.clientY);
+    state[el.dataset.code] = { x, y };
+    el.style.left = (x / W * 100) + "%";
+    el.style.top  = (y / H * 100) + "%";
+  });
+  window.addEventListener("mouseup", () => {
+    if (dragging && moved) { pushHistory(); save(); renderList(); }
+    dragging = false;
+    setTimeout(() => el.classList.remove("selected"), 250);
+  });
+  el.addEventListener("dblclick", (e) => {
+    e.stopPropagation();
+    pushHistory();
+    delete state[el.dataset.code];
+    save(); renderList(); renderCrosses();
+  });
+}
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "z" || e.key === "Z") {
+    if (history.length) {
+      state = JSON.parse(history.pop());
+      save(); renderList(); renderCrosses();
+    }
+  }
+});
+
+document.getElementById("undo").addEventListener("click", () => {
+  if (history.length) {
+    state = JSON.parse(history.pop());
+    save(); renderList(); renderCrosses();
+  }
+});
+document.getElementById("clear").addEventListener("click", () => {
+  if (!confirm("¿Borrar todas las cruces?")) return;
+  pushHistory();
+  state = {};
+  save(); renderList(); renderCrosses();
+});
+
+async function getMapSvgString() {
+  const res = await fetch("assets/torresgarcia40.svg");
+  return await res.text();
+}
+
+// Helper compartido: genera el bloque de cruces+labels para el SVG export.
+// Reglas para que el render coincida con el del HTML interactivo:
+//   - texto en uppercase explícito (text-transform CSS no aplica en SVG)
+//   - width del rect calculado con char real (~8.4px/char + letter-spacing) + padding
+//   - texto centrado vertical con dominant-baseline + horizontal con text-anchor
+//   - letter-spacing con unidad (px), font-family con quotes
+function buildCrossesSvg() {
+  const sz = 28;          // tamaño de la cruz
+  const fontSize = 13;    // px
+  const charWidth = 8.4;  // ancho aprox de char Courier 13px con letter-spacing 0.8
+  const padX = 10;        // padding horizontal del label
+  const labelHeight = 20; // alto fijo del rect del label
+  const gap = 8;          // separación cruz → label
+
+  return Object.entries(state).map(([code, p]) => {
+    const c = COUNTRIES.find(x => x.code === code);
+    const labelText = `${c.code} · ${c.capital}`.toUpperCase();
+    const labelWidth = Math.round(labelText.length * charWidth + padX * 2);
+    return `
+      <g transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})">
+        <line x1="${-sz/2}" y1="${-sz/2}" x2="${sz/2}" y2="${sz/2}" stroke="#c0532e" stroke-width="5" stroke-linecap="round"/>
+        <line x1="${-sz/2}" y1="${sz/2}" x2="${sz/2}" y2="${-sz/2}" stroke="#c0532e" stroke-width="5" stroke-linecap="round"/>
+        <g transform="translate(${sz/2 + gap} 0)">
+          <rect x="0" y="${-labelHeight/2}" width="${labelWidth}" height="${labelHeight}" fill="#efe7d7" stroke="#1a1814" stroke-width="1"/>
+          <text x="${labelWidth/2}" y="0" font-family="'Courier New', ui-monospace, monospace" font-size="${fontSize}" fill="#1a1814" letter-spacing="0.8px" text-anchor="middle" dominant-baseline="middle">${labelText}</text>
+        </g>
+      </g>`;
+  }).join("\n");
+}
+
+document.getElementById("export").addEventListener("click", async () => {
+  const mapSrc = await getMapSvgString();
+  const inner = mapSrc.replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+  const crosses = buildCrossesSvg();
+  const out = `<?xml version="1.0" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+${inner}
+<g id="capitales">
+${crosses}
+</g>
+</svg>`;
+  download("capitales-mapa-inestable.svg", out, "image/svg+xml");
+});
+
+document.getElementById("exportPng").addEventListener("click", async () => {
+  const mapSrc = await getMapSvgString();
+  const inner = mapSrc.replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+  const crosses = buildCrossesSvg();
+  const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+${inner}
+${crosses}
+</svg>`;
+  const blob = new Blob([svgStr], { type: "image/svg+xml" });
+  const url = URL.createObjectURL(blob);
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#efe7d7";
+    ctx.fillRect(0, 0, W, H);
+    ctx.drawImage(img, 0, 0, W, H);
+    canvas.toBlob((b) => {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(b);
+      a.download = "capitales-mapa-inestable.png";
+      a.click();
+      URL.revokeObjectURL(url);
+    }, "image/png");
+  };
+  img.src = url;
+});
+
+function download(name, text, mime) {
+  c

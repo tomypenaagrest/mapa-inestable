@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Hot-zones — definir polígonos por país</title>
+<style>
+  :root {
+    --bg: #efe7d7;
+    --ink: #1a1814;
+    --warm: #6b3a1f;
+    --gold: #b8893a;
+    --terra: #c0532e;
+    --rule: #1a1814;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; }
+  body { display: grid; grid-template-columns: 1fr 320px; min-height: 100vh; }
+
+  .stage {
+    padding: 24px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border-right: 2px solid var(--rule);
+    overflow: auto;
+  }
+  .frame {
+    position: relative;
+    background: var(--bg);
+    border: 2px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    width: min(700px, calc(100vw - 380px));
+    aspect-ratio: 1280 / 1380;
+    cursor: crosshair;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .frame img.map {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .overlay {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    overflow: visible;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+  }
+  .sidebar-top {
+    padding: 20px;
+    border-bottom: 2px solid var(--rule);
+  }
+  .sidebar-top h1 {
+    font-size: 15px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.12em; margin-bottom: 8px;
+  }
+  .sidebar-top p {
+    font-size: 12px; color: var(--warm); line-height: 1.4;
+  }
+  .countries {
+    overflow-y: auto; flex: 1;
+  }
+  .country-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(26,24,20,0.2);
+    cursor: pointer;
+    transition: background 100ms;
+  }
+  .country-row:hover { background: rgba(192,83,46,0.07); }
+  .country-row.active { background: rgba(192,83,46,0.18); }
+  .country-row .code {
+    font-family: "Courier New", monospace;
+    font-size: 11px; font-weight: 700;
+    color: var(--terra); width: 24px;
+  }
+  .country-row .name { font-size: 13px; flex: 1; }
+  .country-row .status { font-size: 11px; font-family: "Courier New", monospace; color: #888; }
+  .country-row .status.done { color: #4a7a2a; font-weight: 700; }
+
+  .sidebar-actions {
+    padding: 16px 20px;
+    border-top: 2px solid var(--rule);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  button {
+    font-family: "Courier New", monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 8px 12px;
+    border: 2px solid var(--ink); background: var(--bg);
+    cursor: pointer; font-weight: 700;
+    transition: background 100ms;
+  }
+  button:hover { background: var(--ink); color: var(--bg); }
+  button.primary { background: var(--ink); color: var(--bg); }
+  button.primary:hover { background: var(--terra); border-color: var(--terra); }
+  button.danger { border-color: var(--terra); color: var(--terra); }
+  button.danger:hover { background: var(--terra); color: var(--bg); }
+
+  .instructions {
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(26,24,20,0.2);
+    font-size: 11px; color: #666; line-height: 1.5;
+  }
+  kbd {
+    background: var(--ink); color: var(--bg);
+    font-family: "Courier New", monospace;
+    font-size: 10px; padding: 1px 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Stage -->
+<div class="stage">
+  <div class="frame" id="frame">
+    <img class="map" src="mapa-con-capitales.svg" alt="Mapa Torres García" id="mapImg" />
+    <svg class="overlay" id="overlaySvg" viewBox="0 0 1280 1380"
+         xmlns="http://www.w3.org/2000/svg">
+      <!-- Polígonos existentes -->
+      <g id="polygonsGroup"></g>
+      <!-- Polígono en construcción -->
+      <g id="draftGroup"></g>
+    </svg>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="sidebar-top">
+    <h1>Hot-zones</h1>
+    <p>Click → agrega punto. Doble-click → cierra el polígono. Arrastrá vértices. <kbd>Z</kbd> deshace último punto. <kbd>Esc</kbd> cancela polígono activo.</p>
+  </div>
+
+  <div class="instructions">
+    Cada país necesita un polígono que cubra su región en el dibujo simbólico.
+    El polígono invisible capturará hover/click en el sitio.
+    <br><strong>Seleccioná un país y dibujá el contorno.</strong>
+  </div>
+
+  <div class="countries" id="countriesList"></div>
+
+  <div class="sidebar-actions">
+    <button class="primary" onclick="exportSvg()">↓ Exportar SVG con hot-zones</button>
+    <button onclick="exportJson()">↓ Exportar JSON de coordenadas</button>
+    <button class="danger" onclick="clearActive()">Borrar polígono activo</button>
+    <button class="danger" onclick="clearAll()">Borrar todo</button>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = "mapa-inestable-hotzones-v1";
+
+const COUNTRIES = [
+  { slug: "ar", code: "AR", name: "Argentina" },
+  { slug: "bo", code: "BO", name: "Bolivia" },
+  { slug: "br", code: "BR", name: "Brasil" },
+  { slug: "cl", code: "CL", name: "Chile" },
+  { slug: "co", code: "CO", name: "Colombia" },
+  { slug: "ec", code: "EC", name: "Ecuador" },
+  { slug: "pe", code: "PE", name: "Perú" },
+  { slug: "py", code: "PY", name: "Paraguay" },
+  { slug: "uy", code: "UY", name: "Uruguay" },
+  { slug: "ve", code: "VE", name: "Venezuela" },
+];
+
+// Points stored as arrays of [x, y] in SVG 1280×1380 space
+let polygons = {}; // slug → [[x,y], ...]
+let activeSlug = null;
+let draftPoints = []; // points for the polygon being drawn
+let dragging = null; // { slug, idx } | { draft: idx }
+let history = []; // for undo
+
+// Load from localStorage
+const saved = localStorage.getItem(STORAGE_KEY);
+if (saved) {
+  try { polygons = JSON.parse(saved); } catch(e) {}
+}
+
+// ── Rendering ──────────────────────────────────────────────────────────
+
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(polygons));
+}
+
+function toSvgCoords(clientX, clientY) {
+  const frame = document.getElementById("frame");
+  const svg = document.getElementById("overlaySvg");
+  const rect = frame.getBoundingClientRect();
+  const relX = (clientX - rect.left) / rect.width;
+  const relY = (clientY - rect.top) / rect.height;
+  return [Math.round(relX * 1280 * 10) / 10, Math.round(relY * 1380 * 10) / 10];
+}
+
+const COLORS = {
+  ar: "#c0532e", bo: "#4a7a2a", br: "#2d4a6b",
+  cl: "#8a4a55", co: "#b8893a", ec: "#6b4a38",
+  pe: "#4a5c30", py: "#c8993e", uy: "#5c3460", ve: "#3a6b6b",
+};
+
+function renderPolygons() {
+  const g = document.getElementById("polygonsGroup");
+  g.innerHTML = "";
+  for (const [slug, pts] of Object.entries(polygons)) {
+    if (!pts || pts.length < 2) continue;
+    const color = COLORS[slug] || "#555";
+    const isActive = slug === activeSlug;
+
+    // Filled polygon
+    const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    poly.setAttribute("points", pts.map(p => p.join(",")).join(" "));
+    poly.setAttribute("fill", color);
+    poly.setAttribute("fill-opacity", isActive ? "0.35" : "0.20");
+    poly.setAttribute("stroke", color);
+    poly.setAttribute("stroke-width", isActive ? "3" : "1.5");
+    poly.setAttribute("stroke-dasharray", isActive ? "none" : "6 3");
+    poly.style.cursor = "pointer";
+    poly.addEventListener("click", () => selectCountry(slug));
+    g.appendChild(poly);
+
+    // Vertex dots (only for active)
+    if (isActive) {
+      pts.forEach(([px, py], idx) => {
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", px);
+        circle.setAttribute("cy", py);
+        circle.setAttribute("r", "8");
+        circle.setAttribute("fill", color);
+        circle.setAttribute("stroke", "white");
+        circle.setAttribute("stroke-width", "2");
+        circle.style.cursor = "move";
+        circle.addEventListener("mousedown", (e) => {
+          e.stopPropagation();
+          dragging = { slug, idx };
+        });
+        g.appendChild(circle);
+
+        // Index label
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", px);
+        text.setAttribute("y", py - 12);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("font-size", "10");
+        text.setAttribute("fill", "white");
+        text.textContent = idx + 1;
+        g.appendChild(text);
+      });
+    }
+  }
+}
+
+function renderDraft() {
+  const g = document.getElementById("draftGroup");
+  g.innerHTML = "";
+  if (!activeSlug || draftPoints.length === 0) return;
+
+  const color = COLORS[activeSlug] || "#c0532e";
+
+  // Lines between points
+  if (draftPoints.length >= 2) {
+    const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+    polyline.setAttribute("points", draftPoints.map(p => p.join(",")).join(" "));
+    polyline.setAttribute("fill", "none");
+    polyline.setAttribute("stroke", color);
+    polyline.setAttribute("stroke-width", "2");
+    polyline.setAttribute("stroke-dasharray", "6 3");
+    g.appendChild(polyline);
+  }
+
+  // Vertex dots
+  draftPoints.forEach(([px, py], idx) => {
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", px);
+    circle.setAttribute("cy", py);
+    circle.setAttribute("r", "6");
+    circle.setAttribute("fill", color);
+    circle.setAttribute("stroke", "white");
+    circle.setAttribute("stroke-width", "2");
+    circle.style.cursor = "move";
+    circle.addEventListener("mousedown", (e) => {
+      e.stopPropagation();
+      dragging = { draft: idx };
+    });
+    g.appendChild(circle);
+  });
+}
+
+function renderList() {
+  const list = document.getElementById("countriesList");
+  list.innerHTML = "";
+  COUNTRIES.forEach(c => {
+    const row = document.createElement("div");
+    row.className = "country-row" + (c.slug === activeSlug ? " active" : "");
+    const pts = polygons[c.slug];
+    const count = pts ? pts.length : 0;
+    row.innerHTML = `
+      <span class="code">${c.code}</span>
+      <span class="name">${c.name}</span>
+      <span class="status ${count >= 3 ? 'done' : ''}">${count >= 3 ? count + " pts ✓" : count + " pts"}</span>
+    `;
+    row.addEventListener("click", () => selectCountry(c.slug));
+    list.appendChild(row);
+  });
+}
+
+function render() {
+  renderPolygons();
+  renderDraft();
+  renderList();
+}
+
+// ── Country selection ──────────────────────────────────────────────────
+
+function selectCountry(slug) {
+  // If we had a draft for previous country, save it
+  commitDraft();
+  activeSlug = slug;
+  draftPoints = [];
+  render();
+}
+
+function commitDraft() {
+  if (!activeSlug || draftPoints.length < 3) return;
+  history.push({ slug: activeSlug, prev: polygons[activeSlug] ? [...polygons[activeSlug]] : null });
+  polygons[activeSlug] = [...draftPoints];
+  draftPoints = [];
+  save();
+}
+
+// ── SVG click handler ─────────────────────────────────────────────────
+
+const svg = document.getElementById("overlaySvg");
+
+svg.addEventListener("click", (e) => {
+  if (!activeSlug || dragging) return;
+  const [x, y] = toSvgCoords(e.clientX, e.clientY);
+  draftPoints.push([x, y]);
+  renderDraft();
+});
+
+svg.addEventListener("dblclick", (e) => {
+  e.preventDefault();
+  if (!activeSlug || draftPoints.length < 3) return;
+  // Remove last point (double-click adds a duplicate first)
+  draftPoints.pop();
+  commitDraft();
+  // Advance to next country
+  const idx = COUNTRIES.findIndex(c => c.slug === activeSlug);
+  const next = COUNTRIES[idx + 1];
+  if (next) {
+    activeSlug = next.slug;
+    draftPoints = [];
+  }
+  render();
+});
+
+// ── Drag ──────────────────────────────────────────────────────────────
+
+window.addEventListener("mousemove", (e) => {
+  if (!dragging) return;
+  const [x, y] = toSvgCoords(e.clientX, e.clientY);
+  if (dragging.draft !== undefined) {
+    draftPoints[dragging.draft] = [x, y];
+    renderDraft();
+  } else {
+    if (!polygons[dragging.slug]) return;
+    polygons[dragging.slug][dragging.idx] = [x, y];
+    renderPolygons();
+  }
+});
+
+window.addEventListener("mouseup", () => {
+  if (dragging && !dragging.draft) save();
+  dragging = null;
+});
+
+// ── Keyboard ──────────────────────────────────────────────────────────
+
+window.addEventListener("keydown", (e) => {
+  const key = e.key.toLowerCase();
+
+  if (key === "z" && (e.metaKey || e.ctrlKey)) {
+    e.preventDefault();
+    if (draftPoints.length > 0) {
+      draftPoints.pop();
+      renderDraft();
+    } else if (history.length > 0) {
+      const { slug, prev } = history.pop();
+      if (prev === null) delete polygons[slug];
+      else polygons[slug] = prev;
+      save();
+      render();
+    }
+    return;
+  }
+
+  if (key === "z" && !e.metaKey && !e.ctrlKey) {
+    // Plain Z: undo last draft point
+    if (draftPoints.length > 0) {
+      draftPoints.pop();
+      renderDraft();
+    }
+    return;
+  }
+
+  if (key === "escape") {
+    draftPoints = [];
+    renderDraft();
+    return;
+  }
+});
+
+// ── Actions ───────────────────────────────────────────────────────────
+
+function clearActive() {
+  if (!activeSlug) return;
+  if (!confirm(`Borrar polígono de ${activeSlug.toUpperCase()}?`)) return;
+  history.push({ slug: activeSlug, prev: polygons[activeSlug] || null });
+  delete polygons[activeSlug];
+  draftPoints = [];
+  save();
+  render();
+}
+
+function clearAll() {
+  if (!confirm("Borrar TODOS los polígonos? No se puede deshacer.")) return;
+  polygons = {};
+  draftPoints = [];
+  history = [];
+  localStorage.removeItem(STORAGE_KEY);
+  render();
+}
+
+function exportSvg() {
+  // Load the source SVG and inject the hotzones group
+  fetch("mapa-con-capitales.svg")
+    .then(r => r.text())
+    .then(svgText => {
+      // Build the hotzones group
+      const hotzonesSvg = buildHotzonesSvg();
+      // Inject before </svg>
+      const out = svgText.replace("</svg>", "\n" + hotzonesSvg + "\n</svg>");
+      download(out, "mapa-con-hotzones.svg", "image/svg+xml");
+    })
+    .catch(() => {
+      // Fallback: export just the hotzones snippet
+      const out = `<g id="hotzones" fill="transparent" pointer-events="all">\n${buildHotzonesSvgInner()}\n</g>`;
+      download(out, "hotzones-snippet.svg", "image/svg+xml");
+    });
+}
+
+function buildHotzonesSvg() {
+  return `<g id="hotzones" fill="transparent" pointer-events="all">\n${buildHotzonesSvgInner()}\n</g>`;
+}
+
+function buildHotzonesSvgInner() {
+  // Order: large countries first (lower Z), small countries last (higher Z)
+  const order = ["br", "ar", "cl", "pe", "co", "bo", "ve", "py", "ec", "uy"];
+  return order.map(slug => {
+    const c = COUNTRIES.find(c => c.slug === slug);
+    const pts = polygons[slug];
+    if (!pts || pts.length < 3) return `  <!-- ${slug}: sin polígono definido -->`;
+    return `  <polygon id="hot-${slug}"
+           points="${pts.map(p => p.join(",")).join(" ")}"
+           tabindex="0"
+           role="button"
+           aria-label="${c ? c.name : slug}"
+           fill="transparent"
+           pointer-events="all"/>`;
+  }).join("\n");
+}
+
+function exportJson() {
+  const out = JSON.stringify(polygons, null, 2);
+  download(out, "hotzones.json", "application/json");
+}
+
+function download(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+
+// Pre-fill with approximate polygons from the spec (can be refined)
+const INITIAL_HOTZONES = {
+  br: [[100,680],[680,700],[730,680],[730,820],[700,960],[640,1070],[560,1140],[430,1160],[290,1130],[180,1050],[130,940],[100,820]],
+  ar: [[130,50],[730,50],[800,100],[830,250],[830,420],[810,480],[780,540],[740,620],[680,695],[620,740],[565,760],[475,755],[390,720],[310,655],[240,565],[180,455],[145,315],[130,150]],
+  cl: [[680,50],[1100,50],[1150,200],[1160,400],[1150,650],[1120,850],[1060,980],[960,1040],[840,1040],[760,1010],[720,900],[730,700],[730,500],[700,300],[680,100]],
+  pe: [[870,720],[1160,720],[1220,800],[1210,1050],[1180,1100],[1080,1130],[970,1100],[930,1030],[890,930],[870,820]],
+  co: [[640,1030],[980,1030],[1040,1060],[1065,1130],[1040,1195],[965,1240],[875,1250],[785,1225],[720,1175],[650,1115],[625,1050]],
+  bo: [[680,670],[920,670],[970,730],[975,850],[930,950],[850,990],[760,995],[695,955],[668,860],[668,760]],
+  ve: [[680,1100],[960,1085],[1070,1120],[1060,1210],[960,1265],[835,1275],[720,1230],[675,1180]],
+  py: [[450,620],[720,620],[745,685],[735,800],[655,840],[550,845],[445,795],[425,720]],
+  ec: [[945,1050],[1160,1050],[1200,1100],[1190,1210],[1070,1260],[945,1200],[920,1130]],
+  uy: [[460,455],[565,455],[580,495],[565,555],[460,550]],
+};
+
+// Load initial hotzones if no saved data
+if (!saved) {
+  polygons = INITIAL_HOTZONES;
+  save();
+}
+
+// Select first country without polygons, or first overall
+const first = COUNTRIES.find(c => !polygons[c.slug]) || COUNTRIES[0];
+activeSlug = first.slug;
+
+render();
+</script>
+</body>
+</html>
