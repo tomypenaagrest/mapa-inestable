@@ -34,7 +34,7 @@ export default function MapaHeatmapSection({ weeklyCountries, heatmapData, weeks
       {/* Mapa + panel preview */}
       <div style={{
         display: "flex",
-        maxHeight: "calc(100vh - 130px)",
+        height: "calc(100vh - 130px)",
         borderBottom: hoveredCountry ? "var(--mi-border-bold)" : undefined,
         position: "relative",
       }}>
