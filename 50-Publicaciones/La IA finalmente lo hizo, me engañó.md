@@ -3,8 +3,9 @@ tags: [publicación]
 tipo: publicación
 estado: publicada
 ejes: [[05 - Desorientación epistemológica]]
-fecha: 2025-05
-url:
+fecha: 2025-05-25
+url: https://mapainestable.substack.com/p/la-ia-finalmente-lo-hizo-me-engano
+subtítulo: "La posverdad ya no es una moda académica: es una experiencia cotidiana"
 ---
 
 # La IA finalmente lo hizo, me engañó
@@ -68,5 +69,5 @@ El texto:
 ## Diálogos posibles con otras publicaciones
 
 - [[La atención]] — el siguiente paso conceptual
-- [[El mapa antes del territorio]] — sección V retoma el eje
+- [[El mapa inestable se reordena]] — sección V retoma el eje
 - [[60-Borradores/Borradores - MOC|Borrador pendiente sobre Harari]] — *"merece un super newsletter aparte"*

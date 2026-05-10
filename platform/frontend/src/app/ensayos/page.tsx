@@ -6,11 +6,19 @@ import type { EssayEntry } from "@/components/EssayCard";
 
 export const metadata: Metadata = {
   title: "Ensayos",
-  description: "Piezas de largo aliento que trabajan un eje a fondo. Cadencia mensual, tratamiento de revista.",
+  description: "Piezas de largo aliento que trabajan un eje a fondo. Sección en desarrollo: los textos figuran como borradores.",
+  robots: { index: false, follow: false },
 };
 
 /* === DATOS ===================================================== */
 
+// IMPORTANTE: estos 7 ensayos NO están publicados todavía. Son borradores en
+// 60-Borradores/ del vault (Obsidian). Las publicaciones reales del proyecto
+// son las del Substack — ver 50-Publicaciones/ en el vault.
+// Marcados con `draft: true` para que la UI los muestre como borrador / próximamente
+// y no linkee a páginas de pieza completa que no existen aún.
+// Las fechas `publishedAt`/`publishedIso` se conservan solo como referencia interna
+// de orden (semana/año del borrador); el componente las oculta cuando draft=true.
 const ESSAYS: EssayEntry[] = [
   {
     slug: "america-latina-entre-dos-hegemonias",
@@ -21,9 +29,10 @@ const ESSAYS: EssayEntry[] = [
     week: 18,
     year: 2026,
     readingTime: 12,
-    publishedAt: "8 may 2026",
+    publishedAt: "—",
     publishedIso: "2026-05-08",
     featured: true,
+    draft: true,
   },
   {
     slug: "estetica-de-los-movimientos-antisistema",
@@ -34,8 +43,9 @@ const ESSAYS: EssayEntry[] = [
     week: 14,
     year: 2026,
     readingTime: 9,
-    publishedAt: "5 abr 2026",
+    publishedAt: "—",
     publishedIso: "2026-04-05",
+    draft: true,
   },
   {
     slug: "soberania-cognitiva-colectiva",
@@ -46,8 +56,9 @@ const ESSAYS: EssayEntry[] = [
     week: 11,
     year: 2026,
     readingTime: 15,
-    publishedAt: "17 mar 2026",
+    publishedAt: "—",
     publishedIso: "2026-03-17",
+    draft: true,
   },
   {
     slug: "el-ultimo-de-su-tipo",
@@ -58,8 +69,9 @@ const ESSAYS: EssayEntry[] = [
     week: 7,
     year: 2026,
     readingTime: 11,
-    publishedAt: "17 feb 2026",
+    publishedAt: "—",
     publishedIso: "2026-02-17",
+    draft: true,
   },
   {
     slug: "caribe-como-laboratorio-del-fin-de-los-relatos-del-xx",
@@ -70,8 +82,9 @@ const ESSAYS: EssayEntry[] = [
     week: 50,
     year: 2025,
     readingTime: 14,
-    publishedAt: "15 dic 2025",
+    publishedAt: "—",
     publishedIso: "2025-12-15",
+    draft: true,
   },
   {
     slug: "patron-de-violencia-politica-regional",
@@ -82,8 +95,9 @@ const ESSAYS: EssayEntry[] = [
     week: 44,
     year: 2025,
     readingTime: 10,
-    publishedAt: "3 nov 2025",
+    publishedAt: "—",
     publishedIso: "2025-11-03",
+    draft: true,
   },
   {
     slug: "super-newsletter-sobre-harari",
@@ -94,8 +108,9 @@ const ESSAYS: EssayEntry[] = [
     week: 38,
     year: 2025,
     readingTime: 8,
-    publishedAt: "22 sep 2025",
+    publishedAt: "—",
     publishedIso: "2025-09-22",
+    draft: true,
   },
 ];
 
@@ -120,7 +135,7 @@ export default function EnsayosPage() {
       }}>
         <Link href="/" style={{ color: "var(--mi-ink-mute)" }}>← Inicio</Link>
         <span style={{ color: "var(--mi-accent-gold)" }}>Ensayos</span>
-        <span>{ESSAYS.length} textos</span>
+        <span>{ESSAYS.length} borradores · 0 publicados</span>
       </div>
 
       {/* Header editorial */}
@@ -137,7 +152,7 @@ export default function EnsayosPage() {
           color: "var(--mi-ink-mute)",
           marginBottom: "var(--mi-space-3)",
         }}>
-          Piezas largas · cadencia mensual
+          Piezas largas · sección en desarrollo
         </div>
         <h1 style={{
           fontFamily: "var(--mi-font-display)",
@@ -155,10 +170,16 @@ export default function EnsayosPage() {
           fontStyle: "italic",
           fontSize: "var(--mi-text-base)",
           color: "var(--mi-ink-soft)",
-          maxWidth: "56ch",
+          maxWidth: "62ch",
           lineHeight: "var(--mi-leading-normal)",
         }}>
-          Análisis de largo aliento que trabajan un eje conceptual en profundidad. La forma larga que el despacho semanal no permite.
+          Análisis de largo aliento que trabajan un eje conceptual en profundidad. La forma larga que el despacho semanal no permite. <strong style={{ fontStyle: "normal", color: "var(--mi-ink)" }}>Sección en desarrollo:</strong> los textos figuran como borradores. Las publicaciones reales del proyecto viven en el{" "}
+          <a
+            href="https://mapainestable.substack.com/"
+            style={{ color: "var(--mi-ink)", borderBottom: "1px solid var(--mi-ink)" }}
+          >
+            Substack de Mapa Inestable
+          </a>.
         </p>
       </div>
 

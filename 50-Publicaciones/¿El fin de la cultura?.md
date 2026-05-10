@@ -3,10 +3,15 @@ tags: [publicación]
 tipo: publicación
 estado: publicada
 ejes: [[01 - Deculturación]]
-url:
+fecha: 2025-05-11
+url: https://mapainestable.substack.com/p/el-fin-de-la-cultura
+subtítulo: "De mediadora de valores a símbolo flotante: ¿cómo se participa políticamente en un mundo sin estructuras culturales sólidas?"
+título-anterior-vault: "Cultura vs Valores"
 ---
 
-# Cultura vs Valores
+# ¿El fin de la cultura?
+
+> *De mediadora de valores a símbolo flotante: ¿cómo se participa políticamente en un mundo sin estructuras culturales sólidas?*
 
 ## Tesis principal
 
@@ -47,7 +52,13 @@ El texto:
 
 > Religión sin comunidad, patria sin proyecto, lengua sin literatura común. Es un mundo de símbolos flotantes.
 
+## Noticias de la semana incluidas
+
+- Habemus Papam: León XIV (Robert Prevost)
+- Lula visitó Rusia en el Día de la Victoria
+- Hallaron uno de los mayores depósitos minerales del mundo entre Argentina y Chile (Vicuña, Filo del Sol y Joemaría)
+
 ## Diálogos posibles con otras publicaciones
 
-- [[Mermelada de dátiles y ecoprint]] — caso ilustrativo del proceso descripto
-- [[El mapa antes del territorio]] — sección I retoma este marco
+- [[Mermelada de dátiles y ecoprint]] — caso ilustrativo del proceso descripto (incluido en [[Acuerdos, balas y ferias]])
+- [[El mapa inestable se reordena]] — sección I retoma este marco

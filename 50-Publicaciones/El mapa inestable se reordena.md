@@ -3,11 +3,13 @@ tags: [publicación, síntesis]
 tipo: publicación
 estado: publicada
 ejes: [[01 - Deculturación]], [[02 - Erosión de las mediaciones]], [[03 - Desrepresentación]], [[04 - Estetización de la cultura]], [[05 - Desorientación epistemológica]]
-fecha: 2026-02
-url:
+fecha: 2026-02-24
+url: https://mapainestable.substack.com/p/el-mapa-inestable-se-reordena
+subtítulo: "Atraparon al Mencho. Antes de opinar, ordenemos las categorías."
+título-anterior-vault: "El mapa antes del territorio"
 ---
 
-# El mapa antes del territorio
+# El mapa inestable se reordena
 
 > *Atraparon al Mencho. Antes de opinar, ordenemos las categorías.*
 
@@ -57,15 +59,9 @@ Estructura del texto:
 
 > América Latina no es anomalía. Es anticipación. Y nosotros no observamos desde afuera. Somos parte del experimento.
 
-## Noticias de la semana incluidas
-
-- Petrobras e Itaú desplazan a Mercado Libre como empresas más valiosas de la región
-- Sheinbaum y la presión sobre Estados Unidos por el flujo de armas
-- Cuba y Venezuela: señales de transición económica
-
 ## Función en el proyecto
 
-Este texto opera como **manifiesto operativo**: muestra cómo se aplican los ejes en lugar de definirlos. Es un buen punto de entrada para nuevos lectores que quieren ver el método en acción.
+Este texto opera como **manifiesto operativo**: muestra cómo se aplican los ejes en lugar de definirlos. Es un buen punto de entrada para nuevos lectores que quieren ver el método en acción. Marca el "regreso" del newsletter después de varios meses sin publicar (la publicación previa, *Acuerdos, balas y ferias*, es de junio 2025; ésta es de febrero 2026).
 
 ## Diálogos posibles con otras publicaciones
 

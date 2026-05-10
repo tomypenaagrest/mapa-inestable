@@ -3,8 +3,8 @@ tags: [publicación]
 tipo: publicación
 estado: publicada
 ejes: [[03 - Desrepresentación]]
-fecha: 2025-05
-url:
+fecha: 2025-06-01
+url: https://mapainestable.substack.com/p/reforma-laboral-en-colombia
 título-completo: "Reforma laboral en Colombia: Debate del siglo XXI, soluciones del siglo XX"
 ---
 
@@ -57,4 +57,4 @@ El texto:
 ## Diálogos posibles con otras publicaciones
 
 - [[Apatía política o elección encuesta]] — otra cara del mismo problema
-- [[El mapa antes del territorio]] — sección III retoma el eje
+- [[El mapa inestable se reordena]] — sección III retoma el eje

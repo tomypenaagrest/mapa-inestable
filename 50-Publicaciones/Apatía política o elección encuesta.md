@@ -3,8 +3,10 @@ tags: [publicación]
 tipo: publicación
 estado: publicada
 ejes: [[03 - Desrepresentación]]
-fecha: 2025-05
-url:
+fecha: 2025-05-19
+url: https://mapainestable.substack.com/p/apatia-politica-o-eleccion-encuesta
+título-completo: "¿Apatía política o elección encuesta?"
+subtítulo: "Primero el Papa, ahora Pepe. Elecciones en CABA"
 ---
 
 # Apatía política o elección encuesta
@@ -60,4 +62,4 @@ El texto:
 ## Diálogos posibles con otras publicaciones
 
 - [[Reforma laboral en Colombia]] — otra cara de la desrepresentación
-- [[El mapa antes del territorio]] — sección III retoma el eje
+- [[El mapa inestable se reordena]] — sección III retoma el eje

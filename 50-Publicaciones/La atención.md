@@ -3,7 +3,8 @@ tags: [publicación, eje-emergente]
 tipo: publicación
 estado: publicada
 ejes: [[06 - Atención]]
-url:
+fecha: 2026-03-04
+url: https://mapainestable.substack.com/p/la-atencion
 ---
 
 # La atención
@@ -74,5 +75,5 @@ El texto:
 ## Diálogos posibles con otras publicaciones
 
 - [[La IA finalmente lo hizo, me engañó]] — el problema epistemológico que prefigura este eje
-- [[El mapa antes del territorio]] — los cinco ejes anteriores; éste es el sexto
+- [[El mapa inestable se reordena]] — los cinco ejes anteriores; éste es el sexto
 - Borradores futuros: profundización con Citton, Wu, Zuboff
