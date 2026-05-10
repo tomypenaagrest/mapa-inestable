@@ -34,11 +34,15 @@ export default function MapaHeatmapSection({ weeklyCountries, heatmapData, weeks
       {/* Mapa + panel preview */}
       <div style={{
         display: "flex",
+        maxHeight: "calc(100vh - 130px)",
         borderBottom: hoveredCountry ? "var(--mi-border-bold)" : undefined,
         position: "relative",
       }}>
         <div style={{
-          flex: 1,
+          flexShrink: 0,
+          aspectRatio: "1280 / 1380",
+          height: "100%",
+          overflow: "hidden",
           borderRight: "var(--mi-border-thick)",
           position: "relative",
         }}>
@@ -51,8 +55,9 @@ export default function MapaHeatmapSection({ weeklyCountries, heatmapData, weeks
 
         {/* Right panel: heatmap (default) or country preview (on hover) */}
         <div style={{
-          width: 320,
-          flexShrink: 0,
+          flex: 1,
+          minWidth: 220,
+          maxWidth: 360,
           overflow: "hidden",
           position: "relative",
         }}>

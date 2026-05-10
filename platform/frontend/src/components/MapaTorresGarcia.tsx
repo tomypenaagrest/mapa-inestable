@@ -145,7 +145,7 @@ export default function MapaTorresGarcia({
       style={{
         position: "relative",
         width: "100%",
-        aspectRatio: "1280 / 1380",
+        height: "100%",
         overflow: "hidden",
       }}
       onMouseLeave={handleMouseLeave}
