@@ -806,3 +806,46 @@ img, svg {
     display: none;
   }
 }
+
+/* === ENSAYOS — Spec 19 ======================================== */
+
+.mi-essay-hero {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  border: var(--mi-border-bold);
+  box-shadow: var(--mi-shadow-hero);
+  background: var(--mi-bg-paper);
+  overflow: hidden;
+}
+
+.mi-essay-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 64px 48px;
+}
+
+.mi-essay-card {
+  transition: transform 120ms var(--mi-ease), box-shadow 120ms var(--mi-ease);
+}
+
+.mi-essay-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--mi-shadow-card-lift);
+}
+
+@media (max-width: 959px) {
+  .mi-essay-hero {
+    grid-template-columns: 1fr;
+  }
+  .mi-essay-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 32px;
+  }
+}
+
+@media (max-width: 639px) {
+  .mi-essay-grid {
+    grid-template-columns: 1fr;
+    gap: 32px 0;
+  }
+}
