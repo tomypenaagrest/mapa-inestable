@@ -7,11 +7,16 @@ import Image from "next/image";
  *   monogram   — solo silueta+escalador, sin texto (marca de agua, app icon)
  *   wordmark   — solo tipografía "MAPA INESTABLE" (email, citas)
  *
- * Archivos esperados en /public/ (Fase B — producción de Tomás):
- *   /logo-completo.png        → variante full
- *   /logo-horizontal.svg      → variante horizontal (parte izquierda)
- *   /logo-monograma.svg       → variante monogram
- *   Mientras no existan: fallback al PNG v3.
+ * Estado de archivos (2026-05-10):
+ *   /logo-completo.svg        ✓ disponible (vectorial, 962 KB) — usado por variant="full"
+ *   /logo-completo.png        ✓ disponible (1024×1024, 898 KB) — fallback raster
+ *   /logo-horizontal.svg      ⚠ FALTA — Spec 21 Fase B (producción de Tomás/diseñador)
+ *   /logo-monograma.svg       ⚠ FALTA — Spec 21 Fase B
+ *
+ * Mientras no existan los SVG dedicados, las variantes "horizontal" y "monogram"
+ * usan /logo-completo.svg como fallback temporal. La variante "horizontal" en el
+ * header sufre por esto: el SVG cuadrado se escala feo en una caja angosta.
+ * Cuando Tomás produzca logo-horizontal.svg, cambiar el path en src abajo.
  */
 
 type Variant = "full" | "horizontal" | "monogram" | "wordmark";
@@ -50,14 +55,14 @@ export default function Logo({ variant = "full", size = "md" }: LogoProps) {
   if (variant === "horizontal") {
     return (
       <div style={{ display: "flex", alignItems: "center", gap: "var(--mi-space-4)" }}>
+        {/* TEMP: usa logo-completo.svg como fallback hasta que exista logo-horizontal.svg dedicado (Spec 21 Fase B) */}
         <Image
-          src="/logo-horizontal.svg"
+          src="/logo-completo.svg"
           alt=""
-          width={px * 0.6}
+          width={px}
           height={px}
           style={{ display: "block", flexShrink: 0 }}
           priority
-          onError={() => {}}
         />
         <div>
           <div style={{
@@ -87,9 +92,10 @@ export default function Logo({ variant = "full", size = "md" }: LogoProps) {
   }
 
   if (variant === "monogram") {
+    // TEMP: usa logo-completo.svg como fallback hasta que exista logo-monograma.svg dedicado (Spec 21 Fase B)
     return (
       <Image
-        src="/logo-monograma.svg"
+        src="/logo-completo.svg"
         alt="Mapa Inestable"
         width={px}
         height={px}
@@ -99,10 +105,10 @@ export default function Logo({ variant = "full", size = "md" }: LogoProps) {
     );
   }
 
-  // full — fallback al PNG v3 mientras no exista logo-completo.png
+  // full — vectorial v3 (Spec 21, archivos producidos 2026-05-10)
   return (
     <Image
-      src="/logo-completo.png"
+      src="/logo-completo.svg"
       alt="Mapa Inestable"
       width={px}
       height={px}

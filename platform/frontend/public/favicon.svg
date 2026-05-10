@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#C5663A"/>
-  <!-- Asterisco dorado — mark del proyecto (Spec 21 §3.5) -->
-  <g transform="translate(16,16)" fill="#E8B14B">
+  <rect width="32" height="32" fill="#bf6d44"/>
+  <!-- Asterisco dorado — mark del proyecto (Spec 21 §3.5, color del logo v3) -->
+  <g transform="translate(16,16)" fill="#dc9743">
     <!-- Líneas del asterisco: 6 radios a 30° de separación -->
     <rect x="-1.5" y="-9" width="3" height="18" rx="1.5"/>
     <rect x="-1.5" y="-9" width="3" height="18" rx="1.5" transform="rotate(60)"/>

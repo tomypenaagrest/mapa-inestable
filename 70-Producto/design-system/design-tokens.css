@@ -30,10 +30,14 @@
   --mi-accent-gold: #E8C58A;  /* Dorado pálido — highlight, énfasis decorativo */
   --mi-accent-warn: #B45729;  /* Errores, alertas, badges urgentes */
 
-  /* Oro de marca (Spec 21 — logo v3 r2) */
-  --mi-brand-gold:      #E8B14B;  /* Oro de identidad — logo, escalador, mark */
-  --mi-brand-gold-warm: #D89A35;  /* Hover / estado activo del oro de marca */
+  /* Oro de marca (Spec 21 — logo v3 r2, valor real del SVG vectorizado 2026-05-10) */
+  --mi-brand-gold:      #dc9743;  /* Oro de identidad — escalador, sol, asterisco mark del logo */
+  --mi-brand-gold-warm: #c08332;  /* Hover / estado activo del oro de marca */
   --mi-brand-gold-pale: var(--mi-accent-gold);  /* Alias del dorado pálido existente */
+
+  /* Colores complementarios del logo v3 (referencia, NO tokens de fondo del sitio) */
+  --mi-logo-terra-warm: #bf6d44;  /* Terracota cálido del fondo del logo (más naranja que --mi-bg) */
+  --mi-logo-ink-warm:   #404a2b;  /* Verde-marrón de la silueta (más cálido que --mi-ink) */
 
   /* Líneas y bordes */
   --mi-rule:        var(--mi-ink);

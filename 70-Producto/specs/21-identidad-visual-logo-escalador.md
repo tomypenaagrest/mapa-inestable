@@ -390,17 +390,65 @@ Si se aprueba Opción C (§5.2):
 
 ## 11. Acciones inmediatas en otras specs
 
-Esta spec genera updates en otras specs. No los hace por sí misma — son to-dos:
+Esta spec genera updates en otras specs.
 
-| Spec | Sección | Update |
+| Spec | Sección | Update | Estado |
+|---|---|---|---|
+| 03 | logo | Marcar como reemplazada por Spec 21. Sección "portada" se mantiene | pendiente |
+| 11 | §4.1 header | Reemplazar referencia al logo viejo por logo horizontal r2 | pendiente |
+| 15 | §4.2 frame strip | Sin cambios — "S POLO" se confirmó como render de Gemini (§6.2) | n/a |
+| 18 | §B4 logo subdimensionado | Resolución del bug usa la nueva variante horizontal r2 | parcial — Logo.tsx actualizado, falta producir logo-horizontal.svg dedicado |
+| 19 | §3.4 cover fallback ensayos | Considerar el escalador como elemento alternativo en covers (si se aprueba opción B/C) | pendiente — depende de decisión de Opción C aplicada |
+| design-system.md | sección logo | Reemplazar entera con anatomía r2 | pendiente |
+| design-tokens.css | tokens de color | Sumar `--mi-brand-gold` y warm con valores reales del SVG | **✓ HECHO 2026-05-10** |
+| globals.css (frontend) | tokens de color | Sumar mismos tokens al CSS del sitio | **✓ HECHO 2026-05-10** |
+| favicon.svg (public) | color del asterisco | Actualizar `#E8B14B` → `#dc9743` (real del logo) y fondo `#C5663A` → `#bf6d44` | **✓ HECHO 2026-05-10** |
+
+## 11.1 Estado de implementación de Fase C (sesión 2026-05-10)
+
+Lo hecho en esta pasada:
+
+### Archivos producidos en `/public/`
+
+| Archivo | Tamaño | Origen |
 |---|---|---|
-| 03 | logo | Marcar como reemplazada por Spec 21. Sección "portada" se mantiene |
-| 11 | §4.1 header | Reemplazar referencia al logo viejo por logo horizontal r2 |
-| 15 | §4.2 frame strip | Sin cambios — "S POLO" se confirmó como render de Gemini (§6.2) |
-| 18 | §B4 logo subdimensionado | Resolución del bug usa la nueva variante horizontal r2 |
-| 19 | §3.4 cover fallback ensayos | Considerar el escalador como elemento alternativo en covers (si se aprueba opción B/C) |
-| design-system.md | sección logo | Reemplazar entera con anatomía r2 |
-| design-tokens.css | tokens de color | Sumar `--mi-brand-gold` y warm |
+| `logo-completo.svg` | 962 KB | Vectorización por AutoTracer del PNG v3 comprimido |
+| `logo-completo.png` | 898 KB | PIL: 1024×1024 quantize 256 colores del v3 |
+| `og-default.png` | 599 KB | PIL: 1200×630 con logo full (560×560) centrado sobre fondo `#bf6d44` |
+| `apple-touch-icon.png` | 65 KB | PIL: 180×180 del logo full (provisorio: debería ser monograma según §3.5) |
+| `favicon.svg` | 413 B | Actualizado con colores reales del logo |
+
+### Archivos archivados (eliminados de `/public/`)
+
+- `logo.png` (Apr 28, anterior a v3) — eliminado.
+- `logo-simple.png` (Apr 28, anterior a v3) — eliminado.
+
+### Tokens DS actualizados
+
+En `globals.css` y `design-tokens.css`:
+- `--mi-brand-gold: #dc9743` (era estimado `#E8B14B`, ahora valor real del SVG).
+- `--mi-brand-gold-warm: #c08332`.
+- `--mi-brand-gold-pale: var(--mi-accent-gold)` (alias).
+- `--mi-logo-terra-warm: #bf6d44` (referencia, no para fondos del sitio).
+- `--mi-logo-ink-warm: #404a2b` (referencia, no para texto del sitio).
+
+### Componente Logo.tsx
+
+- `variant="full"` → `/logo-completo.svg` (vectorial).
+- `variant="horizontal"` → fallback temporal a `/logo-completo.svg` hasta que se produzca `logo-horizontal.svg` dedicado.
+- `variant="monogram"` → fallback temporal a `/logo-completo.svg` hasta que se produzca `logo-monograma.svg` dedicado.
+- `variant="wordmark"` → texto inline (sin cambios).
+
+Comentarios `TEMP:` en el código marcan los fallbacks que se reemplazan cuando los SVG dedicados existan.
+
+### Lo que sigue pendiente (Fase B externa)
+
+1. Producir `logo-horizontal.svg` (silueta+escalador a la izquierda + wordmark a la derecha).
+2. Producir `logo-monograma.svg` (solo silueta+escalador, sin texto, sobre fondo terracota o transparente).
+3. Versión "reverso" para fondos oscuros (silueta en cream, escalador en cream/blanco).
+4. Posiblemente: variante simplificada del logo full sin sol/luna/peces para usos chicos donde la decoración compite.
+
+Una vez producidos, copiarlos a `/public/` con esos nombres exactos y actualizar Logo.tsx eliminando los comentarios `TEMP:`.
 
 ---
 
