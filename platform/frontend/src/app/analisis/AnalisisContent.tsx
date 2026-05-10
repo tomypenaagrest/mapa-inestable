@@ -550,6 +550,9 @@ export function AnalisisContent() {
       }}>
         <Link href="/" style={{ color: "var(--mi-ink-mute)" }}>← Inicio</Link>
         <span style={{ color: "var(--mi-accent-gold)" }}>Archivo de análisis</span>
+        <Link href="/analisis/borradores" style={{ color: "var(--mi-ink-mute)", marginLeft: "auto" }}>
+          Borradores del agente →
+        </Link>
       </div>
 
       {/* Hero + buscador */}

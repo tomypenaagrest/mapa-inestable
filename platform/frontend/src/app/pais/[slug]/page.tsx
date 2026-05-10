@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getCountrySections, findSection, otherSections } from "@/lib/content";
+import { getCountrySections, findSection, otherSections, getAgentDraftsByCountry } from "@/lib/content";
 import {
   COUNTRY_EJES,
   COUNTRY_SOURCES,
@@ -104,6 +104,137 @@ export default async function PaisPage({
         }}
         initialTab={initialTab}
       />
+
+      {/* Borradores del agente diario para este país */}
+      <AgentDraftsBlock countrySlug={slug} />
     </div>
+  );
+}
+
+function AgentDraftsBlock({ countrySlug }: { countrySlug: string }) {
+  const drafts = getAgentDraftsByCountry(countrySlug);
+  if (drafts.length === 0) return null;
+
+  const fmtDate = (iso: string) => {
+    const [y, m, d] = iso.split("-").map(Number);
+    const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+    return `${d} ${meses[m - 1]} ${y}`;
+  };
+
+  return (
+    <section style={{
+      borderTop: "var(--mi-border-bold)",
+      padding: "var(--mi-space-7) var(--mi-space-6)",
+      background: "var(--mi-bg-paper)",
+    }}>
+      <div style={{
+        fontFamily: "var(--mi-font-mono)",
+        fontSize: "var(--mi-text-xs)",
+        letterSpacing: "var(--mi-tracking-widest)",
+        textTransform: "uppercase",
+        color: "var(--mi-ink-mute)",
+        marginBottom: "var(--mi-space-3)",
+      }}>
+        Producción interna · agente diario
+      </div>
+      <h2 style={{
+        fontFamily: "var(--mi-font-title)",
+        fontWeight: 700,
+        fontSize: "var(--mi-text-2xl)",
+        color: "var(--mi-ink)",
+        marginBottom: "var(--mi-space-2)",
+      }}>
+        Borradores del agente
+      </h2>
+      <p style={{
+        fontFamily: "var(--mi-font-body)",
+        fontStyle: "italic",
+        fontSize: "var(--mi-text-sm)",
+        color: "var(--mi-ink-soft)",
+        maxWidth: "60ch",
+        marginBottom: "var(--mi-space-5)",
+      }}>
+        {drafts.length === 1
+          ? "Hay un borrador automatizado todavía no publicado en Substack."
+          : `Hay ${drafts.length} borradores automatizados todavía no publicados en Substack.`}
+      </p>
+      <ul style={{
+        listStyle: "none",
+        margin: 0,
+        padding: 0,
+        display: "grid",
+        gap: "var(--mi-space-3)",
+        gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+      }}>
+        {drafts.map(d => (
+          <li key={d.slug}>
+            <Link
+              href={`/analisis/borradores/${d.countrySlug}/${d.pieceSlug}`}
+              style={{ display: "block", textDecoration: "none", color: "inherit" }}
+            >
+              <article style={{
+                border: "var(--mi-border-bold)",
+                boxShadow: "var(--mi-shadow-card)",
+                background: "var(--mi-bg-paper)",
+                padding: "var(--mi-space-4)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "var(--mi-space-2)",
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "var(--mi-space-2)", flexWrap: "wrap" }}>
+                  <span style={{
+                    fontFamily: "var(--mi-font-mono)",
+                    fontSize: "10px",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "var(--mi-bg-paper)",
+                    background: "var(--mi-ink)",
+                    padding: "2px 6px",
+                    fontWeight: 700,
+                  }}>
+                    Borrador
+                  </span>
+                  <span style={{
+                    fontFamily: "var(--mi-font-mono)",
+                    fontSize: "11px",
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    color: "var(--mi-ink-mute)",
+                  }}>
+                    {fmtDate(d.date)}
+                  </span>
+                </div>
+                <h3 style={{
+                  fontFamily: "var(--mi-font-title)",
+                  fontWeight: 600,
+                  fontSize: "var(--mi-text-base)",
+                  lineHeight: "var(--mi-leading-snug)",
+                  color: "var(--mi-ink)",
+                  margin: 0,
+                }}>
+                  {d.title}
+                </h3>
+                {d.lede && (
+                  <p style={{
+                    fontFamily: "var(--mi-font-body)",
+                    fontStyle: "italic",
+                    fontSize: "var(--mi-text-sm)",
+                    lineHeight: "var(--mi-leading-normal)",
+                    color: "var(--mi-ink-soft)",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    margin: 0,
+                  }}>
+                    {d.lede}
+                  </p>
+                )}
+              </article>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

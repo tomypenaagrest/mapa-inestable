@@ -168,3 +168,116 @@ export function getEssayBySlug(slug: string): Essay | null {
 
   return null;
 }
+
+/* ========================================================================== */
+/* === Borradores del agente diario =========================================  */
+/* ========================================================================== */
+/* Los .md producidos por el scheduled task `mapa-inestable-borrador-diario`   */
+/* viven en `60-Borradores/diario/`. El filename sigue el patrón:              */
+/*   `<País> - <Título de la pieza> - YYYY-MM-DD.md`                           */
+/*                                                                            */
+/* Estos archivos son borradores: no están publicados en Substack ni se les    */
+/* aplica el formato 4-pasos rígido. La página los muestra como tales con      */
+/* banner "BORRADOR — generado por agente diario" y robots:noindex.            */
+
+const AGENT_DAILY_DIR = path.join(VAULT_ROOT, "60-Borradores", "diario");
+
+/** Mapeo país (filename) → countrySlug. */
+const COUNTRY_TO_SLUG: Record<string, string> = {
+  "Argentina":  "ar",
+  "Bolivia":    "bo",
+  "Brasil":     "br",
+  "Chile":      "cl",
+  "Colombia":   "co",
+  "Ecuador":    "ec",
+  "Paraguay":   "py",
+  "Perú":       "pe",
+  "Peru":       "pe",
+  "Uruguay":    "uy",
+  "Venezuela":  "ve",
+};
+
+export interface AgentDraftMeta {
+  /** slug compuesto: <countrySlug>/<slug-pieza> — único por archivo */
+  slug:        string;
+  /** Sólo la parte de pieza, sin país */
+  pieceSlug:   string;
+  countrySlug: string;
+  country:     string;
+  title:       string;
+  lede:        string;
+  date:        string;     // YYYY-MM-DD
+  filename:    string;
+}
+
+export interface AgentDraft extends AgentDraftMeta {
+  html: string;
+}
+
+const AGENT_FILENAME_RE = /^(.+?) - (.+?) - (\d{4}-\d{2}-\d{2})\.md$/;
+
+function parseAgentFilename(filename: string): {
+  country: string;
+  countrySlug: string;
+  title: string;
+  date: string;
+} | null {
+  const m = filename.match(AGENT_FILENAME_RE);
+  if (!m) return null;
+  const [, countryRaw, title, date] = m;
+  const country = countryRaw.trim();
+  const countrySlug = COUNTRY_TO_SLUG[country];
+  if (!countrySlug) return null;
+  return { country, countrySlug, title: title.trim(), date };
+}
+
+/** Lista todos los borradores del agente, más recientes primero. */
+export function getAllAgentDrafts(): AgentDraftMeta[] {
+  if (!fs.existsSync(AGENT_DAILY_DIR)) return [];
+
+  const files = fs
+    .readdirSync(AGENT_DAILY_DIR)
+    .filter(f => f.endsWith(".md"));
+
+  const out: AgentDraftMeta[] = [];
+  for (const filename of files) {
+    const parsed = parseAgentFilename(filename);
+    if (!parsed) continue;
+    const raw = fs.readFileSync(path.join(AGENT_DAILY_DIR, filename), "utf-8");
+    const { content } = safeMatter(raw);
+    const lede = extractLede(content);
+    const pieceSlug = slugify(parsed.title);
+    out.push({
+      slug:        `${parsed.countrySlug}/${pieceSlug}`,
+      pieceSlug,
+      countrySlug: parsed.countrySlug,
+      country:     parsed.country,
+      title:       parsed.title,
+      lede,
+      date:        parsed.date,
+      filename,
+    });
+  }
+
+  // Más recientes primero
+  out.sort((a, b) => b.date.localeCompare(a.date));
+  return out;
+}
+
+/** Borradores del agente para un país específico, más recientes primero. */
+export function getAgentDraftsByCountry(countrySlug: string): AgentDraftMeta[] {
+  return getAllAgentDrafts().filter(d => d.countrySlug === countrySlug);
+}
+
+/** Carga el detalle de un borrador. Devuelve null si no existe. */
+export function getAgentDraft(countrySlug: string, pieceSlug: string): AgentDraft | null {
+  const meta = getAllAgentDrafts().find(d => d.countrySlug === countrySlug && d.pieceSlug === pieceSlug);
+  if (!meta) return null;
+  const raw = fs.readFileSync(path.join(AGENT_DAILY_DIR, meta.filename), "utf-8");
+  const { content } = safeMatter(raw);
+  const clean = cleanObsidianLinks(content);
+  return {
+    ...meta,
+    html: marked.parse(clean) as string,
+  };
+}
