@@ -50,21 +50,23 @@ export const metadata: Metadata = {
   },
 };
 
-/* Compute current week's countries from the latest published analyses */
+/* Compute countries to show in the header strip.
+   Returns the most recently analyzed unique countries (up to 8),
+   so the strip always shows meaningful content even if a given week
+   only published one country. */
 function getWeeklyCountries(): { slug: string; name: string }[] {
   if (ANALISIS_ALL.length === 0) return [];
-  const latestYear = Math.max(...ANALISIS_ALL.map(a => a.year));
-  const latestWeek = Math.max(...ANALISIS_ALL.filter(a => a.year === latestYear).map(a => a.week));
-  const weekAnalyses = ANALISIS_ALL.filter(a => a.year === latestYear && a.week === latestWeek);
+  // ANALISIS_ALL is already sorted desc by published_iso
   const seen = new Set<string>();
-  return weekAnalyses
-    .filter(a => {
-      if (seen.has(a.countrySlug)) return false;
+  const countries: { slug: string; name: string }[] = [];
+  for (const a of ANALISIS_ALL) {
+    if (!seen.has(a.countrySlug)) {
       seen.add(a.countrySlug);
-      return true;
-    })
-    .map(a => ({ slug: a.countrySlug, name: a.country }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+      countries.push({ slug: a.countrySlug, name: a.country });
+      if (countries.length >= 8) break;
+    }
+  }
+  return countries.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 function getCurrentWeekInfo(): { week: number; year: number } | null {

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import MapaCentrico, { type WeeklyCountryData } from "./MapaCentrico";
 import HeatmapEjes, { type HeatmapCell, type WeekLabel } from "./HeatmapEjes";
@@ -18,9 +18,9 @@ export default function MapaHeatmapSection({ weeklyCountries, heatmapData, weeks
     ? weeklyCountries.find(c => c.slug === selected) ?? null
     : null;
 
-  const handleClick = (iso: string) => {
+  const handleClick = useCallback((iso: string) => {
     setSelected(prev => prev === iso ? null : iso);
-  };
+  }, []);
 
   const countryName = selected ? (COUNTRY_NAMES[selected] || selected) : "";
 
