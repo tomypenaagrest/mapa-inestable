@@ -34,17 +34,8 @@ export default function SiteHeader({ weeklyCountries = [], currentWeek, currentY
         gap: "var(--mi-space-5)",
       }}>
         <div style={{ flex: 1 }}>
-          <Link href="/" style={{ display: "inline-block" }}>
-            <Logo variant="full" size="md" />
-            <div style={{
-              fontFamily: "var(--mi-font-mono)",
-              fontSize: "12px",
-              letterSpacing: "0.06em",
-              color: "var(--mi-ink-soft)",
-              marginTop: "var(--mi-space-2)",
-            }}>
-              cartografía política del sur
-            </div>
+          <Link href="/" style={{ display: "inline-flex", textDecoration: "none" }}>
+            <Logo variant="horizontal" size="md" />
           </Link>
         </div>
 

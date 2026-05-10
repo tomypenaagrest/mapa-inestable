@@ -1,4 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -2 110 164">
-  <rect x="-5" y="-2" width="110" height="164" fill="#C5663A"/>
-  <path d="M 29,0 L 34,5 L 34,21 L 49,42 L 59,53 L 70,66 L 83,79 L 89,100 Q 97,109 98,114 L 91,123 L 66,131 L 62,140 L 47,147 L 42,157 L 31,159 L 18,160 L 11,157 L 9,150 L 6,136 L 2,130 L 0,119 L 2,112 L 9,103 L 23,91 L 23,77 L 21,53 L 17,33 L 15,19 L 13,9 Z" fill="#1F2A12"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#C5663A"/>
+  <!-- Asterisco dorado — mark del proyecto (Spec 21 §3.5) -->
+  <g transform="translate(16,16)" fill="#E8B14B">
+    <!-- Líneas del asterisco: 6 radios a 30° de separación -->
+    <rect x="-1.5" y="-9" width="3" height="18" rx="1.5"/>
+    <rect x="-1.5" y="-9" width="3" height="18" rx="1.5" transform="rotate(60)"/>
+    <rect x="-1.5" y="-9" width="3" height="18" rx="1.5" transform="rotate(120)"/>
+  </g>
 </svg>

@@ -66,7 +66,9 @@ Esto no es Medium. Esto es un periódico crítico latinoamericano. El home muest
 | `--mi-ink` | `#1F2A12` | **Tinta principal.** No negro puro — verde profundo del logo. |
 | `--mi-ink-soft` | `#3D4A26` | Texto secundario, lede, descripciones. |
 | `--mi-ink-mute` | `#5C6638` | Metadata, fechas, captions. |
-| `--mi-accent-gold` | `#E8C58A` | **Oro.** Amarillo del trepador del logo. Highlight, énfasis, activos sobre fondo oscuro. |
+| `--mi-accent-gold` | `#E8C58A` | **Dorado pálido.** Decorativo — highlight, énfasis, activos sobre fondo oscuro. |
+| `--mi-brand-gold` | `#E8B14B` | **Oro de marca.** Identidad — logo v3, escalador, asterisco (Spec 21). |
+| `--mi-brand-gold-warm` | `#D89A35` | **Oro de marca hover.** Estado activo del oro de identidad. |
 | `--mi-accent-warn` | `#B45729` | Alertas, badges urgentes. |
 | `--mi-rule` | (= `--mi-ink`) | Líneas y bordes principales. |
 | `--mi-rule-soft` | `#C8B894` | Líneas suaves sobre fondos cremas. |
@@ -172,17 +174,38 @@ Las sombras son **sólidas, no difusas**. Replican el offset del registro en gra
 
 ### Logo
 
-Tres versiones del logo se usan según contexto:
+> **r2 — Spec 21 (2026-05-09).** Logo v3 con escalador. Reemplaza la sección anterior.
 
-1. **Logo completo** (figura trepando) — para hero, splash, página de about, redes sociales.
-2. **Logotipo + monograma horizontal** — para header del sitio. La versión que aparece en el masthead.
-3. **Mark solo (el avatar circular naranja-verde)** — para favicon, OG image, contextos pequeños donde solo cabe el ícono.
+**Anatomía del logo v3:** silueta invertida de Sudamérica + figura humana con piolet trepando (el escalador) + wordmark "MAPA INESTABLE" + sol + peces + olas + textura de papel impreso. Paleta: terracota `#C5663A` (fondo), verde-negro `#1F2A12` (tinta), dorado de marca `#E8B14B` (escalador, pez dorado, asterisco).
+
+**Cinco variantes:**
+
+| Variante | Archivo | Uso |
+|---|---|---|
+| Full | `/logo-completo.png` + `.svg` | OG image, /acerca, footer, mail |
+| Horizontal | `/logo-horizontal.svg` | Header del sitio (96px alto) |
+| Monograma | `/logo-monograma.svg` | Marca de agua, app icon (180×180) |
+| Wordmark | `/logo-wordmark.svg` | Email, citas académicas |
+| Mark (favicon) | `/favicon.svg` | Tabs del browser (16–32px) |
+
+**Variante horizontal (header):**
+```
+[ silueta+escalador ]   MAPA INESTABLE
+[ 96px alto         ]   cartografía política del sur
+```
+La imagen de la izquierda es silueta + escalador sin el resto del logo. El wordmark va en Alfa Slab One. El tagline en IBM Plex Mono lowercase.
+
+**Favicon:** asterisco/punto dorado (`--mi-brand-gold`) sobre terracota (`--mi-bg`). Geométrico, legible a 16px.
+
+**App icon (iOS/PWA 180×180):** monograma — silueta + escalador, sin wordmark.
+
+**Escalador como motivo:** aparece SOLO en momentos editoriales fuertes — logo, app icon, `/acerca`, despachos especiales. NO como ícono de UI ni decoración recurrente (Spec 21 §5 — Opción C confirmada).
 
 **Reglas:**
-
 - Nunca usar el logo sobre fondos que no sean `--mi-bg`, `--mi-bg-paper` o `--mi-bg-dark`.
 - Nunca aplicar drop-shadow blur al logo. Si necesita destacarse, usar `--mi-shadow-hero` (sombra sólida).
-- El monograma puede acompañarse de la palabra "Mapa Inestable" en `--mi-font-display` (Alfa Slab One) en `text-transform: uppercase`.
+- "S POLO" aparece en el logo v3 tal como salió (render de Gemini). En el resto del sitio usar "Polo S" o "Polo Sur".
+- Los logos v1 y v2 están archivados en `70-Producto/design-system/logo/_archive/`.
 
 ### Hero featured (análisis del día)
 

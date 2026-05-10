@@ -44,9 +44,22 @@ export const metadata: Metadata = {
     siteName: "Mapa Inestable",
     locale: "es_AR",
     type: "website",
+    images: [
+      {
+        url: "/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "Mapa Inestable — Cartografía política del sur",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-default.png"],
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
 };
 
