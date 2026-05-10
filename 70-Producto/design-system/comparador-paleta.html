@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mapa Inestable · Comparador de paleta — A vs B</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Fraunces:opsz,wght,SOFT@9..144,400..900,0..100&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* =================================================================
+   Mapa Inestable · Comparador de paleta — A vs B
+   Herramienta de decisión, NO production. El chrome del comparador
+   no respeta el DS al 100%; lo respeta el contenido del prototype.
+   =================================================================
+
+   CONTRATO DE TOKENS QUE CAMBIAN ENTRE A Y B (puntos de iteración)
+   --------------------------------------------------------------
+   Los siguientes tokens son los únicos que cambian entre variantes.
+   Para probar variantes intermedias, modificá acá:
+
+   --canvas         · fondo dominante de la página
+   --canvas-ink     · tinta sobre canvas
+   --header-bg      · fondo del header del sitio
+   --header-strip   · color del strip que ancla la marca arriba
+   --header-strip-h · alto del strip
+   --scaffold-bg    · fondo de zonas de scaffolding (sidebar, frames)
+   --scaffold-ink   · tinta secundaria en scaffolding
+   --reading-bg     · fondo del cuerpo de lectura larga (siempre crema)
+   --accent-zone    · color de zonas-acento (hero, footer band, citation)
+
+   Layout, tipografías, sombras y bordes NO cambian.
+   ============================================================== */
+
+/* ------------ Tokens base del DS Grabado (compartidos) ----------- */
+:root {
+  --mi-bg:        #C5663A;
+  --mi-bg-warm:   #B45729;
+  --mi-bg-paper:  #F4E9D2;
+  --mi-bg-cream:  #ECE0C5;
+  --mi-bg-dark:   #1F2A12;
+  --mi-ink:       #1F2A12;
+  --mi-ink-soft:  #3D4A26;
+  --mi-ink-mute:  #5C6638;
+  --mi-accent-gold: #E8C58A;
+  --mi-rule:      #1F2A12;
+  --mi-rule-soft: #C8B894;
+
+  --mi-axis-deculturacion:    #6B4A38;
+  --mi-axis-mediaciones:      #4A5C30;
+  --mi-axis-desrepresentacion:#8A4A55;
+  --mi-axis-estetizacion:     #B45729;
+  --mi-axis-desorientacion:   #2D4A6B;
+  --mi-axis-atencion:         #C8993E;
+
+  --mi-font-display: 'Alfa Slab One', Georgia, serif;
+  --mi-font-title:   'Fraunces', Georgia, serif;
+  --mi-font-body:    'Lora', Georgia, serif;
+  --mi-font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* ------------ Variante A — Grabado pleno (estado actual) -------- */
+.prototype[data-variant="a"] {
+  --canvas:         var(--mi-bg);          /* terracota dominante */
+  --canvas-ink:     var(--mi-ink);
+  --header-bg:      var(--mi-bg);          /* terracota plena */
+  --header-strip:   transparent;
+  --header-strip-h: 0px;
+  --scaffold-bg:    var(--mi-bg);          /* terracota */
+  --scaffold-ink:   var(--mi-ink);
+  --reading-bg:     var(--mi-bg-paper);
+  --accent-zone:    var(--mi-bg);          /* en A no hay distinción real */
+  --accent-zone-ink:var(--mi-ink);
+  --card-bg:        var(--mi-bg-paper);    /* cream cards over terracota */
+  --card-border:    var(--mi-ink);
+  --footer-bg:      var(--mi-bg-dark);
+}
+
+/* ------------ Variante B — Modo lectura (propuesta) ------------- */
+.prototype[data-variant="b"] {
+  --canvas:         var(--mi-bg-paper);    /* crema dominante en scaffolding */
+  --canvas-ink:     var(--mi-ink);
+  --header-bg:      var(--mi-bg-paper);    /* crema con strip arriba */
+  --header-strip:   var(--mi-bg);          /* strip terracota 10px */
+  --header-strip-h: 10px;
+  --scaffold-bg:    var(--mi-bg-paper);    /* crema en sidebar/frames */
+  --scaffold-ink:   var(--mi-ink-soft);    /* tinta verde-negro suavizada */
+  --reading-bg:     var(--mi-bg-paper);
+  --accent-zone:    var(--mi-bg);          /* terracota como ACENTO */
+  --accent-zone-ink:var(--mi-ink);
+  --card-bg:        var(--mi-bg-paper);    /* card crema con border más fuerte */
+  --card-border:    var(--mi-ink);
+  --footer-bg:      var(--mi-bg-dark);
+}
+
+/* B en zonas de exploración (home, archivo): la terracota recupera dominancia
+   en el HERO y bandas-acento, pero el header y el scaffolding siguen crema. */
+.prototype[data-variant="b"][data-view="home"] .hero,
+.prototype[data-variant="b"][data-view="home"] .newsletter-band,
+.prototype[data-variant="b"][data-view="archivo"] .archivo-stamp-band {
+  /* hero queda igual que en A: terracota + verde-negro como protagónico */
+}
+
+/* ============================================================
+   COMPARATOR CHROME — UI propia, no respeta DS
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #2a2a2a;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  color: #e8e8e8;
+  height: 100%;
+  overflow: hidden;
+}
+body { display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+
+.cmp-header {
+  background: #1a1a1a;
+  border-bottom: 2px solid #444;
+  padding: 12px 24px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+}
+.cmp-title {
+  font-family: 'Alfa Slab One', Georgia, serif;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #f0e0c0;
+}
+.cmp-title small {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: #888;
+  margin-left: 12px;
+  text-transform: uppercase;
+}
+
+.cmp-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Toggle A / B / Split */
+.toggle-group {
+  display: inline-flex;
+  border: 2px solid #555;
+  background: #222;
+}
+.toggle-group button {
+  background: transparent;
+  border: none;
+  color: #ccc;
+  padding: 10px 18px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 100ms ease;
+  border-right: 1px solid #444;
+}
+.toggle-group button:last-child { border-right: none; }
+.toggle-group button:hover { background: #333; color: #fff; }
+.toggle-group button.active {
+  background: #f0e0c0;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+/* View selector */
+.view-selector {
+  display: inline-flex;
+  gap: 4px;
+}
+.view-selector button {
+  background: transparent;
+  border: 1px solid #555;
+  color: #aaa;
+  padding: 8px 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 100ms ease;
+}
+.view-selector button:hover { border-color: #888; color: #fff; }
+.view-selector button.active {
+  background: #444;
+  border-color: #888;
+  color: #f0e0c0;
+}
+
+.cmp-meta {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #777;
+  text-align: right;
+  line-height: 1.6;
+}
+
+.cmp-stage {
+  overflow: hidden;
+  background: #1a1a1a;
+  position: relative;
+}
+.cmp-stage[data-mode="single"] { display: block; }
+.cmp-stage[data-mode="single"] .col-b { display: none; }
+.cmp-stage[data-mode="split"] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.cmp-stage[data-mode="split"] .col-divider {
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 2px;
+  background: #555;
+  pointer-events: none;
+  z-index: 5;
+}
+.cmp-stage[data-mode="single"] .col-divider { display: none; }
+
+.cmp-col {
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+  background: #1a1a1a;
+}
+.cmp-col-label {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(15, 15, 15, 0.92);
+  color: #e8c58a;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-bottom: 1px solid #444;
+}
+.cmp-stage[data-mode="single"] .cmp-col-label { display: none; }
+
+/* Footer */
+.cmp-footer {
+  background: #1a1a1a;
+  border-top: 2px solid #444;
+  padding: 14px 24px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #999;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+.cmp-footer strong { color: #f0e0c0; font-weight: 500; }
+.cmp-footer .right {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+/* =================================================================
+   PROTOTYPE — el sitio renderizado dentro de cada columna
+   Aquí el DS se respeta. Todos los colores leen tokens que cambian
+   según data-variant. Layout idéntico entre A y B.
+   ================================================================= */
+
+.prototype {
+  background: var(--canvas);
+  color: var(--canvas-ink);
+  font-family: var(--mi-font-body);
+  font-size: 14px;
+  line-height: 1.55;
+  min-height: 100%;
+}
+.prototype a { color: inherit; }
+
+/* ------------ Site header ------------ */
+.proto-header {
+  background: var(--header-bg);
+  color: var(--scaffold-ink);
+  border-top: var(--header-strip-h) solid var(--header-strip);
+  border-bottom: 2px solid var(--mi-ink);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+.proto-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 18px;
+}
+.proto-brand {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--mi-ink);
+}
+.proto-brand-mark {
+  width: 28px; height: 36px;
+}
+.proto-brand-name {
+  font-family: var(--mi-font-display);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+}
+.proto-brand-tagline {
+  font-family: var(--mi-font-mono);
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--scaffold-ink);
+  margin: 2px 0 0;
+}
+.proto-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 2px;
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.proto-nav a {
+  color: var(--scaffold-ink);
+  text-decoration: none;
+  padding: 5px 8px;
+  border: 2px solid transparent;
+}
+.proto-nav a.active {
+  background: var(--mi-ink);
+  color: var(--mi-bg-paper);
+  border-color: var(--mi-ink);
+}
+.proto-search {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--scaffold-ink);
+  background: transparent;
+  border: 2px solid var(--mi-ink);
+  padding: 5px 9px;
+  width: 110px;
+}
+
+.proto-meta-bar {
+  background: var(--mi-bg-dark);
+  color: var(--mi-bg-paper);
+  padding: 5px 18px;
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: flex; gap: 18px;
+}
+.proto-meta-bar .now { color: var(--mi-accent-gold); }
+.proto-meta-bar .right { margin-left: auto; }
+
+/* Países cubiertos esta semana (decisión 15 §7.3) */
+.proto-countries-strip {
+  background: var(--header-bg);
+  color: var(--mi-ink-mute);
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 6px 18px;
+  border-bottom: 1px solid var(--mi-rule-soft);
+}
+
+/* ------------ Container ------------ */
+.proto-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 18px 48px;
+}
+
+/* ------------ HERO (común a home y archivo) ------------ */
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  border: 3px solid var(--mi-ink);
+  background: var(--mi-bg-paper);
+  box-shadow: 12px 12px 0 var(--mi-ink);
+  margin-bottom: 36px;
+}
+.hero-art {
+  background: var(--mi-bg-dark);
+  color: var(--mi-bg-paper);
+  padding: 24px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 240px;
+  position: relative; overflow: hidden;
+}
+.hero-art::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(0deg, transparent 0 3px, rgba(232,197,138,0.04) 3px 4px);
+  pointer-events: none;
+}
+.hero-stamp {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--mi-accent-gold);
+  border: 1px solid var(--mi-accent-gold);
+  padding: 3px 8px;
+  align-self: flex-start;
+  position: relative;
+  z-index: 1;
+}
+.hero-country {
+  font-family: var(--mi-font-display);
+  font-size: 56px;
+  line-height: 0.85;
+  color: var(--mi-bg);
+  text-transform: uppercase;
+  text-shadow: 3px 3px 0 var(--mi-accent-gold);
+  margin: 12px 0;
+  position: relative;
+  z-index: 1;
+}
+.hero-source {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.85;
+  border-top: 1px solid rgba(232,219,193,0.25);
+  padding-top: 10px;
+  position: relative;
+  z-index: 1;
+  margin: 0;
+}
+.hero-source dt {
+  color: var(--mi-accent-gold);
+  display: inline;
+  font-weight: 500;
+}
+.hero-source dd { display: inline; margin: 0; }
+.hero-source dd::after { content: ''; display: block; }
+
+.hero-text { padding: 24px; display: flex; flex-direction: column; }
+.hero-axis-tag {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mi-bg-paper);
+  background: var(--mi-axis-desorientacion);
+  padding: 3px 8px;
+  align-self: flex-start;
+  margin-bottom: 14px;
+}
+.hero-text h1 {
+  font-family: var(--mi-font-title);
+  font-weight: 700;
+  font-variation-settings: "SOFT" 60, "opsz" 144;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--mi-ink);
+  margin: 0 0 10px;
+}
+.hero-text h1 em {
+  font-style: italic; font-weight: 600;
+  color: var(--mi-bg-warm);
+}
+.hero-text .lede {
+  font-family: var(--mi-font-body);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--mi-ink-soft);
+  margin: 0 0 14px;
+  flex: 1;
+}
+.hero-cta {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--mi-ink);
+  padding-bottom: 3px;
+  align-self: flex-start;
+}
+
+/* ------------ Section head ------------ */
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  border-bottom: 3px solid var(--mi-ink);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+.section-head h2 {
+  font-family: var(--mi-font-display);
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--canvas-ink);
+  margin: 0;
+  line-height: 1;
+}
+.section-head .meta {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--scaffold-ink);
+}
+
+/* ------------ Cards grid (carrusel "esta semana") ------------ */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 36px;
+}
+.card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  padding: 16px;
+  box-shadow: 6px 6px 0 var(--mi-ink);
+  display: flex; flex-direction: column;
+  text-decoration: none;
+  color: var(--mi-ink);
+}
+.card .country {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mi-bg-paper);
+  background: var(--mi-ink);
+  padding: 3px 7px;
+  align-self: flex-start;
+  margin-bottom: 10px;
+}
+.card h3 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 50, "opsz" 96;
+  font-size: 18px;
+  line-height: 1.1;
+  margin: 0 0 8px;
+  color: var(--mi-ink);
+}
+.card .desc {
+  font-family: var(--mi-font-body);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--mi-ink-soft);
+  margin: 0 0 12px;
+  flex: 1;
+}
+.card-footer {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mi-ink-soft);
+  border-top: 1px dashed var(--mi-ink);
+  padding-top: 8px;
+  display: flex; justify-content: space-between;
+}
+.card-footer .axis { color: var(--mi-ink); font-weight: 500; }
+
+/* ------------ Heatmap ejes × semana ------------ */
+.heatmap {
+  margin-bottom: 36px;
+}
+.heatmap-grid {
+  border: 2px solid var(--mi-ink);
+  background: var(--card-bg);
+  padding: 14px;
+  box-shadow: 6px 6px 0 var(--mi-ink);
+}
+.heatmap-row {
+  display: grid;
+  grid-template-columns: 110px repeat(8, 1fr);
+  gap: 3px;
+  margin-bottom: 3px;
+  align-items: center;
+}
+.heatmap-row .label {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mi-ink);
+}
+.heatmap-row .cell {
+  height: 24px;
+  background: var(--mi-bg);
+  opacity: 0.15;
+  border: 1px solid var(--mi-ink);
+}
+.heatmap-row .cell[data-i="2"] { opacity: 0.4; }
+.heatmap-row .cell[data-i="3"] { opacity: 0.6; }
+.heatmap-row .cell[data-i="4"] { opacity: 0.85; }
+.heatmap-row .cell[data-i="5"] { opacity: 1; }
+.heatmap-week-row {
+  display: grid;
+  grid-template-columns: 110px repeat(8, 1fr);
+  gap: 3px;
+  margin-top: 8px;
+  font-family: var(--mi-font-mono);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  color: var(--mi-ink-mute);
+  text-transform: uppercase;
+}
+.heatmap-week-row .label {}
+.heatmap-week-row span { text-align: center; }
+
+/* ------------ Mapa stub ------------ */
+.mapa-frame {
+  background: var(--card-bg);
+  border: 3px solid var(--mi-ink);
+  box-shadow: 12px 12px 0 var(--mi-ink);
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  margin-bottom: 36px;
+  min-height: 280px;
+}
+.mapa-svg-wrap {
+  background: var(--mi-bg);
+  border-right: 2px solid var(--mi-ink);
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.mapa-svg-wrap .label {
+  position: absolute;
+  top: 8px; left: 8px;
+  font-family: var(--mi-font-mono);
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  background: var(--mi-bg-paper);
+  border: 2px solid var(--mi-ink);
+  padding: 3px 6px;
+}
+.mapa-svg-wrap svg { width: 120px; }
+.mapa-side {
+  padding: 18px;
+  background: var(--card-bg);
+}
+.mapa-side h3 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 50, "opsz" 96;
+  font-size: 18px;
+  margin: 0 0 8px;
+  color: var(--mi-ink);
+}
+.mapa-side p {
+  font-size: 12px;
+  color: var(--mi-ink-soft);
+  margin: 0 0 12px;
+}
+.mapa-list { list-style: none; padding: 0; margin: 0; }
+.mapa-list li {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--mi-ink);
+  font-size: 11px;
+}
+.mapa-list .dot {
+  width: 12px; height: 12px;
+  border: 2px solid var(--mi-ink);
+  align-self: center;
+}
+.mapa-list .pais {
+  font-family: var(--mi-font-display);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.mapa-list .eje {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--mi-ink-soft);
+  text-transform: uppercase;
+  display: block;
+}
+
+/* ------------ Newsletter band (zona-acento en B) ------------ */
+.newsletter-band {
+  background: var(--mi-bg-dark);
+  color: var(--mi-bg-paper);
+  border: 3px solid var(--mi-ink);
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 36px;
+  box-shadow: 12px 12px 0 var(--mi-ink);
+}
+.newsletter-band .stamp {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--mi-accent-gold);
+  margin-bottom: 10px;
+}
+.newsletter-band h3 {
+  font-family: var(--mi-font-display);
+  font-size: 22px;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+  color: var(--mi-bg-paper);
+  line-height: 1;
+}
+.newsletter-band p {
+  font-style: italic;
+  font-size: 13px;
+  margin: 0;
+  font-family: var(--mi-font-body);
+  opacity: 0.9;
+}
+.newsletter-band button {
+  background: var(--mi-bg);
+  color: var(--mi-bg-paper);
+  border: 2px solid var(--mi-bg-paper);
+  padding: 10px 14px;
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  align-self: end;
+  justify-self: end;
+  box-shadow: 4px 4px 0 var(--mi-bg-paper);
+}
+
+/* ============================================================
+   ANÁLISIS view — página de lectura larga
+   ============================================================ */
+.analisis-header {
+  padding: 32px 18px 16px;
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--reading-bg);
+  color: var(--mi-ink);
+}
+.analisis-header .meta {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  margin-bottom: 12px;
+  display: flex;
+  gap: 12px;
+}
+.analisis-header h1 {
+  font-family: var(--mi-font-title);
+  font-weight: 700;
+  font-variation-settings: "SOFT" 60, "opsz" 144;
+  font-size: 36px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--mi-ink);
+  margin: 0 0 14px;
+}
+.analisis-header h1 em {
+  font-style: italic;
+  color: var(--mi-bg-warm);
+}
+.analisis-header .lede {
+  font-family: var(--mi-font-body);
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--mi-ink-soft);
+  margin: 0 0 20px;
+}
+
+/* Frame strip inline (15 §4.2) */
+.frame-strip {
+  background: var(--reading-bg);
+  border-top: 2px solid var(--mi-rule-soft);
+  border-bottom: 2px solid var(--mi-rule-soft);
+  padding: 14px 0;
+  margin: 0 auto;
+  max-width: 720px;
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+.frame-strip .pill {
+  background: var(--mi-axis-desorientacion);
+  color: var(--mi-bg-paper);
+  padding: 3px 9px;
+  letter-spacing: 0.16em;
+}
+.frame-strip a {
+  color: var(--mi-ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--mi-ink);
+  padding-bottom: 1px;
+}
+
+/* Citation block primario (L1) */
+.citation-block {
+  max-width: 720px;
+  margin: 32px auto 24px;
+  background: var(--accent-zone);
+  color: var(--accent-zone-ink);
+  border: 3px solid var(--mi-ink);
+  padding: 18px 22px;
+  box-shadow: 6px 6px 0 var(--mi-ink);
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.citation-block .head {
+  color: var(--mi-bg-paper);
+  background: var(--mi-ink);
+  display: inline-block;
+  padding: 3px 9px;
+  margin-bottom: 12px;
+  letter-spacing: 0.22em;
+}
+.citation-block .quote {
+  font-family: var(--mi-font-body);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--mi-ink);
+  margin: 0 0 14px;
+}
+.citation-block dl {
+  margin: 0;
+  font-size: 9px;
+  line-height: 1.8;
+}
+.citation-block dt {
+  color: var(--mi-ink-mute);
+  display: inline;
+}
+.citation-block dd {
+  display: inline;
+  margin-left: 8px;
+  color: var(--mi-ink);
+}
+.citation-block dd::after { content: ''; display: block; }
+
+/* Step blocks (los 4 pasos del método) */
+.analisis-body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 18px;
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 28px;
+}
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.step {
+  background: var(--reading-bg);
+}
+.step-head {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  border-bottom: 2px solid var(--mi-ink);
+  padding-bottom: 6px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.step-head .num {
+  font-family: var(--mi-font-display);
+  font-size: 24px;
+  color: var(--mi-bg);
+  line-height: 1;
+}
+.step-head .name { color: var(--mi-ink); }
+.step p {
+  font-family: var(--mi-font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--mi-ink);
+  margin: 0 0 12px;
+}
+.step .footnote {
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  color: var(--mi-bg-warm);
+  vertical-align: super;
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+/* Aside */
+.analisis-aside {
+  position: sticky;
+  top: 90px;
+  align-self: start;
+}
+.aside-card {
+  background: var(--scaffold-bg);
+  border: 2px solid var(--mi-rule-soft);
+  padding: 14px;
+  box-shadow: 6px 6px 0 var(--mi-ink);
+  margin-bottom: 14px;
+}
+.aside-card.is-active {
+  border: 3px solid var(--mi-bg-warm);
+  box-shadow: 8px 8px 0 var(--mi-ink);
+}
+.aside-card .head {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  margin-bottom: 6px;
+}
+.aside-card h4 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 50, "opsz" 96;
+  font-size: 15px;
+  line-height: 1.2;
+  margin: 0 0 6px;
+  color: var(--mi-ink);
+}
+.aside-card p {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--mi-ink-soft);
+  margin: 0 0 8px;
+}
+.aside-card .more {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--mi-ink);
+  color: var(--mi-ink);
+}
+
+/* Apertura — quote-as-card (15 §4.7) */
+.apertura {
+  margin-top: 18px;
+  padding: 22px;
+  background: var(--mi-bg);
+  color: var(--mi-ink);
+  border: 3px solid var(--mi-ink);
+  box-shadow: 8px 8px 0 var(--mi-ink);
+}
+.apertura .stamp {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  margin-bottom: 10px;
+  display: inline-block;
+  border: 1px solid var(--mi-ink);
+  padding: 3px 7px;
+}
+.apertura .question {
+  font-family: var(--mi-font-title);
+  font-weight: 700;
+  font-variation-settings: "SOFT" 50, "opsz" 144;
+  font-size: 26px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--mi-ink);
+  margin: 0;
+}
+
+/* ============================================================
+   ARCHIVO view — exploración con sidebar persistente
+   ============================================================ */
+.archivo-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: 600px;
+}
+.archivo-sidebar {
+  background: var(--scaffold-bg);
+  color: var(--scaffold-ink);
+  border-right: 2px solid var(--mi-ink);
+  padding: 20px 14px;
+}
+.archivo-sidebar h4 {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--scaffold-ink);
+  margin: 0 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--mi-rule-soft);
+}
+.archivo-sidebar ul {
+  list-style: none; padding: 0; margin: 0 0 18px;
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.archivo-sidebar li {
+  padding: 5px 0;
+  display: flex; justify-content: space-between;
+  color: var(--scaffold-ink);
+  cursor: pointer;
+}
+.archivo-sidebar li.active {
+  color: var(--mi-ink);
+  font-weight: 500;
+  border-bottom: 1px solid var(--mi-ink);
+}
+.archivo-sidebar li .count {
+  font-size: 9px;
+  color: var(--mi-ink-mute);
+}
+.archivo-sidebar input {
+  background: transparent;
+  border: 2px solid var(--mi-ink);
+  color: var(--mi-ink);
+  padding: 6px 8px;
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.archivo-results {
+  padding: 24px;
+  background: var(--canvas);
+  color: var(--canvas-ink);
+}
+.archivo-results .head {
+  font-family: var(--mi-font-display);
+  font-size: 22px;
+  text-transform: uppercase;
+  margin: 0 0 14px;
+  color: var(--canvas-ink);
+}
+.archivo-results .meta {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--scaffold-ink);
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--mi-ink);
+}
+.archivo-list { list-style: none; padding: 0; margin: 0; }
+.archivo-list li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--mi-rule-soft);
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 16px;
+  align-items: baseline;
+}
+.archivo-list .num {
+  font-family: var(--mi-font-display);
+  font-size: 16px;
+  color: var(--mi-bg);
+  letter-spacing: -0.02em;
+}
+.archivo-list h3 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 50, "opsz" 96;
+  font-size: 18px;
+  line-height: 1.15;
+  color: var(--mi-ink);
+  margin: 0 0 4px;
+}
+.archivo-list .ctx {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--scaffold-ink);
+}
+.archivo-list .date {
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--scaffold-ink);
+}
+
+/* Stamp band (zona-acento en B) */
+.archivo-stamp-band {
+  background: var(--accent-zone);
+  color: var(--mi-ink);
+  border: 3px solid var(--mi-ink);
+  padding: 18px 22px;
+  margin: 0 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 6px 6px 0 var(--mi-ink);
+}
+.archivo-stamp-band .num {
+  font-family: var(--mi-font-display);
+  font-size: 36px;
+  color: var(--mi-ink);
+  line-height: 1;
+}
+.archivo-stamp-band .text {
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  line-height: 1.5;
+}
+.archivo-stamp-band .text strong {
+  font-weight: 500;
+  background: var(--mi-ink);
+  color: var(--mi-bg-paper);
+  padding: 2px 6px;
+}
+
+/* ------------ Footer ------------ */
+.proto-footer {
+  background: var(--footer-bg);
+  color: var(--mi-bg-paper);
+  padding: 36px 18px 18px;
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.proto-footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.proto-footer h4 {
+  color: var(--mi-accent-gold);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  margin: 0 0 10px;
+}
+.proto-footer .manifesto {
+  font-family: var(--mi-font-title);
+  font-style: italic;
+  font-variation-settings: "SOFT" 70;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--mi-bg-paper);
+  margin: 0;
+}
+.proto-footer ul {
+  list-style: none; padding: 0; margin: 0;
+  line-height: 1.9;
+}
+.proto-footer ul a { color: var(--mi-bg-paper); text-decoration: none; }
+.proto-footer-bottom {
+  max-width: 1100px;
+  margin: 24px auto 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(232,219,193,0.18);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: rgba(232,219,193,0.6);
+  display: flex;
+  gap: 18px;
+}
+.proto-footer-bottom .right { margin-left: auto; }
+
+/* hide what doesn't apply per view */
+.prototype:not([data-view="home"]) .home-only { display: none !important; }
+.prototype:not([data-view="analisis"]) .analisis-only { display: none !important; }
+.prototype:not([data-view="archivo"]) .archivo-only { display: none !important; }
+
+/* responsive — when split makes columns very narrow */
+@media (max-width: 1100px) {
+  .cmp-stage[data-mode="split"] .cards-grid { grid-template-columns: 1fr; }
+  .cmp-stage[data-mode="split"] .mapa-frame { grid-template-columns: 1fr; }
+  .cmp-stage[data-mode="split"] .analisis-body { grid-template-columns: 1fr; }
+  .cmp-stage[data-mode="split"] .archivo-layout { grid-template-columns: 1fr; }
+  .cmp-stage[data-mode="split"] .newsletter-band { grid-template-columns: 1fr; }
+  .cmp-stage[data-mode="split"] .hero { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== COMPARATOR HEADER ===== -->
+<header class="cmp-header">
+  <div class="cmp-title">
+    Comparador de paleta
+    <small>Mapa Inestable · adenda spec 15</small>
+  </div>
+  <div class="cmp-controls">
+    <div class="toggle-group" id="variant-toggle">
+      <button data-mode="single-a" class="active">[A] Grabado pleno</button>
+      <button data-mode="single-b">[B] Modo lectura</button>
+      <button data-mode="split">[A | B] Split</button>
+    </div>
+    <div class="view-selector" id="view-selector">
+      <button data-view="home" class="active">Home</button>
+      <button data-view="analisis">Análisis</button>
+      <button data-view="archivo">Archivo</button>
+    </div>
+  </div>
+  <div class="cmp-meta">
+    Decisión chromática<br>r2 · 09 may 2026
+  </div>
+</header>
+
+<!-- ===== STAGE — donde se renderiza el prototype ===== -->
+<main class="cmp-stage" data-mode="single" id="stage">
+  <div class="cmp-col" data-col="a" id="col-a">
+    <div class="cmp-col-label">Variante A · Grabado pleno</div>
+    <div class="prototype" data-variant="a" data-view="home" id="proto-a"></div>
+  </div>
+  <div class="col-divider"></div>
+  <div class="cmp-col col-b" data-col="b" id="col-b">
+    <div class="cmp-col-label">Variante B · Modo lectura</div>
+    <div class="prototype" data-variant="b" data-view="home" id="proto-b"></div>
+  </div>
+</main>
+
+<!-- ===== COMPARATOR FOOTER (nota editorial) ===== -->
+<footer class="cmp-footer">
+  <div>
+    Esta página existe para decidir si la dirección <strong>Grabado</strong> debe ejecutarse en
+    saturación plena (terracota dominante en todo el scaffolding) o en modo lectura
+    (crema dominante en header y zonas de scaffolding, terracota como acento del hero,
+    citation block y bandas editoriales). El cuerpo de los análisis ya corre sobre crema
+    en ambas variantes — la pregunta es qué hace el sistema <em style="font-style:italic;">alrededor</em>
+    de la lectura. La decisión queda abierta hasta que Tomás vea las dos lado a lado.
+  </div>
+  <div class="right">
+    Tokens en CSS<br>
+    iteración rápida
+  </div>
+</footer>
+
+<!-- ===== TEMPLATES — el contenido de cada vista ===== -->
+<template id="tpl-home">
+  <div class="proto-meta-bar">
+    <span class="now">Lunes 04 may 2026</span>
+    <span>Año II · Edición 48</span>
+    <span class="right">Cartografía política del sur</span>
+  </div>
+  <header class="proto-header">
+    <div class="proto-header-inner">
+      <a href="#" class="proto-brand">
+        <svg class="proto-brand-mark" viewBox="0 0 44 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M22 4 L30 8 L34 14 L36 22 L34 30 L32 38 L30 46 L26 52 L22 50 L20 44 L18 38 L16 30 L14 22 L16 14 L19 8 Z" fill="currentColor"/>
+          <circle cx="14" cy="28" r="2.5" fill="#E8C58A"/>
+          <path d="M14 30 L11 36 M14 30 L17 35 M14 31 L13 38 M14 31 L15 38" stroke="#E8C58A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <h1 class="proto-brand-name">Mapa Inestable</h1>
+          <p class="proto-brand-tagline">Cartografía política del sur</p>
+        </div>
+      </a>
+      <nav class="proto-nav">
+        <a href="#" class="active">Inicio</a>
+        <a href="#">Análisis</a>
+        <a href="#">Despachos</a>
+        <a href="#">Ejes</a>
+        <a href="#">Archivo</a>
+      </nav>
+      <input type="search" class="proto-search" placeholder="Buscar (/)">
+    </div>
+  </header>
+  <div class="proto-countries-strip">argentina · brasil · chile · colombia · bolivia</div>
+  <main class="proto-container">
+    <article class="hero">
+      <aside class="hero-art">
+        <span class="hero-stamp">Análisis · 04 may</span>
+        <div class="hero-country">Colombia</div>
+        <dl class="hero-source">
+          <dt>País</dt><dd>Colombia</dd><br>
+          <dt>Eje</dt><dd>Desorientación</dd><br>
+          <dt>Fuente</dt><dd>La Silla Vacía</dd><br>
+          <dt>A 99 días</dt><dd>del fin del mandato</dd>
+        </dl>
+      </aside>
+      <div class="hero-text">
+        <span class="hero-axis-tag">Desorientación epistemológica</span>
+        <h1>La <em>sospecha</em> antes del voto</h1>
+        <p class="lede">Petro pone en duda la transparencia de la elección que decidirá su sucesión. Cuando ambos lados de la política operan bajo sospecha permanente, el voto deja de ser un acto democrático — se vuelve la confirmación de un presagio.</p>
+        <a href="#" class="hero-cta">Leer análisis completo →</a>
+      </div>
+    </article>
+
+    <section class="mapa-section">
+      <div class="section-head">
+        <h2>El mapa de la semana</h2>
+        <span class="meta">5 países · 4 ejes · Edición 48</span>
+      </div>
+      <div class="mapa-frame">
+        <div class="mapa-svg-wrap">
+          <span class="label">Sur arriba</span>
+          <svg viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(0, 180) scale(1, -1)">
+              <path d="M 30 20 L 50 12 L 75 22 L 88 50 L 92 90 L 80 130 L 60 165 L 50 170 L 40 160 L 32 130 L 25 90 L 22 55 Z" fill="#F4E9D2" stroke="#1F2A12" stroke-width="2"/>
+              <circle cx="48" cy="40" r="3" fill="#E8C58A" stroke="#1F2A12" stroke-width="1"/>
+              <circle cx="60" cy="80" r="3" fill="#E8C58A" stroke="#1F2A12" stroke-width="1"/>
+              <circle cx="42" cy="120" r="3" fill="#E8C58A" stroke="#1F2A12" stroke-width="1"/>
+              <circle cx="62" cy="135" r="3" fill="#E8C58A" stroke="#1F2A12" stroke-width="1"/>
+              <circle cx="78" cy="65" r="3" fill="#E8C58A" stroke="#1F2A12" stroke-width="1"/>
+            </g>
+          </svg>
+        </div>
+        <div class="mapa-side">
+          <h3>La estructura activa esta semana</h3>
+          <p>Cinco países cruzados por cuatro ejes. La desorientación epistemológica vuelve después de tres semanas.</p>
+          <ul class="mapa-list">
+            <li><span class="dot" style="background:#2D4A6B"></span><span><span class="pais">Colombia</span><span class="eje">Desorientación · La sospecha antes del voto</span></span></li>
+            <li><span class="dot" style="background:#4A5C30"></span><span><span class="pais">Argentina</span><span class="eje">Mediaciones · El revés de la motosierra</span></span></li>
+            <li><span class="dot" style="background:#8A4A55"></span><span><span class="pais">Chile</span><span class="eje">Desrepresentación · La constitución otra vez</span></span></li>
+            <li><span class="dot" style="background:#B45729"></span><span><span class="pais">Brasil</span><span class="eje">Estetización · Fluminense y los nuevos altares</span></span></li>
+            <li><span class="dot" style="background:#4A5C30"></span><span><span class="pais">Bolivia</span><span class="eje">Mediaciones · El MAS sin destino</span></span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>La semana en análisis</h2>
+        <span class="meta">Cuatro países · Cuatro ejes</span>
+      </div>
+      <div class="cards-grid">
+        <a href="#" class="card">
+          <span class="country">Argentina</span>
+          <h3>El revés de la motosierra</h3>
+          <p class="desc">Los gobernadores que sostuvieron al ajuste empiezan a despegarse. La pregunta es quién media entre el palacio y el territorio.</p>
+          <div class="card-footer"><span class="axis">Mediaciones</span><span>Infobae</span></div>
+        </a>
+        <a href="#" class="card">
+          <span class="country">Chile</span>
+          <h3>La constitución que no fue, otra vez</h3>
+          <p class="desc">Tres procesos fallidos. La pregunta ya no es qué constitución, sino si todavía hay un demos para escribirla.</p>
+          <div class="card-footer"><span class="axis">Desrepresentación</span><span>CIPER</span></div>
+        </a>
+        <a href="#" class="card">
+          <span class="country">Brasil</span>
+          <h3>Fluminense y los nuevos altares</h3>
+          <p class="desc">El club como única estructura de pertenencia funcional. Cuando todo se desarma, queda el escudo.</p>
+          <div class="card-footer"><span class="axis">Estetización</span><span>Folha</span></div>
+        </a>
+        <a href="#" class="card">
+          <span class="country">Bolivia</span>
+          <h3>El MAS sin Evo, sin Arce, sin destino</h3>
+          <p class="desc">Dos décadas de hegemonía se desarman sin que aparezca quién venga después.</p>
+          <div class="card-footer"><span class="axis">Mediaciones</span><span>Los Tiempos</span></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="heatmap">
+      <div class="section-head">
+        <h2>Ejes × últimas 8 semanas</h2>
+        <span class="meta">Intensidad de activación</span>
+      </div>
+      <div class="heatmap-grid">
+        <div class="heatmap-row"><span class="label">Deculturación</span><span class="cell" data-i="1"></span><span class="cell" data-i="3"></span><span class="cell" data-i="2"></span><span class="cell" data-i="1"></span><span class="cell" data-i="2"></span><span class="cell" data-i="2"></span><span class="cell" data-i="1"></span><span class="cell" data-i="3"></span></div>
+        <div class="heatmap-row"><span class="label">Mediaciones</span><span class="cell" data-i="3"></span><span class="cell" data-i="4"></span><span class="cell" data-i="5"></span><span class="cell" data-i="3"></span><span class="cell" data-i="4"></span><span class="cell" data-i="3"></span><span class="cell" data-i="5"></span><span class="cell" data-i="5"></span></div>
+        <div class="heatmap-row"><span class="label">Desrepresent.</span><span class="cell" data-i="2"></span><span class="cell" data-i="3"></span><span class="cell" data-i="2"></span><span class="cell" data-i="4"></span><span class="cell" data-i="3"></span><span class="cell" data-i="2"></span><span class="cell" data-i="3"></span><span class="cell" data-i="4"></span></div>
+        <div class="heatmap-row"><span class="label">Estetización</span><span class="cell" data-i="1"></span><span class="cell" data-i="2"></span><span class="cell" data-i="3"></span><span class="cell" data-i="2"></span><span class="cell" data-i="4"></span><span class="cell" data-i="3"></span><span class="cell" data-i="2"></span><span class="cell" data-i="4"></span></div>
+        <div class="heatmap-row"><span class="label">Desorient.</span><span class="cell" data-i="2"></span><span class="cell" data-i="1"></span><span class="cell" data-i="3"></span><span class="cell" data-i="2"></span><span class="cell" data-i="2"></span><span class="cell" data-i="1"></span><span class="cell" data-i="2"></span><span class="cell" data-i="5"></span></div>
+        <div class="heatmap-row"><span class="label">Atención</span><span class="cell" data-i="3"></span><span class="cell" data-i="3"></span><span class="cell" data-i="2"></span><span class="cell" data-i="3"></span><span class="cell" data-i="3"></span><span class="cell" data-i="4"></span><span class="cell" data-i="3"></span><span class="cell" data-i="3"></span></div>
+        <div class="heatmap-week-row">
+          <span class="label">Semana →</span>
+          <span>w41</span><span>w42</span><span>w43</span><span>w44</span><span>w45</span><span>w46</span><span>w47</span><span>w48</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="newsletter-band">
+      <div>
+        <p class="stamp">Lunes a la mañana · 10 minutos</p>
+        <h3>El despacho semanal</h3>
+        <p>Una integración de los análisis de la semana. La cartografía completa, en el inbox, una vez por semana.</p>
+      </div>
+      <button>Suscribirme al despacho</button>
+    </section>
+  </main>
+  <footer class="proto-footer">
+    <div class="proto-footer-inner">
+      <div>
+        <h4>Hipótesis</h4>
+        <p class="manifesto">Vivimos una transición donde las estructuras que organizaban la vida colectiva pierden capacidad de mediación. Mapa Inestable rastrea esa pérdida país por país.</p>
+      </div>
+      <div>
+        <h4>Ejes</h4>
+        <ul><li>Deculturación</li><li>Mediaciones</li><li>Desrepresentación</li><li>Estetización</li><li>Desorientación</li><li>Atención</li></ul>
+      </div>
+      <div>
+        <h4>Países</h4>
+        <ul><li>Argentina · Brasil</li><li>Chile · Colombia</li><li>Bolivia · Perú</li><li>Uruguay · Paraguay</li><li>Ecuador · Venezuela</li></ul>
+      </div>
+    </div>
+    <div class="proto-footer-bottom">
+      <span>© 2026 Mapa Inestable</span>
+      <span>Año II · 48 ediciones</span>
+      <span class="right">Hecho con tinta y sospecha</span>
+    </div>
+  </footer>
+</template>
+
+<template id="tpl-analisis">
+  <div class="proto-meta-bar">
+    <span class="now">Lunes 04 may 2026</span>
+    <span>Análisis · w48 · Colombia</span>
+    <span class="right">Edición 48</span>
+  </div>
+  <header class="proto-header">
+    <div class="proto-header-inner">
+      <a href="#" class="proto-brand">
+        <svg class="proto-brand-mark" viewBox="0 0 44 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M22 4 L30 8 L34 14 L36 22 L34 30 L32 38 L30 46 L26 52 L22 50 L20 44 L18 38 L16 30 L14 22 L16 14 L19 8 Z" fill="currentColor"/>
+          <circle cx="14" cy="28" r="2.5" fill="#E8C58A"/>
+          <path d="M14 30 L11 36 M14 30 L17 35 M14 31 L13 38 M14 31 L15 38" stroke="#E8C58A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <h1 class="proto-brand-name">Mapa Inestable</h1>
+          <p class="proto-brand-tagline">Cartografía política del sur</p>
+        </div>
+      </a>
+      <nav class="proto-nav">
+        <a href="#">Inicio</a>
+        <a href="#" class="active">Análisis</a>
+        <a href="#">Despachos</a>
+        <a href="#">Ejes</a>
+        <a href="#">Archivo</a>
+      </nav>
+      <input type="search" class="proto-search" placeholder="Buscar (/)">
+    </div>
+  </header>
+
+  <header class="analisis-header">
+    <div class="meta">
+      <span>Colombia</span>
+      <span>·</span>
+      <span>Semana 48</span>
+      <span>·</span>
+      <span>04 may 2026</span>
+    </div>
+    <h1>La <em>sospecha</em> antes del voto</h1>
+    <p class="lede">Petro pone en duda la transparencia de la elección que decidirá su sucesión. Lo nuevo no es el discurso —es de Trump, Bolsonaro, Milei— sino que ahora sea pronunciado por la izquierda. Cuando ambos lados de la política operan bajo sospecha permanente, el voto deja de ser un acto democrático.</p>
+  </header>
+
+  <div class="frame-strip">
+    <span>Este análisis se activa en</span>
+    <span class="pill">Desorientación epistemológica</span>
+    <a href="#">→ Sobre el eje</a>
+    <a href="#">→ El método</a>
+  </div>
+
+  <div class="citation-block">
+    <span class="head">Disparador · Fuente primaria</span>
+    <p class="quote">"El presidente cuestiona la transparencia del proceso electoral apenas tres meses antes de los comicios. La autoridad electoral responde que las garantías están dadas. La oposición cierra filas con la autoridad. Petro insiste."</p>
+    <dl>
+      <dt>Medio</dt><dd>La Silla Vacía</dd><br>
+      <dt>Publicado</dt><dd>02 may 2026</dd><br>
+      <dt>Autor</dt><dd>Juanita León</dd>
+    </dl>
+  </div>
+
+  <div class="analisis-body">
+    <div class="steps">
+      <section class="step">
+        <div class="step-head">
+          <span class="num">①</span>
+          <span class="name">Disparador</span>
+        </div>
+        <p>El gesto es nuevo en la izquierda latinoamericana, pero conocido en otros lados. Trump lo usó en 2020<span class="footnote">¹</span>, Bolsonaro en 2022, Milei lo amaga cada vez que pierde una encuesta. La novedad colombiana es de procedencia: es la primera vez que un presidente de izquierda en la región pone en duda el sistema que lo eligió, antes de saber el resultado del que decidirá su sucesión.</p>
+      </section>
+
+      <section class="step">
+        <div class="step-head">
+          <span class="num">②</span>
+          <span class="name">Desplazamiento</span>
+        </div>
+        <p>Lo que se desplaza no es la confianza en el resultado puntual, sino la operación que el voto venía cumpliendo. Cuando la izquierda y la derecha comparten el repertorio de la sospecha electoral, el voto deja de ser el procedimiento que produce legitimidad. Pasa a ser un acto sobre el cual hay que pronunciarse <em>antes</em> de que ocurra.</p>
+        <p>El concepto de "sociedad del cansancio" de Byung-Chul Han<span class="footnote">²</span> ayuda acá: no es que las instituciones colapsen, es que se vuelven agotadoras de habitar. Cada elección requiere ahora pronunciarse sobre sí misma.</p>
+      </section>
+
+      <section class="step">
+        <div class="step-head">
+          <span class="num">③</span>
+          <span class="name">Conceptualización</span>
+        </div>
+        <p>Estamos frente a un caso paradigmático del eje <strong>Desorientación epistemológica</strong>: se debilita la capacidad de distinguir lo real, lo verdadero, lo relevante. La sospecha generalizada se vuelve método; el voto, una superficie de proyección donde la duda sustituye al cómputo.</p>
+      </section>
+
+      <section class="step apertura">
+        <span class="stamp">Paso ④ · Apertura</span>
+        <p class="question">Si la sospecha es ahora bipartidaria, ¿qué procedimiento queda para producir legitimidad democrática?</p>
+      </section>
+    </div>
+
+    <aside class="analisis-aside">
+      <div class="aside-card is-active">
+        <div class="head">Autor · 1</div>
+        <h4>Donald Trump</h4>
+        <p>"Stop the Steal" — discurso del 06 ene 2021 cuestionando la elección presidencial estadounidense.</p>
+        <a class="more" href="#">Ver más →</a>
+      </div>
+      <div class="aside-card">
+        <div class="head">Autor · 2</div>
+        <h4>Byung-Chul Han</h4>
+        <p>Filósofo coreano-alemán. <em>La sociedad del cansancio</em> (2010): la transformación de las instituciones en cargas habitacionales.</p>
+        <a class="more" href="#">Ver más →</a>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="proto-footer">
+    <div class="proto-footer-inner">
+      <div>
+        <h4>Hipótesis</h4>
+        <p class="manifesto">Vivimos una transición donde las estructuras que organizaban la vida colectiva pierden capacidad de mediación.</p>
+      </div>
+      <div>
+        <h4>Seguir leyendo</h4>
+        <ul><li>Más de Colombia</li><li>Más de Desorientación</li><li>Despachos previos</li></ul>
+      </div>
+      <div>
+        <h4>Compartir</h4>
+        <ul><li>Copiar link</li><li>Quote-as-card</li><li>Substack</li></ul>
+      </div>
+    </div>
+    <div class="proto-footer-bottom">
+      <span>© 2026 Mapa Inestable</span>
+      <span>Análisis #143</span>
+      <span class="right">Hecho con tinta y sospecha</span>
+    </div>
+  </footer>
+</template>
+
+<template id="tpl-archivo">
+  <div class="proto-meta-bar">
+    <span class="now">Lunes 04 may 2026</span>
+    <span>Archivo · 143 análisis</span>
+    <span class="right">10 países · 6 ejes</span>
+  </div>
+  <header class="proto-header">
+    <div class="proto-header-inner">
+      <a href="#" class="proto-brand">
+        <svg class="proto-brand-mark" viewBox="0 0 44 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M22 4 L30 8 L34 14 L36 22 L34 30 L32 38 L30 46 L26 52 L22 50 L20 44 L18 38 L16 30 L14 22 L16 14 L19 8 Z" fill="currentColor"/>
+          <circle cx="14" cy="28" r="2.5" fill="#E8C58A"/>
+          <path d="M14 30 L11 36 M14 30 L17 35 M14 31 L13 38 M14 31 L15 38" stroke="#E8C58A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <h1 class="proto-brand-name">Mapa Inestable</h1>
+          <p class="proto-brand-tagline">Cartografía política del sur</p>
+        </div>
+      </a>
+      <nav class="proto-nav">
+        <a href="#">Inicio</a>
+        <a href="#">Análisis</a>
+        <a href="#">Despachos</a>
+        <a href="#">Ejes</a>
+        <a href="#" class="active">Archivo</a>
+      </nav>
+      <input type="search" class="proto-search" placeholder="Buscar (/)">
+    </div>
+  </header>
+
+  <div class="archivo-layout">
+    <aside class="archivo-sidebar">
+      <input type="search" placeholder="Buscar archivo">
+      <h4>Por país</h4>
+      <ul>
+        <li class="active">Argentina <span class="count">23</span></li>
+        <li>Brasil <span class="count">19</span></li>
+        <li>Chile <span class="count">17</span></li>
+        <li>Colombia <span class="count">16</span></li>
+        <li>Bolivia <span class="count">14</span></li>
+        <li>Perú <span class="count">12</span></li>
+        <li>Uruguay <span class="count">11</span></li>
+        <li>Ecuador <span class="count">10</span></li>
+      </ul>
+      <h4>Por eje</h4>
+      <ul>
+        <li>Mediaciones <span class="count">38</span></li>
+        <li>Desorientación <span class="count">29</span></li>
+        <li>Desrepresent. <span class="count">25</span></li>
+        <li>Estetización <span class="count">22</span></li>
+        <li>Deculturación <span class="count">18</span></li>
+        <li>Atención <span class="count">11</span></li>
+      </ul>
+    </aside>
+
+    <main class="archivo-results">
+      <div class="archivo-stamp-band">
+        <span class="num">23</span>
+        <div class="text">
+          Análisis sobre <strong>Argentina</strong>, año II.<br>
+          Eje más activo: Mediaciones · 11 análisis.
+        </div>
+      </div>
+
+      <h2 class="head">Archivo Argentina</h2>
+      <div class="meta">23 análisis · ordenados por fecha · descendente</div>
+      <ul class="archivo-list">
+        <li>
+          <span class="num">№ 143</span>
+          <div>
+            <h3>El revés de la motosierra</h3>
+            <span class="ctx">Mediaciones · Infobae</span>
+          </div>
+          <span class="date">04 may 2026</span>
+        </li>
+        <li>
+          <span class="num">№ 138</span>
+          <div>
+            <h3>El gobernador que se cansó</h3>
+            <span class="ctx">Mediaciones · El Destape</span>
+          </div>
+          <span class="date">27 abr 2026</span>
+        </li>
+        <li>
+          <span class="num">№ 132</span>
+          <div>
+            <h3>La opinión pública sin público</h3>
+            <span class="ctx">Atención · Cohete a la Luna</span>
+          </div>
+          <span class="date">20 abr 2026</span>
+        </li>
+        <li>
+          <span class="num">№ 127</span>
+          <div>
+            <h3>Cuando la militancia se vuelve repertorio</h3>
+            <span class="ctx">Estetización · Anfibia</span>
+          </div>
+          <span class="date">13 abr 2026</span>
+        </li>
+        <li>
+          <span class="num">№ 121</span>
+          <div>
+            <h3>El conurbano sin partido</h3>
+            <span class="ctx">Desrepresentación · Página/12</span>
+          </div>
+          <span class="date">06 abr 2026</span>
+        </li>
+        <li>
+          <span class="num">№ 115</span>
+          <div>
+            <h3>El plebiscito permanente</h3>
+            <span class="ctx">Desorientación · La Nación</span>
+          </div>
+          <span class="date">30 mar 2026</span>
+        </li>
+        <li>
+          <span class="num">№ 109</span>
+          <div>
+            <h3>Lecturas perdidas: el peronismo después de los relatos</h3>
+            <span class="ctx">Deculturación · Crisis</span>
+          </div>
+          <span class="date">23 mar 2026</span>
+        </li>
+      </ul>
+    </main>
+  </div>
+
+  <footer class="proto-footer">
+    <div class="proto-footer-inner">
+      <div>
+        <h4>Archivo</h4>
+        <p class="manifesto">Cada análisis tiene su semana, su país y su eje. Nada se pierde, todo se cita.</p>
+      </div>
+      <div>
+        <h4>Filtros</h4>
+        <ul><li>Por país</li><li>Por eje</li><li>Por semana</li><li>Por concepto</li></ul>
+      </div>
+      <div>
+        <h4>Compartir</h4>
+        <ul><li>RSS</li><li>Atom</li><li>Substack</li></ul>
+      </div>
+    </div>
+    <div class="proto-footer-bottom">
+      <span>© 2026 Mapa Inestable</span>
+      <span>143 análisis</span>
+      <span class="right">Hecho con tinta y sospecha</span>
+    </div>
+  </footer>
+</template>
+
+<script>
+// ============================================================
+// Comparator chrome — toggles & view switcher
+// ============================================================
+
+const stage = document.getElementById('stage');
+const colA = document.getElementById('col-a');
+const colB = document.getElementById('col-b');
+const protoA = document.getElementById('proto-a');
+const protoB = document.getElementById('proto-b');
+
+const variantToggle = document.getElementById('variant-toggle');
+const viewSelector = document.getElementById('view-selector');
+
+let currentView = 'home';
+let currentMode = 'single-a'; // single-a | single-b | split
+
+function renderView(view) {
+  const tpl = document.getElementById('tpl-' + view);
+  if (!tpl) return;
+  // Each prototype gets its own clone (independent DOM)
+  protoA.dataset.view = view;
+  protoB.dataset.view = view;
+  protoA.replaceChildren(tpl.content.cloneNode(true));
+  protoB.replaceChildren(tpl.content.cloneNode(true));
+}
+
+function applyMode(mode) {
+  currentMode = mode;
+  variantToggle.querySelectorAll('button').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === mode);
+  });
+  if (mode === 'split') {
+    stage.dataset.mode = 'split';
+    colB.style.display = '';
+  } else {
+    stage.dataset.mode = 'single';
+    if (mode === 'single-a') {
+      // show only A: render A in col-a; hide col-b
+      colA.style.display = '';
+      colB.style.display = 'none';
+      protoA.dataset.variant = 'a';
+    } else {
+      // single-b: show A col only, but with variant B (DOM reuse)
+      colA.style.display = '';
+      colB.style.display = 'none';
+      protoA.dataset.variant = 'b';
+    }
+  }
+  // In split, both cols always visible with their own variants
+  if (mode === 'split') {
+    protoA.dataset.variant = 'a';
+    protoB.dataset.variant = 'b';
+  }
+}
+
+variantToggle.addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  applyMode(btn.dataset.mode);
+});
+
+viewSelector.addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  viewSelector.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+  currentView = btn.dataset.view;
+  renderView(currentView);
+});
+
+// ----- scroll sync (split mode) -----
+let syncing = false;
+function bindSync(src, dst) {
+  src.addEventListener('scroll', () => {
+    if (syncing) return;
+    if (stage.dataset.mode !== 'split') return;
+    syncing = true;
+    const ratio = src.scrollTop / Math.max(1, (src.scrollHeight - src.clientHeight));
+    dst.scrollTop = ratio * (dst.scrollHeight - dst.clientHeight);
+    requestAnimationFrame(() => { syncing = false; });
+  });
+}
+bindSync(colA, colB);
+bindSync(colB, colA);
+
+// initial
+renderView(currentView);
+applyMode(currentMode);
+</script>
+
+</body>
+</html>

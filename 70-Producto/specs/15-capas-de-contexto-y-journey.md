@@ -687,6 +687,70 @@ Sin referencias externas dadas. Estos son los patrones que informan la spec, con
 
 ---
 
+## Adenda r2 — Variante "modo lectura" (decisión chromática)
+
+**Fecha:** 2026-05-09 · **Estado:** abierta hasta que Tomás vea el comparador.
+
+### Inquietud planteada
+
+El sistema visual de Grabado descansa sobre dos piezas: terracota (`#C5663A`) como dominante y verde-negro (`#1F2A12`) como tinta. Esa elección le da al proyecto una identidad gráfica fuerte y deliberada, pero la combinación al 100% de saturación corre un riesgo concreto para la persona "lector recurrente" definida en §1: el header en plena terracota más sidebars y bandas también terracotas, vistos tres mañanas por semana a las siete, son cromáticamente expulsivos. El cuerpo de los análisis ya corre sobre crema (`#F4E9D2`) — la lectura larga está protegida —, pero el *scaffolding* alrededor (header sticky, sidebar persistente §7.2, bandas inter-sección, frames de heatmap y mapa) sigue saturado. La pregunta editorial no es "¿revertimos la apuesta?" sino "¿la apuesta está bien calibrada o se pasó de la raya?".
+
+### Las dos variantes
+
+**A · Grabado pleno (estado actual)** — sin cambios respecto al design-system v1.0. Terracota dominante en todo el scaffolding. Es la implementación literal de los principios §2 del design-system ("la materialidad importa") y de la decisión de abril 2026 de "doblar la apuesta". Defendible: la identidad es máxima. Vulnerable: tres días por semana puede agotar al lector recurrente que vuelve a la app desde mail.
+
+**B · Modo lectura (propuesta)** — la terracota se convierte en **acento**, no fondo. Aparece en hero del home, citation block primario, footer band del newsletter, frame strip inline (§4.2), apertura quote-as-card (§4.7) y como strip de 10px en el borde superior del header (anclaje de marca). El header, sidebar persistente (§7.2), bandas inter-sección y frames usan **crema** (`#F4E9D2`) como fondo. La tinta secundaria del scaffolding suaviza un paso (`--mi-ink-soft`, `#3D4A26`) para no competir con la lectura. El body de cada análisis sigue siendo crema con tinta verde-negro: la lectura larga no cambia. En **home** y `/analisis` (zonas de exploración) la terracota recupera dominancia editorial vía hero y bandas-acento; en **páginas de lectura larga** (análisis individual, despacho, ensayo) la crema domina toda la pantalla.
+
+### Tokens que cambian (contrato explícito)
+
+```css
+:root[data-variant="a"] {
+  --canvas:         var(--mi-bg);          /* terracota */
+  --header-bg:      var(--mi-bg);          /* terracota */
+  --scaffold-bg:    var(--mi-bg);          /* terracota */
+  --scaffold-ink:   var(--mi-ink);
+  --reading-bg:     var(--mi-bg-paper);    /* crema (cuerpo) */
+  --accent-zone:    var(--mi-bg);          /* sin distinción real */
+}
+
+:root[data-variant="b"] {
+  --canvas:         var(--mi-bg-paper);    /* crema */
+  --header-bg:      var(--mi-bg-paper);    /* crema con strip terracota arriba */
+  --header-strip:   var(--mi-bg);          /* strip 10px */
+  --scaffold-bg:    var(--mi-bg-paper);    /* crema */
+  --scaffold-ink:   var(--mi-ink-soft);    /* tinta suavizada */
+  --reading-bg:     var(--mi-bg-paper);
+  --accent-zone:    var(--mi-bg);          /* terracota como ACENTO: hero,
+                                              citation block, newsletter band */
+}
+```
+
+Layout, tipografías, sombras, bordes, axis pills, axis colors, radius (=0) y todos los demás tokens del DS **no cambian**. Es exclusivamente una diferencia de distribución cromática del fondo y la tinta secundaria del scaffolding. Componentes ya especificados (`<FrameStripInline>`, `<AsideCard>`, `<IndicatorCardInline>`, etc.) funcionan idénticamente en ambas variantes.
+
+### El trade-off
+
+| Dimensión | A favorece | B favorece |
+|---|---|---|
+| Identidad visual fuerte | ✓ | (la mantiene en zonas-acento) |
+| Densidad cromática del scaffolding | ✓ | — |
+| Sustained readability del lector recurrente | — | ✓ |
+| Continuidad con el design-system v1.0 (abril 2026) | ✓ | requiere revisión |
+| Coherencia con principio §2 ("la materialidad importa") | máxima | parcial — la materialidad se concentra en zonas-acento |
+| Diferenciación visual entre exploración y lectura | baja | alta |
+| Costo de implementación | nulo | bajo (sólo tokens, sin layout) |
+
+### Comparador como herramienta de decisión
+
+Se construyó `design-system/comparador-paleta.html`: un HTML standalone que renderiza tres vistas (home, análisis individual, archivo) en cualquiera de las dos variantes, con un toggle de tres estados (A solo, B solo, A | B split con scroll sincronizado). El propósito es ver, no defender — el comparador no toma posición. Permite también iterar variantes intermedias modificando el bloque `:root[data-variant="b"]` en el `<style>`: por ejemplo, probar B con tinta `--mi-ink` en lugar de `--mi-ink-soft` en scaffolding, o probar B sin strip terracota en el header.
+
+### Estado de la decisión
+
+**Abierta.** El comparador es el insumo. La decisión queda registrada acá una vez que Tomás vea las dos variantes lado a lado en home, análisis y archivo. Posibilidades: (1) confirmar A — el sistema queda como está; (2) adoptar B — actualizar `design-tokens.css` con los tokens semánticos de canvas/scaffold/accent y propagar a `home-prototype.html`; (3) variante intermedia — definir nuevos tokens a partir del diff entre A y B observado en el comparador.
+
+Esta adenda no modifica ninguna decisión de la r1 (§13). Convive con todas las componentes especificadas. Si se adopta B, los componentes que ya tienen prosa sobre crema (aside, indicator card, citation block) no requieren cambios; sólo el chrome del sitio.
+
+---
+
 ## Glosario rápido (para futuros editores de la spec)
 
 - **L1-L5**: las cinco capas de información (§3.1).
