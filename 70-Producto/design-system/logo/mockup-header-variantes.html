@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Mockup logo horizontal — variantes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+  :root {
+    --mi-bg: #C5663A;
+    --mi-bg-paper: #F4E9D2;
+    --mi-bg-cream: #ECE0C5;
+    --mi-bg-warm: #bf6d44;
+    --mi-ink: #1F2A12;
+    --mi-ink-soft: #3D4A26;
+    --mi-ink-mute: #5C6638;
+    --mi-brand-gold: #dc9743;
+    --mi-rule-soft: #C8B894;
+    --mi-font-display: 'Alfa Slab One', Georgia, serif;
+    --mi-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--mi-font-mono);
+    background: var(--mi-bg-cream);
+    color: var(--mi-ink);
+    padding: 32px;
+  }
+  h1 {
+    font-family: var(--mi-font-display);
+    font-size: 28px;
+    margin-bottom: 4px;
+  }
+  .lede {
+    color: var(--mi-ink-mute);
+    margin-bottom: 32px;
+    font-size: 13px;
+  }
+  .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--mi-ink-mute);
+    margin-bottom: 8px;
+    margin-top: 24px;
+  }
+  .header-mock {
+    background: var(--mi-bg-warm);
+    padding: 24px 32px;
+    border: 2px solid var(--mi-ink);
+    box-shadow: 6px 6px 0 var(--mi-ink);
+    margin-bottom: 8px;
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .nav {
+    margin-left: auto;
+    display: flex;
+    gap: 24px;
+  }
+  .nav a {
+    color: var(--mi-ink);
+    text-decoration: none;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .wordmark {
+    font-family: var(--mi-font-display);
+    font-weight: 400;
+    color: var(--mi-ink);
+    text-transform: uppercase;
+    line-height: 0.9;
+  }
+  .tagline {
+    font-family: var(--mi-font-mono);
+    font-size: 11px;
+    color: var(--mi-ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    margin-top: 4px;
+  }
+  .note {
+    font-size: 11px;
+    color: var(--mi-ink-mute);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<h1>Logo horizontal — variantes para el header</h1>
+<p class="lede">Tres opciones de composición del header global del sitio. Cada bloque es un mockup del header completo a su altura real (96px del logo). Spec 21 §3.2.</p>
+
+<!-- VARIANTE 0: ESTADO ACTUAL (lo que se ve hoy) -->
+<div class="label">Variante 0 · estado actual (lo que muestra el sitio hoy con `Logo.tsx` fallback)</div>
+<div class="header-mock">
+  <div class="header-row">
+    <img src="logo-v3-comprimido.png" width="96" height="96" alt="" style="display:block;">
+    <div>
+      <div class="wordmark" style="font-size: 32px;">Mapa Inestable</div>
+      <div class="tagline">cartografía política del sur</div>
+    </div>
+    <nav class="nav">
+      <a href="#">Despachos</a>
+      <a href="#">Ensayos</a>
+      <a href="#">Mapa</a>
+      <a href="#">Acerca</a>
+    </nav>
+  </div>
+</div>
+<div class="note">El logo cuadrado (con el wordmark "MAPA INESTABLE" adentro) compite con el wordmark del header. Hay redundancia visual.</div>
+
+<!-- VARIANTE A: SILUETA+ESCALADOR + WORDMARK -->
+<div class="label">Variante A · silueta + escalador a la izquierda, wordmark a la derecha (recomendada — Spec 21 §3.2)</div>
+<div class="header-mock">
+  <div class="header-row">
+    <img src="mockup-silueta-escalador.png" height="96" alt="" style="display:block; height:96px; width:auto;">
+    <div>
+      <div class="wordmark" style="font-size: 36px;">Mapa Inestable</div>
+      <div class="tagline">cartografía política del sur</div>
+    </div>
+    <nav class="nav">
+      <a href="#">Despachos</a>
+      <a href="#">Ensayos</a>
+      <a href="#">Mapa</a>
+      <a href="#">Acerca</a>
+    </nav>
+  </div>
+</div>
+<div class="note">Solo la silueta invertida con el escalador trepando se mantiene como pieza gráfica. El wordmark "MAPA INESTABLE" lo asume el header. Sin redundancia. La narrativa (escalador) sobrevive al tamaño chico.</div>
+
+<!-- VARIANTE B: SILUETA AJUSTADA (sin aire, más compacta) -->
+<div class="label">Variante B · silueta ajustada (más compacta, sin aire alrededor)</div>
+<div class="header-mock">
+  <div class="header-row">
+    <img src="mockup-silueta-escalador-tight.png" height="96" alt="" style="display:block; height:96px; width:auto;">
+    <div>
+      <div class="wordmark" style="font-size: 36px;">Mapa Inestable</div>
+      <div class="tagline">cartografía política del sur</div>
+    </div>
+    <nav class="nav">
+      <a href="#">Despachos</a>
+      <a href="#">Ensayos</a>
+      <a href="#">Mapa</a>
+      <a href="#">Acerca</a>
+    </nav>
+  </div>
+</div>
+<div class="note">Mismo concepto pero con menos margen alrededor de la silueta. El escalador queda más prominente. Funciona bien si el header es angosto.</div>
+
+<!-- VARIANTE C: SOLO WORDMARK (minimal) -->
+<div class="label">Variante C · solo wordmark, sin imagen (minimalista)</div>
+<div class="header-mock">
+  <div class="header-row">
+    <div>
+      <div class="wordmark" style="font-size: 44px;">Mapa Inestable</div>
+      <div class="tagline">cartografía política del sur</div>
+    </div>
+    <nav class="nav">
+      <a href="#">Despachos</a>
+      <a href="#">Ensayos</a>
+      <a href="#">Mapa</a>
+      <a href="#">Acerca</a>
+    </nav>
+  </div>
+</div>
+<div class="note">Sin elemento gráfico. Sirve solo si la identidad visual del logo está fuerte en otros lados (home, OG image, /acerca). Riesgo: el header pierde identidad visual instantánea — el lector recurrente no tiene anclaje.</div>
+
+<!-- VARIANTE D: ASTERISCO + WORDMARK -->
+<div class="label">Variante D · asterisco dorado + wordmark (mark mínimo)</div>
+<div class="header-mock">
+  <div class="header-row">
+    <svg width="48" height="48" viewBox="0 0 32 32" style="flex-shrink:0;">
+      <g transform="translate(16,16)" fill="#dc9743">
+        <rect x="-1.5" y="-9" width="3" height="18" rx="1.5"/>
+        <rect x="-1.5" y="-9" width="3" height="18" rx="1.5" transform="rotate(60)"/>
+        <rect x="-1.5" y="-9" width="3" height="18" rx="1.5" transform="rotate(120)"/>
+      </g>
+    </svg>
+    <div>
+      <div class="wordmark" style="font-size: 36px;">Mapa Inestable</div>
+      <div class="tagline">cartografía política del sur</div>
+    </div>
+    <nav class="nav">
+      <a href="#">Despachos</a>
+      <a href="#">Ensayos</a>
+      <a href="#">Mapa</a>
+      <a href="#">Acerca</a>
+    </nav>
+  </div>
+</div>
+<div class="note">El asterisco del logo (que también es el favicon) como elemento gráfico mínimo. Más sobrio que la silueta, más identidad que sólo wordmark. El asterisco repetido en favicon + header refuerza la marca por consistencia.</div>
+
+</body>
+</html>
