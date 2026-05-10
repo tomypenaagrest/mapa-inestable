@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getAllConceptos } from "@/lib/conceptos";
+import { getAllConceptosMeta } from "@/lib/conceptos";
+import { getAllAutores } from "@/lib/autores";
 import CarruselEditorial, { type CarruselSlide } from "@/components/CarruselEditorial";
 import MapaHeatmapSection from "@/components/MapaHeatmapSection";
 import HomeClientLayout from "@/components/HomeClientLayout";
@@ -154,7 +155,8 @@ const LAST_DISPATCH = {
 /* === PAGE ====================================================== */
 
 export default function HomePage() {
-  const conceptos = getAllConceptos().map(c => ({ slug: c.slug, name: c.name }));
+  const conceptos = getAllConceptosMeta();
+  const autores = getAllAutores().map(a => ({ slug: a.slug, name: a.name }));
 
   const whileAwaySlides = WEEK_ANALYSES.map(s => ({
     slug: s.slug,
@@ -166,7 +168,7 @@ export default function HomePage() {
   }));
 
   return (
-    <HomeClientLayout conceptos={conceptos} weeklyCountrySlugs={WEEKLY_SLUGS}>
+    <HomeClientLayout conceptos={conceptos} autores={autores} weeklyCountrySlugs={WEEKLY_SLUGS}>
 
       {/* Mientras estuviste fuera — aparece si ≥14 días sin visitar */}
       <WhileYouWereAway slides={whileAwaySlides} year={YEAR} week={WEEK} />

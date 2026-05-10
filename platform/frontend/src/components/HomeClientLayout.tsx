@@ -1,15 +1,17 @@
 "use client";
 import { useState } from "react";
-import Sidebar, { type SidebarConcepto } from "./Sidebar";
+import Sidebar, { type SidebarConcepto, type SidebarAutor } from "./Sidebar";
 
 interface Props {
   conceptos: SidebarConcepto[];
+  autores: SidebarAutor[];
   weeklyCountrySlugs: string[];
   children: React.ReactNode;
 }
 
 export default function HomeClientLayout({
   conceptos,
+  autores,
   weeklyCountrySlugs,
   children,
 }: Props) {
@@ -19,6 +21,7 @@ export default function HomeClientLayout({
     <div className="mi-home-layout">
       <Sidebar
         conceptos={conceptos}
+        autores={autores}
         weeklyCountrySlugs={weeklyCountrySlugs}
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}

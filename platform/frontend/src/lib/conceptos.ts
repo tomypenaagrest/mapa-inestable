@@ -249,3 +249,18 @@ export function getConceptosByEje(ejeSlug: string): ConceptoMeta[] {
 export function getConceptosByAutor(autorSlug: string): ConceptoMeta[] {
   return getAllConceptos().filter((c) => c.autorSlugs.includes(autorSlug));
 }
+
+export function getAllConceptosMeta(): { slug: string; name: string }[] {
+  if (!fs.existsSync(CONCEPTOS_DIR)) return [];
+  const results: { slug: string; name: string }[] = [];
+  for (const file of fs.readdirSync(CONCEPTOS_DIR)) {
+    if (!file.endsWith(".md") || SKIP_CONCEPTOS.has(file)) continue;
+    const filePath = path.join(CONCEPTOS_DIR, file);
+    const raw = fs.readFileSync(filePath, "utf-8");
+    const { data, content } = safeMatter(raw);
+    const slug = typeof data.slug === "string" ? data.slug : slugify(file.replace(".md", ""));
+    const name = extractTitle(content) || file.replace(".md", "");
+    if (name) results.push({ slug, name });
+  }
+  return results.sort((a, b) => a.name.localeCompare(b.name, "es"));
+}

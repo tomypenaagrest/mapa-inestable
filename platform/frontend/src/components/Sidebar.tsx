@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { EJES } from "@/lib/ejes";
 import { COUNTRY_NAMES } from "@/lib/country-data";
@@ -9,22 +9,61 @@ export interface SidebarConcepto {
   name: string;
 }
 
+export interface SidebarAutor {
+  slug: string;
+  name: string;
+}
+
 interface Props {
   conceptos: SidebarConcepto[];
+  autores: SidebarAutor[];
   weeklyCountrySlugs: string[];
   isOpen: boolean;
   onClose: () => void;
 }
 
+const PREFS_KEY = "mi.preferences";
+
+function readSectionPref(id: string): boolean | null {
+  try {
+    const prefs = JSON.parse(localStorage.getItem(PREFS_KEY) || "{}");
+    const sections = prefs.sidebarSections || {};
+    if (id in sections) return sections[id] === "expanded";
+  } catch {}
+  return null;
+}
+
+function writeSectionPref(id: string, expanded: boolean) {
+  try {
+    const prefs = JSON.parse(localStorage.getItem(PREFS_KEY) || "{}");
+    const sections = prefs.sidebarSections || {};
+    sections[id] = expanded ? "expanded" : "collapsed";
+    prefs.sidebarSections = sections;
+    localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+  } catch {}
+}
+
 function Module({
-  id, label, count, children,
-}: { id: string; label: string; count: number; children: React.ReactNode }) {
-  const [open, setOpen] = useState(false);
+  id, label, count, defaultOpen = false, children,
+}: { id: string; label: string; count: number; defaultOpen?: boolean; children: React.ReactNode }) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  useEffect(() => {
+    const saved = readSectionPref(id);
+    if (saved !== null) setOpen(saved);
+  }, [id]);
+
+  function toggle() {
+    const next = !open;
+    setOpen(next);
+    writeSectionPref(id, next);
+  }
+
   return (
     <div className="mi-sb-module">
       <button
         className="mi-sb-trigger"
-        onClick={() => setOpen(o => !o)}
+        onClick={toggle}
         aria-expanded={open}
         aria-controls={`sb-${id}`}
       >
@@ -39,7 +78,7 @@ function Module({
   );
 }
 
-export default function Sidebar({ conceptos, weeklyCountrySlugs, isOpen, onClose }: Props) {
+export default function Sidebar({ conceptos, autores, weeklyCountrySlugs, isOpen, onClose }: Props) {
   const [q, setQ] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const countries = Object.entries(COUNTRY_NAMES);
@@ -51,7 +90,7 @@ export default function Sidebar({ conceptos, weeklyCountrySlugs, isOpen, onClose
       )}
       <aside className={`mi-sidebar${isOpen ? " mi-sidebar--open" : ""}`}>
 
-        <Module id="paises" label="Países" count={countries.length}>
+        <Module id="paises" label="Países" count={countries.length} defaultOpen>
           <ul className="mi-sb-list">
             {countries.map(([slug, name]) => (
               <li key={slug}>
@@ -66,7 +105,7 @@ export default function Sidebar({ conceptos, weeklyCountrySlugs, isOpen, onClose
           </ul>
         </Module>
 
-        <Module id="ejes" label="Ejes" count={EJES.length}>
+        <Module id="ejes" label="Ejes" count={EJES.length} defaultOpen>
           <ul className="mi-sb-list">
             {EJES.map(e => (
               <li key={e.slug}>
@@ -88,7 +127,7 @@ export default function Sidebar({ conceptos, weeklyCountrySlugs, isOpen, onClose
             onClick={() => setSearchOpen(o => !o)}
             aria-expanded={searchOpen}
           >
-            <span className="mi-sb-icon">🔍</span>
+            <span className="mi-sb-icon">/</span>
             <span className="mi-sb-label">Buscador</span>
           </button>
           {searchOpen && (
@@ -114,13 +153,29 @@ export default function Sidebar({ conceptos, weeklyCountrySlugs, isOpen, onClose
 
         <Module id="conceptos" label="Conceptos" count={conceptos.length}>
           {conceptos.length === 0 ? (
-            <p className="mi-sb-empty">Sin conceptos publicados.</p>
+            <p className="mi-sb-empty">Sin conceptos cargados.</p>
           ) : (
             <ul className="mi-sb-list">
               {conceptos.map(c => (
                 <li key={c.slug}>
                   <Link href={`/concepto/${c.slug}`} className="mi-sb-item">
                     {c.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Module>
+
+        <Module id="autores" label="Autores" count={autores.length}>
+          {autores.length === 0 ? (
+            <p className="mi-sb-empty">Sin autores publicados.</p>
+          ) : (
+            <ul className="mi-sb-list">
+              {autores.map(a => (
+                <li key={a.slug}>
+                  <Link href={`/autor/${a.slug}`} className="mi-sb-item">
+                    {a.name}
                   </Link>
                 </li>
               ))}
