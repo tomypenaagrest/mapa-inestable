@@ -4,9 +4,9 @@ import { getCountrySections, findSection, otherSections } from "@/lib/content";
 import {
   COUNTRY_EJES,
   COUNTRY_SOURCES,
-  COUNTRY_ANALYSES,
   COUNTRY_NAMES,
 } from "@/lib/country-data";
+import { getAnalysesByCountry } from "@/lib/analisis";
 import { getCountryIndicators, LB_META, COVERED_COUNTRIES } from "@/lib/latinobarometro";
 import { getCountryMacro, MACRO_FAMILIES, MACRO_META } from "@/lib/macro-indicators";
 import CountryDashboard from "@/components/CountryDashboard";
@@ -43,7 +43,7 @@ export default async function PaisPage({
   const name         = COUNTRY_NAMES[slug] ?? slug.toUpperCase();
   const ejes         = COUNTRY_EJES[slug]    ?? [];
   const fuentes      = COUNTRY_SOURCES[slug] ?? [];
-  const analyses     = COUNTRY_ANALYSES[slug] ?? [];
+  const analyses     = getAnalysesByCountry(slug);
   const sections     = getCountrySections(slug) ?? [];
 
   const isCovered    = (COVERED_COUNTRIES as readonly string[]).includes(slug);

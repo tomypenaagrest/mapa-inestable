@@ -498,6 +498,32 @@ export const ANALISIS_ALL: AnalisisEntry[] = [
 /* === SORT (desc por fecha) ====================================== */
 ANALISIS_ALL.sort((a, b) => b.published_iso.localeCompare(a.published_iso));
 
+/* === TIPOS COMPARTIDOS ========================================== */
+
+export interface AnalysisSummary {
+  slug:    string;
+  title:   string;
+  axis:    string;
+  axisKey: string;
+  date:    string;
+  week:    number;
+  year:    number;
+}
+
+export function getAnalysesByCountry(slug: string): AnalysisSummary[] {
+  return ANALISIS_ALL
+    .filter(a => a.countrySlug === slug)
+    .map(a => ({
+      slug:    a.slug,
+      title:   a.title,
+      axis:    a.axisName,
+      axisKey: a.axisKey,
+      date:    a.published_at,
+      week:    a.week,
+      year:    a.year,
+    }));
+}
+
 /* === UTILIDADES ================================================= */
 
 function searchMatches(a: AnalisisEntry, q: string): boolean {

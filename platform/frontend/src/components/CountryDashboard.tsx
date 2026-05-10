@@ -7,7 +7,8 @@ import Link from "next/link";
 import IndicatorCard from "@/components/IndicatorCard";
 import MacroIndicatorCard from "@/components/MacroIndicatorCard";
 import HeatmapEjes, { type HeatmapCell, type WeekLabel } from "@/components/HeatmapEjes";
-import type { AxisIntensity, Source, AnalysisSummary } from "@/lib/country-data";
+import type { AxisIntensity, Source } from "@/lib/country-data";
+import type { AnalysisSummary } from "@/lib/analisis";
 import type { Indicator, IndicatorCountryData } from "@/lib/latinobarometro";
 import type { MacroIndicator, MacroCountryData } from "@/lib/macro-indicators";
 

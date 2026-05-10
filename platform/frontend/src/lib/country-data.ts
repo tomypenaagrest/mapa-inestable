@@ -10,16 +10,6 @@ export interface Source {
   type: "hegemonic" | "alternative" | "analysis";
 }
 
-export interface AnalysisSummary {
-  slug: string;
-  title: string;
-  axis: string;
-  axisKey: string;
-  date: string;
-  week: number;
-  year: number;
-}
-
 /* === EJES CRÓNICOS POR PAÍS ==================================== */
 
 export const COUNTRY_EJES: Record<string, AxisIntensity[]> = {
@@ -166,25 +156,6 @@ export const COUNTRY_SOURCES: Record<string, Source[]> = {
     { name: "Armando.info",    url: "https://armando.info",         type: "analysis"    },
     { name: "El Nacional",     url: "https://el-nacional.com",      type: "hegemonic"   },
   ],
-};
-
-/* === ANÁLISIS POR PAÍS (mock hasta conectar backend) =========== */
-
-export const COUNTRY_ANALYSES: Record<string, AnalysisSummary[]> = {
-  ar: [],
-  br: [],
-  co: [
-    { slug: "la-sospecha-antes-del-voto",  title: "La sospecha antes del voto",        axis: "Desorientación epistemológica", axisKey: "desorientacion",    date: "27 abr 2026", week: 17, year: 2026 },
-    { slug: "petro-y-los-territorios",     title: "Petro y los territorios sin Estado", axis: "Erosión de mediaciones",       axisKey: "mediaciones",       date: "14 abr 2026", week: 15, year: 2026 },
-    { slug: "reforma-laboral-colombia",    title: "La reforma laboral que no pudo",    axis: "Desrepresentación",             axisKey: "desrepresentacion", date: "31 mar 2026", week: 13, year: 2026 },
-  ],
-  cl: [],
-  bo: [],
-  pe: [],
-  uy: [],
-  py: [],
-  ec: [],
-  ve: [],
 };
 
 export const COUNTRY_NAMES: Record<string, string> = {
