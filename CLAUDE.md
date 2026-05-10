@@ -16,20 +16,36 @@ Sitio web: https://mapainestable.substack.com (origen del proyecto, ahora en tra
 
 ## Estado actual del proyecto
 
-### Lo que existe
+### Base de conocimientos (Obsidian)
 
-- `/` — Base de conocimientos en Obsidian (60 archivos `.md`):
-  - `10-Ejes/` — Los 6 ejes conceptuales desarrollados
-  - `20-Metodo/` — El método de trabajo y principios editoriales
-  - `30-Autores/` — Notas sobre Roy, Han, Harari, Huntington
-  - `40-Disparadores/` — 20+ escenas/eventos procesados
-  - `50-Publicaciones/` — Índice del Substack con notas atómicas
-  - `60-Borradores/` — 10 piezas en desarrollo
+- `10-Ejes/` — Los 6 ejes conceptuales desarrollados
+- `15-Países/` — Fichas por país (10 países)
+- `20-Metodo/` — El método de trabajo y principios editoriales
+- `30-Autores/` — Notas sobre Roy, Han, Harari, Huntington
+- `35-Conceptos-clave/` — Glosario conceptual del proyecto
+- `40-Disparadores/` — 20+ escenas/eventos procesados
+- `50-Publicaciones/` — Índice del Substack con notas atómicas
+- `60-Borradores/` — Piezas en desarrollo
 - `mapa-inestable.plugin` — Plugin de Cowork con skills de análisis (ver abajo)
 
-### Lo que falta construir
+### Plataforma web (construida)
 
-La plataforma web completa (ver sección Producto).
+Stack: **FastAPI** (backend) + **Next.js** (frontend) + **D3.js** (mapa)
+
+- `platform/backend/` — API Python, modelo de datos PostgreSQL, RSS aggregator
+- `platform/frontend/` — Next.js app con mapa Torres García, dashboard por país, ensayos, archivo
+- `platform/data/` — GeoJSON y datos estructurales
+
+### Producto / diseño (especificaciones)
+
+- `70-Producto/specs/` — 22 specs escritas (01–22) + 2 bug reports (BUG-001, BUG-002)
+- `70-Producto/design-system/` — Design tokens, sistema cromático, assets de identidad visual
+- `70-Producto/mockups/` — Prototipos HTML de vistas
+- `70-Producto/guia-demo.md` — Guía de demo del producto
+
+**Identidad visual (Spec 21):** Logo escalador con asterisco SVG, sistema cromático definido.
+
+**Mapa interactivo (Spec 22):** Mapa Torres García con hot-zones por país, coordenadas editoriales calibradas, componente React integrado.
 
 ---
 
@@ -215,8 +231,9 @@ Ambos skills tienen los 6 ejes, el método y los perfiles de países como refere
 
 ## Notas para la sesión de Claude Code
 
-- La base de conocimientos en Obsidian es la referencia conceptual — leer los archivos de `10-Ejes/` y `20-Metodo/` antes de tomar decisiones de arquitectura
-- El MVP es el flujo semanal completo (ingesta → análisis → despacho), no el mapa
-- El mapa es la interfaz pública; el editor de análisis es la herramienta privada — son dos vistas del mismo producto
-- Arrancar por el backend (RSS + modelo de datos) antes que por la UI
-- El GeoJSON invertido puede validarse rápido con una página HTML estática antes de integrar al stack completo
+- La base de conocimientos en `10-Ejes/` y `20-Metodo/` es la referencia conceptual permanente
+- La plataforma está construida — arrancar leyendo `platform/` y los specs relevantes antes de tocar código
+- Para cambios de UI: leer el spec correspondiente en `70-Producto/specs/` + el design system en `70-Producto/design-system/design-system.md`
+- El mapa Torres García vive en el frontend como componente React con hot-zones por país; las coordenadas editoriales están calibradas en Spec 22
+- Los bug reports siguen el patrón `BUG-NNN-descripcion.md` en `70-Producto/specs/`
+- Specs con número secuencial (`01-…`, `22-…`) son features; bug reports (`BUG-001`, `BUG-002`) son correcciones

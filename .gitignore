@@ -20,3 +20,6 @@ platform/backend/.venv/
 .DS_Store
 Thumbs.db
 *.log
+
+# TypeScript build artifacts
+platform/frontend/tsconfig.tsbuildinfo
