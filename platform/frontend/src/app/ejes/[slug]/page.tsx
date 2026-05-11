@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { EJES, EJES_BY_SLUG } from "@/lib/ejes";
-import { ANALISIS_ALL } from "@/lib/analisis";
+import { getAllPublications } from "@/lib/content";
 import { getConceptosByEje } from "@/lib/conceptos";
 import {
   getIndicatorsByAxis,
@@ -206,7 +206,18 @@ export default async function EjePage({ params }: { params: Promise<{ slug: stri
   const eje = EJES_BY_SLUG[slug];
   if (!eje) notFound();
 
-  const analyses = ANALISIS_ALL.filter(a => a.axisKey === eje.axisKey);
+  const analyses = getAllPublications()
+    .filter(p => p.ejePrincipal === eje.axisKey)
+    .map(p => ({
+      slug:         p.slug,
+      year:         p.year,
+      published_at: p.published_at,
+      country:      p.country ?? "—",
+      countrySlug:  p.countrySlug ?? "",
+      lede:         p.subtitle ?? "",
+      title:        p.title,
+      href:         `/publicaciones/${p.slug}`,
+    }));
   const conceptos = getConceptosByEje(slug);
   const accentColor = `var(--mi-axis-${eje.axisKey})`;
   const lbIndicators = getIndicatorsByAxis(eje.axisKey);
@@ -580,7 +591,7 @@ export default async function EjePage({ params }: { params: Promise<{ slug: stri
                             color: "var(--mi-ink)",
                             marginBottom: "var(--mi-space-2)",
                           }}>
-                            <Link href={`/analisis/${a.countrySlug}/${a.slug}`}>{a.title}</Link>
+                            <Link href={a.href}>{a.title}</Link>
                           </h3>
                           <p style={{
                             fontFamily: "var(--mi-font-body)",
@@ -593,7 +604,7 @@ export default async function EjePage({ params }: { params: Promise<{ slug: stri
                           </p>
                         </div>
                         <Link
-                          href={`/analisis/${a.countrySlug}/${a.slug}`}
+                          href={a.href}
                           style={{
                             fontFamily: "var(--mi-font-mono)",
                             fontSize: "var(--mi-text-xs)",

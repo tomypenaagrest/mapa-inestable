@@ -4,7 +4,8 @@ import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import CommandPalette from "@/components/CommandPalette";
-import { ANALISIS_ALL } from "@/lib/analisis";
+import { getAllPublications } from "@/lib/content";
+import { EJES } from "@/lib/ejes";
 
 const alfaSlabOne = Alfa_Slab_One({
   weight: "400",
@@ -63,29 +64,25 @@ export const metadata: Metadata = {
   },
 };
 
-/* Compute countries to show in the header strip.
-   Returns the most recently analyzed unique countries (up to 8),
-   so the strip always shows meaningful content even if a given week
-   only published one country. */
-function getWeeklyCountries(): { slug: string; name: string }[] {
-  if (ANALISIS_ALL.length === 0) return [];
-  // ANALISIS_ALL is already sorted desc by published_iso
+function getWeeklyCountries(pubs: { countrySlug?: string; country?: string }[]): { slug: string; name: string }[] {
+  if (pubs.length === 0) return [];
   const seen = new Set<string>();
   const countries: { slug: string; name: string }[] = [];
-  for (const a of ANALISIS_ALL) {
-    if (!seen.has(a.countrySlug)) {
-      seen.add(a.countrySlug);
-      countries.push({ slug: a.countrySlug, name: a.country });
+  for (const p of pubs) {
+    if (!p.countrySlug) continue;
+    if (!seen.has(p.countrySlug)) {
+      seen.add(p.countrySlug);
+      countries.push({ slug: p.countrySlug, name: p.country ?? p.countrySlug });
       if (countries.length >= 8) break;
     }
   }
   return countries.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-function getCurrentWeekInfo(): { week: number; year: number } | null {
-  if (ANALISIS_ALL.length === 0) return null;
-  const latestYear = Math.max(...ANALISIS_ALL.map(a => a.year));
-  const latestWeek = Math.max(...ANALISIS_ALL.filter(a => a.year === latestYear).map(a => a.week));
+function getCurrentWeekInfo(pubs: { year: number; week: number }[]): { week: number; year: number } | null {
+  if (pubs.length === 0) return null;
+  const latestYear = Math.max(...pubs.map(p => p.year));
+  const latestWeek = Math.max(...pubs.filter(p => p.year === latestYear).map(p => p.week));
   return { week: latestWeek, year: latestYear };
 }
 
@@ -100,12 +97,22 @@ function getRealISOWeek(): { week: number; year: number } {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const weeklyCountries = getWeeklyCountries();
-  const weekInfo = getCurrentWeekInfo();
+  const pubs = getAllPublications();
+  const weeklyCountries = getWeeklyCountries(pubs);
+  const weekInfo = getCurrentWeekInfo(pubs);
   const realWeek = getRealISOWeek();
   const isFallback = !weekInfo
     ? false
     : weekInfo.year !== realWeek.year || weekInfo.week !== realWeek.week;
+
+  const commandPubs = pubs.map(p => ({
+    slug:         p.slug,
+    title:        p.title,
+    subtitle:     p.subtitle,
+    country:      p.country,
+    published_at: p.published_at,
+    axisName:     EJES.find(e => e.axisKey === p.ejePrincipal)?.name ?? p.ejePrincipal,
+  }));
 
   return (
     <html
@@ -121,7 +128,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <main>{children}</main>
         <SiteFooter />
-        <CommandPalette />
+        <CommandPalette publications={commandPubs} />
       </body>
     </html>
   );

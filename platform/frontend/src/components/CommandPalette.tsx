@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { ANALISIS_ALL } from "@/lib/analisis";
 import { EJES } from "@/lib/ejes";
 import { COUNTRY_NAMES } from "@/lib/country-data";
 
@@ -19,23 +18,32 @@ interface Result {
   href: string;
 }
 
-function getResults(tab: Tab, query: string): Result[] {
+interface PubSearchItem {
+  slug:         string;
+  title:        string;
+  subtitle?:    string;
+  country?:     string;
+  published_at: string;
+  axisName?:    string;
+}
+
+function getResults(tab: Tab, query: string, publications: PubSearchItem[]): Result[] {
   const q = query.toLowerCase().trim();
 
   if (tab === "analisis") {
-    return ANALISIS_ALL
-      .filter(a =>
+    return publications
+      .filter(p =>
         !q ||
-        a.title.toLowerCase().includes(q) ||
-        a.country.toLowerCase().includes(q) ||
-        a.axisName.toLowerCase().includes(q) ||
-        a.lede.toLowerCase().includes(q)
+        p.title.toLowerCase().includes(q) ||
+        (p.country?.toLowerCase().includes(q) ?? false) ||
+        (p.axisName?.toLowerCase().includes(q) ?? false) ||
+        (p.subtitle?.toLowerCase().includes(q) ?? false)
       )
       .slice(0, 8)
-      .map(a => ({
-        label: a.title,
-        sublabel: `${a.country} · ${a.axisName} · ${a.published_at}`,
-        href: `/analisis/${a.countrySlug}/${a.slug}`,
+      .map(p => ({
+        label:    p.title,
+        sublabel: [p.country, p.axisName, p.published_at].filter(Boolean).join(" · "),
+        href:     `/publicaciones/${p.slug}`,
       }));
   }
 
@@ -61,7 +69,7 @@ function getResults(tab: Tab, query: string): Result[] {
   return [];
 }
 
-export default function CommandPalette() {
+export default function CommandPalette({ publications }: { publications: PubSearchItem[] }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [tab, setTab] = useState<Tab>("analisis");
@@ -69,7 +77,7 @@ export default function CommandPalette() {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  const results = getResults(tab, query);
+  const results = getResults(tab, query, publications);
 
   const close = useCallback(() => {
     setOpen(false);
