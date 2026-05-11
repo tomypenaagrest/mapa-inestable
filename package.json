@@ -1,0 +1,12 @@
+{
+  "name": "mapa-inestable-scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "promote-draft": "node scripts/promote-draft.mjs"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}

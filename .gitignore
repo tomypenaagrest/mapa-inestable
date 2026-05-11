@@ -23,3 +23,5 @@ Thumbs.db
 
 # TypeScript build artifacts
 platform/frontend/tsconfig.tsbuildinfo
+
+node_modules/
