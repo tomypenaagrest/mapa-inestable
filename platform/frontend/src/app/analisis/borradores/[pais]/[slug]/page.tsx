@@ -20,6 +20,15 @@ export async function generateMetadata(
   };
 }
 
+const EJE_LABEL: Record<string, string> = {
+  deculturacion:     "Deculturación",
+  mediaciones:       "Erosión de mediaciones",
+  desrepresentacion: "Desrepresentación",
+  estetizacion:      "Estetización",
+  desorientacion:    "Desorientación epistemológica",
+  atencion:          "Atención (transversal)",
+};
+
 function fmtDate(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);
   const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
@@ -150,6 +159,69 @@ export default async function BorradorAgentePage(
           <span>Por <strong style={{ color: "var(--mi-ink)" }}>Agente Mapa Inestable</strong> · borrador no publicado</span>
         </div>
       </div>
+
+      {/* Eje + Disparador */}
+      {(draft.ejePrincipal || draft.disparador) && (
+        <div className="mi-container--narrow" style={{ marginBottom: "var(--mi-space-6)" }}>
+          {draft.ejePrincipal && (
+            <div style={{
+              display: "inline-block",
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: "var(--mi-text-xs)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--mi-bg-paper)",
+              background: `var(--mi-axis-${draft.ejePrincipal})`,
+              padding: "3px 8px",
+              marginBottom: draft.disparador ? "var(--mi-space-4)" : 0,
+            }}>
+              {EJE_LABEL[draft.ejePrincipal] ?? draft.ejePrincipal}
+            </div>
+          )}
+          {draft.disparador?.url && (
+            <div style={{
+              borderLeft: `3px solid var(--mi-axis-${draft.ejePrincipal ?? "mediaciones"})`,
+              paddingLeft: "var(--mi-space-4)",
+              display: "block",
+            }}>
+              <div style={{
+                fontFamily: "var(--mi-font-mono)",
+                fontSize: "var(--mi-text-xs)",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "var(--mi-ink-mute)",
+                marginBottom: "var(--mi-space-1)",
+              }}>
+                Disparador
+              </div>
+              <a
+                href={draft.disparador.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: "var(--mi-font-body)",
+                  fontSize: "var(--mi-text-sm)",
+                  color: "var(--mi-ink)",
+                  textDecoration: "underline",
+                  textUnderlineOffset: "2px",
+                }}
+              >
+                {draft.disparador.titulo ?? draft.disparador.url}
+              </a>
+              {(draft.disparador.medio || draft.disparador.fecha_publicacion) && (
+                <div style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: "var(--mi-text-xs)",
+                  color: "var(--mi-ink-mute)",
+                  marginTop: "var(--mi-space-1)",
+                }}>
+                  {[draft.disparador.medio, draft.disparador.fecha_publicacion].filter(Boolean).join(" · ")}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Cuerpo */}
       <div className="mi-container--narrow" style={{ paddingBottom: "var(--mi-space-8)" }}>

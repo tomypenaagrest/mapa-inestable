@@ -1,3 +1,26 @@
+---
+tipo: borrador-agente
+estado: borrador
+country: Ecuador
+country_slug: ec
+title: "La excepción que ya no interrumpe"
+slug: la-excepcion-que-ya-no-interrumpe
+fecha: 2026-05-05
+semana: 19
+year: 2026
+ejes:
+  - desorientacion
+  - estetizacion
+eje_principal: desorientacion
+lede: "Ecuador acumula 835 días bajo estado de excepción y el 74% de la población vive bajo régimen restringido. Lo que el derecho constitucional definía como ruptura del orden se volvió la forma rutinaria de gobernar."
+disparador:
+  url: https://www.primicias.ec/seguridad/ecuador-estado-excepcion-dias-presidencia-daniel-noboa-toque-queda-121231/
+  medio: Primicias
+  fecha_publicacion: 2026-04-27
+  titulo: "Ecuador lleva 835 días en estado de excepción con el Gobierno de Noboa y sumará más hasta finales de mayo"
+fuentes_count: 11
+---
+
 # La excepción que ya no interrumpe
 
 *Ecuador acumula 835 días bajo estado de excepción y el 74% de la población vive bajo régimen restringido. Lo que el derecho constitucional definía como ruptura del orden se volvió la forma rutinaria de gobernar.*

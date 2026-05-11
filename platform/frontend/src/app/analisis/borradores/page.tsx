@@ -8,6 +8,15 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+const EJE_LABEL: Record<string, string> = {
+  deculturacion:     "Deculturación",
+  mediaciones:       "Mediaciones",
+  desrepresentacion: "Desrepresentación",
+  estetizacion:      "Estetización",
+  desorientacion:    "Desorientación",
+  atencion:          "Atención",
+};
+
 function fmtDate(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);
   const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
@@ -129,6 +138,20 @@ export default function BorradoresPage() {
                       }}>
                         Borrador
                       </span>
+                      {d.ejePrincipal && (
+                        <span style={{
+                          fontFamily: "var(--mi-font-mono)",
+                          fontSize: "10px",
+                          letterSpacing: "0.06em",
+                          textTransform: "uppercase",
+                          color: "var(--mi-bg-paper)",
+                          background: `var(--mi-axis-${d.ejePrincipal})`,
+                          padding: "2px 6px",
+                          fontWeight: 600,
+                        }}>
+                          {EJE_LABEL[d.ejePrincipal] ?? d.ejePrincipal}
+                        </span>
+                      )}
                       <span style={{
                         fontFamily: "var(--mi-font-mono)",
                         fontSize: "11px",

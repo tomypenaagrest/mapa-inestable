@@ -1,3 +1,26 @@
+---
+tipo: borrador-agente
+estado: borrador
+country: Venezuela
+country_slug: ve
+title: "Esperar como forma de gobernar"
+slug: esperar-como-forma-de-gobernar
+fecha: 2026-04-29
+semana: 18
+year: 2026
+ejes:
+  - desrepresentacion
+  - atencion
+eje_principal: desrepresentacion
+lede: "A 100 días de Delcy Rodríguez al frente de Venezuela y con María Corina Machado anunciando un regreso que sigue posponiéndose, el país aprende a vivir gobernado por dos interinatos. Lo provisorio se asienta."
+disparador:
+  url: https://cnnespanol.cnn.com/2026/04/21/venezuela/delcy-rodriguez-rebasa-100-dias-sin-senales-transicion-orix
+  medio: CNN
+  fecha_publicacion: 2026-04-21
+  titulo: "Delcy Rodríguez rebasa los 100 días como presidenta encargada sin dar señales para una posible transición"
+fuentes_count: 10
+---
+
 # Esperar como forma de gobernar
 
 *A 100 días de Delcy Rodríguez al frente de Venezuela y con María Corina Machado anunciando un regreso que sigue posponiéndose, el país aprende a vivir gobernado por dos interinatos. Lo provisorio se asienta.*

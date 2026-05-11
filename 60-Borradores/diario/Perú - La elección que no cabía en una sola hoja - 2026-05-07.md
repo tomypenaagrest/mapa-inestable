@@ -1,3 +1,26 @@
+---
+tipo: borrador-agente
+estado: borrador
+country: Perú
+country_slug: pe
+title: "La elección que no cabía en una sola hoja"
+slug: la-eleccion-que-no-cabia-en-una-sola-hoja
+fecha: 2026-05-07
+semana: 19
+year: 2026
+ejes:
+  - mediaciones
+  - atencion
+eje_principal: mediaciones
+lede: "El 12 de abril, Perú votó con una boleta de 42 centímetros de ancho y cinco columnas. Treinta y cinco candidatos, ningún partido por encima del 17%, una segunda vuelta entre Keiko Fujimori y Roberto Sánchez convocada para el 7 de junio. Lo que se eligió no fue solo un nombre: fue la confirmación de que el sistema de partidos peruano dejó de funcionar como dispositivo de organización política."
+disparador:
+  url: https://www.infobae.com/peru/2026/04/09/por-que-hay-35-candidatos-en-peru-asi-explica-cnn-las-elecciones-mas-fragmentadas-de-latinoamerica/
+  medio: Infobae
+  fecha_publicacion: 2026-04-09
+  titulo: "¿Por qué hay 35 candidatos en Perú? Así explica CNN las elecciones más fragmentadas de Latinoamérica"
+fuentes_count: 13
+---
+
 # La elección que no cabía en una sola hoja
 
 *El 12 de abril, Perú votó con una boleta de 42 centímetros de ancho y cinco columnas. Treinta y cinco candidatos, ningún partido por encima del 17%, una segunda vuelta entre Keiko Fujimori y Roberto Sánchez convocada para el 7 de junio. Lo que se eligió no fue solo un nombre: fue la confirmación de que el sistema de partidos peruano dejó de funcionar como dispositivo de organización política.*

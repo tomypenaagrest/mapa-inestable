@@ -1,3 +1,26 @@
+---
+tipo: borrador-agente
+estado: borrador
+country: Uruguay
+country_slug: uy
+title: "El último país que aún conversa"
+slug: el-ultimo-pais-que-aun-conversa
+fecha: 2026-04-27
+semana: 18
+year: 2026
+ejes:
+  - mediaciones
+  - desrepresentacion
+eje_principal: mediaciones
+lede: "Uruguay cierra un Diálogo Social de un año mientras la región abandona la idea misma de mediación. La excepción uruguaya ya no se entiende."
+disparador:
+  url: https://www.subrayado.com.uy/dialogo-social-termino-reuniones-acuerdo-del-gobierno-y-pit-cnt-n1005621
+  medio: Subrayado
+  fecha_publicacion: 2026-04-21
+  titulo: "Diálogo Social terminó reuniones con acuerdo del gobierno y PIT-CNT"
+fuentes_count: 9
+---
+
 # El último país que aún conversa
 
 *Uruguay cierra un Diálogo Social de un año mientras la región abandona la idea misma de mediación. La excepción uruguaya ya no se entiende.*

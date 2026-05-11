@@ -1,3 +1,26 @@
+---
+tipo: borrador-agente
+estado: borrador
+country: Argentina
+country_slug: ar
+title: "La cena que reemplazó al partido"
+slug: la-cena-que-reemplazo-al-partido
+fecha: 2026-05-10
+semana: 19
+year: 2026
+ejes:
+  - atencion
+  - mediaciones
+eje_principal: atencion
+lede: "Mientras el escándalo Adorni sacudía al gabinete, Javier Milei recibió en Olivos a una decena de influencers libertarios. Una hora y media de reunión a puertas cerradas, sin partido, sin ministros, sin prensa. La sala donde el oficialismo argentino busca aliados y la sala donde busca lectores empezaron a ser la misma."
+disparador:
+  url: https://www.infobae.com/politica/2026/05/05/milei-reunio-en-olivos-a-un-grupo-de-influencers-libertarios-para-recargar-la-batalla-cultural-desde-las-redes/
+  medio: Infobae
+  fecha_publicacion: 2026-05-05
+  titulo: "Milei reunió en Olivos a un grupo de influencers libertarios para recargar la \"batalla cultural\" desde las redes"
+fuentes_count: 10
+---
+
 # La cena que reemplazó al partido
 
 *Mientras el escándalo Adorni sacudía al gabinete, Javier Milei recibió en Olivos a una decena de influencers libertarios. Una hora y media de reunión a puertas cerradas, sin partido, sin ministros, sin prensa. La sala donde el oficialismo argentino busca aliados y la sala donde busca lectores empezaron a ser la misma.*

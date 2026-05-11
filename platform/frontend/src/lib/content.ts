@@ -173,62 +173,41 @@ export function getEssayBySlug(slug: string): Essay | null {
 /* === Borradores del agente diario =========================================  */
 /* ========================================================================== */
 /* Los .md producidos por el scheduled task `mapa-inestable-borrador-diario`   */
-/* viven en `60-Borradores/diario/`. El filename sigue el patrón:              */
-/*   `<País> - <Título de la pieza> - YYYY-MM-DD.md`                           */
-/*                                                                            */
-/* Estos archivos son borradores: no están publicados en Substack ni se les    */
-/* aplica el formato 4-pasos rígido. La página los muestra como tales con      */
-/* banner "BORRADOR — generado por agente diario" y robots:noindex.            */
+/* viven en `60-Borradores/diario/`. Cada archivo abre con frontmatter YAML    */
+/* estructurado (país, eje, lede, disparador). El filename se mantiene legible */
+/* en el vault pero el sitio lee todo desde el frontmatter.                    */
 
 const AGENT_DAILY_DIR = path.join(VAULT_ROOT, "60-Borradores", "diario");
 
-/** Mapeo país (filename) → countrySlug. */
-const COUNTRY_TO_SLUG: Record<string, string> = {
-  "Argentina":  "ar",
-  "Bolivia":    "bo",
-  "Brasil":     "br",
-  "Chile":      "cl",
-  "Colombia":   "co",
-  "Ecuador":    "ec",
-  "Paraguay":   "py",
-  "Perú":       "pe",
-  "Peru":       "pe",
-  "Uruguay":    "uy",
-  "Venezuela":  "ve",
-};
-
 export interface AgentDraftMeta {
   /** slug compuesto: <countrySlug>/<slug-pieza> — único por archivo */
-  slug:        string;
+  slug:         string;
   /** Sólo la parte de pieza, sin país */
-  pieceSlug:   string;
-  countrySlug: string;
-  country:     string;
-  title:       string;
-  lede:        string;
-  date:        string;     // YYYY-MM-DD
-  filename:    string;
+  pieceSlug:    string;
+  countrySlug:  string;
+  country:      string;
+  title:        string;
+  lede:         string;
+  date:         string;     // YYYY-MM-DD
+  ejePrincipal: string;
+  ejes:         string[];
+  disparador?:  { url: string; medio?: string; titulo?: string; fecha_publicacion?: string };
+  filename:     string;
 }
 
 export interface AgentDraft extends AgentDraftMeta {
   html: string;
 }
 
-const AGENT_FILENAME_RE = /^(.+?) - (.+?) - (\d{4}-\d{2}-\d{2})\.md$/;
-
-function parseAgentFilename(filename: string): {
-  country: string;
-  countrySlug: string;
-  title: string;
-  date: string;
-} | null {
-  const m = filename.match(AGENT_FILENAME_RE);
-  if (!m) return null;
-  const [, countryRaw, title, date] = m;
-  const country = countryRaw.trim();
-  const countrySlug = COUNTRY_TO_SLUG[country];
-  if (!countrySlug) return null;
-  return { country, countrySlug, title: title.trim(), date };
+function fmDate(val: unknown): string {
+  if (val instanceof Date) {
+    return [
+      val.getUTCFullYear(),
+      String(val.getUTCMonth() + 1).padStart(2, "0"),
+      String(val.getUTCDate()).padStart(2, "0"),
+    ].join("-");
+  }
+  return String(val ?? "");
 }
 
 /** Lista todos los borradores del agente, más recientes primero. */
@@ -239,29 +218,44 @@ export function getAllAgentDrafts(): AgentDraftMeta[] {
     .readdirSync(AGENT_DAILY_DIR)
     .filter(f => f.endsWith(".md"));
 
-  const out: AgentDraftMeta[] = [];
+  const out: (AgentDraftMeta | null)[] = [];
   for (const filename of files) {
-    const parsed = parseAgentFilename(filename);
-    if (!parsed) continue;
     const raw = fs.readFileSync(path.join(AGENT_DAILY_DIR, filename), "utf-8");
-    const { content } = safeMatter(raw);
-    const lede = extractLede(content);
-    const pieceSlug = slugify(parsed.title);
+    const { data } = safeMatter(raw);
+
+    const required = ["country", "country_slug", "title", "slug", "fecha", "eje_principal", "lede"] as const;
+    const missing = required.filter(k => !data[k]);
+    if (missing.length > 0) {
+      console.warn(`[agent-drafts] Skipping ${filename}: missing frontmatter: ${missing.join(", ")}`);
+      out.push(null);
+      continue;
+    }
+
+    const countrySlug = String(data.country_slug);
+    const pieceSlug   = String(data.slug);
+    const dis = data.disparador as Record<string, unknown> | undefined;
+
     out.push({
-      slug:        `${parsed.countrySlug}/${pieceSlug}`,
+      slug:         `${countrySlug}/${pieceSlug}`,
       pieceSlug,
-      countrySlug: parsed.countrySlug,
-      country:     parsed.country,
-      title:       parsed.title,
-      lede,
-      date:        parsed.date,
+      countrySlug,
+      country:      String(data.country),
+      title:        String(data.title),
+      lede:         String(data.lede),
+      date:         fmDate(data.fecha),
+      ejePrincipal: String(data.eje_principal),
+      ejes:         Array.isArray(data.ejes) ? (data.ejes as string[]) : [String(data.eje_principal)],
+      disparador:   dis?.url ? {
+        url:               String(dis.url),
+        medio:             dis.medio             ? String(dis.medio)             : undefined,
+        titulo:            dis.titulo            ? String(dis.titulo)            : undefined,
+        fecha_publicacion: dis.fecha_publicacion ? fmDate(dis.fecha_publicacion) : undefined,
+      } : undefined,
       filename,
     });
   }
 
-  // Más recientes primero
-  out.sort((a, b) => b.date.localeCompare(a.date));
-  return out;
+  return (out.filter(Boolean) as AgentDraftMeta[]).sort((a, b) => b.date.localeCompare(a.date));
 }
 
 /** Borradores del agente para un país específico, más recientes primero. */

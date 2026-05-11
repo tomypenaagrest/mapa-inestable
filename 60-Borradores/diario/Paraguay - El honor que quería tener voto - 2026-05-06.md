@@ -1,3 +1,26 @@
+---
+tipo: borrador-agente
+estado: borrador
+country: Paraguay
+country_slug: py
+title: "El honor que quería tener voto"
+slug: el-honor-que-queria-tener-voto
+fecha: 2026-05-06
+semana: 19
+year: 2026
+ejes:
+  - deculturacion
+  - mediaciones
+eje_principal: deculturacion
+lede: "Un proyecto del cartismo busca \"reglamentar\" el artículo 189 de la Constitución para que los expresidentes puedan renunciar a su condición de senadores vitalicios y postularse como senadores activos. La discusión jurídica es menor; el desplazamiento cultural, considerable."
+disparador:
+  url: https://www.abc.com.py/politica/2026/04/28/cartismo-no-tiene-los-votos-para-imponer-la-senaduria-vitalicia/
+  medio: ABC Color
+  fecha_publicacion: 2026-04-28
+  titulo: "¿Cartismo no tiene los votos para imponer cambios a la senaduría vitalicia?"
+fuentes_count: 12
+---
+
 # El honor que quería tener voto
 
 *Un proyecto del cartismo busca "reglamentar" el artículo 189 de la Constitución para que los expresidentes puedan renunciar a su condición de senadores vitalicios y postularse como senadores activos. La discusión jurídica es menor; el desplazamiento cultural, considerable.*

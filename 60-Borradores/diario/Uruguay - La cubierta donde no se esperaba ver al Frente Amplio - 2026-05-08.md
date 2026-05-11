@@ -1,3 +1,26 @@
+---
+tipo: borrador-agente
+estado: borrador
+country: Uruguay
+country_slug: uy
+title: "La cubierta donde no se esperaba ver al Frente Amplio"
+slug: la-cubierta-donde-no-se-esperaba-ver-al-frente-amplio
+fecha: 2026-05-08
+semana: 19
+year: 2026
+ejes:
+  - estetizacion
+  - deculturacion
+eje_principal: estetizacion
+lede: "La foto del presidente Yamandú Orsi sobre la cubierta del USS Nimitz, junto al embajador estadounidense, condensa en una sola imagen una pregunta que el Frente Amplio venía evitando desde hace tiempo: qué pasa cuando una identidad política sostenida durante décadas como tradición cultural se vuelve, simplemente, una de las opciones disponibles para quien gobierna."
+disparador:
+  url: https://www.subrayado.com.uy/soy-presidente-del-uruguay-no-hago-politica-exterior-representando-una-fuerza-politica-dijo-orsi-criticas-visita-portaaviones-n1006992
+  medio: Subrayado
+  fecha_publicacion: 2026-05-04
+  titulo: "Soy presidente del Uruguay, no hago política exterior representando una fuerza política"
+fuentes_count: 10
+---
+
 # La cubierta donde no se esperaba ver al Frente Amplio
 
 *La foto del presidente Yamandú Orsi sobre la cubierta del USS Nimitz, junto al embajador estadounidense, condensa en una sola imagen una pregunta que el Frente Amplio venía evitando desde hace tiempo: qué pasa cuando una identidad política sostenida durante décadas como tradición cultural se vuelve, simplemente, una de las opciones disponibles para quien gobierna.*

@@ -1,3 +1,25 @@
+---
+tipo: borrador-agente
+estado: borrador
+country: Paraguay
+country_slug: py
+title: "El país convertido en activo"
+slug: el-pais-convertido-en-activo
+fecha: 2026-05-06
+semana: 19
+year: 2026
+ejes:
+  - desrepresentacion
+  - estetizacion
+eje_principal: desrepresentacion
+lede: "Paraguay alcanzó su segundo grado de inversión, proyecta 4,2% de crecimiento y mantiene la inflación en torno al 3,5%. Casi medio millón de personas salieron de la pobreza desde 2022. Y, sin embargo, el 16% del país sigue allí, con un 62,5% de informalidad laboral y una pobreza rural que casi duplica a la urbana. Dos series de cifras describen el mismo país sin reconocerse entre sí."
+disparador:
+  url: https://www.ultimahora.com/paraguay-se-consolida-y-logra-su-segundo-grado-de-inversion-de-standard-poors
+  medio: Última Hora
+  titulo: "Paraguay se consolida y logra su segundo grado de inversión de Standard & Poor's"
+fuentes_count: 13
+---
+
 # El país convertido en activo
 
 *Paraguay alcanzó su segundo grado de inversión, proyecta 4,2% de crecimiento y mantiene la inflación en torno al 3,5%. Casi medio millón de personas salieron de la pobreza desde 2022. Y, sin embargo, el 16% del país sigue allí, con un 62,5% de informalidad laboral y una pobreza rural que casi duplica a la urbana. Dos series de cifras describen el mismo país sin reconocerse entre sí.*
