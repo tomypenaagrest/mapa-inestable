@@ -25,7 +25,7 @@ El sitio vive en producción en Vercel. El vault de conocimiento vive en Obsidia
 ├── 60-Borradores/         Piezas en desarrollo
 ├── 70-Producto/           ← ESTÁS ACÁ
 │   ├── README.md          Este archivo
-│   ├── specs/             Especificaciones de features (01-13)
+│   ├── specs/             Especificaciones de features (01-32) + bug reports (BUG-NNN)
 │   ├── mockups/           Previews HTML de componentes (referencia visual antes de implementar)
 │   └── design-system/     Tokens CSS, guía visual, prototipo HTML
 └── platform/              La plataforma web
@@ -84,7 +84,8 @@ El sitio vive en producción en Vercel. El vault de conocimiento vive en Obsidia
 | `components/Logo.tsx` | Logo SVG de Sudamérica invertida. Props: `variant` (full/icon/wordmark), `size` (sm/md/lg), `color` |
 | `components/SiteHeader.tsx` | Header del sitio con navegación |
 | `components/SiteFooter.tsx` | Footer con links a ejes, países, hipótesis |
-| `components/MapaSudamerica.tsx` | Mapa D3.js con GeoJSON — Sudamérica invertida |
+| `components/MapaSudamerica.tsx` | Mapa D3.js con GeoJSON — Sudamérica invertida con hot-zones por país (Spec 22) |
+| `components/CountryDashboard.tsx` | Dashboard tabular del país (Spec 16): 6 tabs — publicaciones, diagnóstico, pulso, estructura, contexto, fuentes. Spec 27 agrega una 7ma tab (agenda) entre publicaciones y diagnóstico. |
 
 ---
 
@@ -94,7 +95,11 @@ El sitio vive en producción en Vercel. El vault de conocimiento vive en Obsidia
 |---|---|
 | `lib/ejes.ts` | Datos de los 6 ejes: slug, nombre, definición, texto pedagógico, autores. También `AXIS_KEY_TO_SLUG` y mock de análisis por eje. |
 | `lib/country-data.ts` | Perfiles de países: ejes crónicos, fuentes monitoreadas, análisis mock |
-| `lib/content.ts` | Parser de archivos `.md` del vault para páginas de país |
+| `lib/content.ts` | Parser de archivos `.md` del vault — `getCountrySections`, `getAllAgentDrafts`, etc. |
+| `lib/analisis.ts` | Tipos y helpers de análisis (`AnalisisEntry`, filtros). Pendiente conexión con publicaciones del vault (Spec 26). |
+| `lib/latinobarometro.ts` | Loader de los 12 indicadores LB 2024 desde `data/latinobarometro-2024/indicators.json` (Spec 12B) |
+| `lib/macro-indicators.ts` | Loader de los 24 indicadores macro (Spec 14A). Pipeline pendiente; tolera estado placeholder. |
+| `lib/agendas.ts` | (Spec 27 — pendiente) Loader de agendas por país desde `15-Países/agendas/<slug>.md` |
 | `lib/api.ts` | Cliente HTTP preparado para el backend (no activo) |
 
 ---
@@ -221,6 +226,8 @@ Este requisito es estructural. El proyecto trata sobre desorientación epistemol
 
 ## Specs del producto
 
+### Features (numeradas)
+
 | Archivo | Título | Estado |
 |---|---|---|
 | `specs/01-arquitectura-sitio.md` | Arquitectura del sitio (MVP) | Referencia base |
@@ -231,15 +238,50 @@ Este requisito es estructural. El proyecto trata sobre desorientación epistemol
 | `specs/06-marco-conceptual-publico.md` | Marco conceptual público | Pendiente |
 | `specs/07-puente-vault-sitio.md` | Puente vault → sitio | Pendiente |
 | `specs/08-coherencia-editorial.md` | Coherencia editorial | Pendiente |
-| `specs/09-vision-proximo-desarrollo.md` | Visión próximo desarrollo | Referencia futura (no scope inmediato) |
+| `specs/09-vision-proximo-desarrollo.md` | Visión próximo desarrollo | Referencia futura |
 | `specs/10-integracion-latinobarometro.md` | Integración Latinobarómetro (marco general) | Referencia base para Spec 12 |
 | `specs/11-rediseno-home-dashboard.md` | Rediseño de home como dashboard | Pendiente |
-| `specs/12-pulso-ciudadano-ficha-pais.md` | Pulso ciudadano LB 2024 en ficha de país | Datos listos · UI pendiente |
-| `specs/12A-curaduria-12-indicadores.md` | Anexo 12A — curaduría de los 12 indicadores | ✓ Cerrada |
-| `specs/12B-pipeline-lb2024.md` | Anexo 12B — pipeline de carga de microdatos | ✓ Ejecutada |
+| `specs/12-pulso-ciudadano-ficha-pais.md` | Pulso ciudadano LB 2024 en ficha de país | Datos listos · UI integrada en Spec 16 |
+| `specs/12A-curaduria-12-indicadores.md` | Anexo 12A — curaduría de 12 indicadores | ✓ Cerrada |
+| `specs/12B-pipeline-lb2024.md` | Anexo 12B — pipeline de carga LB2024 | ✓ Ejecutada |
 | `specs/13-pagina-comparativa-paises.md` | Página comparativa cross-país (LB 2024) | Pendiente · post-Spec 12 |
+| `specs/14-indicadores-estructurales.md` | Indicadores estructurales (marco macro) | Marco cerrado · pipeline pendiente |
+| `specs/14A-curaduria-24-indicadores.md` | Anexo 14A — curaduría de 24 indicadores macro | ✓ Cerrada |
+| `specs/15-capas-de-contexto-y-journey.md` | Capas de contexto y journey del lector recurrente | Pendiente |
+| `specs/16-dashboard-de-pais.md` | Dashboard de país (rediseño tabular) | **Implementada** (shell + 6 tabs) |
+| `specs/17-modelo-de-contenido-ensayos-publicaciones-pais.md` | Modelo de contenido ensayos / publicaciones / país | Pendiente |
+| `specs/18-bugfixes-header-y-mapa.md` | Bugfixes header y mapa | Pendiente |
+| `specs/19-ensayos-como-revista.md` | Ensayos como revista | Pendiente |
+| `specs/20-sidebar-autores-conceptos.md` | Sidebar autores y conceptos | Pendiente |
+| `specs/21-identidad-visual-logo-escalador.md` | Identidad visual — logo escalador | **Implementada** |
+| `specs/22-mapa-interactivo-torres-garcia.md` | Mapa interactivo Torres García con hot-zones | **Implementada** |
+| `specs/23-frontmatter-en-agente-diario.md` | Frontmatter del agente diario | En curso |
+| `specs/24-promover-borrador-a-publicacion.md` | Promover borrador del agente a publicación | En curso |
+| `specs/25-pipeline-de-produccion-visible.md` | Pipeline de producción visible | Pendiente |
+| `specs/26-cargar-publicaciones-del-vault-al-sitio.md` | Cargar publicaciones del vault al sitio | En curso |
+| `specs/27-agendas-por-pais.md` | Agendas por país (tab vivo del dashboard) | Borrador r1 |
+| `specs/28-scheduled-task-agendas-cowork.md` | Scheduled task semanal de agendas (Cowork) | Borrador r2 |
+| `specs/29-calendario-agentes-automaticos.md` | Calendario de agentes automáticos (documento vivo) | Borrador r1 |
+| `specs/30-home-derivada-del-corpus.md` | Home derivada del corpus real (sin fixtures) | Borrador r1 · post-Spec 26 |
+| `specs/31-despachos-del-vault-al-sitio.md` | Despachos del vault al sitio (/despachos y detalle) | Borrador r1 · post-Spec 26 |
+| `specs/32-vista-publica-borradores-diarios.md` | Vista pública de borradores diarios del agente | Borrador r1 |
 
-Para ejecutar una spec: leer el archivo completo antes de escribir una línea de código. Las specs definen el layout, los datos requeridos y los criterios de aceptación.
+### Bug reports
+
+| Archivo | Título | Estado |
+|---|---|---|
+| `specs/BUG-001-detalle-analisis-hardcodeado.md` | Detalle de análisis hardcodeado (`MOCK_ANALYSIS`) | Abordado en Spec 26 |
+| `specs/BUG-002-country-dashboard-analyses-vacios.md` | Dashboard de país con análisis vacíos | Abordado en Spec 26 |
+| `specs/BUG-003-meta-aside-overlap.md` | Meta aside overlap | Pendiente |
+| `specs/BUG-003-mapa-desbordante-dashboard.md` | Mapa desbordante en dashboard | Pendiente |
+
+### QA docs
+
+| Archivo | Título |
+|---|---|
+| `specs/QA-05-archivo-buscador.md` | QA del archivo y buscador (Spec 05) |
+
+Para ejecutar una spec: leer el archivo completo antes de escribir una línea de código. Las specs definen el layout, los datos requeridos y los criterios de aceptación. Para el sistema de agentes automáticos, leer Spec 29 (calendario unificado).
 
 **Mockups:** referencia visual de componentes en `mockups/`. Convención: `NN-{nombre}-mockup.html`, donde `NN` corresponde al número de spec asociada.
 

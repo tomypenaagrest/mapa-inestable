@@ -351,3 +351,28 @@ Cuando se arme la tarea programada de Cowork:
 - El task corre semanal (lunes 9am local de Buenos Aires).
 - Edge case del task: si Tomás editó el archivo a mano después de la última corrida, el task debe respetar las ediciones manuales (estrategia simple: no sobrescribir si `updated` > N días previos).
 - La interacción Cowork↔vault ya existe vía filesystem; no hay infra nueva para construir.
+
+---
+
+## Actualización post-Spec 28 (2026-05-11)
+
+Spec 28 se escribió y reformuló dos decisiones que afectan esta spec sin requerir reabrirla:
+
+1. **El task NO escribe directo al live.** En lugar de tocar `15-Países/agendas/<slug>.md`, escribe a borrador en `60-Borradores/agendas/<slug>.md`. El paso a live es un acto humano explícito (skill `promover-agenda`). Esto preserva el principio editorial de revisión.
+
+2. **Cron pasa de lunes 09:00 a viernes 17:00 ART.** La agenda no es predictiva — captura el cierre del arco narrativo semanal.
+
+3. **Nuevo campo opcional `estado:` en el frontmatter** — `publicada` para los archivos en `15-Países/agendas/`, `borrador` para los archivos en `60-Borradores/agendas/`. Si el campo no existe, `lib/agendas.ts` lo trata como `publicada` (retrocompatible con los archivos creados manualmente bajo esta spec). El frontend filtra: solo renderiza agendas con `estado === "publicada"` o ausencia del campo.
+
+Ejemplo de frontmatter actualizado:
+
+```yaml
+---
+country_slug: ar
+estado: publicada     # ← nuevo, opcional
+updated: 2026-05-11
+agendas: [...]
+---
+```
+
+Ninguno de estos cambios requiere modificar el componente `<TabAgenda>` ni el render — solo la lógica de filtrado en `getCountryAgenda()` y el path que escribe la tarea programada. Spec 27 sigue siendo la fuente del formato del archivo y la integración en el dashboard.

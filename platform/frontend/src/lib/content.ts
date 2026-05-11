@@ -5,7 +5,7 @@ import { marked } from "marked";
 
 // Dev: lee directamente del vault de Obsidian (cambios reflejados de inmediato).
 // Prod (Vercel): lee de src/content/, que el script prebuild popula antes del build.
-const VAULT_ROOT =
+export const VAULT_ROOT =
   process.env.NODE_ENV === "production"
     ? path.join(process.cwd(), "src", "content")
     : path.join(process.cwd(), "..", "..");

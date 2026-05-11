@@ -20,13 +20,16 @@ Sitio web: https://mapainestable.substack.com (origen del proyecto, ahora en tra
 
 - `10-Ejes/` — Los 6 ejes conceptuales desarrollados
 - `15-Países/` — Fichas por país (10 países)
+  - `15-Países/agendas/` — Agendas live por país (Spec 27), una `<slug>.md` por país, escritas solo tras promote
 - `20-Metodo/` — El método de trabajo y principios editoriales
 - `30-Autores/` — Notas sobre Roy, Han, Harari, Huntington
 - `35-Conceptos-clave/` — Glosario conceptual del proyecto
 - `40-Disparadores/` — 20+ escenas/eventos procesados
 - `50-Publicaciones/` — Índice del Substack con notas atómicas
 - `60-Borradores/` — Piezas en desarrollo
-- `mapa-inestable.plugin` — Plugin de Cowork con skills de análisis (ver abajo)
+  - `60-Borradores/diario/` — Borradores del agente diario (Specs 23-25)
+  - `60-Borradores/agendas/` — Borradores semanales del task de agendas (Spec 28), incluye `_resumen-YYYY-W##.md`
+- `mapa-inestable.plugin` — Plugin de Cowork con skills de análisis y agentes automáticos (ver abajo)
 
 ### Plataforma web (construida)
 
@@ -38,7 +41,7 @@ Stack: **FastAPI** (backend) + **Next.js** (frontend) + **D3.js** (mapa)
 
 ### Producto / diseño (especificaciones)
 
-- `70-Producto/specs/` — 22 specs escritas (01–22) + 2 bug reports (BUG-001, BUG-002)
+- `70-Producto/specs/` — 32 specs escritas (01–32, con anexos 12A, 12B, 14A) + 4 bug reports (BUG-001, BUG-002, dos BUG-003) + QA-05. Specs 27-29 cubren **agendas por país** y el **sistema de agentes automáticos**. Specs 30-32 resuelven la deuda de **corpus vivo en el sitio** (home, despachos, borradores diarios).
 - `70-Producto/design-system/` — Design tokens, sistema cromático, assets de identidad visual
 - `70-Producto/mockups/` — Prototipos HTML de vistas
 - `70-Producto/guia-demo.md` — Guía de demo del producto
@@ -156,6 +159,8 @@ dispatches (id, week, year, title, entrada, hilo, cierre, published_at)
 dispatch_analyses (dispatch_id, analysis_id)
 ```
 
+**Agendas (Spec 27-28).** No viven en la base de datos del backend. Son archivos markdown con frontmatter YAML en el vault: `15-Países/agendas/<slug>.md` para el live, `60-Borradores/agendas/<slug>.md` para borradores. Cada archivo tiene array `agendas[]` con `rank`, `title`, `description`, `tendencia`, `query`, `eje` (opcional) y los parámetros `gl/ceid/hl` de Google News por país. El frontend lee server-side vía `lib/agendas.ts`.
+
 ### Fuentes RSS sugeridas por país
 
 | País | Fuentes sugeridas |
@@ -197,14 +202,29 @@ const projection = d3.geoMercator()
 
 ---
 
-## Plugin de Cowork (ya construido)
+## Plugin de Cowork
 
-El archivo `mapa-inestable.plugin` en esta carpeta contiene:
+El archivo `mapa-inestable.plugin` contiene los skills y scheduled tasks que asisten la producción editorial. **Ver Spec 29 (Calendario de agentes automáticos) para el inventario completo y el ritmo semanal.**
+
+### Skills on-demand (humano dispara)
 
 - **`analisis-semanal`** — genera análisis completo por país con el método de 4 pasos. Activar: "analizá [país]" o pegando noticias.
 - **`despacho-semanal`** — integra análisis de la semana en pieza publicable. Activar: "armá el despacho".
+- **`promover-agenda`** (Spec 28 §5, pendiente) — promueve un borrador de agenda a live. Activar: "promové la agenda de [país]".
 
-Ambos skills tienen los 6 ejes, el método y los perfiles de países como referencias permanentes. Ofrecen guardar en Obsidian con confirmación.
+### Skills disparados por scheduled task
+
+- **`agente-diario`** (Specs 23-25) — corre lun-vie por la mañana, deposita borradores de análisis en `60-Borradores/diario/`.
+- **`agenda-semanal`** (Spec 28, pendiente) — corre **viernes 17:00 ART**, una tarea por país (10 en total). Genera borradores en `60-Borradores/agendas/<slug>.md` y un archivo de resumen semanal `_resumen-YYYY-W##.md`.
+
+### Principios del sistema de agentes (Spec 29)
+
+1. Borrador → promote, nunca auto-publish. El vault es el medio de comunicación (no Slack, no email).
+2. Cada corrida multi-ítem deja un archivo de resumen.
+3. Aislación: una tarea por unidad (un país, un eje) en lugar de mega-tasks que loopean.
+4. Ningún agente automático escribe directo a carpetas live (`15-Países/agendas/`, `50-Publicaciones/`) — solo los skills de promote disparados por humanos.
+
+Los skills tienen los 6 ejes, el método y los perfiles de países como referencias permanentes. Ofrecen guardar en Obsidian con confirmación.
 
 ---
 
@@ -236,4 +256,6 @@ Ambos skills tienen los 6 ejes, el método y los perfiles de países como refere
 - Para cambios de UI: leer el spec correspondiente en `70-Producto/specs/` + el design system en `70-Producto/design-system/design-system.md`
 - El mapa Torres García vive en el frontend como componente React con hot-zones por país; las coordenadas editoriales están calibradas en Spec 22
 - Los bug reports siguen el patrón `BUG-NNN-descripcion.md` en `70-Producto/specs/`
-- Specs con número secuencial (`01-…`, `22-…`) son features; bug reports (`BUG-001`, `BUG-002`) son correcciones
+- Specs con número secuencial (`01-…`, `32-…`) son features; bug reports (`BUG-001`, `BUG-002`, `BUG-003`) son correcciones
+- Para entender el sistema de agentes automáticos antes de tocar cualquier skill o scheduled task, leer Spec 29 — es el calendario unificado y se actualiza cuando entra o cambia un agente
+- Las agendas por país son la única capa de datos del proyecto que vive **solo** en el vault (no en backend). Ver Specs 27 y 28

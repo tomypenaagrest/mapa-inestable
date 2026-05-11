@@ -1,3 +1,11 @@
+export type AxisKey =
+  | "deculturacion"
+  | "mediaciones"
+  | "desrepresentacion"
+  | "estetizacion"
+  | "desorientacion"
+  | "atencion";
+
 export interface Eje {
   num: number;
   slug: string;

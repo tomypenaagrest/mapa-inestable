@@ -11,11 +11,13 @@ import type { AxisIntensity, Source } from "@/lib/country-data";
 import type { AnalysisSummary } from "@/lib/analisis";
 import type { Indicator, IndicatorCountryData } from "@/lib/latinobarometro";
 import type { MacroIndicator, MacroCountryData } from "@/lib/macro-indicators";
+import type { CountryAgenda, Agenda } from "@/lib/agendas";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
 const TABS = [
   { slug: "publicaciones", label: "Publicaciones" },
+  { slug: "agenda",        label: "Agenda" },
   { slug: "diagnostico",   label: "Diagnóstico" },
   { slug: "pulso",         label: "Pulso ciudadano" },
   { slug: "estructura",    label: "Estructura material" },
@@ -74,6 +76,7 @@ export interface CountryDashboardProps {
   macroFamilies: readonly { key: string; label: string }[];
   macroMeta: { year_start: number; year_end: number; computed_at: string };
   initialTab: string;
+  agenda?: CountryAgenda | null;
 }
 
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -128,7 +131,7 @@ export default function CountryDashboard({
   slug, name, centralQuestion, ejes, fuentes, analyses,
   tensionesHtml, preguntaHtml, contextSections,
   lbIndicators, lbMeta, macroIndicators, macroFamilies, macroMeta,
-  initialTab,
+  initialTab, agenda,
 }: CountryDashboardProps) {
   const router   = useRouter();
   const pathname = usePathname();
@@ -384,6 +387,9 @@ export default function CountryDashboard({
       >
         {activeTab === "publicaciones" && (
           <TabPublicaciones analyses={analyses} ejes={ejes} slug={slug} />
+        )}
+        {activeTab === "agenda" && (
+          <TabAgenda agenda={agenda ?? null} />
         )}
         {activeTab === "diagnostico" && (
           <TabDiagnostico
@@ -1151,6 +1157,390 @@ function SourceCard({ source }: { source: Source }) {
       >
         → {domain}
       </a>
+    </div>
+  );
+}
+
+// ─── TAB: AGENDA ─────────────────────────────────────────────────────────────
+
+const EJE_LABELS: Record<string, string> = {
+  deculturacion:     "Deculturación",
+  mediaciones:       "Erosión de mediaciones",
+  desrepresentacion: "Desrepresentación",
+  estetizacion:      "Estetización",
+  desorientacion:    "Desorientación epistemológica",
+  atencion:          "Atención",
+};
+
+const TEND_SYMBOL: Record<string, string> = {
+  subiendo: "↑",
+  estable:  "→",
+  bajando:  "↓",
+};
+
+const TEND_LABEL: Record<string, string> = {
+  subiendo: "Subiendo",
+  estable:  "Estable",
+  bajando:  "Bajando",
+};
+
+function fmtAgendaDate(iso: string): string {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return "Actualización pendiente";
+  const [y, m, d] = iso.split("-").map(Number);
+  const meses = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return `${d} ${meses[m - 1]} ${y}`;
+}
+
+function newsUrl(agenda: Agenda, ca: CountryAgenda): string {
+  return (
+    `https://news.google.com/search?q=${encodeURIComponent(agenda.query)}` +
+    `&hl=${ca.googleNewsHl}&gl=${ca.googleNewsGl}&ceid=${ca.googleNewsCeid}`
+  );
+}
+
+function TabAgenda({ agenda }: { agenda: CountryAgenda | null }) {
+  const [activeIdx,   setActiveIdx]   = useState(0);
+  const [expandedIdx, setExpandedIdx] = useState<number | null>(0);
+  const [isMobile,    setIsMobile]    = useState(false);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 640);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  if (!agenda || agenda.agendas.length === 0) {
+    const slug = agenda?.countrySlug ?? "?";
+    return (
+      <div style={{
+        background: "var(--mi-bg-cream)",
+        border:     "var(--mi-border-thick)",
+        padding:    "var(--mi-space-5)",
+        boxShadow:  "var(--mi-shadow-card)",
+        maxWidth:   600,
+      }}>
+        <h2 style={{ ...sectionTitle, marginBottom: "var(--mi-space-4)" }}>
+          Agenda — Pendiente de carga
+        </h2>
+        <p style={{
+          fontFamily: "var(--mi-font-body)",
+          fontSize:   "var(--mi-text-base)",
+          color:      "var(--mi-ink)",
+          lineHeight: 1.6,
+        }}>
+          Las agendas de este país todavía no están cargadas en el vault.
+          Para activarlas, crear el archivo:
+        </p>
+        <p style={{ ...mono, color: "var(--mi-ink-mute)", marginTop: "var(--mi-space-3)" }}>
+          15-Países/agendas/{slug}.md
+        </p>
+        <p style={{ ...mono, color: "var(--mi-ink-mute)", marginTop: "var(--mi-space-2)" }}>
+          con el frontmatter especificado en Spec 27.
+        </p>
+      </div>
+    );
+  }
+
+  const activeAgenda   = agenda.agendas[activeIdx];
+  const updatedLabel   = fmtAgendaDate(agenda.updated);
+  const weekLabel      = agenda.week ? `Semana ${agenda.week}` : "";
+
+  const agendaHeader = (
+    <div style={{ marginBottom: "var(--mi-space-5)" }}>
+      <h2 style={sectionTitle}>Agenda</h2>
+      <p style={{
+        fontFamily:   "var(--mi-font-body)",
+        fontStyle:    "italic",
+        fontSize:     "var(--mi-text-base)",
+        color:        "var(--mi-ink-soft)",
+        marginBottom: "var(--mi-space-2)",
+      }}>
+        Los temas que ordenan la conversación pública esta semana.
+      </p>
+      <div style={{ ...mono, color: "var(--mi-ink-mute)" }}>
+        Actualizado · {updatedLabel}{weekLabel && ` · ${weekLabel}`}
+      </div>
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <div>
+        {agendaHeader}
+        <div style={{
+          ...mono,
+          marginBottom: "var(--mi-space-3)",
+          borderBottom: "var(--mi-border-bold)",
+          paddingBottom: "var(--mi-space-2)",
+        }}>
+          En agenda
+        </div>
+        {agenda.agendas.map((ag, idx) => {
+          const expanded = expandedIdx === idx;
+          const rankStr  = String(ag.rank).padStart(2, "0");
+          return (
+            <div
+              key={ag.slug}
+              style={{
+                border:       "var(--mi-border-thick)",
+                marginBottom: "var(--mi-space-2)",
+                boxShadow:    "var(--mi-shadow-card)",
+              }}
+            >
+              <button
+                onClick={() => setExpandedIdx(expanded ? null : idx)}
+                style={{
+                  width:               "100%",
+                  display:             "grid",
+                  gridTemplateColumns: "36px 1fr auto",
+                  alignItems:         "center",
+                  gap:                "var(--mi-space-2)",
+                  padding:            "var(--mi-space-3)",
+                  background:         expanded ? "var(--mi-bg)" : "var(--mi-bg-paper)",
+                  border:             "none",
+                  cursor:             "pointer",
+                  textAlign:          "left",
+                }}
+              >
+                <span style={{
+                  fontFamily: "var(--mi-font-display)",
+                  fontSize:   24,
+                  lineHeight: 1,
+                  color:      expanded ? "var(--mi-bg-paper)" : "var(--mi-bg)",
+                }}>
+                  {rankStr}
+                </span>
+                <span style={{
+                  fontFamily:    "var(--mi-font-display)",
+                  fontSize:      "var(--mi-text-base)",
+                  lineHeight:    "var(--mi-leading-snug)",
+                  color:         expanded ? "var(--mi-bg-paper)" : "var(--mi-ink)",
+                  textTransform: "uppercase",
+                }}>
+                  {ag.title}
+                </span>
+                <span style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize:   20,
+                  color:      expanded ? "var(--mi-bg-paper)" : "var(--mi-ink)",
+                }}>
+                  {TEND_SYMBOL[ag.tendencia]}
+                </span>
+              </button>
+
+              {expanded && (
+                <div style={{
+                  padding:    "var(--mi-space-3)",
+                  borderTop:  "var(--mi-border-thick)",
+                  background: "var(--mi-bg-paper)",
+                }}>
+                  <div style={{ ...mono, color: "var(--mi-ink-mute)", marginBottom: "var(--mi-space-2)" }}>
+                    Tendencia · {TEND_LABEL[ag.tendencia]}
+                    {ag.eje && (
+                      <span style={{ marginLeft: "var(--mi-space-3)", color: "var(--mi-bg)" }}>
+                        · Lente · {EJE_LABELS[ag.eje] ?? ag.eje}
+                      </span>
+                    )}
+                  </div>
+                  <p style={{
+                    fontFamily:   "var(--mi-font-body)",
+                    fontSize:     "var(--mi-text-base)",
+                    lineHeight:   "var(--mi-leading-normal)",
+                    color:        "var(--mi-ink)",
+                    whiteSpace:   "pre-wrap",
+                    marginBottom: ag.query ? "var(--mi-space-3)" : 0,
+                  }}>
+                    {ag.description}
+                  </p>
+                  {ag.query && (
+                    <a
+                      href={newsUrl(ag, agenda)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mi-btn"
+                    >
+                      Ver en Google News →
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // Desktop: two columns
+  return (
+    <div>
+      {agendaHeader}
+      <div style={{
+        display:             "grid",
+        gridTemplateColumns: "380px 1fr",
+        gap:                 "var(--mi-space-5)",
+        alignItems:          "start",
+      }}>
+        {/* Card list */}
+        <div>
+          <div style={{
+            ...mono,
+            marginBottom:  "var(--mi-space-3)",
+            borderBottom:  "var(--mi-border-bold)",
+            paddingBottom: "var(--mi-space-2)",
+          }}>
+            En agenda
+          </div>
+          {agenda.agendas.map((ag, idx) => {
+            const active  = activeIdx === idx;
+            const rankStr = String(ag.rank).padStart(2, "0");
+            return (
+              <button
+                key={ag.slug}
+                onClick={() => setActiveIdx(idx)}
+                style={{
+                  width:               "100%",
+                  display:             "grid",
+                  gridTemplateColumns: "36px 1fr auto",
+                  alignItems:         "center",
+                  gap:                "var(--mi-space-2)",
+                  padding:            "var(--mi-space-3)",
+                  marginBottom:       "var(--mi-space-2)",
+                  border:             "var(--mi-border-thick)",
+                  background:         active ? "var(--mi-bg)" : "var(--mi-bg-paper)",
+                  boxShadow:          "var(--mi-shadow-card)",
+                  cursor:             "pointer",
+                  textAlign:          "left",
+                }}
+              >
+                <span style={{
+                  fontFamily: "var(--mi-font-display)",
+                  fontSize:   26,
+                  lineHeight: 1,
+                  color:      active ? "var(--mi-bg-paper)" : "var(--mi-bg)",
+                }}>
+                  {rankStr}
+                </span>
+                <div>
+                  <div style={{
+                    fontFamily:    "var(--mi-font-display)",
+                    fontSize:      "var(--mi-text-base)",
+                    lineHeight:    "var(--mi-leading-snug)",
+                    color:         active ? "var(--mi-bg-paper)" : "var(--mi-ink)",
+                    textTransform: "uppercase",
+                    marginBottom:  2,
+                  }}>
+                    {ag.title}
+                  </div>
+                  <div style={{
+                    fontFamily:   "var(--mi-font-body)",
+                    fontSize:     "var(--mi-text-sm)",
+                    color:        active ? "var(--mi-bg-paper)" : "var(--mi-ink-soft)",
+                    overflow:     "hidden",
+                    whiteSpace:   "nowrap",
+                    textOverflow: "ellipsis",
+                    maxWidth:     260,
+                  }}>
+                    {ag.description.split("\n")[0]}
+                  </div>
+                </div>
+                <span style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize:   20,
+                  color:      active ? "var(--mi-bg-paper)" : "var(--mi-ink)",
+                }}>
+                  {TEND_SYMBOL[ag.tendencia]}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Detail panel */}
+        <div style={{
+          background: "var(--mi-bg-cream)",
+          border:     "var(--mi-border-thick)",
+          padding:    "var(--mi-space-5)",
+          boxShadow:  "var(--mi-shadow-card)",
+          minHeight:  380,
+        }}>
+          <h3 style={{
+            fontFamily:    "var(--mi-font-display)",
+            fontSize:      "var(--mi-text-3xl)",
+            lineHeight:    "var(--mi-leading-snug)",
+            textTransform: "uppercase",
+            color:         "var(--mi-ink)",
+            marginBottom:  "var(--mi-space-3)",
+          }}>
+            {activeAgenda.title}
+          </h3>
+
+          <div style={{
+            ...mono,
+            display:       "flex",
+            flexWrap:      "wrap",
+            gap:           "var(--mi-space-4)",
+            color:         "var(--mi-ink-mute)",
+            marginBottom:  "var(--mi-space-4)",
+            paddingBottom: "var(--mi-space-3)",
+            borderBottom:  "var(--mi-border-hair)",
+          }}>
+            <span>Rank {String(activeAgenda.rank).padStart(2, "0")}</span>
+            <span>Tendencia · {TEND_LABEL[activeAgenda.tendencia]}</span>
+            {activeAgenda.eje && (
+              <span style={{ color: "var(--mi-bg)" }}>
+                Lente · {EJE_LABELS[activeAgenda.eje] ?? activeAgenda.eje}
+              </span>
+            )}
+          </div>
+
+          <p style={{
+            fontFamily:   "var(--mi-font-body)",
+            fontSize:     "var(--mi-text-base)",
+            lineHeight:   "var(--mi-leading-normal)",
+            color:        "var(--mi-ink)",
+            whiteSpace:   "pre-wrap",
+            maxWidth:     "56ch",
+            marginBottom: "var(--mi-space-5)",
+          }}>
+            {activeAgenda.description}
+          </p>
+
+          {activeAgenda.query && (
+            <>
+              <a
+                href={newsUrl(activeAgenda, agenda)}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display:        "inline-block",
+                  background:     "var(--mi-ink)",
+                  color:          "var(--mi-bg-paper)",
+                  fontFamily:     "var(--mi-font-mono)",
+                  fontSize:       "var(--mi-text-xs)",
+                  letterSpacing:  "var(--mi-tracking-wider)",
+                  textTransform:  "uppercase",
+                  padding:        "12px 20px",
+                  border:         "var(--mi-border-thick)",
+                  boxShadow:      `5px 5px 0 var(--mi-bg)`,
+                  textDecoration: "none",
+                }}
+              >
+                Ver en Google News →
+              </a>
+              <p style={{
+                ...mono,
+                color:     "var(--mi-ink-mute)",
+                marginTop: "var(--mi-space-3)",
+                maxWidth:  "52ch",
+              }}>
+                El link aplica geolocalización {agenda.countryName} para que los resultados reflejen la conversación local.
+              </p>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

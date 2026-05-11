@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getCountrySections, findSection, otherSections, getAgentDraftsByCountry, getPublicationsByCountry } from "@/lib/content";
+import { getCountryAgenda } from "@/lib/agendas";
 import {
   COUNTRY_EJES,
   COUNTRY_SOURCES,
@@ -65,6 +66,7 @@ export default async function PaisPage({
   const isCovered    = (COVERED_COUNTRIES as readonly string[]).includes(slug);
   const lbIndicators = isCovered ? getCountryIndicators(slug) : [];
   const macroIndicators = getCountryMacro(slug);
+  const agenda       = getCountryAgenda(slug);
 
   const tensiones    = findSection(sections, ["tensiones"]);
   const pregunta     = findSection(sections, ["pregunta"]);
@@ -119,6 +121,7 @@ export default async function PaisPage({
           computed_at:  MACRO_META.computed_at,
         }}
         initialTab={initialTab}
+        agenda={agenda}
       />
 
       {/* Borradores del agente diario para este país */}
