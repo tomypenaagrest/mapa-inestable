@@ -73,6 +73,8 @@ export interface AnalisisEntry {
   step_conceptualizacion: string;
   step_apertura: string;
   footnotes?: Footnote[];
+  substackUrl?: string;
+  tipo?: "publicacion" | "despacho" | "analisis";
 }
 
 export const PAISES_LIST = [
@@ -101,13 +103,15 @@ ANALISIS_ALL.sort((a, b) => b.published_iso.localeCompare(a.published_iso));
 /* === TIPOS COMPARTIDOS ========================================== */
 
 export interface AnalysisSummary {
-  slug:    string;
-  title:   string;
-  axis:    string;
-  axisKey: string;
-  date:    string;
-  week:    number;
-  year:    number;
+  slug:         string;
+  title:        string;
+  axis:         string;
+  axisKey:      string;
+  date:         string;
+  week:         number;
+  year:         number;
+  substackUrl?: string;
+  tipo?:        "publicacion" | "despacho" | "analisis";
 }
 
 export function getAnalysesByCountry(slug: string): AnalysisSummary[] {

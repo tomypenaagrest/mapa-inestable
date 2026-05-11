@@ -275,3 +275,223 @@ export function getAgentDraft(countrySlug: string, pieceSlug: string): AgentDraf
     html: marked.parse(clean) as string,
   };
 }
+
+/* ========================================================================== */
+/* === Publicaciones del vault (50-Publicaciones/) ===========================  */
+/* ========================================================================== */
+
+const PUBLICATIONS_DIR = path.join(VAULT_ROOT, "50-Publicaciones");
+
+const PUBLICATIONS_SKIP = new Set([
+  "Publicaciones - MOC.md",
+]);
+
+const COUNTRY_NAME_TO_SLUG: Record<string, string> = {
+  argentina: "ar",
+  brasil:    "br",
+  chile:     "cl",
+  colombia:  "co",
+  bolivia:   "bo",
+  peru:      "pe",
+  perú:      "pe",
+  uruguay:   "uy",
+  paraguay:  "py",
+  ecuador:   "ec",
+  venezuela: "ve",
+};
+
+function obsidianEjeToAxisKey(link: string): string {
+  const n = link.trim();
+  if (n.startsWith("01")) return "deculturacion";
+  if (n.startsWith("02")) return "mediaciones";
+  if (n.startsWith("03")) return "desrepresentacion";
+  if (n.startsWith("04")) return "estetizacion";
+  if (n.startsWith("05")) return "desorientacion";
+  if (n.startsWith("06")) return "atencion";
+  return "";
+}
+
+function parseObsidianEjes(raw: string): string[] {
+  const match = raw.match(/^ejes:\s*(.+)$/m);
+  if (!match) return [];
+  const links = [...match[1].matchAll(/\[\[([^\]]+)\]\]/g)];
+  return links.map(m => obsidianEjeToAxisKey(m[1])).filter(Boolean);
+}
+
+function sanitizeForPubMatter(raw: string): string {
+  return raw
+    .replace(/^ejes:.*$/m, "ejes: []")
+    .replace(/^parte-de:.*$/m, 'parte-de: ""')
+    .replace(/\[\[([^\]]*)\]\]/g, (_, inner) => JSON.stringify(inner));
+}
+
+function parsePublicationMatter(raw: string): { data: Record<string, unknown>; content: string; ejes: string[] } {
+  const ejes = parseObsidianEjes(raw);
+  const sanitized = sanitizeForPubMatter(raw);
+  try {
+    const { data, content } = matter(sanitized) as { data: Record<string, unknown>; content: string };
+    return { data, content, ejes };
+  } catch {
+    const content = raw.replace(/^---[\s\S]*?---\n/, "");
+    return { data: {}, content, ejes };
+  }
+}
+
+function inferCountrySlug(pais: unknown, title: string): string | undefined {
+  if (pais && typeof pais === "string") {
+    const norm = pais.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+    return COUNTRY_NAME_TO_SLUG[norm];
+  }
+  const titleNorm = title.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  for (const [name, slug] of Object.entries(COUNTRY_NAME_TO_SLUG)) {
+    const re = new RegExp(`\\b${name}\\b`);
+    if (re.test(titleNorm)) return slug;
+  }
+  return undefined;
+}
+
+function pubWeek(dateStr: string): number {
+  const d = new Date(dateStr + "T12:00:00Z");
+  const jan4 = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
+  const startW1 = new Date(jan4.getTime() - ((jan4.getUTCDay() + 6) % 7) * 86400000);
+  return Math.max(1, Math.floor((d.getTime() - startW1.getTime()) / (7 * 86400000)) + 1);
+}
+
+function pubFormatDate(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+  return `${d} ${meses[m - 1]} ${y}`;
+}
+
+export interface PublicationMeta {
+  slug:         string;
+  filename:     string;
+  title:        string;
+  subtitle?:    string;
+  tipo:         "publicacion" | "despacho";
+  estado:       string;
+  fecha:        string;       // YYYY-MM-DD
+  year:         number;
+  week:         number;
+  published_at: string;       // "1 jun 2025"
+  url?:         string;
+  ejes:         string[];     // axisKey[]
+  ejePrincipal: string;
+  countrySlug?: string;
+  country?:     string;
+}
+
+export interface Publication extends PublicationMeta {
+  html:   string;
+  thesis: string;
+}
+
+export function getAllPublications(): PublicationMeta[] {
+  if (!fs.existsSync(PUBLICATIONS_DIR)) return [];
+
+  const files = fs
+    .readdirSync(PUBLICATIONS_DIR)
+    .filter(f => f.endsWith(".md") && !PUBLICATIONS_SKIP.has(f));
+
+  const out: (PublicationMeta | null)[] = [];
+
+  for (const filename of files) {
+    try {
+      const raw = fs.readFileSync(path.join(PUBLICATIONS_DIR, filename), "utf-8");
+      const { data, content, ejes } = parsePublicationMatter(raw);
+
+      if (data.tipo === "nota-disparador") continue;
+
+      const tipo: "publicacion" | "despacho" = data.tipo === "despacho" ? "despacho" : "publicacion";
+      const fecha = fmDate(data.fecha);
+      if (!fecha || fecha === "undefined") {
+        console.warn(`[publications] Skipping ${filename}: missing or invalid fecha`);
+        continue;
+      }
+
+      const title = extractTitle(cleanObsidianLinks(content), filename.replace(".md", ""));
+      const countrySlug = inferCountrySlug(data["país"] ?? data["pais"], title);
+
+      out.push({
+        slug:         slugify(filename.replace(".md", "")),
+        filename,
+        title,
+        subtitle:     data["subtítulo"] ? String(data["subtítulo"]) : undefined,
+        tipo,
+        estado:       String(data.estado ?? "publicada"),
+        fecha,
+        year:         parseInt(fecha.slice(0, 4), 10),
+        week:         pubWeek(fecha),
+        published_at: pubFormatDate(fecha),
+        url:          data.url ? String(data.url) : undefined,
+        ejes,
+        ejePrincipal: ejes[0] ?? "",
+        countrySlug,
+        country:      countrySlug ? SLUG_TO_COUNTRY[countrySlug] : undefined,
+      });
+    } catch (e) {
+      console.warn(`[publications] Error parsing ${filename}:`, e);
+    }
+  }
+
+  return (out.filter(Boolean) as PublicationMeta[]).sort((a, b) => b.fecha.localeCompare(a.fecha));
+}
+
+export function getPublicationBySlug(slug: string): Publication | null {
+  if (!fs.existsSync(PUBLICATIONS_DIR)) return null;
+
+  const files = fs
+    .readdirSync(PUBLICATIONS_DIR)
+    .filter(f => f.endsWith(".md") && !PUBLICATIONS_SKIP.has(f));
+
+  for (const filename of files) {
+    if (slugify(filename.replace(".md", "")) !== slug) continue;
+
+    try {
+      const raw = fs.readFileSync(path.join(PUBLICATIONS_DIR, filename), "utf-8");
+      const { data, content, ejes } = parsePublicationMatter(raw);
+
+      if (data.tipo === "nota-disparador") return null;
+
+      const tipo: "publicacion" | "despacho" = data.tipo === "despacho" ? "despacho" : "publicacion";
+      const fecha = fmDate(data.fecha);
+      if (!fecha || fecha === "undefined") return null;
+
+      const clean = cleanObsidianLinks(content);
+      const title = extractTitle(clean, filename.replace(".md", ""));
+      const countrySlug = inferCountrySlug(data["país"] ?? data["pais"], title);
+
+      const thesisMatch = clean.match(/## Tesis principal\n+([\s\S]*?)(?=\n## |\s*$)/);
+      const thesis = thesisMatch ? thesisMatch[1].trim() : "";
+
+      return {
+        slug,
+        filename,
+        title,
+        subtitle:     data["subtítulo"] ? String(data["subtítulo"]) : undefined,
+        tipo,
+        estado:       String(data.estado ?? "publicada"),
+        fecha,
+        year:         parseInt(fecha.slice(0, 4), 10),
+        week:         pubWeek(fecha),
+        published_at: pubFormatDate(fecha),
+        url:          data.url ? String(data.url) : undefined,
+        ejes,
+        ejePrincipal: ejes[0] ?? "",
+        countrySlug,
+        country:      countrySlug ? SLUG_TO_COUNTRY[countrySlug] : undefined,
+        html:         marked.parse(clean) as string,
+        thesis,
+      };
+    } catch (e) {
+      console.warn(`[publications] Error parsing ${filename}:`, e);
+      return null;
+    }
+  }
+
+  return null;
+}
+
+export function getPublicationsByCountry(countrySlug: string): PublicationMeta[] {
+  return getAllPublications().filter(p => p.countrySlug === countrySlug);
+}

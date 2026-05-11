@@ -542,6 +542,9 @@ function TabPublicaciones({
 }
 
 function AnalysisCard({ a, slug }: { a: AnalysisSummary; slug: string }) {
+  const isPublication = a.tipo === "publicacion" || a.tipo === "despacho";
+  const detailHref = isPublication ? `/publicaciones/${a.slug}` : `/analisis/${slug}/${a.slug}`;
+
   return (
     <article style={{
       border:         "var(--mi-border-thick)",
@@ -574,7 +577,7 @@ function AnalysisCard({ a, slug }: { a: AnalysisSummary; slug: string }) {
         flex:       1,
       }}>
         <Link
-          href={`/analisis/${slug}/${a.slug}`}
+          href={detailHref}
           style={{ color: "inherit", textDecoration: "none" }}
         >
           {a.title}
@@ -594,21 +597,40 @@ function AnalysisCard({ a, slug }: { a: AnalysisSummary; slug: string }) {
         }}>
           {a.axis}
         </span>
-        <Link
-          href={`/analisis/${slug}/${a.slug}`}
-          style={{
-            fontFamily:    "var(--mi-font-mono)",
-            fontSize:      "var(--mi-text-xs)",
-            letterSpacing: "var(--mi-tracking-wider)",
-            textTransform: "uppercase",
-            color:         "var(--mi-ink)",
-            borderBottom:  "2px solid var(--mi-ink)",
-            paddingBottom: 2,
-            textDecoration: "none",
-          }}
-        >
-          Leer →
-        </Link>
+        <div style={{ display: "flex", gap: "var(--mi-space-3)", alignItems: "center" }}>
+          {isPublication && a.substackUrl && (
+            <a
+              href={a.substackUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily:    "var(--mi-font-mono)",
+                fontSize:      "var(--mi-text-xs)",
+                letterSpacing: "var(--mi-tracking-wider)",
+                textTransform: "uppercase",
+                color:         "var(--mi-ink-mute)",
+                textDecoration: "none",
+              }}
+            >
+              ↗ Substack
+            </a>
+          )}
+          <Link
+            href={detailHref}
+            style={{
+              fontFamily:    "var(--mi-font-mono)",
+              fontSize:      "var(--mi-text-xs)",
+              letterSpacing: "var(--mi-tracking-wider)",
+              textTransform: "uppercase",
+              color:         "var(--mi-ink)",
+              borderBottom:  "2px solid var(--mi-ink)",
+              paddingBottom: 2,
+              textDecoration: "none",
+            }}
+          >
+            Leer →
+          </Link>
+        </div>
       </div>
     </article>
   );

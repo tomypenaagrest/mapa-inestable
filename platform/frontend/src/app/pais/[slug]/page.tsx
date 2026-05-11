@@ -1,14 +1,15 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getCountrySections, findSection, otherSections, getAgentDraftsByCountry } from "@/lib/content";
+import { getCountrySections, findSection, otherSections, getAgentDraftsByCountry, getPublicationsByCountry } from "@/lib/content";
 import {
   COUNTRY_EJES,
   COUNTRY_SOURCES,
   COUNTRY_NAMES,
 } from "@/lib/country-data";
-import { getAnalysesByCountry } from "@/lib/analisis";
+import type { AnalysisSummary } from "@/lib/analisis";
 import { getCountryIndicators, LB_META, COVERED_COUNTRIES } from "@/lib/latinobarometro";
 import { getCountryMacro, MACRO_FAMILIES, MACRO_META } from "@/lib/macro-indicators";
+import { EJES } from "@/lib/ejes";
 import CountryDashboard from "@/components/CountryDashboard";
 
 export async function generateMetadata(
@@ -43,8 +44,23 @@ export default async function PaisPage({
   const name         = COUNTRY_NAMES[slug] ?? slug.toUpperCase();
   const ejes         = COUNTRY_EJES[slug]    ?? [];
   const fuentes      = COUNTRY_SOURCES[slug] ?? [];
-  const analyses     = getAnalysesByCountry(slug);
   const sections     = getCountrySections(slug) ?? [];
+
+  const publications = getPublicationsByCountry(slug);
+  const analyses: AnalysisSummary[] = publications.map(p => {
+    const eje = EJES.find(e => e.axisKey === p.ejePrincipal);
+    return {
+      slug:        p.slug,
+      title:       p.title,
+      axis:        eje?.name ?? p.ejePrincipal,
+      axisKey:     p.ejePrincipal,
+      date:        p.published_at,
+      week:        p.week,
+      year:        p.year,
+      substackUrl: p.url,
+      tipo:        p.tipo === "despacho" ? "despacho" : "publicacion",
+    };
+  });
 
   const isCovered    = (COVERED_COUNTRIES as readonly string[]).includes(slug);
   const lbIndicators = isCovered ? getCountryIndicators(slug) : [];

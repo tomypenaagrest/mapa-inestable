@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ANALISIS_ALL, PAISES_LIST, filterAndFacet, type AnalisisEntry, type AnalisisFacets } from "@/lib/analisis";
+import { PAISES_LIST, filterAndFacet, type AnalisisEntry, type AnalisisFacets } from "@/lib/analisis";
 import { EJES } from "@/lib/ejes";
 
 const PAGE_SIZE = 20;
@@ -44,6 +44,11 @@ function Highlight({ text, query }: { text: string; query: string }) {
 /* === CARD ====================================================== */
 
 function AnalisisCard({ a, q }: { a: AnalisisEntry; q: string }) {
+  const isPublication = a.tipo === "publicacion" || a.tipo === "despacho";
+  const detailHref = isPublication
+    ? `/publicaciones/${a.slug}`
+    : `/analisis/${a.countrySlug}/${a.slug}`;
+
   return (
     <article
       style={{
@@ -75,15 +80,16 @@ function AnalisisCard({ a, q }: { a: AnalisisEntry; q: string }) {
         >
           <span>{a.published_at}</span>
           <span aria-hidden>·</span>
-          <Link
-            href={`/pais/${a.countrySlug}`}
-            style={{
-              color: "var(--mi-ink)",
-              borderBottom: "1px solid var(--mi-ink-mute)",
-            }}
-          >
-            {a.country}
-          </Link>
+          {a.countrySlug ? (
+            <Link
+              href={`/pais/${a.countrySlug}`}
+              style={{ color: "var(--mi-ink)", borderBottom: "1px solid var(--mi-ink-mute)" }}
+            >
+              {a.country}
+            </Link>
+          ) : (
+            <span style={{ color: "var(--mi-ink)" }}>{a.country}</span>
+          )}
           <span aria-hidden>·</span>
           <Link
             href={`/ejes/${a.axisSlug}`}
@@ -95,6 +101,12 @@ function AnalisisCard({ a, q }: { a: AnalisisEntry; q: string }) {
           >
             {a.axisName}
           </Link>
+          {a.tipo === "despacho" && (
+            <>
+              <span aria-hidden>·</span>
+              <span>Despacho</span>
+            </>
+          )}
         </div>
 
         {/* Título */}
@@ -108,40 +120,61 @@ function AnalisisCard({ a, q }: { a: AnalisisEntry; q: string }) {
             marginBottom: "var(--mi-space-2)",
           }}
         >
-          <Link href={`/analisis/${a.countrySlug}/${a.slug}`}>
+          <Link href={detailHref}>
             <Highlight text={a.title} query={q} />
           </Link>
         </h3>
 
         {/* Lede */}
-        <p
-          style={{
-            fontFamily: "var(--mi-font-body)",
-            fontSize: "var(--mi-text-sm)",
-            lineHeight: "var(--mi-leading-relaxed)",
-            color: "var(--mi-ink-soft)",
-            maxWidth: "60ch",
-          }}
-        >
-          <Highlight text={a.lede} query={q} />
-        </p>
+        {a.lede && (
+          <p
+            style={{
+              fontFamily: "var(--mi-font-body)",
+              fontSize: "var(--mi-text-sm)",
+              lineHeight: "var(--mi-leading-relaxed)",
+              color: "var(--mi-ink-soft)",
+              maxWidth: "60ch",
+            }}
+          >
+            <Highlight text={a.lede} query={q} />
+          </p>
+        )}
       </div>
 
-      <Link
-        href={`/analisis/${a.countrySlug}/${a.slug}`}
-        style={{
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: "var(--mi-text-xs)",
-          letterSpacing: "var(--mi-tracking-wider)",
-          textTransform: "uppercase",
-          color: "var(--mi-ink)",
-          borderBottom: "2px solid var(--mi-ink)",
-          paddingBottom: 2,
-          whiteSpace: "nowrap",
-        }}
-      >
-        Leer →
-      </Link>
+      <div style={{ display: "flex", flexDirection: "column", gap: "var(--mi-space-2)", alignItems: "flex-end" }}>
+        <Link
+          href={detailHref}
+          style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: "var(--mi-text-xs)",
+            letterSpacing: "var(--mi-tracking-wider)",
+            textTransform: "uppercase",
+            color: "var(--mi-ink)",
+            borderBottom: "2px solid var(--mi-ink)",
+            paddingBottom: 2,
+            whiteSpace: "nowrap",
+          }}
+        >
+          Leer →
+        </Link>
+        {isPublication && a.substackUrl && (
+          <a
+            href={a.substackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: "var(--mi-text-xs)",
+              letterSpacing: "var(--mi-tracking-wider)",
+              textTransform: "uppercase",
+              color: "var(--mi-ink-mute)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            ↗ Substack
+          </a>
+        )}
+      </div>
     </article>
   );
 }
@@ -433,7 +466,7 @@ function Pagination({
 
 /* === MAIN ====================================================== */
 
-export function AnalisisContent() {
+export function AnalisisContent({ analyses }: { analyses: AnalisisEntry[] }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -503,7 +536,7 @@ export function AnalisisContent() {
   }, [router]);
 
   const { results, countryFacets, ejeFacets, yearFacets, allYears } = filterAndFacet(
-    ANALISIS_ALL,
+    analyses,
     q,
     selectedCountries,
     selectedEjes,
@@ -550,9 +583,14 @@ export function AnalisisContent() {
       }}>
         <Link href="/" style={{ color: "var(--mi-ink-mute)" }}>← Inicio</Link>
         <span style={{ color: "var(--mi-accent-gold)" }}>Archivo de análisis</span>
-        <Link href="/analisis/borradores" style={{ color: "var(--mi-ink-mute)", marginLeft: "auto" }}>
-          Borradores del agente →
-        </Link>
+        <div style={{ marginLeft: "auto", display: "flex", gap: "var(--mi-space-4)" }}>
+          <Link href="/analisis/borradores" style={{ color: "var(--mi-ink-mute)" }}>
+            Borradores del agente →
+          </Link>
+          <Link href="/pipeline" style={{ color: "var(--mi-ink-mute)" }}>
+            Pipeline →
+          </Link>
+        </div>
       </div>
 
       {/* Hero + buscador */}
@@ -596,7 +634,7 @@ export function AnalisisContent() {
             color: "var(--mi-ink-mute)",
             marginBottom: "var(--mi-space-5)",
           }}>
-            {ANALISIS_ALL.length} análisis · Año II
+            {analyses.length} {analyses.length === 1 ? "pieza" : "piezas"} · Año II
           </div>
 
           {/* Buscador */}
