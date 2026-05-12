@@ -52,10 +52,18 @@ function pubToMeta(pub: PublicationMeta, number: number): DispatchMeta {
  * Lista todos los despachos del vault, ordenados descendente por número
  * (más reciente primero). Los números se asignan cronológicamente (el
  * despacho más antiguo = 1).
+ *
+ * NOTA SEMÁNTICA: el vault distingue dos tipos en el frontmatter
+ * `tipo: despacho` (integración semanal de varios temas) y
+ * `tipo: publicación` (análisis individual de fondo). En el sitio
+ * ambos aparecen unificados en /despachos. La distinción se preserva
+ * en el frontmatter para uso interno del vault de Obsidian y para
+ * eventual diferenciación visual futura. Las `nota-disparador` quedan
+ * excluidas porque no se publicaron de forma autónoma.
  */
 export function getAllDispatches(): DispatchMeta[] {
   const pubs = getAllPublications()
-    .filter(p => p.tipo === "despacho")
+    .filter(p => p.tipo === "despacho" || p.tipo === "publicacion")
     .sort((a, b) => a.fecha.localeCompare(b.fecha)); // asc para numeración
 
   return pubs
