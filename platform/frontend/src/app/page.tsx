@@ -5,7 +5,6 @@ import { getAllAutores } from "@/lib/autores";
 import { getHomeData } from "@/lib/home";
 import { getAllCountryAgendas } from "@/lib/agendas";
 import { EJES } from "@/lib/ejes";
-import CarruselEditorial, { type CarruselSlide } from "@/components/CarruselEditorial";
 import MapaHeatmapSection from "@/components/MapaHeatmapSection";
 import HeatmapEjes from "@/components/HeatmapEjes";
 import HomeClientLayout from "@/components/HomeClientLayout";
@@ -26,22 +25,6 @@ export default function HomePage() {
   const conceptos        = getAllConceptosMeta();
   const autores          = getAllAutores().map(a => ({ slug: a.slug, name: a.name }));
   const agendasByCountry = getAllCountryAgendas();
-
-  const slides: CarruselSlide[] = data.cards.map(p => {
-    const eje = EJES.find(e => e.axisKey === p.ejePrincipal);
-    return {
-      slug:         p.slug,
-      countrySlug:  p.countrySlug ?? "",
-      country:      p.country     ?? "",
-      axis:         eje?.name     ?? p.ejePrincipal,
-      axisKey:      p.ejePrincipal,
-      title:        p.title,
-      lede:         p.subtitle    ?? "",
-      date:         p.published_at,
-      publishedIso: p.fecha,
-      href:         `/publicaciones/${p.slug}`,
-    };
-  });
 
   const whileAwaySlides = data.cards.map(p => {
     const eje = EJES.find(e => e.axisKey === p.ejePrincipal);
@@ -74,6 +57,7 @@ export default function HomePage() {
         <MapaHeatmapSection
           weeklyCountries={data.weeklyCountries}
           agendasByCountry={agendasByCountry}
+          cards={data.cards}
         />
       </div>
 
@@ -169,24 +153,6 @@ export default function HomePage() {
           </p>
         </section>
       )}
-
-      {/* Carrusel de análisis — 2 cards visibles, auto 5s */}
-      <div style={{ padding: "var(--mi-space-4) var(--mi-space-5) 0" }}>
-        {slides.length > 0 ? (
-          <CarruselEditorial slides={slides} />
-        ) : (
-          <p style={{
-            fontFamily:    "var(--mi-font-mono)",
-            fontSize:      "13px",
-            letterSpacing: "var(--mi-tracking-widest)",
-            textTransform: "uppercase",
-            color:         "var(--mi-ink-mute)",
-          }}>
-            EL ARCHIVO ESTÁ ARRANCANDO<br />
-            Las primeras publicaciones aparecen acá apenas estén cargadas.
-          </p>
-        )}
-      </div>
 
       {/* ── POST-FOLD MEDIO ─────────────────────────────────────── */}
 

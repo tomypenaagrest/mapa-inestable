@@ -95,6 +95,10 @@
   --mi-sidebar-w:           200px;
   --mi-sidebar-w-collapsed: 48px;
 
+  /* Spec 34B — columna análisis */
+  --mi-analisis-col-min-w: 280px;
+  --mi-analisis-col-max-w: 380px;
+
   --mi-axis-deculturacion:     #6B4A38;
   --mi-axis-mediaciones:       #4A5C30;
   --mi-axis-desrepresentacion: #8A4A55;
@@ -102,6 +106,30 @@
   --mi-axis-desorientacion:    #2D4A6B;
   --mi-axis-atencion:          #C8993E;
   --mi-axis-contexto:          #5C6638;
+}
+
+/* === SPEC 34B — utilidades columna análisis ====================== */
+
+.mi-no-scrollbar::-webkit-scrollbar { display: none; }
+
+.mi-col-footer-link {
+  font-family:    var(--mi-font-mono);
+  font-size:      12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color:          var(--mi-ink-mute);
+  text-decoration:none;
+  transition:     color 120ms var(--mi-ease);
+}
+.mi-col-footer-link:hover { color: var(--mi-ink); }
+
+.mi-mini-card {
+  transition: transform 120ms cubic-bezier(0.2,0,0,1),
+              box-shadow 120ms cubic-bezier(0.2,0,0,1);
+}
+.mi-mini-card:hover {
+  transform:  translate(-2px,-2px);
+  box-shadow: 8px 8px 0 var(--mi-ink);
 }
 
 /* === TEXTURA DE GRABADO ========================================= */
