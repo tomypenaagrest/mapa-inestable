@@ -64,46 +64,8 @@ export const metadata: Metadata = {
   },
 };
 
-function getWeeklyCountries(pubs: { countrySlug?: string; country?: string }[]): { slug: string; name: string }[] {
-  if (pubs.length === 0) return [];
-  const seen = new Set<string>();
-  const countries: { slug: string; name: string }[] = [];
-  for (const p of pubs) {
-    if (!p.countrySlug) continue;
-    if (!seen.has(p.countrySlug)) {
-      seen.add(p.countrySlug);
-      countries.push({ slug: p.countrySlug, name: p.country ?? p.countrySlug });
-      if (countries.length >= 8) break;
-    }
-  }
-  return countries.sort((a, b) => a.name.localeCompare(b.name));
-}
-
-function getCurrentWeekInfo(pubs: { year: number; week: number }[]): { week: number; year: number } | null {
-  if (pubs.length === 0) return null;
-  const latestYear = Math.max(...pubs.map(p => p.year));
-  const latestWeek = Math.max(...pubs.filter(p => p.year === latestYear).map(p => p.week));
-  return { week: latestWeek, year: latestYear };
-}
-
-function getRealISOWeek(): { week: number; year: number } {
-  const d = new Date();
-  const utc = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  const dayNum = utc.getUTCDay() || 7;
-  utc.setUTCDate(utc.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(utc.getUTCFullYear(), 0, 1));
-  const week = Math.ceil((((utc.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
-  return { week, year: utc.getUTCFullYear() };
-}
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pubs = getAllPublications();
-  const weeklyCountries = getWeeklyCountries(pubs);
-  const weekInfo = getCurrentWeekInfo(pubs);
-  const realWeek = getRealISOWeek();
-  const isFallback = !weekInfo
-    ? false
-    : weekInfo.year !== realWeek.year || weekInfo.week !== realWeek.week;
 
   const commandPubs = pubs.map(p => ({
     slug:         p.slug,
@@ -120,12 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${alfaSlabOne.variable} ${fraunces.variable} ${lora.variable} ${ibmPlexMono.variable}`}
     >
       <body>
-        <SiteHeader
-          weeklyCountries={weeklyCountries}
-          currentWeek={weekInfo?.week}
-          currentYear={weekInfo?.year}
-          isFallback={isFallback}
-        />
+        <SiteHeader />
         <main>{children}</main>
         <SiteFooter />
         <CommandPalette publications={commandPubs} />

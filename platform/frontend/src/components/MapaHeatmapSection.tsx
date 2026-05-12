@@ -2,19 +2,16 @@
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import MapaTorresGarcia from "./MapaTorresGarcia";
-import HeatmapEjes, { type HeatmapCell, type WeekLabel } from "./HeatmapEjes";
 import CountryPreviewPanel from "./CountryPreviewPanel";
 import type { WeeklyCountryData } from "@/components/MapaCentrico";
 import type { CountryAgenda } from "@/lib/agendas";
 
 interface Props {
   weeklyCountries: WeeklyCountryData[];
-  heatmapData: HeatmapCell[];
-  weeks: WeekLabel[];
   agendasByCountry?: Record<string, CountryAgenda>;
 }
 
-export default function MapaHeatmapSection({ weeklyCountries, heatmapData, weeks, agendasByCountry }: Props) {
+export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry }: Props) {
   const router = useRouter();
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
 
@@ -36,17 +33,20 @@ export default function MapaHeatmapSection({ weeklyCountries, heatmapData, weeks
       {/* Mapa + panel preview */}
       <div style={{
         display: "flex",
-        height: "calc(100vh - 130px)",
-        borderBottom: hoveredCountry ? "var(--mi-border-bold)" : undefined,
+        height: "var(--mi-mapa-max-h, calc(100vh - 100px))",
         position: "relative",
+        overflow: "hidden",
       }}>
+
+        {/* Mapa Torres García — height-driven, ancho derivado del aspect ratio */}
         <div style={{
           flexShrink: 0,
           aspectRatio: "1280 / 1380",
           height: "100%",
           overflow: "hidden",
-          borderRight: "var(--mi-border-thick)",
+          borderRight: hoveredCountry ? "var(--mi-border-thick)" : undefined,
           position: "relative",
+          transition: "border 150ms var(--mi-ease)",
         }}>
           <MapaTorresGarcia
             variant="home"
@@ -55,25 +55,24 @@ export default function MapaHeatmapSection({ weeklyCountries, heatmapData, weeks
           />
         </div>
 
-        {/* Right panel: heatmap (default) or country preview (on hover) */}
+        {/* Panel preview país — slide-in al hacer hover/click sobre el mapa */}
         <div style={{
-          flex: 1,
-          minWidth: 220,
-          maxWidth: 360,
+          width: hoveredCountry ? "clamp(220px, 30%, 360px)" : 0,
+          flexShrink: 0,
           overflow: "hidden",
+          transition: "width 200ms cubic-bezier(0.2,0,0,1)",
           position: "relative",
         }}>
-          {hoveredCountry ? (
+          {hoveredCountry && (
             <CountryPreviewPanel
               countrySlug={hoveredCountry}
               weeklyCountries={weeklyCountries}
               agendaSummary={agendasByCountry?.[hoveredCountry]}
               onClose={() => setHoveredCountry(null)}
             />
-          ) : (
-            <HeatmapEjes data={heatmapData} weeks={weeks} />
           )}
         </div>
+
       </div>
     </div>
   );

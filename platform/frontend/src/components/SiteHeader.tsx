@@ -8,135 +8,84 @@ const NAV_LINKS = [
   { href: "/acerca",    label: "Acerca" },
 ];
 
-interface Props {
-  weeklyCountries?: { slug: string; name: string }[];
-  currentWeek?: number;
-  currentYear?: number;
-  isFallback?: boolean;
-}
-
-export default function SiteHeader({ weeklyCountries = [], currentWeek, currentYear, isFallback }: Props) {
-  const yearNum = currentYear ?? new Date().getFullYear();
-  const siteYear = yearNum - 2024; // Año I = 2024, Año II = 2025, etc.
-  const yearLabel = siteYear > 0 ? `Año ${toRoman(siteYear)}` : "Año I";
-
-  const visibleCountries = weeklyCountries.slice(0, 5);
-  const overflow = weeklyCountries.length - 5;
-
+export default function SiteHeader() {
   return (
-    <header>
-      {/* Main bar */}
-      <div style={{
-        padding: "var(--mi-space-5) var(--mi-space-6) var(--mi-space-4)",
-        borderBottom: weeklyCountries.length > 0 ? "var(--mi-border-soft)" : "var(--mi-border-bold)",
-        display: "flex",
-        alignItems: "center",
-        gap: "var(--mi-space-5)",
-      }}>
-        <div style={{ flex: 1 }}>
-          <Link href="/" style={{ display: "inline-flex", textDecoration: "none" }}>
-            <Logo variant="horizontal" size="md" />
-          </Link>
-        </div>
-
-        {/* Sem / año info */}
-        {currentWeek && (
-          <div style={{
-            fontFamily: "var(--mi-font-mono)",
-            fontSize: "var(--mi-text-xs)",
-            letterSpacing: "var(--mi-tracking-wide)",
-            textTransform: "uppercase",
-            color: "var(--mi-ink-mute)",
-            display: "none", // visible solo en desktop via clase
-          }}
-            className="mi-header-week"
-          >
-            {yearLabel} · Sem {currentWeek} · {weeklyCountries.length} {weeklyCountries.length === 1 ? "país" : "países"}
-          </div>
-        )}
-
-        <nav aria-label="Navegación principal">
-          <ul style={{
-            display: "flex",
-            gap: "var(--mi-space-1)",
-            listStyle: "none",
-          }}>
-            {NAV_LINKS.map(({ href, label }) => (
-              <li key={href}>
-                <Link href={href} className="mi-nav-link">
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-
-      {/* Countries bar */}
-      {weeklyCountries.length > 0 && (
-        <div style={{
-          borderBottom: "var(--mi-border-bold)",
-          padding: `var(--mi-space-2) var(--mi-space-6)`,
-          display: "flex",
+    <header style={{
+      height: "var(--mi-header-h, 70px)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "0 var(--mi-space-6)",
+      borderBottom: "var(--mi-border-bold)",
+      background: "var(--mi-bg-paper)",
+      position: "sticky",
+      top: 0,
+      zIndex: 100,
+    }}>
+      {/* Brand: mark + wordmark + · + tagline */}
+      <Link
+        href="/"
+        style={{
+          display: "inline-flex",
           alignItems: "center",
-          gap: "var(--mi-space-1)",
-          background: "var(--mi-bg-paper)",
-          flexWrap: "wrap",
+          gap: "var(--mi-space-3)",
+          textDecoration: "none",
+        }}
+      >
+        <Logo variant="monogram" size="md" />
+        <span style={{
+          fontFamily:    "var(--mi-font-display)",
+          fontSize:      "22px",
+          fontWeight:    400,
+          letterSpacing: "-0.02em",
+          textTransform: "uppercase",
+          color:         "var(--mi-ink)",
+          lineHeight:    1,
         }}>
-          {visibleCountries.map((c, i) => (
-            <span key={c.slug} style={{ display: "flex", alignItems: "center", gap: "var(--mi-space-1)" }}>
-              {i > 0 && (
-                <span style={{
-                  fontFamily: "var(--mi-font-mono)",
-                  fontSize: "var(--mi-text-xs)",
-                  color: "var(--mi-ink-mute)",
-                }}>·</span>
-              )}
-              <Link
-                href={`/pais/${c.slug}`}
-                className="mi-country-week-link"
-              >
-                {c.name}
+          Mapa Inestable
+        </span>
+        <span
+          className="mi-header-sep"
+          style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize:   "13px",
+            color:      "var(--mi-ink-mute)",
+            padding:    "0 2px",
+          }}
+          aria-hidden="true"
+        >
+          ·
+        </span>
+        <span
+          className="mi-header-tagline"
+          style={{
+            fontFamily:    "var(--mi-font-mono)",
+            fontSize:      "11px",
+            letterSpacing: "0.04em",
+            color:         "var(--mi-ink-soft)",
+            textTransform: "lowercase",
+          }}
+        >
+          cartografía política del sur
+        </span>
+      </Link>
+
+      {/* Nav */}
+      <nav aria-label="Navegación principal">
+        <ul style={{
+          display:   "flex",
+          gap:       "var(--mi-space-1)",
+          listStyle: "none",
+        }}>
+          {NAV_LINKS.map(({ href, label }) => (
+            <li key={href}>
+              <Link href={href} className="mi-nav-link">
+                {label}
               </Link>
-            </span>
+            </li>
           ))}
-          {overflow > 0 && (
-            <span style={{
-              fontFamily: "var(--mi-font-mono)",
-              fontSize: "var(--mi-text-xs)",
-              color: "var(--mi-ink-mute)",
-              letterSpacing: "0.04em",
-              marginLeft: "var(--mi-space-1)",
-            }}>
-              +{overflow}
-            </span>
-          )}
-          {isFallback && currentWeek && (
-            <span style={{
-              fontFamily: "var(--mi-font-mono)",
-              fontSize: "10px",
-              color: "var(--mi-ink-mute)",
-              letterSpacing: "0.04em",
-              marginLeft: "auto",
-              opacity: 0.75,
-            }}>
-              última publicada: sem {currentWeek}
-            </span>
-          )}
-        </div>
-      )}
+        </ul>
+      </nav>
     </header>
   );
-}
-
-function toRoman(n: number): string {
-  const MAP: [number, string][] = [
-    [10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"],
-  ];
-  let result = "";
-  let rem = n;
-  for (const [val, sym] of MAP) {
-    while (rem >= val) { result += sym; rem -= val; }
-  }
-  return result;
 }

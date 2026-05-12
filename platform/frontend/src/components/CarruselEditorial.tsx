@@ -17,13 +17,15 @@ export interface CarruselSlide {
   href?: string;
 }
 
-const INTERVAL = 8000;
+const INTERVAL = 5000;
+const CARD_W   = 320;
 
 export default function CarruselEditorial({ slides }: { slides: CarruselSlide[] }) {
-  const [idx, setIdx]       = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [idx, setIdx]         = useState(0);
+  const [paused, setPaused]   = useState(false);
   const [noMotion, setNoMotion] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const { isNewSince, isRead } = useReaderState();
 
   useEffect(() => {
@@ -34,7 +36,20 @@ export default function CarruselEditorial({ slides }: { slides: CarruselSlide[] 
     return () => mq.removeEventListener("change", h);
   }, []);
 
-  const advance = useCallback(() => setIdx(i => (i + 1) % slides.length), [slides.length]);
+  const scrollToCard = useCallback((i: number) => {
+    trackRef.current?.scrollTo({
+      left:     i * CARD_W,
+      behavior: noMotion ? "instant" : "smooth",
+    });
+  }, [noMotion]);
+
+  const advance = useCallback(() => {
+    setIdx(prev => {
+      const next = (prev + 1) % slides.length;
+      scrollToCard(next);
+      return next;
+    });
+  }, [slides.length, scrollToCard]);
 
   const resetTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -49,7 +64,11 @@ export default function CarruselEditorial({ slides }: { slides: CarruselSlide[] 
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [resetTimer]);
 
-  const goTo = (i: number) => { setIdx(i); resetTimer(); };
+  const goTo = (i: number) => {
+    setIdx(i);
+    scrollToCard(i);
+    resetTimer();
+  };
 
   return (
     <div
@@ -57,60 +76,63 @@ export default function CarruselEditorial({ slides }: { slides: CarruselSlide[] 
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {slides.map((s, i) => {
-        const slugKey = `${s.countrySlug}-${s.publishedIso?.slice(0, 4)}-w${s.publishedIso ? getWeekNumber(s.publishedIso) : ""}`;
-        const isNew = s.publishedIso ? isNewSince(s.publishedIso) : false;
-        const read = isRead(slugKey);
+      <div ref={trackRef} className="mi-carousel-track">
+        {slides.map((s, i) => {
+          const slugKey = `${s.countrySlug}-${s.publishedIso?.slice(0, 4)}-w${s.publishedIso ? getWeekNumber(s.publishedIso) : ""}`;
+          const isNew   = s.publishedIso ? isNewSince(s.publishedIso) : false;
+          const read    = isRead(slugKey);
 
-        return (
-          <div
-            key={s.slug}
-            className={`mi-carousel-slide${i === idx ? " mi-carousel-slide--active" : ""}`}
-            aria-hidden={i !== idx}
-            style={{ opacity: read ? 0.75 : 1 }}
-          >
-            {/* New dot */}
-            {isNew && (
-              <div
-                aria-label="Nuevo desde tu última visita"
-                style={{
-                  position: "absolute",
-                  top: 12,
-                  right: 12,
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  background: "var(--mi-accent-gold)",
-                  zIndex: 2,
-                }}
-              />
-            )}
+          return (
+            <div
+              key={s.slug}
+              className={`mi-carousel-card${i === idx ? " mi-carousel-card--active" : ""}`}
+              aria-hidden={Math.abs(i - idx) > 1}
+              style={{ opacity: read ? 0.65 : undefined }}
+            >
+              {/* New dot */}
+              {isNew && (
+                <div
+                  aria-label="Nuevo desde tu última visita"
+                  style={{
+                    position:     "absolute",
+                    top:          8,
+                    right:        8,
+                    width:        8,
+                    height:       8,
+                    borderRadius: "50%",
+                    background:   "var(--mi-accent-gold)",
+                    zIndex:       2,
+                  }}
+                />
+              )}
 
-            {/* Silueta */}
-            <div className="mi-carousel-silhouette">
-              <CountrySilhouette country={s.countrySlug} height={180} color="var(--mi-bg-paper)" />
-            </div>
-
-            {/* Texto */}
-            <div className="mi-carousel-body">
-              <div className="mi-carousel-meta">
-                {read && <span style={{ color: "var(--mi-accent-gold)", marginRight: 6 }}>✓</span>}
-                {s.country} · {s.axis} · {s.date}
+              <div className="mi-carousel-silhouette">
+                <CountrySilhouette country={s.countrySlug} height={120} color="var(--mi-bg-paper)" />
               </div>
-              <h2 className="mi-carousel-title" style={{ color: read ? "var(--mi-ink-mute)" : undefined }}>
-                {s.title}
-              </h2>
-              <p className="mi-carousel-lede">{s.lede}</p>
-              <Link
-                href={s.href ?? `/analisis/${s.countrySlug}/${s.slug}`}
-                className="mi-carousel-cta"
-              >
-                Leer →
-              </Link>
+
+              <div className="mi-carousel-body">
+                <div className="mi-carousel-meta">
+                  {read && <span style={{ color: "var(--mi-accent-gold)", marginRight: 4 }}>✓</span>}
+                  {s.country} · {s.axis} · {s.date}
+                </div>
+                <h2
+                  className="mi-carousel-title"
+                  style={{ color: read ? "var(--mi-ink-mute)" : undefined }}
+                >
+                  {s.title}
+                </h2>
+                <p className="mi-carousel-lede">{s.lede}</p>
+                <Link
+                  href={s.href ?? `/analisis/${s.countrySlug}/${s.slug}`}
+                  className="mi-carousel-cta"
+                >
+                  Leer →
+                </Link>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
 
       {/* Dots */}
       {slides.length > 1 && (
@@ -129,13 +151,13 @@ export default function CarruselEditorial({ slides }: { slides: CarruselSlide[] 
               >
                 {isNew && (
                   <span style={{
-                    position: "absolute",
-                    top: -2,
-                    right: -2,
-                    width: 5,
-                    height: 5,
+                    position:     "absolute",
+                    top:          -2,
+                    right:        -2,
+                    width:        5,
+                    height:       5,
                     borderRadius: "50%",
-                    background: "var(--mi-accent-gold)",
+                    background:   "var(--mi-accent-gold)",
                   }} />
                 )}
               </button>
