@@ -2,41 +2,61 @@
 country_slug: bo
 country_name: Bolivia
 estado: publicada
-updated: "2026-05-11"
-week: 19
+updated: 2026-05-11
+week: 20
 year: 2026
 google_news_gl: BO
-google_news_ceid: BO:es-419
 google_news_hl: es-419
+google_news_ceid: BO:es-419
+agent_run_id: 2026-05-11T17:00:00-03:00
+agent_version: v1.0
 agendas:
   - rank: 1
-    slug: crisis-mas
-    title: Crisis del MAS
+    slug: bloqueos-paro-nacional
+    title: "Bloqueos masivos y aislamiento de La Paz"
     description: |
-      La fractura entre Evo Morales y Luis Arce profundiza la crisis del movimiento que gobernó Bolivia por dos décadas. Dos partidos, dos liderazgos, ningún proyecto claro. La izquierda boliviana enfrenta un vacío identitario que no tiene precedentes desde 2006.
+      Bolivia inicia la semana con 14 puntos de bloqueo que aíslan la sede de gobierno. Maestros urbanos y rurales, organizaciones vecinales, campesinos y sectores evistas convergen en movilizaciones simultáneas. Las clases quedaron suspendidas en todo el país.
+    tendencia: subiendo
+    eje: mediaciones
+    query: bloqueos La Paz paro docente Bolivia
+  - rank: 2
+    slug: marcha-por-la-vida-evismo
+    title: "Marcha evista hacia La Paz"
+    description: |
+      Sectores evistas iniciaron la "Marcha por la Vida para Salvar Bolivia" desde Caracollo rumbo a La Paz a partir del 12 de mayo. El conflicto interno del MAS sigue produciendo política en la calle pese a la fragmentación dirigencial.
     tendencia: subiendo
     eje: desrepresentacion
-    query: crisis MAS Evo Morales Arce Bolivia
-
-  - rank: 2
-    slug: escasez-dolares
-    title: Escasez de dólares
-    description: |
-      La escasez de divisas afecta importaciones, combustibles y el funcionamiento cotidiano de la economía. Las colas en estaciones de servicio y la tensión cambiaria son señales visibles de una crisis estructural que el gobierno no reconoce plenamente.
-    tendencia: subiendo
-    eje: desorientacion
-    query: escasez dólares divisas gasolina Bolivia economía
-
+    query: marcha por la vida evistas Caracollo
   - rank: 3
-    slug: elecciones-2025
-    title: Elecciones 2025
+    slug: docentes-paritarias
+    title: "Conflicto docente y paritarias"
     description: |
-      Con el panorama político fragmentado, las elecciones de fin de año generan incertidumbre sobre quién puede articular una mayoría. Ningún candidato tiene tracción nacional clara. El voto castigo hacia el MAS puede beneficiar a la derecha o a fuerzas emergentes.
+      La Confederación de Trabajadores de Educación Urbana de Bolivia ejecuta paro con bloqueo de 24 horas. Las demandas incluyen incremento salarial acorde a la canasta familiar, jubilación al 100% y más recursos en educación pública.
+    tendencia: estable
+    eje: mediaciones
+    query: maestros CTEUB paritaria salarios
+  - rank: 4
+    slug: leyes-cuestionadas-tupak-katari
+    title: "Leyes cuestionadas y campesinos Tupak Katari"
+    description: |
+      La Federación Tupak Katari bloquea vías de ingreso a la sede de gobierno protestando contra la ley 1720, la intención de privatización de empresas, la ley antibloqueo y la ley Brisa. La agenda institucional gubernamental vive bajo presión territorial.
     tendencia: estable
     eje: desrepresentacion
-    query: elecciones Bolivia 2025 candidatos
+    query: ley 1720 antibloqueo Tupak Katari campesinos
+  - rank: 5
+    slug: crisis-economica-combustible
+    title: "Crisis energética y combustibles"
+    description: |
+      El contexto de los bloqueos se cruza con escasez crónica de combustibles y dólares. El gobierno enfrenta presión simultánea social, fiscal y de abastecimiento.
+    tendencia: subiendo
+    eje: mediaciones
+    query: combustible escasez dolares Bolivia crisis
 ---
 
-# Notas editoriales
+# Notas editoriales (no se renderiza en el sitio)
 
-Bolivia atraviesa una crisis de hegemonía sin precedentes recientes. Crisis económica y crisis política se retroalimentan.
+Semana de máxima tensión social en Bolivia. La convergencia de bloqueos sindicales, marcha evista y conflicto docente produce un cuadro que excede al gobierno: lo que está en juego no es una reforma puntual, es la capacidad del Estado de sostenerse como interlocutor único frente a una multiplicidad de actores territoriales.
+
+Lo que **entra** esta semana: la dimensión cuantitativa de los bloqueos (14 puntos simultáneos es una escala alta incluso para Bolivia). Lo que **sale**: el debate sobre litio y proyectos de inversión extranjera, que vuelven al fondo cuando la calle ocupa el primer plano.
+
+El eje erosión de mediaciones está hoy en su forma más visible: ningún actor político tradicional logra contener este malestar.

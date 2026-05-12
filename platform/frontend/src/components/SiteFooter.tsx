@@ -93,6 +93,7 @@ export default function SiteFooter() {
             <li><Link href="/conceptos" className="mi-footer-link">Conceptos</Link></li>
             <li><Link href="/metodo" className="mi-footer-link">Método</Link></li>
             <li><Link href="/acerca" className="mi-footer-link">Acerca</Link></li>
+            <li><Link href="/analisis/borradores" className="mi-footer-link">Borradores en curso →</Link></li>
             <li>
               <Link href="/leer-despues" className="mi-footer-link">
                 ★ Leer después

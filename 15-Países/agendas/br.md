@@ -2,50 +2,61 @@
 country_slug: br
 country_name: Brasil
 estado: publicada
-updated: "2026-05-11"
-week: 19
+updated: 2026-05-11
+week: 20
 year: 2026
 google_news_gl: BR
-google_news_ceid: BR:pt-419
-google_news_hl: pt-419
+google_news_hl: pt-BR
+google_news_ceid: BR:pt-BR
+agent_run_id: 2026-05-11T17:00:00-03:00
+agent_version: v1.0
 agendas:
   - rank: 1
-    slug: eleicoes-2026
-    title: Eleições 2026
+    slug: corrida-electoral-lula-flavio
+    title: "Carrera electoral Lula vs. Flávio Bolsonaro"
     description: |
-      La precampaña electoral se acelera con la definición de candidatos. Lula apuesta a la imagen de recuperación económica como plataforma; la oposición se fragmenta entre figuras sin tracción nacional. El debate sobre la candidatura de Bolsonaro, inhabilitado, permanece como elemento de movilización derechista.
+      A cinco meses de la elección, las encuestas muestran a Lula con 40% y Flávio Bolsonaro con 34-36% en primera vuelta. En el segundo turno simulado, empate técnico (Lula 44,7%, Flávio 45,3%). La sucesión bolsonarista quedó consolidada en Flávio tras la inhabilitación judicial de Jair.
     tendencia: subiendo
     eje: desrepresentacion
-    query: eleições 2026 candidatos Lula oposição Brasil
-
+    query: Lula Flavio Bolsonaro pesquisa eleicao 2026
   - rank: 2
-    slug: reforma-tributaria
-    title: Reforma tributaria
+    slug: aprobacion-lula
+    title: "Aprobación presidencial de Lula"
     description: |
-      La implementación del nuevo IVA unificado avanza en el Congreso pero genera resistencias en los Estados con mayor dependencia de exenciones fiscales. El debate técnico convive con la negociación política de los gobernadores.
-    tendencia: estable
-    eje: mediaciones
-    query: reforma tributária IVA implementação Brasil
-
-  - rank: 3
-    slug: amazonia
-    title: Amazonia y clima
-    description: |
-      La deforestación registra baja histórica en los primeros meses del año, pero los incendios de temporada seca acaparan atención internacional. Brasil busca posicionar el liderazgo ambiental como activo diplomático hacia la COP31.
+      Una encuesta del Instituto Ideia indica que 44% aprueba la gestión Lula contra 53% que la desaprueba. La asimetría se mantiene estable desde febrero. El gobierno mira hacia política exterior para construir narrativa positiva.
     tendencia: estable
     eje: desorientacion
-    query: Amazônia desmatamento incêndios COP31 Brasil
-
-  - rank: 4
-    slug: violencia-seguranca
-    title: Violencia y seguridad
+    query: aprovacao Lula governo desaprovacao
+  - rank: 3
+    slug: encuentro-lula-trump
+    title: "Diplomacia Lula-Trump"
     description: |
-      El crimen organizado mantiene presencia en zonas urbanas de Río y São Paulo. Las operaciones policiales en favelas generan tensión permanente con las comunidades. El debate sobre el modelo de seguridad pública se instala como tema pre-electoral.
+      El encuentro diplomático del 7 de mayo entre Lula y Trump fue positivo en aspectos comerciales y exitoso en la defensa de la soberanía brasileña. La política externa empieza a operar como activo electoral interno.
     tendencia: subiendo
+    eje: estetizacion
+    query: Lula Trump reuniao Estados Unidos
+  - rank: 4
+    slug: politica-externa-como-activo
+    title: "Política externa como trunfo electoral"
+    description: |
+      Analistas comienzan a leer la política externa de Lula como herramienta de campaña: el contraste con Bolsonaro en su relación con Trump (negociadora vs. subordinada) gana espacio narrativo en medios oficialistas.
+    tendencia: subiendo
+    eje: estetizacion
+    query: politica externa Lula campanha eleitoral
+  - rank: 5
+    slug: pacto-tributario-senado
+    title: "Pacto pelo IBS no Senado"
+    description: |
+      La reforma tributária avanza en el Senado en su etapa de implementación operativa. La discusión técnica sobre el IBS y la transición fiscal recobra centralidad parlamentaria con incidencia sobre estados y municipios.
+    tendencia: estable
     eje: mediaciones
-    query: violência segurança pública crime organizado Rio São Paulo Brasil
+    query: IBS reforma tributaria Senado pacto
 ---
 
-# Notas editoriales
+# Notas editoriales (no se renderiza en el sitio)
 
-Semana marcada por la dinámica pre-electoral. Amazonia puede subir si hay evento internacional de impacto.
+Brasil entra en clave electoral plena con cinco meses de anticipación. La novedad estructural de la semana es la consolidación de Flávio Bolsonaro como heredero del bolsonarismo — no es novedad coyuntural pero esta semana las dos encuestas (Real Time Big Data y Meio/Ideia) lo confirman como adversario único de Lula, cerrando el ciclo de especulación sobre nombres alternativos (Tarcísio, Caiado, Zema).
+
+Lo que **entra**: la lectura de la política externa como activo electoral. Lo que **sale**: la discusión sobre Amazonia/agronegocio, que perdió centralidad esta semana frente a la dinámica electoral.
+
+El eje desrepresentación se activa con fuerza: el sistema partidario brasileño produce candidaturas que son, en última instancia, herederos directos de figuras inhabilitadas (Flávio por Jair). La maquinaria electoral funciona pero la legitimidad de quien representa a quién queda en pregunta.

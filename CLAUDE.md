@@ -41,7 +41,7 @@ Stack: **FastAPI** (backend) + **Next.js** (frontend) + **D3.js** (mapa)
 
 ### Producto / diseño (especificaciones)
 
-- `70-Producto/specs/` — 32 specs escritas (01–32, con anexos 12A, 12B, 14A) + 4 bug reports (BUG-001, BUG-002, dos BUG-003) + QA-05. Specs 27-29 cubren **agendas por país** y el **sistema de agentes automáticos**. Specs 30-32 resuelven la deuda de **corpus vivo en el sitio** (home, despachos, borradores diarios).
+- `70-Producto/specs/` — 33 specs escritas (01–33, con anexos 12A, 12B, 14A) + 5 bug reports (BUG-001, BUG-002, dos BUG-003, BUG-004) + QA-05. Specs 27-29 cubren **agendas por país** y el **sistema de agentes automáticos**. Specs 30-32 resuelven la deuda de **corpus vivo en el sitio** (home, despachos, borradores diarios). Spec 33 agrega agendas al panel lateral del mapa de la home.
 - `70-Producto/design-system/` — Design tokens, sistema cromático, assets de identidad visual
 - `70-Producto/mockups/` — Prototipos HTML de vistas
 - `70-Producto/guia-demo.md` — Guía de demo del producto

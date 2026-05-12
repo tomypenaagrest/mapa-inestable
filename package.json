@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "promote-draft": "node scripts/promote-draft.mjs"
+    "promote-draft":  "node scripts/promote-draft.mjs",
+    "promote-agenda": "node scripts/promote-agenda.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3"

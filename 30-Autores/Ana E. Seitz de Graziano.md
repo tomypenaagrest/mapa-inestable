@@ -6,7 +6,7 @@ disciplina: relaciones internacionales, integración latinoamericana
 publicar: true
 slug: ana-seitz-de-graziano
 ---
-
+	
 # Ana E. Seitz de Graziano
 
 Investigadora argentina en relaciones internacionales. Su trabajo sobre las propuestas históricas de integración latinoamericana ofrece una caja conceptual para leer la integración como **tendencia defensiva** y no como ideal romántico — una lectura útil para pensar la política exterior sudamericana frente a la transición hegemónica global.

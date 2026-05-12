@@ -92,31 +92,32 @@ Horarios en ART (`America/Argentina/Buenos_Aires`).
 | Promote | Skill aparte (Spec 24) |
 | Estado | En producción |
 
-### `agenda-semanal`
+### `agenda-semanal` (10 instancias, una por país)
 
 | Campo | Valor |
 |---|---|
 | Spec de referencia | 27, 28 |
-| Skill | `mapa-inestable.plugin/skills/agenda-semanal/` (a crear) |
-| Cadencia | Semanal, viernes 17:00 ART |
-| Trigger | 10 scheduled tasks (una por país), paralelas |
-| Input | Web search + Google News RSS (v1) / tabla `events` (v2) |
+| Skills | `C:\Users\Tomi\OneDrive\Documentos\Claude\Scheduled\mapa-inestable-agenda-{slug}-semanal\SKILL.md` × 10 |
+| Cadencia | Semanal, viernes 17:00 ART (cron `0 17 * * 5`) |
+| Trigger | 10 scheduled tasks de Cowork (una por país), paralelas con jitter de hasta 6 min |
+| Input | Web search + Google News RSS por país (gl/ceid/hl en el prompt) |
 | Output | `60-Borradores/agendas/<slug>.md` + append a `_resumen-YYYY-W##.md` |
-| Resumen | Archivo semanal con los 10 países, diffs, alertas |
-| Promote | Skill `promover-agenda` (Spec 28 §5) |
-| Estado | En diseño |
+| Resumen | Archivo semanal con bloques de los 10 países, diffs, alertas editoriales |
+| Promote | Script `npm run promote-agenda <slug>` (ver abajo) |
+| Estado | **Implementada** · primera corrida real: viernes 15 may 2026 17:00 ART |
 
-### `promover-agenda`
+### `promover-agenda` (script Node, no skill del plugin)
 
 | Campo | Valor |
 |---|---|
-| Spec de referencia | 28 §5 |
-| Skill | `mapa-inestable.plugin/skills/promover-agenda/` (a crear) |
-| Cadencia | On-demand (humano dispara) |
-| Trigger | "promové la agenda de X" desde Claude Code |
-| Input | `60-Borradores/agendas/<slug>.md` |
-| Output | `15-Países/agendas/<slug>.md` + marca en resumen semanal |
-| Estado | En diseño |
+| Spec de referencia | 28 §5 + notas de implementación |
+| Script | `scripts/promote-agenda.mjs` en el repo del vault |
+| Comando | `npm run promote-agenda <slug>` (CLI) o `npm run promote-agenda` (interactivo) |
+| Cadencia | On-demand (humano dispara desde Claude Code o terminal) |
+| Input | `60-Borradores/agendas/<slug>.md` con `estado: borrador` |
+| Output | `15-Países/agendas/<slug>.md` con `estado: publicada` + archive del borrador en `_archive/<slug>-<fecha>.md` + marca en resumen semanal |
+| Edge case manejado | Live más reciente que borrador → pregunta antes de overwrite |
+| Estado | **Implementada** |
 
 ### `analisis-semanal`
 
@@ -213,6 +214,7 @@ Los agentes no se superponen en horario para evitar confusión cognitiva (dos no
 | Fecha | Cambio | Razón |
 |---|---|---|
 | 2026-05-11 | Creación del documento + entrada inicial para `agente-diario`, `agenda-semanal`, `promover-agenda`, `analisis-semanal`, `despacho-semanal` | Spec 28 destapó la necesidad de un calendario unificado |
+| 2026-05-11 | Spec 28 ejecutada — 10 scheduled tasks creadas (`mapa-inestable-agenda-{slug}-semanal`) + script `promote-agenda.mjs`. `promover-agenda` quedó como script Node en lugar de skill del plugin (alineación con `promote-draft.mjs` de Spec 24) | Implementación |
 
 ---
 

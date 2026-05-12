@@ -819,6 +819,49 @@ export function AnalisisContent({ analyses }: { analyses: AnalisisEntry[] }) {
                 searchParamsStr={searchParams.toString()}
               />
             )}
+
+            {/* También en curso */}
+            <div style={{
+              marginTop:  "var(--mi-space-8)",
+              borderTop:  "var(--mi-border-dashed)",
+              paddingTop: "var(--mi-space-5)",
+            }}>
+              <div style={{
+                fontFamily:    "var(--mi-font-mono)",
+                fontSize:      "var(--mi-text-xs)",
+                letterSpacing: "var(--mi-tracking-widest)",
+                textTransform: "uppercase",
+                color:         "var(--mi-ink-mute)",
+                marginBottom:  "var(--mi-space-3)",
+              }}>
+                También en curso
+              </div>
+              <Link
+                href="/analisis/borradores"
+                style={{
+                  fontFamily:    "var(--mi-font-mono)",
+                  fontSize:      "var(--mi-text-xs)",
+                  letterSpacing: "var(--mi-tracking-wider)",
+                  textTransform: "uppercase",
+                  color:         "var(--mi-ink)",
+                  borderBottom:  "2px solid var(--mi-ink)",
+                  paddingBottom: 2,
+                  textDecoration: "none",
+                }}
+              >
+                Borradores del agente diario →
+              </Link>
+              <p style={{
+                fontFamily:   "var(--mi-font-body)",
+                fontSize:     "var(--mi-text-sm)",
+                color:        "var(--mi-ink-soft)",
+                lineHeight:   "var(--mi-leading-relaxed)",
+                maxWidth:     "58ch",
+                marginTop:    "var(--mi-space-2)",
+              }}>
+                Análisis producidos cada día por el agente automatizado, antes de pasar a edición y publicación en Substack.
+              </p>
+            </div>
           </main>
         </div>
       </div>

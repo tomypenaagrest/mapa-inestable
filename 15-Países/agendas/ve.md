@@ -2,41 +2,53 @@
 country_slug: ve
 country_name: Venezuela
 estado: publicada
-updated: "2026-05-11"
-week: 19
+updated: 2026-05-11
+week: 20
 year: 2026
 google_news_gl: VE
-google_news_ceid: VE:es-419
 google_news_hl: es-419
+google_news_ceid: VE:es-419
+agent_run_id: 2026-05-11T17:00:00-03:00
+agent_version: v1.0
 agendas:
   - rank: 1
-    slug: represion-postelecciones
-    title: Represión y presos políticos
+    slug: gobierno-interino-delcy
+    title: "Gobierno interino de Delcy Rodríguez"
     description: |
-      La represión posterior a las elecciones de 2024 sigue activa. Cientos de detenidos permanecen en prisión; los juicios se celebran con garantías mínimas. La presión internacional no se traduce en cambios concretos. El régimen consolidó el control pero a costo de creciente aislamiento.
-    tendencia: subiendo
+      A cuatro meses de la salida forzada de Maduro (3 de enero), Delcy Rodríguez sigue al frente del gobierno interino con respaldo de Washington pero desconfianza creciente de sus propios aliados. La dualidad institucional define el presente venezolano.
+    tendencia: estable
     eje: desrepresentacion
-    query: presos políticos represión Venezuela Maduro 2026
-
+    query: Delcy Rodriguez interina Venezuela Washington
   - rank: 2
-    slug: crisis-economica
-    title: Crisis económica
+    slug: normalizacion-sin-elecciones
+    title: "Normalización económica sin condiciones políticas"
     description: |
-      La economía venezolana se dolarizó de facto pero sin estabilidad. La clase media en dólares coexiste con la mayoría que vive en bolívares desvalorizados. La recuperación estadística no se traduce en bienestar para la mayoría de la población.
-    tendencia: estable
+      Analistas describen el momento como "normalización económica sin condiciones políticas significativas": se levantan sanciones, Chevron opera, la deuda se reestructura, pero las elecciones no tienen fecha. El modelo de transición se aleja del paradigma democrático tradicional.
+    tendencia: subiendo
     eje: desorientacion
-    query: economía Venezuela dólar bolívar crisis inflación
-
+    query: Venezuela normalizacion economica Chevron sanciones
   - rank: 3
-    slug: migracion
-    title: Migración venezolana
+    slug: defensa-maduro-pago
+    title: "EE.UU. permite a Venezuela pagar defensa de Maduro"
     description: |
-      La diáspora venezolana supera los 7 millones. Algunos retornos se registran pero la salida continúa. La situación de venezolanos en países de tránsito —especialmente Colombia y Perú— sigue siendo precaria. La migración es el principal indicador de la crisis humanitaria.
-    tendencia: estable
-    eje: mediaciones
-    query: migración venezolana diáspora retorno Colombia Perú
+      Tribunales de EE.UU. autorizaron que Venezuela financie la defensa legal de Nicolás Maduro. La medida se lee como victoria simbólica del chavismo radical y complica al gobierno interino: el Estado paga al adversario simbólico de Washington.
+    tendencia: subiendo
+    eje: estetizacion
+    query: Estados Unidos defensa Maduro Venezuela pago
+  - rank: 4
+    slug: traicion-chavismo-radical
+    title: "Acusaciones de \"traición\" en el chavismo"
+    description: |
+      Aumentan las acusaciones de traición contra Delcy Rodríguez desde sectores chavistas radicales que ven a su propia dirigencia negociando con Washington. La identidad antiimperialista del chavismo entra en colisión con la realidad del gobierno.
+    tendencia: subiendo
+    eje: deculturacion
+    query: traicion Delcy Rodriguez chavismo radical
 ---
 
-# Notas editoriales
+# Notas editoriales (no se renderiza en el sitio)
 
-Venezuela en fase de consolidación autoritaria. Los cambios son de ritmo y no de dirección.
+Venezuela en la semana 20 vive una arquitectura inédita: gobierno interino legitimado por captura forzada del anterior presidente, sin elecciones a la vista, con normalización económica simultánea. Lo que se está construyendo no tiene precedente regional claro — no es transición democrática ni golpe convencional ni autoritarismo continuo. Es un modelo nuevo que la región todavía no termina de nombrar.
+
+Lo que **entra**: la noticia de que EE.UU. permite financiar la defensa de Maduro — paradoja perfecta del momento. Lo que **sale**: la oposición exiliada (María Corina, Edmundo González) tiene menos centralidad esta semana frente a la dinámica interna del chavismo fracturado.
+
+El eje desorientación epistemológica está en su forma extrema: las categorías políticas heredadas (chavismo / oposición / democracia / autoritarismo) ya no describen lo que está pasando. Y el eje deculturación: el antiimperialismo, núcleo identitario chavista por dos décadas, pierde capacidad de organizar la experiencia política de sus propios cuadros.

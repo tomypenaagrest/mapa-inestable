@@ -1,7 +1,7 @@
 ---
 spec: 28
 titulo: Scheduled task semanal de actualización de agendas (Cowork)
-estado: borrador-r2
+estado: implementada
 autor: Tomás (con Claude · Cowork)
 fecha: 2026-05-11
 revision: 2026-05-11 (r2) — viernes 17:00 ART en lugar de lunes 09:00; resumen semanal en vault en lugar de notificación Slack
@@ -407,3 +407,23 @@ Crear 10 tareas programadas, una por país:
 - **Resumen semanal:** archivo `60-Borradores/agendas/_resumen-YYYY-W##.md` con el digest de las 10 corridas del viernes. Punto único de entrada para la revisión humana.
 - **Diff vs. live previa:** comparación entre el borrador nuevo y el live previo. Lo que se reporta en el bloque del país.
 - **Tendencia derivada:** valor de `tendencia` calculado por comparación con la live previa.
+
+---
+
+## Notas de implementación (2026-05-11)
+
+La spec se ejecutó con dos pequeñas desviaciones respecto a r2:
+
+1. **`promover-agenda` se implementó como script Node, no como skill del plugin.** Path: `scripts/promote-agenda.mjs`, ejecutable vía `npm run promote-agenda <slug>` o interactivo. La razón: mantener consistencia con `promote-draft.mjs` (Spec 24), que ya funciona con el mismo patrón. El script vive en el repo del vault, se invoca desde Claude Code o terminal, y no requiere infra de plugin de Cowork. Si más adelante conviene una skill canónica del plugin (`mapa-inestable:promover-agenda`), se envuelve el script con un wrapper de skill.
+
+2. **Las 10 scheduled tasks tienen el prompt embebido completo, no referencian un skill compartido.** Los SKILL.md viven en `C:\Users\Tomi\OneDrive\Documentos\Claude\Scheduled\mapa-inestable-agenda-{slug}-semanal\`. Cada uno tiene el prompt completo de Spec 28 §2 con los parámetros del país sustituidos. Esto duplica el prompt 10 veces pero garantiza aislación total — si cambia la lógica para un país (ej. Venezuela necesita override de fuentes), se edita su SKILL.md sin afectar a los otros 9. Cuando un cambio aplica a todos, se actualiza con `mcp__scheduled-tasks__update_scheduled_task` 10 veces.
+
+3. **Las 10 tasks comparten cron `0 17 * * 5`.** Cowork aplica un jitter de hasta 6 minutos al dispatch para balancear carga; cada task corre dentro de los primeros 10 minutos de las 5pm ART del viernes. El primer país que corre crea el archivo `_resumen-YYYY-W##.md`; los siguientes hacen append.
+
+4. **Estructura del vault:** `60-Borradores/agendas/` y `60-Borradores/agendas/_archive/` creadas con `README.md` que documenta la convención.
+
+**Pendiente de validación operativa:**
+- Primera corrida real: viernes 15 de mayo 2026, 17:00 ART.
+- Verificar que las 10 tasks producen borradores parseables.
+- Verificar que `_resumen-2026-W20.md` se genera con los 10 bloques.
+- Iterar prompts si la calidad editorial requiere ajustes (Spec 28 §"Implementación sugerida" día 6 — soak test).

@@ -25,7 +25,7 @@ El sitio vive en producción en Vercel. El vault de conocimiento vive en Obsidia
 ├── 60-Borradores/         Piezas en desarrollo
 ├── 70-Producto/           ← ESTÁS ACÁ
 │   ├── README.md          Este archivo
-│   ├── specs/             Especificaciones de features (01-32) + bug reports (BUG-NNN)
+│   ├── specs/             Especificaciones de features (01-33) + bug reports (BUG-NNN)
 │   ├── mockups/           Previews HTML de componentes (referencia visual antes de implementar)
 │   └── design-system/     Tokens CSS, guía visual, prototipo HTML
 └── platform/              La plataforma web
@@ -255,16 +255,17 @@ Este requisito es estructural. El proyecto trata sobre desorientación epistemol
 | `specs/20-sidebar-autores-conceptos.md` | Sidebar autores y conceptos | Pendiente |
 | `specs/21-identidad-visual-logo-escalador.md` | Identidad visual — logo escalador | **Implementada** |
 | `specs/22-mapa-interactivo-torres-garcia.md` | Mapa interactivo Torres García con hot-zones | **Implementada** |
-| `specs/23-frontmatter-en-agente-diario.md` | Frontmatter del agente diario | En curso |
-| `specs/24-promover-borrador-a-publicacion.md` | Promover borrador del agente a publicación | En curso |
+| `specs/23-frontmatter-en-agente-diario.md` | Frontmatter del agente diario | **Implementada** (borradores con YAML estructurado) |
+| `specs/24-promover-borrador-a-publicacion.md` | Promover borrador del agente a publicación | **Implementada** (`scripts/promote-draft.mjs` + npm run) |
 | `specs/25-pipeline-de-produccion-visible.md` | Pipeline de producción visible | Pendiente |
 | `specs/26-cargar-publicaciones-del-vault-al-sitio.md` | Cargar publicaciones del vault al sitio | En curso |
 | `specs/27-agendas-por-pais.md` | Agendas por país (tab vivo del dashboard) | Borrador r1 |
-| `specs/28-scheduled-task-agendas-cowork.md` | Scheduled task semanal de agendas (Cowork) | Borrador r2 |
+| `specs/28-scheduled-task-agendas-cowork.md` | Scheduled task semanal de agendas (Cowork) | **Implementada** (10 tasks + `npm run promote-agenda`) |
 | `specs/29-calendario-agentes-automaticos.md` | Calendario de agentes automáticos (documento vivo) | Borrador r1 |
 | `specs/30-home-derivada-del-corpus.md` | Home derivada del corpus real (sin fixtures) | Borrador r1 · post-Spec 26 |
 | `specs/31-despachos-del-vault-al-sitio.md` | Despachos del vault al sitio (/despachos y detalle) | Borrador r1 · post-Spec 26 |
 | `specs/32-vista-publica-borradores-diarios.md` | Vista pública de borradores diarios del agente | Borrador r1 |
+| `specs/33-agendas-en-el-mapa-home.md` | Agendas en el panel lateral del mapa de la home | Borrador r2 · post-Spec 27 |
 
 ### Bug reports
 
@@ -274,6 +275,7 @@ Este requisito es estructural. El proyecto trata sobre desorientación epistemol
 | `specs/BUG-002-country-dashboard-analyses-vacios.md` | Dashboard de país con análisis vacíos | Abordado en Spec 26 |
 | `specs/BUG-003-meta-aside-overlap.md` | Meta aside overlap | Pendiente |
 | `specs/BUG-003-mapa-desbordante-dashboard.md` | Mapa desbordante en dashboard | Pendiente |
+| `specs/BUG-004-copy-content-no-recursa-subcarpetas.md` | `copy-content.js` no recursa, bloquea visibilidad de agendas y diarios | Fix listo · pendiente commit/deploy |
 
 ### QA docs
 

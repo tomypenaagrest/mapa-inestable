@@ -12,6 +12,7 @@ import type { AnalysisSummary } from "@/lib/analisis";
 import type { Indicator, IndicatorCountryData } from "@/lib/latinobarometro";
 import type { MacroIndicator, MacroCountryData } from "@/lib/macro-indicators";
 import type { CountryAgenda, Agenda } from "@/lib/agendas";
+import type { AgentDraftMeta } from "@/lib/content";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
@@ -77,6 +78,7 @@ export interface CountryDashboardProps {
   macroMeta: { year_start: number; year_end: number; computed_at: string };
   initialTab: string;
   agenda?: CountryAgenda | null;
+  agentDrafts?: AgentDraftMeta[];
 }
 
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -131,7 +133,7 @@ export default function CountryDashboard({
   slug, name, centralQuestion, ejes, fuentes, analyses,
   tensionesHtml, preguntaHtml, contextSections,
   lbIndicators, lbMeta, macroIndicators, macroFamilies, macroMeta,
-  initialTab, agenda,
+  initialTab, agenda, agentDrafts,
 }: CountryDashboardProps) {
   const router   = useRouter();
   const pathname = usePathname();
@@ -386,7 +388,7 @@ export default function CountryDashboard({
         style={{ paddingTop: "var(--mi-space-7)", paddingBottom: "var(--mi-space-8)" }}
       >
         {activeTab === "publicaciones" && (
-          <TabPublicaciones analyses={analyses} ejes={ejes} slug={slug} />
+          <TabPublicaciones analyses={analyses} ejes={ejes} slug={slug} name={name} agentDrafts={agentDrafts} />
         )}
         {activeTab === "agenda" && (
           <TabAgenda agenda={agenda ?? null} />
@@ -427,10 +429,14 @@ function TabPublicaciones({
   analyses,
   ejes,
   slug,
+  name,
+  agentDrafts,
 }: {
-  analyses: AnalysisSummary[];
-  ejes:     AxisIntensity[];
-  slug:     string;
+  analyses:    AnalysisSummary[];
+  ejes:        AxisIntensity[];
+  slug:        string;
+  name:        string;
+  agentDrafts?: AgentDraftMeta[];
 }) {
   const [period,      setPeriod]      = useState("recientes");
   const [activeAxes,  setActiveAxes]  = useState<string[]>([]);
@@ -542,6 +548,92 @@ function TabPublicaciones({
             <AnalysisCard key={a.slug} a={a} slug={slug} />
           ))}
         </div>
+      )}
+
+      {/* Borradores del agente para este país */}
+      {agentDrafts && agentDrafts.length > 0 && (
+        <details style={{ marginTop: "var(--mi-space-7)" }}>
+          <summary style={{
+            ...mono,
+            cursor:        "pointer",
+            color:         "var(--mi-ink-mute)",
+            padding:       "var(--mi-space-3) 0",
+            borderTop:     "var(--mi-border-dashed)",
+            listStyle:     "none",
+            display:       "flex",
+            justifyContent:"space-between",
+            alignItems:    "center",
+          }}>
+            <span>Borradores del agente sobre {name}</span>
+            <span style={{ color: "var(--mi-ink-mute)" }}>
+              {agentDrafts.length} {agentDrafts.length === 1 ? "borrador" : "borradores"} ▾
+            </span>
+          </summary>
+          <div style={{
+            marginTop:           "var(--mi-space-4)",
+            display:             "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap:                 "var(--mi-space-3)",
+          }}>
+            {agentDrafts.map(d => (
+              <Link
+                key={d.slug}
+                href={`/analisis/borradores/${d.countrySlug}/${d.pieceSlug}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <article style={{
+                  border:        "var(--mi-border-thick)",
+                  background:    "var(--mi-bg-paper)",
+                  padding:       "var(--mi-space-3)",
+                  boxShadow:     "var(--mi-shadow-card)",
+                  display:       "flex",
+                  flexDirection: "column",
+                  gap:           "var(--mi-space-2)",
+                }}>
+                  <div style={{ display: "flex", gap: "var(--mi-space-2)", alignItems: "center", flexWrap: "wrap" }}>
+                    <span style={{
+                      ...mono,
+                      fontSize:   "10px",
+                      color:      "var(--mi-bg-paper)",
+                      background: d.estado === "promovido" ? "var(--mi-accent-gold)" : "var(--mi-ink)",
+                      padding:    "1px 5px",
+                      fontWeight: 700,
+                    }}>
+                      {d.estado === "promovido" ? "Promovido" : d.estado === "en-edicion" ? "En edición" : "Borrador"}
+                    </span>
+                    <span style={{ ...mono, fontSize: "10px", color: "var(--mi-ink-mute)" }}>
+                      {d.date}
+                    </span>
+                  </div>
+                  <h3 style={{
+                    fontFamily: "var(--mi-font-title)",
+                    fontWeight: 600,
+                    fontSize:   "var(--mi-text-base)",
+                    lineHeight: "var(--mi-leading-snug)",
+                    color:      "var(--mi-ink)",
+                    margin:     0,
+                  }}>
+                    {d.title}
+                  </h3>
+                </article>
+              </Link>
+            ))}
+          </div>
+          <div style={{ marginTop: "var(--mi-space-3)" }}>
+            <Link
+              href="/analisis/borradores"
+              style={{
+                ...mono,
+                color:         "var(--mi-ink-mute)",
+                borderBottom:  "1px solid var(--mi-ink-mute)",
+                textDecoration:"none",
+                paddingBottom: 1,
+              }}
+            >
+              Ver todos los borradores →
+            </Link>
+          </div>
+        </details>
       )}
     </div>
   );

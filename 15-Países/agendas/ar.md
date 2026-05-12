@@ -2,59 +2,74 @@
 country_slug: ar
 country_name: Argentina
 estado: publicada
-updated: "2026-05-11"
-week: 19
+updated: '2026-05-12'
+week: 20
 year: 2026
 google_news_gl: AR
-google_news_ceid: AR:es-419
 google_news_hl: es-419
+google_news_ceid: 'AR:es-419'
 agendas:
   - rank: 1
-    slug: corrupcion
-    title: Corrupción
-    description: |
-      La causa $LIBRA recobró centralidad tras nuevas imputaciones a funcionarios del círculo presidencial. La discusión combina dimensión penal con percepción social: el oficialismo apela al "no son todos lo mismo" mientras la oposición intenta capitalizar sin liderazgo claro. La conversación se desplaza desde la causa puntual hacia la idea más amplia de captura del Estado.
+    slug: caso-adorni
+    title: Caso Adorni y crisis del Gabinete
+    description: >
+      El vocero presidencial Manuel Adorni quedó envuelto en nuevas
+      contradicciones internas y en una polémica por sus contactos con un
+      testigo clave mientras avanza la investigación judicial. La causa que
+      vincula a un contratista con USD 245.000 en efectivo entregados al jefe de
+      Gabinete tensiona la cohesión del gobierno.
     tendencia: subiendo
     eje: desrepresentacion
-    query: corrupción $LIBRA gobierno Argentina
-
+    query: Adorni contradicciones gabinete Milei
   - rank: 2
-    slug: inflacion
-    title: Inflación
-    description: |
-      El IPC sostiene la baja anunciada por el gobierno, pero la conversación se desplazó a tarifas y servicios regulados. La desinflación aparece estadísticamente pero no se traduce en sensación térmica de mejora. Medios opositores construyen el contra-relato del "costo de vida real".
-    tendencia: bajando
-    eje: mediaciones
-    query: inflación tarifas Argentina
-
-  - rank: 3
-    slug: empleo-salarios
-    title: Empleo y salarios
-    description: |
-      Paritarias trabadas en varios sectores y caída sostenida del salario real privado. La disputa sindical pierde centralidad mediática frente a la conversación macro, pero permanece como base estructural del malestar social.
-    tendencia: estable
-    eje: mediaciones
-    query: salario real paritarias empleo Argentina
-
-  - rank: 4
-    slug: seguridad
-    title: Seguridad
-    description: |
-      Los operativos de la ministra Bullrich y la discusión sobre fuerzas federales abren un debate sobre la puesta en escena del orden. La seguridad funciona menos como política y más como signo: lo que se ve en cámara importa tanto como lo que ocurre.
+    slug: reforma-electoral
+    title: Reforma electoral del oficialismo
+    description: >
+      La Libertad Avanza comenzó a sumar respaldos provinciales para avanzar con
+      la reforma electoral impulsada por Milei. El gobierno intenta recuperar
+      iniciativa política en el Congreso tras semanas atravesadas por la crisis
+      interna.
     tendencia: subiendo
-    eje: estetizacion
-    query: seguridad Bullrich operativos Argentina
-
-  - rank: 5
-    slug: reforma-previsional
-    title: Reforma previsional
-    description: |
-      Discusión sobre la fórmula de movilidad jubilatoria y el reclamo de organizaciones de jubilados. Tema instalado pero sin pico mediático: la conversación existe pero no logra desplazar a las agendas dominantes.
+    eje: mediaciones
+    query: reforma electoral Milei provincias
+  - rank: 3
+    slug: movilizaciones-costo-vida
+    title: Movilizaciones y caída del consumo
+    description: >
+      Se espera una movilización masiva el martes a las 17 en Plaza de Mayo,
+      replicada en capitales provinciales. El consumo en pymes acumula una caída
+      del 3,5% en lo que va de 2026; el malestar económico se traslada a la
+      calle.
     tendencia: estable
+    eje: atencion
+    query: movilizacion Plaza de Mayo pymes consumo
+  - rank: 4
+    slug: interna-lla-pro
+    title: Tensión interna LLA-PRO
+    description: >
+      La continuidad de Adorni reaviva la fractura entre La Libertad Avanza y el
+      PRO. Macri pidió cambios en el Gabinete; el oficialismo responde con
+      señales de autonomía. La alianza electoral entra en zona de ruido visible.
+    tendencia: subiendo
     eje: desrepresentacion
-    query: reforma previsional jubilaciones movilidad Argentina
+    query: Macri Milei PRO LLA alianza
+  - rank: 5
+    slug: licitacion-parana
+    title: Licitación Vía Navegable del Paraná
+    description: >
+      El bloque opositor presentó un proyecto en Diputados para reclamar la
+      suspensión inmediata del proceso licitatorio de la Vía Navegable Troncal
+      del Río Paraná. Conflicto soberano-comercial vuelve a la agenda
+      parlamentaria.
+    tendencia: subiendo
+    eje: desrepresentacion
+    query: hidrovia Parana licitacion suspension
 ---
 
-# Notas editoriales
+# Notas editoriales (no se renderiza en el sitio)
 
-Esta semana corrupción desplaza a inflación como tema dominante. Watchlist: si aparece pico de inseguridad en AMBA, mover seguridad a top 3.
+La semana 20 en Argentina queda atravesada por la crisis Adorni — primera vez en lo que va del año que un funcionario directo del círculo presidencial queda judicialmente comprometido en una causa con evidencia material (efectivo, testigos, refacciones). El gobierno responde con la reforma electoral como contra-narrativa: si la agenda judicial le quita aire al oficialismo, la agenda institucional le da algo positivo para ofrecer.
+
+Lo que **entra** esta semana: el caso Adorni con esta intensidad. Lo que **sale**: las discusiones sobre dolarización, que perdieron centralidad mediática (no aparecen en ninguna de las primeras 15 piezas leídas).
+
+Tendencia editorial: el eje desrepresentación gana espacio. Las instituciones (Gabinete, Congreso, alianza electoral) están todas en pregunta esta semana.
