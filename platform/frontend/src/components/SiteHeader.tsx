@@ -17,7 +17,7 @@ export default function SiteHeader() {
       justifyContent: "space-between",
       padding: "0 var(--mi-space-6)",
       borderBottom: "var(--mi-border-bold)",
-      background: "var(--mi-bg-paper)",
+      background: "var(--mi-bg)",
       position: "sticky",
       top: 0,
       zIndex: 100,

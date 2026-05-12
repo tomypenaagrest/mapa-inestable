@@ -20,7 +20,7 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry }
   }, [router]);
 
   const handleHover = useCallback((slug: string | null) => {
-    setHoveredCountry(slug);
+    if (slug !== null) setHoveredCountry(slug);
   }, []);
 
   return (
@@ -31,12 +31,15 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry }
       background: "var(--mi-bg-paper)",
     }}>
       {/* Mapa + panel preview */}
-      <div style={{
-        display: "flex",
-        height: "var(--mi-mapa-max-h, calc(100vh - 100px))",
-        position: "relative",
-        overflow: "hidden",
-      }}>
+      <div
+        style={{
+          display: "flex",
+          height: "var(--mi-mapa-max-h, calc(100vh - 100px))",
+          position: "relative",
+          overflow: "hidden",
+        }}
+        onMouseLeave={() => setHoveredCountry(null)}
+      >
 
         {/* Mapa Torres García — height-driven, ancho derivado del aspect ratio */}
         <div style={{
