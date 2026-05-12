@@ -144,3 +144,19 @@ export function buildGoogleNewsUrl(agenda: Agenda, ca: CountryAgenda): string {
     `&hl=${ca.googleNewsHl}&gl=${ca.googleNewsGl}&ceid=${ca.googleNewsCeid}`
   );
 }
+
+const COUNTRY_SLUGS = ["ar", "bo", "br", "cl", "co", "ec", "pe", "py", "uy", "ve"] as const;
+
+export function getAllCountryAgendas(): Record<string, CountryAgenda> {
+  const result: Record<string, CountryAgenda> = {};
+  for (const slug of COUNTRY_SLUGS) {
+    const agenda = getCountryAgenda(slug);
+    if (!agenda || agenda.agendas.length === 0) continue;
+    if (!agenda.googleNewsGl || !agenda.googleNewsCeid) {
+      console.warn(`[agendas] Missing gl/ceid for ${slug} — omitting from map panel`);
+      continue;
+    }
+    result[slug] = agenda;
+  }
+  return result;
+}

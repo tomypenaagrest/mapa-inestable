@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getAllConceptosMeta } from "@/lib/conceptos";
 import { getAllAutores } from "@/lib/autores";
 import { getHomeData } from "@/lib/home";
+import { getAllCountryAgendas } from "@/lib/agendas";
 import { EJES } from "@/lib/ejes";
 import CarruselEditorial, { type CarruselSlide } from "@/components/CarruselEditorial";
 import MapaHeatmapSection from "@/components/MapaHeatmapSection";
@@ -20,9 +21,10 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const data       = getHomeData();
-  const conceptos  = getAllConceptosMeta();
-  const autores    = getAllAutores().map(a => ({ slug: a.slug, name: a.name }));
+  const data             = getHomeData();
+  const conceptos        = getAllConceptosMeta();
+  const autores          = getAllAutores().map(a => ({ slug: a.slug, name: a.name }));
+  const agendasByCountry = getAllCountryAgendas();
 
   // Carrusel: publicaciones reales mapeadas a CarruselSlide
   const slides: CarruselSlide[] = data.cards.map(p => {
@@ -143,6 +145,7 @@ export default function HomePage() {
           weeklyCountries={data.weeklyCountries}
           heatmapData={data.heatmap}
           weeks={data.heatmapWeeks}
+          agendasByCountry={agendasByCountry}
         />
       </div>
 

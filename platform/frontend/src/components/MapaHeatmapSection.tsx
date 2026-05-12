@@ -5,14 +5,16 @@ import MapaTorresGarcia from "./MapaTorresGarcia";
 import HeatmapEjes, { type HeatmapCell, type WeekLabel } from "./HeatmapEjes";
 import CountryPreviewPanel from "./CountryPreviewPanel";
 import type { WeeklyCountryData } from "@/components/MapaCentrico";
+import type { CountryAgenda } from "@/lib/agendas";
 
 interface Props {
   weeklyCountries: WeeklyCountryData[];
   heatmapData: HeatmapCell[];
   weeks: WeekLabel[];
+  agendasByCountry?: Record<string, CountryAgenda>;
 }
 
-export default function MapaHeatmapSection({ weeklyCountries, heatmapData, weeks }: Props) {
+export default function MapaHeatmapSection({ weeklyCountries, heatmapData, weeks, agendasByCountry }: Props) {
   const router = useRouter();
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
 
@@ -65,6 +67,7 @@ export default function MapaHeatmapSection({ weeklyCountries, heatmapData, weeks
             <CountryPreviewPanel
               countrySlug={hoveredCountry}
               weeklyCountries={weeklyCountries}
+              agendaSummary={agendasByCountry?.[hoveredCountry]}
               onClose={() => setHoveredCountry(null)}
             />
           ) : (
