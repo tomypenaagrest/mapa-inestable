@@ -1,6 +1,6 @@
 ---
 tipo: borrador-agente
-estado: borrador
+estado: publicado-en-sitio
 country: Paraguay
 country_slug: py
 title: "El país convertido en activo"
@@ -18,6 +18,7 @@ disparador:
   medio: Última Hora
   titulo: "Paraguay se consolida y logra su segundo grado de inversión de Standard & Poor's"
 fuentes_count: 13
+published_in_site_at: 2026-05-12T14:00:14.293Z
 ---
 
 # El país convertido en activo

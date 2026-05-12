@@ -72,3 +72,23 @@ El orden temático y conceptual no necesariamente coincide con el orden cronoló
 
 - 11 publicaciones reales en Substack — **11 archivos en el vault** (cobertura 100%)
 - 1 sección destacada (Mermelada) conservada como nota
+
+## Publicaciones del agente aprobadas para el sitio
+
+Análisis producidos por el agente diario y aprobados con `estado: publicado-en-sitio`. Viven físicamente en `60-Borradores/diario/`. No tienen URL de Substack todavía.
+
+| Fecha | País | Título | Eje | Origen |
+|-------|------|--------|-----|--------|
+| 27 abr 2026 | Uruguay | El último país que aún conversa | mediaciones | Agente diario |
+| 29 abr 2026 | Venezuela | Esperar como forma de gobernar | — | Agente diario |
+| 5 may 2026 | Ecuador | La excepción que ya no interrumpe | — | Agente diario |
+| 6 may 2026 | Paraguay | El honor que quería tener voto | — | Agente diario |
+| 6 may 2026 | Paraguay | El país convertido en activo | — | Agente diario |
+| 7 may 2026 | Perú | La elección que no cabía en una sola hoja | — | Agente diario |
+| 8 may 2026 | Uruguay | La cubierta donde no se esperaba ver al Frente Amplio | — | Agente diario |
+| 10 may 2026 | Argentina | La cena que reemplazó al partido | — | Agente diario |
+| 11 may 2026 | Bolivia | La refundación entra en comisión | — | Agente diario |
+| 11 may 2026 | Bolivia | El precio que ya no pasa por el banco | — | Agente diario |
+
+Para aprobar nuevos borradores: `npm run publish-all-drafts` (interactivo) o `npm run publish-all-drafts -- --all`.
+Para revertir: `npm run publish-all-drafts -- --unpublish "<filename>"`.

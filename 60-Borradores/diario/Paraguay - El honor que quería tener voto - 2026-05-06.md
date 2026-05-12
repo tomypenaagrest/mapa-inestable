@@ -1,6 +1,6 @@
 ---
 tipo: borrador-agente
-estado: borrador
+estado: publicado-en-sitio
 country: Paraguay
 country_slug: py
 title: "El honor que quería tener voto"
@@ -19,6 +19,7 @@ disparador:
   fecha_publicacion: 2026-04-28
   titulo: "¿Cartismo no tiene los votos para imponer cambios a la senaduría vitalicia?"
 fuentes_count: 12
+published_in_site_at: 2026-05-12T14:00:14.293Z
 ---
 
 # El honor que quería tener voto

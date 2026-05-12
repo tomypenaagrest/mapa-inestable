@@ -1,6 +1,6 @@
 ---
 tipo: borrador-agente
-estado: borrador
+estado: publicado-en-sitio
 country: Bolivia
 country_slug: bo
 title: "La refundación entra en comisión"
@@ -19,6 +19,7 @@ disparador:
   fecha_publicacion: 2026-05-10
   titulo: "Bolivia crea una comisión abierta para reformar la Constitución de 2009 y despejar el camino a la inversión privada"
 fuentes_count: 9
+published_in_site_at: 2026-05-12T14:00:14.293Z
 ---
 
 # La refundación entra en comisión

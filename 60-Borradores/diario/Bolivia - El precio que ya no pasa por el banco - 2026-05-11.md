@@ -1,6 +1,6 @@
 ---
 tipo: borrador-agente
-estado: borrador
+estado: publicado-en-sitio
 country: Bolivia
 country_slug: bo
 title: "El precio que ya no pasa por el banco"
@@ -21,6 +21,7 @@ disparador:
 fuentes_count: 9
 agent_run_id: 2026-05-11T23:52:38-03:00
 agent_version: v2.0
+published_in_site_at: 2026-05-12T14:00:14.293Z
 ---
 
 # El precio que ya no pasa por el banco

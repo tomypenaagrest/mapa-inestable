@@ -1,6 +1,6 @@
 ---
 tipo: borrador-agente
-estado: borrador
+estado: publicado-en-sitio
 country: Uruguay
 country_slug: uy
 title: "La cubierta donde no se esperaba ver al Frente Amplio"
@@ -19,6 +19,7 @@ disparador:
   fecha_publicacion: 2026-05-04
   titulo: "Soy presidente del Uruguay, no hago política exterior representando una fuerza política"
 fuentes_count: 10
+published_in_site_at: 2026-05-12T14:00:14.293Z
 ---
 
 # La cubierta donde no se esperaba ver al Frente Amplio

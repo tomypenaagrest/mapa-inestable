@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { AnalisisContent } from "./AnalisisContent";
-import { getAllPublications, type PublicationMeta } from "@/lib/content";
+import { getAllSitePublications, type SitePublication } from "@/lib/content";
 import { EJES, AXIS_KEY_TO_SLUG } from "@/lib/ejes";
 import type { AnalisisEntry } from "@/lib/analisis";
 
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Todos los análisis publicados por Mapa Inestable. Filtrá por país, eje y año.",
 };
 
-function publicationToAnalisisEntry(p: PublicationMeta): AnalisisEntry | null {
+function sitePublicationToAnalisisEntry(p: SitePublication): AnalisisEntry | null {
   if (!p.ejePrincipal) return null;
   const eje = EJES.find(e => e.axisKey === p.ejePrincipal);
   if (!eje) return null;
@@ -23,7 +23,7 @@ function publicationToAnalisisEntry(p: PublicationMeta): AnalisisEntry | null {
     axisKey:               p.ejePrincipal,
     axisName:              eje.name,
     title:                 p.title,
-    lede:                  p.subtitle ?? "",
+    lede:                  p.subtitle ?? p.lede ?? "",
     published_at:          p.published_at,
     published_iso:         p.fecha,
     year:                  p.year,
@@ -38,9 +38,9 @@ function publicationToAnalisisEntry(p: PublicationMeta): AnalisisEntry | null {
 }
 
 export default function AnalisisPage() {
-  const publications = getAllPublications();
+  const publications = getAllSitePublications();
   const analyses: AnalisisEntry[] = publications
-    .map(publicationToAnalisisEntry)
+    .map(sitePublicationToAnalisisEntry)
     .filter((e): e is AnalisisEntry => e !== null);
 
   return (

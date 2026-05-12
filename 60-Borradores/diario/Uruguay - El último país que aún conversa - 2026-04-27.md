@@ -1,6 +1,6 @@
 ---
 tipo: borrador-agente
-estado: borrador
+estado: publicado-en-sitio
 country: Uruguay
 country_slug: uy
 title: "El último país que aún conversa"
@@ -19,6 +19,7 @@ disparador:
   fecha_publicacion: 2026-04-21
   titulo: "Diálogo Social terminó reuniones con acuerdo del gobierno y PIT-CNT"
 fuentes_count: 9
+published_in_site_at: 2026-05-12T14:00:14.293Z
 ---
 
 # El último país que aún conversa

@@ -12,7 +12,7 @@ import type { AnalysisSummary } from "@/lib/analisis";
 import type { Indicator, IndicatorCountryData } from "@/lib/latinobarometro";
 import type { MacroIndicator, MacroCountryData } from "@/lib/macro-indicators";
 import type { CountryAgenda, Agenda } from "@/lib/agendas";
-import type { AgentDraftMeta } from "@/lib/content";
+import type { AgentDraftMeta, SitePublication } from "@/lib/content";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
@@ -79,6 +79,7 @@ export interface CountryDashboardProps {
   initialTab: string;
   agenda?: CountryAgenda | null;
   agentDrafts?: AgentDraftMeta[];
+  sitePublications?: SitePublication[];
 }
 
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -133,7 +134,7 @@ export default function CountryDashboard({
   slug, name, centralQuestion, ejes, fuentes, analyses,
   tensionesHtml, preguntaHtml, contextSections,
   lbIndicators, lbMeta, macroIndicators, macroFamilies, macroMeta,
-  initialTab, agenda, agentDrafts,
+  initialTab, agenda, agentDrafts, sitePublications,
 }: CountryDashboardProps) {
   const router   = useRouter();
   const pathname = usePathname();
@@ -388,7 +389,7 @@ export default function CountryDashboard({
         style={{ paddingTop: "var(--mi-space-7)", paddingBottom: "var(--mi-space-8)" }}
       >
         {activeTab === "publicaciones" && (
-          <TabPublicaciones analyses={analyses} ejes={ejes} slug={slug} name={name} agentDrafts={agentDrafts} />
+          <TabPublicaciones analyses={analyses} ejes={ejes} slug={slug} name={name} agentDrafts={agentDrafts} sitePublications={sitePublications} />
         )}
         {activeTab === "agenda" && (
           <TabAgenda agenda={agenda ?? null} />
@@ -426,25 +427,27 @@ export default function CountryDashboard({
 // ─── TAB: PUBLICACIONES ───────────────────────────────────────────────────────
 
 function TabPublicaciones({
-  analyses,
   ejes,
   slug,
   name,
   agentDrafts,
+  sitePublications,
 }: {
-  analyses:    AnalysisSummary[];
-  ejes:        AxisIntensity[];
-  slug:        string;
-  name:        string;
-  agentDrafts?: AgentDraftMeta[];
+  analyses:          AnalysisSummary[];
+  ejes:              AxisIntensity[];
+  slug:              string;
+  name:              string;
+  agentDrafts?:      AgentDraftMeta[];
+  sitePublications?: SitePublication[];
 }) {
-  const [period,      setPeriod]      = useState("recientes");
-  const [activeAxes,  setActiveAxes]  = useState<string[]>([]);
+  const [period,     setPeriod]     = useState("recientes");
+  const [activeAxes, setActiveAxes] = useState<string[]>([]);
 
-  const years = [...new Set(analyses.map(a => a.year))].sort((a, b) => b - a);
-  const recentCut = Math.min(8, analyses.length);
+  const pubs      = sitePublications ?? [];
+  const years     = [...new Set(pubs.map(p => p.year))].sort((a, b) => b - a);
+  const recentCut = Math.min(8, pubs.length);
 
-  if (analyses.length === 0) {
+  if (pubs.length === 0) {
     return (
       <p style={{ ...mono, color: "var(--mi-ink-mute)", padding: "var(--mi-space-6) 0" }}>
         Próximamente — primer análisis en preparación.
@@ -456,22 +459,22 @@ function TabPublicaciones({
     { value: "recientes", label: `Recientes (${recentCut})` },
     ...years.map(y => ({
       value: String(y),
-      label: `${y} (${analyses.filter(a => a.year === y).length})`,
+      label: `${y} (${pubs.filter(p => p.year === y).length})`,
     })),
-    ...(analyses.length > recentCut
-      ? [{ value: "all", label: `Todas (${analyses.length})` }]
+    ...(pubs.length > recentCut
+      ? [{ value: "all", label: `Todas (${pubs.length})` }]
       : []),
   ];
 
   const byPeriod = (() => {
-    if (period === "recientes") return analyses.slice(0, recentCut);
-    if (period === "all")       return analyses;
-    return analyses.filter(a => a.year === parseInt(period));
+    if (period === "recientes") return pubs.slice(0, recentCut);
+    if (period === "all")       return pubs;
+    return pubs.filter(p => p.year === parseInt(period));
   })();
 
   const filtered = activeAxes.length === 0
     ? byPeriod
-    : byPeriod.filter(a => activeAxes.includes(a.axisKey));
+    : byPeriod.filter(p => activeAxes.includes(p.ejePrincipal));
 
   function toggleAxis(key: string) {
     setActiveAxes(prev =>
@@ -540,12 +543,12 @@ function TabPublicaciones({
         </p>
       ) : (
         <div style={{
-          display:               "grid",
-          gridTemplateColumns:   "repeat(auto-fill, minmax(280px, 1fr))",
-          gap:                   "var(--mi-space-4)",
+          display:             "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+          gap:                 "var(--mi-space-4)",
         }}>
-          {filtered.map(a => (
-            <AnalysisCard key={a.slug} a={a} slug={slug} />
+          {filtered.map(p => (
+            <SitePublicationCard key={p.slug} pub={p} />
           ))}
         </div>
       )}
@@ -636,6 +639,59 @@ function TabPublicaciones({
         </details>
       )}
     </div>
+  );
+}
+
+function SourceBadge({ pub }: { pub: SitePublication }) {
+  const badgeStyle = {
+    fontFamily:    "var(--mi-font-mono)",
+    fontSize:      "10px",
+    letterSpacing: "var(--mi-tracking-wide)",
+    textTransform: "uppercase" as const,
+    padding:       "1px 6px",
+    flexShrink:    0,
+  };
+  if (pub.source === "substack") {
+    return <span style={{ ...badgeStyle, color: "var(--mi-accent-gold)", border: "1px solid var(--mi-accent-gold)" }}>Substack</span>;
+  }
+  if (pub.hasSubstack) {
+    return <span style={{ ...badgeStyle, color: "var(--mi-ink-mute)", border: "1px solid var(--mi-ink-mute)" }}>Sitio + Substack</span>;
+  }
+  return <span style={{ ...badgeStyle, color: "var(--mi-ink-mute)", border: "1px solid var(--mi-ink-mute)" }}>Sitio</span>;
+}
+
+function SitePublicationCard({ pub }: { pub: SitePublication }) {
+  return (
+    <article style={{
+      border:        "var(--mi-border-thick)",
+      background:    "var(--mi-bg-paper)",
+      padding:       "var(--mi-space-4)",
+      boxShadow:     "var(--mi-shadow-card)",
+      display:       "flex",
+      flexDirection: "column",
+      gap:           "var(--mi-space-3)",
+      position:      "relative",
+    }}>
+      <div style={{ position: "absolute", top: -1, left: -1, right: -1, height: 4, background: `var(--mi-axis-${pub.ejePrincipal})` }} />
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "var(--mi-space-1)" }}>
+        <span style={{ ...mono, color: "var(--mi-ink-mute)" }}>{pub.published_at} · Sem {pub.week}</span>
+        <SourceBadge pub={pub} />
+      </div>
+      <h3 style={{ fontFamily: "var(--mi-font-title)", fontWeight: 600, fontSize: "var(--mi-text-xl)", lineHeight: "var(--mi-leading-snug)", color: "var(--mi-ink)", flex: 1 }}>
+        <Link href={`/publicaciones/${pub.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
+          {pub.title}
+        </Link>
+      </h3>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ display: "inline-block", background: `var(--mi-axis-${pub.ejePrincipal})`, color: "var(--mi-bg-paper)", fontFamily: "var(--mi-font-mono)", fontSize: "var(--mi-text-xs)", letterSpacing: "var(--mi-tracking-wide)", textTransform: "uppercase", padding: "2px 8px" }}>
+          {pub.ejePrincipal}
+        </span>
+        <div style={{ display: "flex", gap: "var(--mi-space-3)", alignItems: "center" }}>
+          {pub.url && <a href={pub.url} target="_blank" rel="noopener noreferrer" style={{ fontFamily: "var(--mi-font-mono)", fontSize: "var(--mi-text-xs)", letterSpacing: "var(--mi-tracking-wider)", textTransform: "uppercase", color: "var(--mi-ink-mute)", textDecoration: "none" }}>↗ Substack</a>}
+          <Link href={`/publicaciones/${pub.slug}`} style={{ fontFamily: "var(--mi-font-mono)", fontSize: "var(--mi-text-xs)", letterSpacing: "var(--mi-tracking-wider)", textTransform: "uppercase", color: "var(--mi-ink)", borderBottom: "2px solid var(--mi-ink)", paddingBottom: 2, textDecoration: "none" }}>Leer →</Link>
+        </div>
+      </div>
+    </article>
   );
 }
 

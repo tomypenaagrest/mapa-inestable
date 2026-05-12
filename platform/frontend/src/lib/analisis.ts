@@ -112,6 +112,7 @@ export interface AnalysisSummary {
   year:         number;
   substackUrl?: string;
   tipo?:        "publicacion" | "despacho" | "analisis";
+  source?:      "substack" | "agente-aprobado";
 }
 
 export function getAnalysesByCountry(slug: string): AnalysisSummary[] {

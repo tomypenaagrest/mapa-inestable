@@ -1,6 +1,6 @@
 ---
 tipo: borrador-agente
-estado: borrador
+estado: publicado-en-sitio
 country: Ecuador
 country_slug: ec
 title: "La excepción que ya no interrumpe"
@@ -19,6 +19,7 @@ disparador:
   fecha_publicacion: 2026-04-27
   titulo: "Ecuador lleva 835 días en estado de excepción con el Gobierno de Noboa y sumará más hasta finales de mayo"
 fuentes_count: 11
+published_in_site_at: 2026-05-12T14:00:14.293Z
 ---
 
 # La excepción que ya no interrumpe

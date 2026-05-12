@@ -1,6 +1,6 @@
 ---
 tipo: borrador-agente
-estado: borrador
+estado: publicado-en-sitio
 country: Venezuela
 country_slug: ve
 title: "Esperar como forma de gobernar"
@@ -19,6 +19,7 @@ disparador:
   fecha_publicacion: 2026-04-21
   titulo: "Delcy Rodríguez rebasa los 100 días como presidenta encargada sin dar señales para una posible transición"
 fuentes_count: 10
+published_in_site_at: 2026-05-12T14:00:14.293Z
 ---
 
 # Esperar como forma de gobernar

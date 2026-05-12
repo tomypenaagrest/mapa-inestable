@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getPublicationBySlug, getAllPublications } from "@/lib/content";
+import { getSitePublicationBySlug, getAllSitePublications } from "@/lib/content";
 import { AXIS_KEY_TO_SLUG } from "@/lib/ejes";
 import { EJES } from "@/lib/ejes";
 
@@ -9,36 +9,38 @@ export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params;
-  const pub = getPublicationBySlug(slug);
+  const pub = getSitePublicationBySlug(slug);
   if (!pub) return {};
-  const title = pub.subtitle ? `${pub.title}: ${pub.subtitle}` : pub.title;
+  const title       = pub.subtitle ? `${pub.title}: ${pub.subtitle}` : pub.title;
+  const description = pub.subtitle ?? pub.thesis ?? pub.lede ?? "";
   return {
     title: { absolute: `${pub.title} — Mapa Inestable` },
-    description: pub.subtitle ?? pub.thesis ?? "",
-    openGraph: { title, description: pub.subtitle ?? pub.thesis ?? "" },
+    description,
+    openGraph: { title, description },
   };
 }
 
 export function generateStaticParams() {
-  return getAllPublications().map(p => ({ slug: p.slug }));
+  return getAllSitePublications().map(p => ({ slug: p.slug }));
 }
 
 export default async function PublicacionPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const pub = getPublicationBySlug(slug);
+  const pub = getSitePublicationBySlug(slug);
   if (!pub) notFound();
 
   const eje = EJES.find(e => e.axisKey === pub.ejePrincipal);
   const axisSlug = AXIS_KEY_TO_SLUG[pub.ejePrincipal] ?? pub.ejePrincipal;
 
-  const relatedByAxis = getAllPublications()
+  const allPubs = getAllSitePublications();
+  const relatedByAxis = allPubs
     .filter(p => p.slug !== pub.slug && p.ejePrincipal === pub.ejePrincipal)
     .slice(0, 3);
 
   const relatedByCountry = pub.countrySlug
-    ? getAllPublications()
+    ? allPubs
         .filter(p => p.slug !== pub.slug && p.countrySlug === pub.countrySlug)
         .slice(0, 3)
     : [];

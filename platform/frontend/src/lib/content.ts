@@ -191,8 +191,9 @@ export interface AgentDraftMeta {
   date:             string;     // YYYY-MM-DD
   ejePrincipal:     string;
   ejes:             string[];
-  estado:           string;     // "borrador" | "en-edicion" | "promovido"
+  estado:           string;     // "borrador" | "en-edicion" | "promovido" | "publicado-en-sitio" | "publicado-en-ambos"
   publicacionSlug?: string;     // presente si estado === "promovido"
+  url?:             string;     // Substack URL, presente si estado === "publicado-en-ambos"
   disparador?:      { url: string; medio?: string; titulo?: string; fecha_publicacion?: string };
   filename:         string;
 }
@@ -249,6 +250,7 @@ export function getAllAgentDrafts(): AgentDraftMeta[] {
       ejes:             Array.isArray(data.ejes) ? (data.ejes as string[]) : [String(data.eje_principal)],
       estado:           String(data.estado ?? "borrador"),
       publicacionSlug:  data.publicacion_slug ? String(data.publicacion_slug) : undefined,
+      url:              data.url ? String(data.url) : undefined,
       disparador:       dis?.url ? {
         url:               String(dis.url),
         medio:             dis.medio             ? String(dis.medio)             : undefined,
@@ -520,4 +522,110 @@ export function getPublicationBySlug(slug: string): Publication | null {
 
 export function getPublicationsByCountry(countrySlug: string): PublicationMeta[] {
   return getAllPublications().filter(p => p.countrySlug === countrySlug);
+}
+
+/* ========================================================================== */
+/* === Publicaciones unificadas del sitio (Spec 35) =========================  */
+/* ========================================================================== */
+
+export type SitePublicationEstado =
+  | "publicado-en-sitio"
+  | "publicado-en-ambos"
+  | "publicado-en-substack";
+
+export interface SitePublication {
+  slug:         string;
+  filename:     string;
+  source:       "substack" | "agente-aprobado";
+  countrySlug?: string;
+  country?:     string;
+  title:        string;
+  subtitle?:    string;
+  lede?:        string;
+  tipo:         "publicacion" | "despacho";
+  fecha:        string;
+  year:         number;
+  week:         number;
+  published_at: string;
+  ejes:         string[];
+  ejePrincipal: string;
+  url?:         string;
+  estado:       SitePublicationEstado;
+  hasSubstack:  boolean;
+}
+
+export interface SitePublicationDetail extends SitePublication {
+  html:    string;
+  thesis?: string;
+}
+
+function pubToSite(p: PublicationMeta): SitePublication {
+  return {
+    slug:         p.slug,
+    filename:     p.filename,
+    source:       "substack",
+    countrySlug:  p.countrySlug,
+    country:      p.country,
+    title:        p.title,
+    subtitle:     p.subtitle,
+    tipo:         p.tipo,
+    fecha:        p.fecha,
+    year:         p.year,
+    week:         p.week,
+    published_at: p.published_at,
+    ejes:         p.ejes,
+    ejePrincipal: p.ejePrincipal,
+    url:          p.url,
+    estado:       p.estado === "publicado-en-ambos" ? "publicado-en-ambos" : "publicado-en-substack",
+    hasSubstack:  true,
+  };
+}
+
+function draftToSite(d: AgentDraftMeta): SitePublication {
+  return {
+    slug:         d.pieceSlug,
+    filename:     d.filename,
+    source:       "agente-aprobado",
+    countrySlug:  d.countrySlug,
+    country:      d.country,
+    title:        d.title,
+    lede:         d.lede,
+    tipo:         "publicacion",
+    fecha:        d.date,
+    year:         parseInt(d.date.slice(0, 4), 10),
+    week:         pubWeek(d.date),
+    published_at: pubFormatDate(d.date),
+    ejes:         d.ejes,
+    ejePrincipal: d.ejePrincipal,
+    url:          d.url,
+    estado:       (d.estado as SitePublicationEstado) ?? "publicado-en-sitio",
+    hasSubstack:  d.estado === "publicado-en-ambos" && !!d.url,
+  };
+}
+
+export function getAllSitePublications(): SitePublication[] {
+  const substackPubs = getAllPublications().map(pubToSite);
+  const agentPubs    = getAllAgentDrafts()
+    .filter(d => d.estado === "publicado-en-sitio" || d.estado === "publicado-en-ambos")
+    .map(draftToSite);
+  return [...substackPubs, ...agentPubs].sort((a, b) => b.fecha.localeCompare(a.fecha));
+}
+
+export function getSitePublicationsByCountry(countrySlug: string): SitePublication[] {
+  return getAllSitePublications().filter(p => p.countrySlug === countrySlug);
+}
+
+export function getSitePublicationBySlug(slug: string): SitePublicationDetail | null {
+  const pub = getPublicationBySlug(slug);
+  if (pub) {
+    return { ...pubToSite(pub), html: pub.html, thesis: pub.thesis || undefined };
+  }
+  const draft = getAllAgentDrafts().find(
+    d => d.pieceSlug === slug &&
+         (d.estado === "publicado-en-sitio" || d.estado === "publicado-en-ambos"),
+  );
+  if (!draft) return null;
+  const raw         = fs.readFileSync(path.join(AGENT_DAILY_DIR, draft.filename), "utf-8");
+  const { content } = safeMatter(raw);
+  return { ...draftToSite(draft), html: marked.parse(cleanObsidianLinks(content)) as string };
 }

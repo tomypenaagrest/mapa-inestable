@@ -1,6 +1,6 @@
 ---
 tipo: borrador-agente
-estado: borrador
+estado: publicado-en-sitio
 country: Argentina
 country_slug: ar
 title: "La cena que reemplazó al partido"
@@ -19,6 +19,7 @@ disparador:
   fecha_publicacion: 2026-05-05
   titulo: "Milei reunió en Olivos a un grupo de influencers libertarios para recargar la \"batalla cultural\" desde las redes"
 fuentes_count: 10
+published_in_site_at: 2026-05-12T14:00:14.293Z
 ---
 
 # La cena que reemplazó al partido
