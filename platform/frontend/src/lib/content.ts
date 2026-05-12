@@ -181,18 +181,20 @@ const AGENT_DAILY_DIR = path.join(VAULT_ROOT, "60-Borradores", "diario");
 
 export interface AgentDraftMeta {
   /** slug compuesto: <countrySlug>/<slug-pieza> — único por archivo */
-  slug:         string;
+  slug:             string;
   /** Sólo la parte de pieza, sin país */
-  pieceSlug:    string;
-  countrySlug:  string;
-  country:      string;
-  title:        string;
-  lede:         string;
-  date:         string;     // YYYY-MM-DD
-  ejePrincipal: string;
-  ejes:         string[];
-  disparador?:  { url: string; medio?: string; titulo?: string; fecha_publicacion?: string };
-  filename:     string;
+  pieceSlug:        string;
+  countrySlug:      string;
+  country:          string;
+  title:            string;
+  lede:             string;
+  date:             string;     // YYYY-MM-DD
+  ejePrincipal:     string;
+  ejes:             string[];
+  estado:           string;     // "borrador" | "en-edicion" | "promovido"
+  publicacionSlug?: string;     // presente si estado === "promovido"
+  disparador?:      { url: string; medio?: string; titulo?: string; fecha_publicacion?: string };
+  filename:         string;
 }
 
 export interface AgentDraft extends AgentDraftMeta {
@@ -236,16 +238,18 @@ export function getAllAgentDrafts(): AgentDraftMeta[] {
     const dis = data.disparador as Record<string, unknown> | undefined;
 
     out.push({
-      slug:         `${countrySlug}/${pieceSlug}`,
+      slug:             `${countrySlug}/${pieceSlug}`,
       pieceSlug,
       countrySlug,
-      country:      String(data.country),
-      title:        String(data.title),
-      lede:         String(data.lede),
-      date:         fmDate(data.fecha),
-      ejePrincipal: String(data.eje_principal),
-      ejes:         Array.isArray(data.ejes) ? (data.ejes as string[]) : [String(data.eje_principal)],
-      disparador:   dis?.url ? {
+      country:          String(data.country),
+      title:            String(data.title),
+      lede:             String(data.lede),
+      date:             fmDate(data.fecha),
+      ejePrincipal:     String(data.eje_principal),
+      ejes:             Array.isArray(data.ejes) ? (data.ejes as string[]) : [String(data.eje_principal)],
+      estado:           String(data.estado ?? "borrador"),
+      publicacionSlug:  data.publicacion_slug ? String(data.publicacion_slug) : undefined,
+      disparador:       dis?.url ? {
         url:               String(dis.url),
         medio:             dis.medio             ? String(dis.medio)             : undefined,
         titulo:            dis.titulo            ? String(dis.titulo)            : undefined,
@@ -281,6 +285,23 @@ export function getAgentDraft(countrySlug: string, pieceSlug: string): AgentDraf
 /* ========================================================================== */
 
 const PUBLICATIONS_DIR = path.join(VAULT_ROOT, "50-Publicaciones");
+
+/**
+ * Marker que separa el texto del Substack (que se muestra en el sitio) de la
+ * ficha analítica interna (que solo se usa en el vault de Obsidian).
+ * Si el .md tiene este marker, el sitio renderiza solo lo que está arriba.
+ * Si NO lo tiene (archivo viejo o sin migrar), renderiza todo el cuerpo.
+ */
+const SUBSTACK_BODY_MARKER = "<!-- /SUBSTACK_BODY -->";
+
+function splitOnSubstackMarker(content: string): { substackBody: string; ficha: string } {
+  const idx = content.indexOf(SUBSTACK_BODY_MARKER);
+  if (idx < 0) return { substackBody: content, ficha: "" };
+  return {
+    substackBody: content.slice(0, idx).trimEnd(),
+    ficha:        content.slice(idx + SUBSTACK_BODY_MARKER.length).trimStart(),
+  };
+}
 
 const PUBLICATIONS_SKIP = new Set([
   "Publicaciones - MOC.md",
@@ -457,11 +478,16 @@ export function getPublicationBySlug(slug: string): Publication | null {
       const fecha = fmDate(data.fecha);
       if (!fecha || fecha === "undefined") return null;
 
-      const clean = cleanObsidianLinks(content);
-      const title = extractTitle(clean, filename.replace(".md", ""));
+      // Split en el marker: el sitio renderiza solo el cuerpo del Substack,
+      // la ficha analítica queda como referencia interna del vault de Obsidian.
+      const { substackBody, ficha } = splitOnSubstackMarker(content);
+      const cleanBody = cleanObsidianLinks(substackBody);
+      const cleanFicha = cleanObsidianLinks(ficha);
+      const title = extractTitle(cleanBody, filename.replace(".md", ""));
       const countrySlug = inferCountrySlug(data["país"] ?? data["pais"], title);
 
-      const thesisMatch = clean.match(/## Tesis principal\n+([\s\S]*?)(?=\n## |\s*$)/);
+      // La tesis sigue viviendo en la ficha analítica (después del marker).
+      const thesisMatch = cleanFicha.match(/## Tesis principal\n+([\s\S]*?)(?=\n## |\s*$)/);
       const thesis = thesisMatch ? thesisMatch[1].trim() : "";
 
       return {
@@ -480,7 +506,7 @@ export function getPublicationBySlug(slug: string): Publication | null {
         ejePrincipal: ejes[0] ?? "",
         countrySlug,
         country:      countrySlug ? SLUG_TO_COUNTRY[countrySlug] : undefined,
-        html:         marked.parse(clean) as string,
+        html:         marked.parse(cleanBody) as string,
         thesis,
       };
     } catch (e) {
