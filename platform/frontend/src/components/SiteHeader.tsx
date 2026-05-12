@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Logo from "./Logo";
 
 const NAV_LINKS = [
   { href: "/despachos", label: "Despachos" },
@@ -32,7 +31,15 @@ export default function SiteHeader() {
           textDecoration: "none",
         }}
       >
-        <Logo variant="monogram" size="md" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/logo-minimalista.svg"
+          alt=""
+          aria-hidden="true"
+          width={43}
+          height={48}
+          style={{ display: "block", flexShrink: 0 }}
+        />
         <span style={{
           fontFamily:    "var(--mi-font-display)",
           fontSize:      "22px",
