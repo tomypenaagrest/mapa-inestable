@@ -14,6 +14,7 @@ export interface CarruselSlide {
   lede: string;
   date: string;
   publishedIso?: string;
+  href?: string;
 }
 
 const INTERVAL = 8000;
@@ -101,7 +102,7 @@ export default function CarruselEditorial({ slides }: { slides: CarruselSlide[] 
               </h2>
               <p className="mi-carousel-lede">{s.lede}</p>
               <Link
-                href={`/analisis/${s.countrySlug}/${s.slug}`}
+                href={s.href ?? `/analisis/${s.countrySlug}/${s.slug}`}
                 className="mi-carousel-cta"
               >
                 Leer →

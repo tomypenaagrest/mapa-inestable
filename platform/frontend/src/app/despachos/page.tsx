@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { DESPACHOS_ALL, type Dispatch } from "@/lib/despachos";
+import { getAllDispatches, type DispatchMeta } from "@/lib/despachos";
+import { EJES } from "@/lib/ejes";
 
 export const metadata: Metadata = {
   title: "Despachos",
@@ -9,7 +10,11 @@ export const metadata: Metadata = {
 
 /* === COMPONENTES ================================================ */
 
-function DispatchCard({ d }: { d: Dispatch }) {
+function DispatchCard({ d }: { d: DispatchMeta }) {
+  const ejesNames = d.ejesActivados
+    .map(k => EJES.find(e => e.axisKey === k))
+    .filter(Boolean);
+
   return (
     <article style={{
       border: "var(--mi-border-thick)",
@@ -36,7 +41,7 @@ function DispatchCard({ d }: { d: Dispatch }) {
           lineHeight: 1,
           userSelect: "none",
         }}>
-          {String(d.num).padStart(2, "0")}
+          {String(d.number).padStart(2, "0")}
         </span>
         <div style={{ textAlign: "right" }}>
           <div style={{
@@ -46,9 +51,9 @@ function DispatchCard({ d }: { d: Dispatch }) {
             textTransform: "uppercase",
             color: "var(--mi-ink-mute)",
           }}>
-            {d.date_range}
+            {d.published_at}
           </div>
-          {d.blocks && (
+          {ejesNames.length > 0 && (
             <div style={{
               fontFamily: "var(--mi-font-mono)",
               fontSize: "var(--mi-text-xs)",
@@ -56,13 +61,13 @@ function DispatchCard({ d }: { d: Dispatch }) {
               textTransform: "uppercase",
               color: "var(--mi-ink-mute)",
             }}>
-              {d.blocks.filter(b => b.type === "analysis").length} análisis
+              {ejesNames.length} eje{ejesNames.length > 1 ? "s" : ""}
             </div>
           )}
         </div>
       </div>
 
-      {/* Título + snippet */}
+      {/* Título + subtítulo */}
       <div>
         <h2 style={{
           fontFamily: "var(--mi-font-display)",
@@ -75,14 +80,16 @@ function DispatchCard({ d }: { d: Dispatch }) {
         }}>
           {d.title}
         </h2>
-        <p style={{
-          fontFamily: "var(--mi-font-body)",
-          fontSize: "var(--mi-text-sm)",
-          lineHeight: "var(--mi-leading-relaxed)",
-          color: "var(--mi-ink-soft)",
-        }}>
-          {d.entrada.length > 160 ? d.entrada.slice(0, 157) + "…" : d.entrada}
-        </p>
+        {d.subtitle && (
+          <p style={{
+            fontFamily: "var(--mi-font-body)",
+            fontSize: "var(--mi-text-sm)",
+            lineHeight: "var(--mi-leading-relaxed)",
+            color: "var(--mi-ink-soft)",
+          }}>
+            {d.subtitle.length > 160 ? d.subtitle.slice(0, 157) + "…" : d.subtitle}
+          </p>
+        )}
       </div>
 
       {/* CTA */}
@@ -109,6 +116,8 @@ function DispatchCard({ d }: { d: Dispatch }) {
 /* === PAGE ====================================================== */
 
 export default function DespachoListPage() {
+  const dispatches = getAllDispatches();
+
   return (
     <div style={{ background: "var(--mi-bg)", minHeight: "100vh" }}>
 
@@ -126,7 +135,9 @@ export default function DespachoListPage() {
       }}>
         <Link href="/" style={{ color: "var(--mi-ink-mute)" }}>← Inicio</Link>
         <span style={{ color: "var(--mi-accent-gold)" }}>Despachos semanales</span>
-        <span>{DESPACHOS_ALL.length} ediciones publicadas</span>
+        {dispatches.length > 0 && (
+          <span>{dispatches.length} ediciones publicadas</span>
+        )}
       </div>
 
       {/* Header */}
@@ -144,7 +155,7 @@ export default function DespachoListPage() {
             opacity: 0.55,
             marginBottom: "var(--mi-space-3)",
           }}>
-            Archivo · Año II
+            Archivo
           </div>
           <h1 style={{
             fontFamily: "var(--mi-font-display)",
@@ -159,17 +170,34 @@ export default function DespachoListPage() {
         </div>
       </div>
 
-      {/* Grilla */}
+      {/* Grilla o placeholder */}
       <div className="mi-container" style={{
         paddingTop: "var(--mi-space-7)",
         paddingBottom: "var(--mi-space-5)",
-        display: "grid",
-        gridTemplateColumns: "repeat(2, 1fr)",
-        gap: "var(--mi-space-5)",
       }}>
-        {DESPACHOS_ALL.map(d => (
-          <DispatchCard key={`${d.year}-${d.week}`} d={d} />
-        ))}
+        {dispatches.length > 0 ? (
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "var(--mi-space-5)",
+          }}>
+            {dispatches.map(d => (
+              <DispatchCard key={`${d.year}-${d.week}`} d={d} />
+            ))}
+          </div>
+        ) : (
+          <p style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: "var(--mi-text-xs)",
+            letterSpacing: "var(--mi-tracking-widest)",
+            textTransform: "uppercase",
+            color: "var(--mi-bg-paper)",
+            opacity: 0.5,
+          }}>
+            AÚN NO HAY DESPACHOS PUBLICADOS.<br />
+            El próximo cierra el domingo.
+          </p>
+        )}
       </div>
 
       {/* Recibir por email */}
