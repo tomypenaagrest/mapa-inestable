@@ -178,13 +178,53 @@ el prompt específico lo indique. Dejar 8-10% de margen visual interno.
 
 ---
 
-## Sobre el campo `cover_prompt` en los borradores
+## Los dos campos en el frontmatter: `cover_image` y `cover_prompt`
 
-El campo `cover_prompt` aparece en el frontmatter YAML de cada borrador y despacho. Tiene dos características importantes:
+Cada borrador y despacho de Mapa Inestable lleva **dos campos** relacionados con la portada. Cumplen funciones distintas y conviene no confundirlos.
 
-1. **Es un campo interno del flujo de borrador.** No se renderiza en el sitio público — el frontend (ver `platform/frontend/src/lib/content.ts`) lee solamente los campos declarados explícitamente (`title`, `country`, `eje_principal`, etc.). `cover_prompt` queda como metadata para vos, no para el lector.
+### `cover_image` — declarativo, sí se renderiza
 
-2. **No viaja a la publicación final.** Cuando un borrador se promueve a `50-Publicaciones/` (ver Spec 24), la promoción debe stripear este campo o dejarlo solamente en la versión-borrador. La portada generada con el prompt **sí** queda asociada a la publicación, pero el prompt en sí mismo es un artefacto del proceso, no de la pieza final.
+```yaml
+cover_image: 90-Portadas/diario/la-cena-que-reemplazo-al-partido.png
+```
+
+**Qué hace:** apunta al path (relativo al vault) donde *está* o *estará* la portada de la pieza. El sitio (ver **Spec 37 · Portadas en el sitio**) lo lee y:
+
+- Si la imagen existe en `90-Portadas/<categoria>/<slug>.png` y fue sincronizada al frontend (vía `npm run sync-covers`), la renderiza como thumbnail en las grillas de navegación y como hero arriba del título al abrir la pieza.
+- Si la imagen todavía no existe (porque el agente diario generó el campo pero el operador humano aún no corrió Gemini), el sitio renderiza un placeholder con el color del eje principal y el nombre del país en Alfa Slab One.
+
+**Cuándo se declara:** siempre, incluso antes de que la imagen exista. El agente diario y los skills `analisis-semanal` y `despacho-semanal` lo escriben automáticamente al armar el borrador. El path es derivable del `slug` y la categoría:
+
+| Origen | Path |
+|---|---|
+| Agente diario | `90-Portadas/diario/<slug>.png` |
+| Analisis semanal | `90-Portadas/publicaciones/<slug>.png` |
+| Despacho semanal | `90-Portadas/despachos/despacho-semana-<N>-<año>.png` |
+
+**Sí viaja al promover.** Cuando un borrador pasa a `50-Publicaciones/` (Spec 24), `cover_image` debe preservarse — la portada es de la pieza, no del borrador. (Nota: `promote-draft.mjs` hoy no preserva el campo; está marcado como pendiente en Spec 37 §7.)
+
+### `cover_prompt` — interno, no se renderiza
+
+```yaml
+cover_prompt: |
+  [descripción visual concreta, 3-5 líneas]
+
+  Eje a evocar: ...
+  Tono: ...
+
+  Aplicá la guía completa de estilo: 70-Producto/design-system/cover-style-guide.md
+  Guardar la imagen como: 90-Portadas/diario/<slug>.png
+```
+
+**Qué hace:** describe la portada para que vos (operador humano) la mandes a Gemini y bajes el resultado. Es el **insumo** del proceso de generación.
+
+**Por qué es interno:** el frontend (`platform/frontend/src/lib/content.ts`) lee solamente campos declarados explícitamente (`title`, `country`, `eje_principal`, `cover_image`, etc.). `cover_prompt` queda como metadata para vos, no para el lector. Verificable: el HTML no contiene esa cadena.
+
+**No viaja a la publicación final.** Cuando un borrador se promueve, este campo se omite. Es artefacto del proceso, no del producto.
+
+### Coherencia entre los dos campos
+
+El path en `cover_image:` y el path en la última línea de `cover_prompt:` (`Guardar la imagen como: ...`) **deben ser idénticos**. Es la misma imagen, descrita primero (prompt) y referenciada después (image). Si difieren, hay error de coordinación en el frontmatter.
 
 ### Ejemplo de uso en frontmatter
 
@@ -197,6 +237,7 @@ title: "La cena que reemplazó al partido"
 slug: la-cena-que-reemplazo-al-partido
 eje_principal: atencion
 # ... otros campos ...
+cover_image: 90-Portadas/diario/la-cena-que-reemplazo-al-partido.png
 cover_prompt: |
   Una cena larga en penumbra, mesa de madera tallada, una decena de figuras
   jóvenes con remeras y celulares prendidos iluminando sus caras. En la
@@ -212,7 +253,7 @@ cover_prompt: |
 ---
 ```
 
-El bloque incluye: (a) descripción visual concreta, (b) eje a evocar, (c) tono, (d) referencia explícita a esta guía, (e) **ruta de destino con el slug exacto del borrador** para que al descargar la imagen de Gemini se nombre directo, sin pasos manuales.
+El bloque incluye: (a) declaración del path de la portada en `cover_image` (sí se renderiza), (b) descripción visual concreta en `cover_prompt` (interna), (c) eje a evocar, (d) tono, (e) referencia explícita a esta guía, (f) **ruta de destino con el slug exacto del borrador** para que al descargar la imagen de Gemini se nombre directo, sin pasos manuales.
 
 ### Convención de la línea `Guardar la imagen como`
 

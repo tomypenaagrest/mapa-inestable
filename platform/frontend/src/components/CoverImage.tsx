@@ -1,0 +1,56 @@
+import Image from 'next/image'
+import { CoverPlaceholder } from './CoverPlaceholder'
+
+type Variant = 'thumb' | 'hero'
+
+type Props = {
+  piece: {
+    coverImage: string | null
+    title:      string
+    country:    string
+    ejePrincipal: string
+  }
+  variant:   Variant
+  priority?: boolean
+}
+
+const DIMS = {
+  thumb: { w: 600,  h: 400  },
+  hero:  { w: 1500, h: 1000 },
+}
+
+export function CoverImage({ piece, variant, priority }: Props) {
+  if (!piece.coverImage) {
+    return <CoverPlaceholder piece={piece} variant={variant} />
+  }
+
+  const { w, h } = DIMS[variant]
+
+  return (
+    <div
+      className={`mi-cover mi-cover--${variant}`}
+      style={{
+        aspectRatio: '3 / 2',
+        border:      '2px solid var(--mi-ink)',
+        boxShadow:   variant === 'hero' ? 'var(--mi-shadow-hero)' : 'var(--mi-shadow-card)',
+        overflow:    'hidden',
+        width:       '100%',
+        marginBottom: variant === 'hero' ? 'var(--mi-space-6)' : undefined,
+      }}
+    >
+      <Image
+        src={piece.coverImage}
+        alt={`Portada: ${piece.title}`}
+        width={w}
+        height={h}
+        priority={priority}
+        sizes={
+          variant === 'hero'
+            ? '(min-width: 1200px) 1200px, 100vw'
+            : '(min-width: 1200px) 400px, 50vw'
+        }
+        style={{ objectFit: 'cover', width: '100%', height: '100%', display: 'block' }}
+      />
+    </div>
+  )
+}

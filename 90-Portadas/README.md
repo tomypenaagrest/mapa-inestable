@@ -2,6 +2,10 @@
 
 Acá viven las portadas generadas con Gemini (u otro modelo de imagen) para los borradores, publicaciones y despachos de Mapa Inestable.
 
+**El comportamiento end-to-end del sistema** (cómo entran al sitio, qué se muestra como fallback, cómo se sincroniza con el frontend) está definido en **[Spec 37 · Portadas en el sitio](../70-Producto/specs/37-portadas-en-el-sitio.md)**.
+
+**El estilo visual** (paleta, granulado, espíritu Revista Humor, instrucciones para Gemini) está en **[`70-Producto/design-system/cover-style-guide.md`](../70-Producto/design-system/cover-style-guide.md)**.
+
 ---
 
 ## Estructura
@@ -33,22 +37,35 @@ El slug está en el frontmatter del borrador (`slug:`), copialo tal cual.
 
 ## Cómo se referencian desde el borrador
 
-Una vez guardada la portada, sumá el campo `cover_image` al frontmatter del borrador, apuntando a la ruta relativa desde la raíz del vault:
+El SKILL del agente diario (y los skills `analisis-semanal` y `despacho-semanal` del plugin) **escriben automáticamente** dos campos relacionados en el frontmatter:
 
 ```yaml
 cover_image: 90-Portadas/diario/la-cena-que-reemplazo-al-partido.png
+cover_prompt: |
+  [descripción visual del prompt para Gemini]
+
+  Aplicá la guía completa de estilo: 70-Producto/design-system/cover-style-guide.md
+  Guardar la imagen como: 90-Portadas/diario/la-cena-que-reemplazo-al-partido.png
 ```
 
-Cuando el frontend la consuma (todavía no lo hace — `platform/frontend/src/lib/content.ts` no la lee), la convención permitirá traducir esa ruta a `/covers/[slug].png` al copiar al directorio público.
+- **`cover_image`** apunta al path donde *estará* la portada (declarativo). El sitio lo lee y, si la imagen aún no existe, muestra un placeholder con el color del eje principal y el nombre del país en Alfa Slab. Cuando la imagen aparece, la renderiza.
+- **`cover_prompt`** es el insumo para que vos generes la imagen con Gemini. Interno: el frontend lo ignora. Al promover la pieza a publicación, se omite.
+
+**Coherencia:** el path en `cover_image` y en la última línea del `cover_prompt` (`Guardar la imagen como: …`) **deben ser idénticos**. Si difieren, hay error de coordinación.
+
+## Sincronización con el frontend
+
+Las imágenes viven acá (en el vault) y se sincronizan al frontend con el script `npm run sync-covers` (Spec 37 §2), que copia `90-Portadas/` a `platform/frontend/public/covers/`. Ese script corre automáticamente en `prebuild` y `predev`, pero también podés invocarlo a mano después de agregar/reemplazar una portada.
 
 ## Cuando un borrador se promueve a publicación
 
-El script `scripts/promote-draft.mjs` debería (cuando se actualice):
-1. Tomar `90-Portadas/diario/<slug>.png` y copiarlo a `90-Portadas/publicaciones/<slug>.png`.
-2. Sumar `cover_image: /covers/<slug>.png` al frontmatter de la nueva publicación en `50-Publicaciones/`.
-3. Copiar el archivo a `platform/frontend/public/covers/<slug>.png` para que el sitio lo sirva.
+El script `scripts/promote-draft.mjs` debería (cuando se actualice — Spec 37 §7):
 
-Por ahora ese paso es manual. El campo `cover_prompt` del borrador **no se promueve** (verificado en código): es artefacto del proceso de generación, no de la pieza final.
+1. Preservar `cover_image` reapuntando el path de `90-Portadas/diario/` a `90-Portadas/publicaciones/`.
+2. Mover/copiar la imagen entre ambas carpetas.
+3. Stripear `cover_prompt` del frontmatter de la publicación final.
+
+Por ahora ese paso es **manual**. El campo `cover_prompt` del borrador no se promueve automáticamente (verificado en código): es artefacto del proceso de generación, no de la pieza final.
 
 ## Resoluciones recomendadas
 

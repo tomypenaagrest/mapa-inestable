@@ -49,12 +49,13 @@ Es la diferencia central con el periodismo de opinión clásico: no se busca una
 
 ### 3. Un análisis individual — entrar desde el despacho o desde el home
 
-**Qué van a ver:** el corazón del proyecto. Una pieza de 800-1.200 palabras que toma una escena concreta y la abre.
+**Qué van a ver:** el corazón del proyecto. Una pieza de 800-1.200 palabras que toma una escena concreta y la abre. Arriba del título, una **portada ilustrada** específica de esa pieza.
 
 **Para destacar:**
 - La estructura en 4 pasos del método (Disparador, Desplazamiento, Conceptualización, Apertura). Funciona pasarlos visualmente para que se entienda la secuencia.
 - Que el último paso (Apertura) es una pregunta sin respuesta. Es deliberado: el análisis no cierra el problema, lo formula mejor.
 - Las citas a la fuente original del disparador — cada análisis es trazable, se puede chequear.
+- La portada: cada pieza tiene una ilustración propia, en estilo de **viñeta política caricaturesca** (referencia explícita a *Revista Humor* argentina, Taller de Gráfica Popular mexicano, Antonio Berni). No es decoración: es una segunda lectura del análisis. La paleta cerrada (terracota, tinta verde-negra, papel crema, dorado de marca) y el granulado de papel impreso son la firma visual del sistema. Las portadas se generan con Gemini a partir de un prompt específico que el agente diario produce automáticamente — el sistema completo está documentado en la Spec 37.
 
 ### 4. Una página de eje — entrar a `/ejes`
 
@@ -88,6 +89,20 @@ Es la diferencia central con el periodismo de opinión clásico: no se busca una
 - **Substack** — `mapainestable.substack.com` — el despacho semanal llega por mail.
 - **`/método`** — explica la metodología en detalle: cómo se eligen los disparadores, cómo se construyeron los ejes, qué autores los inspiran (Han, Roy, Han, Huntington, entre otros).
 - **`/acerca`** — el por qué del proyecto, quién lo escribe, cómo se trabaja.
+
+---
+
+## Cómo funciona el "back-office" (si pregunta alguien más técnico)
+
+El proyecto tiene una capa editorial automática que conviene mencionar si el interlocutor pregunta cómo se mantiene a ritmo semanal:
+
+- **Vault Obsidian** — toda la base de conocimientos vive en archivos markdown organizados por carpeta (`10-Ejes/`, `15-Países/`, `50-Publicaciones/`, `60-Borradores/`, `90-Portadas/`).
+- **Plugin de Cowork** — un set de skills (`analisis-semanal`, `despacho-semanal`) que estructuran el método de 4 pasos. Se invocan a demanda desde la conversación con Claude.
+- **Agente diario** — corre lun-vie por la mañana, rota entre los 10 países, deposita un borrador completo de análisis en `60-Borradores/diario/` con su prompt de portada incluido en el frontmatter. Nunca publica solo: todo pasa por un paso manual de aprobación (`promover-borrador-a-publicacion.md`).
+- **Portadas** — cada pieza tiene un campo `cover_image` declarado en el frontmatter. El path apunta a `90-Portadas/<categoria>/<slug>.png`. El sitio sincroniza esa carpeta a `public/covers/` en cada build. Si la imagen no existe todavía (el agente la pre-declaró pero no se generó), se muestra un placeholder con el color del eje y el nombre del país.
+- **Front** — Next.js, lee server-side todo el vault a través de `lib/content.ts`, `lib/agendas.ts`, etc. Sin base de datos: el archivo markdown es la fuente de verdad.
+
+El detalle vive en `70-Producto/arquitectura-editorial.md` (mapa de tipos × pantallas × fuentes), en `70-Producto/specs/29-…` (calendario de agentes automáticos) y `70-Producto/specs/37-…` (sistema de portadas).
 
 ---
 

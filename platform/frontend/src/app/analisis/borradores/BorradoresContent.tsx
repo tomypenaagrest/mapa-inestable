@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import type { AgentDraftMeta } from "@/lib/content";
+import { CoverImage } from "@/components/CoverImage";
 
 const EJE_LABEL: Record<string, string> = {
   deculturacion:     "Deculturación",
@@ -278,12 +279,13 @@ export function BorradoresContent({ drafts }: { drafts: AgentDraftMeta[] }) {
                     border:         "var(--mi-border-bold)",
                     boxShadow:      "var(--mi-shadow-card)",
                     background:     "var(--mi-bg-paper)",
-                    padding:        "var(--mi-space-4)",
                     height:         "100%",
                     display:        "flex",
                     flexDirection:  "column",
-                    gap:            "var(--mi-space-2)",
+                    overflow:       "hidden",
                   }}>
+                    <CoverImage piece={d} variant="thumb" />
+                    <div style={{ padding: "var(--mi-space-4)", display: "flex", flexDirection: "column", gap: "var(--mi-space-2)", flex: 1 }}>
                     {/* Tags */}
                     <div style={{ display: "flex", alignItems: "center", gap: "var(--mi-space-2)", flexWrap: "wrap" }}>
                       <EstadoTag estado={d.estado} />
@@ -341,6 +343,7 @@ export function BorradoresContent({ drafts }: { drafts: AgentDraftMeta[] }) {
                         </span>
                       </div>
                     )}
+                    </div>
                   </article>
                 </Link>
               </li>

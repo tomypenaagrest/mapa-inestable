@@ -41,7 +41,7 @@ export default async function DespachoPage(
     .filter(Boolean);
 
   return (
-    <div style={{ background: "var(--mi-bg)", minHeight: "100vh" }}>
+    <div style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
 
       {/* Meta-bar */}
       <div style={{
@@ -59,6 +59,10 @@ export default async function DespachoPage(
         <span style={{ color: "var(--mi-accent-gold)" }}>{d.published_at}</span>
         <span>Despacho Nº {d.number}</span>
       </div>
+
+      {/* Hero terracota — portada editorial del despacho. Encapsula header + ejes chips
+          para que la franja terracota termine antes del cuerpo de lectura. */}
+      <div style={{ background: "var(--mi-bg)" }}>
 
       {/* Header */}
       <div style={{
@@ -147,19 +151,22 @@ export default async function DespachoPage(
         </div>
       )}
 
-      {/* Cuerpo */}
+      </div>
+      {/* fin hero terracota */}
+
+      {/* Cuerpo — fondo crema, tinta verde-negro para lectura larga */}
       <div className="mi-container--narrow" style={{
         paddingTop: "var(--mi-space-6)",
         paddingBottom: "var(--mi-space-8)",
       }}>
         <div
           className="mi-prose"
-          style={{ color: "var(--mi-bg-paper)" }}
+          style={{ color: "var(--mi-ink)" }}
           dangerouslySetInnerHTML={{ __html: d.html }}
         />
       </div>
 
-      {/* CTA Substack */}
+      {/* CTA Substack — colores ajustados para fondo crema */}
       {d.url && (
         <div style={{
           borderTop: "var(--mi-border-bold)",
@@ -175,8 +182,7 @@ export default async function DespachoPage(
             fontSize: "var(--mi-text-xs)",
             letterSpacing: "var(--mi-tracking-wide)",
             textTransform: "uppercase",
-            color: "var(--mi-bg-paper)",
-            opacity: 0.6,
+            color: "var(--mi-ink-mute)",
           }}>
             Recibir el próximo despacho por email
           </p>
@@ -190,8 +196,8 @@ export default async function DespachoPage(
                 fontSize: "var(--mi-text-xs)",
                 letterSpacing: "var(--mi-tracking-wider)",
                 textTransform: "uppercase",
-                color: "var(--mi-accent-gold)",
-                borderBottom: "1px solid var(--mi-accent-gold)",
+                color: "var(--mi-brand-gold-warm)",
+                borderBottom: "1px solid var(--mi-brand-gold-warm)",
                 paddingBottom: 2,
               }}
             >
@@ -206,9 +212,8 @@ export default async function DespachoPage(
                 fontSize: "var(--mi-text-xs)",
                 letterSpacing: "var(--mi-tracking-wider)",
                 textTransform: "uppercase",
-                color: "var(--mi-bg-paper)",
-                opacity: 0.6,
-                borderBottom: "1px solid rgba(244,233,210,0.4)",
+                color: "var(--mi-ink-mute)",
+                borderBottom: "1px solid var(--mi-rule-soft)",
                 paddingBottom: 2,
               }}
             >

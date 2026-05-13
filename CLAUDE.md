@@ -29,6 +29,7 @@ Sitio web: https://mapainestable.substack.com (origen del proyecto, ahora en tra
 - `60-Borradores/` — Piezas en desarrollo
   - `60-Borradores/diario/` — Borradores del agente diario (Specs 23-25)
   - `60-Borradores/agendas/` — Borradores semanales del task de agendas (Spec 28), incluye `_resumen-YYYY-W##.md`
+- `90-Portadas/` — Imágenes de portada generadas con Gemini (Spec 37). Subcarpetas por origen: `diario/`, `publicaciones/`, `despachos/`. Cada `.png` matchea 1:1 con el `slug` del borrador. Estilo: `70-Producto/design-system/cover-style-guide.md`. Tracker: `90-Portadas/_pending.md`.
 - `mapa-inestable.plugin` — Plugin de Cowork con skills de análisis y agentes automáticos (ver abajo)
 
 ### Plataforma web (construida)
@@ -41,10 +42,11 @@ Stack: **FastAPI** (backend) + **Next.js** (frontend) + **D3.js** (mapa)
 
 ### Producto / diseño (especificaciones)
 
-- `70-Producto/specs/` — 33 specs escritas (01–33, con anexos 12A, 12B, 14A) + 5 bug reports (BUG-001, BUG-002, dos BUG-003, BUG-004) + QA-05. Specs 27-29 cubren **agendas por país** y el **sistema de agentes automáticos**. Specs 30-32 resuelven la deuda de **corpus vivo en el sitio** (home, despachos, borradores diarios). Spec 33 agrega agendas al panel lateral del mapa de la home.
-- `70-Producto/design-system/` — Design tokens, sistema cromático, assets de identidad visual
+- `70-Producto/specs/` — 37+ specs escritas (01–37, con anexos 12A, 12B, 14A, 34B) + 6 bug reports (BUG-001 a BUG-004) + QA-05. Specs 27-29 cubren **agendas por país** y el **sistema de agentes automáticos**. Specs 30-32 resuelven la deuda de **corpus vivo en el sitio** (home, despachos, borradores diarios). Spec 33 agrega agendas al panel lateral del mapa. Specs 34-36 son rediseño de home, dashboard r2 y publicación masiva. **Spec 37 define el sistema de portadas (cover_image + cover_prompt) end-to-end.**
+- `70-Producto/design-system/` — Design tokens, sistema cromático, assets de identidad visual. Incluye `cover-style-guide.md` (Spec 37) con paleta y prompt template para Gemini.
 - `70-Producto/mockups/` — Prototipos HTML de vistas
 - `70-Producto/guia-demo.md` — Guía de demo del producto
+- `70-Producto/arquitectura-editorial.md` — **Mapa consolidado** de tipos de pieza × pantallas del sitio × carpetas del vault (entry point para entender la topología del corpus).
 
 **Identidad visual (Spec 21):** Logo escalador con asterisco SVG, sistema cromático definido.
 
@@ -259,3 +261,5 @@ Los skills tienen los 6 ejes, el método y los perfiles de países como referenc
 - Specs con número secuencial (`01-…`, `32-…`) son features; bug reports (`BUG-001`, `BUG-002`, `BUG-003`) son correcciones
 - Para entender el sistema de agentes automáticos antes de tocar cualquier skill o scheduled task, leer Spec 29 — es el calendario unificado y se actualiza cuando entra o cambia un agente
 - Las agendas por país son la única capa de datos del proyecto que vive **solo** en el vault (no en backend). Ver Specs 27 y 28
+- Para entender el flujo completo de portadas (escritura del prompt → generación con Gemini → guardado en vault → render en sitio) leer Spec 37 + `70-Producto/design-system/cover-style-guide.md`. Dos campos en frontmatter: `cover_image` (declarativo, se renderiza, sí viaja al promover) y `cover_prompt` (interno, no se renderiza, se omite al promover)
+- Para una visión panorámica de qué tipos de pieza hay, qué pantallas existen y qué carpetas alimentan cada pantalla, leer `70-Producto/arquitectura-editorial.md` antes de tocar cualquier feature transversal

@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/copy-content.js",
+    "prebuild": "node scripts/copy-content.js && node scripts/sync-covers.mjs",
+    "predev": "node scripts/sync-covers.mjs",
     "build": "next build",
     "start": "next start",
-    "publish-all-drafts": "node scripts/publish-all-drafts.mjs"
+    "sync-covers": "node scripts/sync-covers.mjs"
   },
   "dependencies": {
     "d3": "^7.9.0",

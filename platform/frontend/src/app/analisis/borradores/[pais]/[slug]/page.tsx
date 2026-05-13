@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getAgentDraft } from "@/lib/content";
+import { CoverImage } from "@/components/CoverImage";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ pais: string; slug: string }> }
@@ -91,8 +92,13 @@ export default async function BorradorAgentePage(
         </div>
       </div>
 
-      {/* Hero textual */}
+      {/* Hero visual */}
       <div className="mi-container--narrow" style={{ paddingTop: "var(--mi-space-7)" }}>
+        <CoverImage piece={draft} variant="hero" priority />
+      </div>
+
+      {/* Hero textual */}
+      <div className="mi-container--narrow" style={{ paddingTop: 0 }}>
 
         {/* Breadcrumb */}
         <div style={{

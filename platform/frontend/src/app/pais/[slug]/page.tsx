@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getCountrySections, findSection, otherSections, getAgentDraftsByCountry, getSitePublicationsByCountry, type SitePublication } from "@/lib/content";
+import { getCountrySections, findSection, otherSections, getAgentDraftsByCountry, getPublicationsByCountry } from "@/lib/content";
 import { getCountryAgenda } from "@/lib/agendas";
 import {
   COUNTRY_EJES,
@@ -47,20 +47,19 @@ export default async function PaisPage({
   const fuentes      = COUNTRY_SOURCES[slug] ?? [];
   const sections     = getCountrySections(slug) ?? [];
 
-  const sitePublications = getSitePublicationsByCountry(slug);
-  const analyses: AnalysisSummary[] = sitePublications.map((sp: SitePublication) => {
-    const eje = EJES.find(e => e.axisKey === sp.ejePrincipal);
+  const publications = getPublicationsByCountry(slug);
+  const analyses: AnalysisSummary[] = publications.map(p => {
+    const eje = EJES.find(e => e.axisKey === p.ejePrincipal);
     return {
-      slug:        sp.slug,
-      title:       sp.title,
-      axis:        eje?.name ?? sp.ejePrincipal,
-      axisKey:     sp.ejePrincipal,
-      date:        sp.published_at,
-      week:        sp.week,
-      year:        sp.year,
-      substackUrl: sp.url,
-      tipo:        sp.tipo,
-      source:      sp.source,
+      slug:        p.slug,
+      title:       p.title,
+      axis:        eje?.name ?? p.ejePrincipal,
+      axisKey:     p.ejePrincipal,
+      date:        p.published_at,
+      week:        p.week,
+      year:        p.year,
+      substackUrl: p.url,
+      tipo:        p.tipo === "despacho" ? "despacho" : "publicacion",
     };
   });
 
@@ -105,7 +104,6 @@ export default async function PaisPage({
         ejes={ejes}
         fuentes={fuentes}
         analyses={analyses}
-        sitePublications={sitePublications}
         tensionesHtml={tensiones?.html ?? null}
         preguntaHtml={pregunta?.html ?? null}
         contextSections={rest}
