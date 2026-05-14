@@ -111,7 +111,7 @@ export interface AnalysisSummary {
   week:         number;
   year:         number;
   substackUrl?: string;
-  tipo?:        "publicacion" | "despacho" | "analisis";
+  tipo?:        "publicacion" | "despacho" | "analisis" | "borrador";
 }
 
 export function getAnalysesByCountry(slug: string): AnalysisSummary[] {

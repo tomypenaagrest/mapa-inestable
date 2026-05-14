@@ -48,7 +48,7 @@ export default async function PaisPage({
   const sections     = getCountrySections(slug) ?? [];
 
   const publications = getPublicationsByCountry(slug);
-  const analyses: AnalysisSummary[] = publications.map(p => {
+  const pubAnalyses: AnalysisSummary[] = publications.map(p => {
     const eje = EJES.find(e => e.axisKey === p.ejePrincipal);
     return {
       slug:        p.slug,
@@ -63,11 +63,28 @@ export default async function PaisPage({
     };
   });
 
+  const agentDrafts  = getAgentDraftsByCountry(slug);
+  const draftAnalyses: AnalysisSummary[] = agentDrafts.map(d => {
+    const eje = EJES.find(e => e.axisKey === d.ejePrincipal);
+    return {
+      slug:    d.pieceSlug,
+      title:   d.title,
+      axis:    eje?.name ?? d.ejePrincipal,
+      axisKey: d.ejePrincipal,
+      date:    d.date,
+      week:    d.week,
+      year:    d.year,
+      tipo:    "borrador" as const,
+    };
+  });
+
+  const analyses = [...pubAnalyses, ...draftAnalyses]
+    .sort((a, b) => b.date.localeCompare(a.date));
+
   const isCovered    = (COVERED_COUNTRIES as readonly string[]).includes(slug);
   const lbIndicators = isCovered ? getCountryIndicators(slug) : [];
   const macroIndicators = getCountryMacro(slug);
   const agenda       = getCountryAgenda(slug);
-  const agentDrafts  = getAgentDraftsByCountry(slug);
 
   const tensiones    = findSection(sections, ["tensiones"]);
   const pregunta     = findSection(sections, ["pregunta"]);
@@ -123,7 +140,6 @@ export default async function PaisPage({
         }}
         initialTab={initialTab}
         agenda={agenda}
-        agentDrafts={agentDrafts}
       />
     </div>
   );

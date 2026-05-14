@@ -196,9 +196,11 @@ export interface AgentDraftMeta {
   title:            string;
   lede:             string;
   date:             string;     // YYYY-MM-DD
+  week:             number;
+  year:             number;
   ejePrincipal:     string;
   ejes:             string[];
-  estado:           string;     // "borrador" | "en-edicion" | "promovido"
+  estado:           string;     // "borrador" | "en-edicion" | "promovido" | "publicado-en-sitio"
   publicacionSlug?: string;     // presente si estado === "promovido"
   coverImage:       string | null;
   disparador?:      { url: string; medio?: string; titulo?: string; fecha_publicacion?: string };
@@ -218,6 +220,13 @@ function fmDate(val: unknown): string {
     ].join("-");
   }
   return String(val ?? "");
+}
+
+function isoWeekFromDate(dateStr: string): number {
+  const d = new Date(dateStr + "T12:00:00Z");
+  const jan1 = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const dayOfYear = Math.ceil((d.getTime() - jan1.getTime()) / 86400000) + 1;
+  return Math.ceil((dayOfYear + jan1.getUTCDay()) / 7);
 }
 
 /** Lista todos los borradores del agente, más recientes primero. */
@@ -245,6 +254,10 @@ export function getAllAgentDrafts(): AgentDraftMeta[] {
     const pieceSlug   = String(data.slug);
     const dis = data.disparador as Record<string, unknown> | undefined;
 
+    const dateStr = fmDate(data.fecha);
+    const yearVal = data.year ? Number(data.year) : parseInt(dateStr.slice(0, 4), 10);
+    const weekVal = data.semana ? Number(data.semana) : isoWeekFromDate(dateStr);
+
     out.push({
       slug:             `${countrySlug}/${pieceSlug}`,
       pieceSlug,
@@ -252,7 +265,9 @@ export function getAllAgentDrafts(): AgentDraftMeta[] {
       country:          String(data.country),
       title:            String(data.title),
       lede:             String(data.lede),
-      date:             fmDate(data.fecha),
+      date:             dateStr,
+      week:             weekVal,
+      year:             yearVal,
       ejePrincipal:     String(data.eje_principal),
       ejes:             Array.isArray(data.ejes) ? (data.ejes as string[]) : [String(data.eje_principal)],
       estado:           String(data.estado ?? "borrador"),
