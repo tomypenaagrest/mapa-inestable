@@ -20,6 +20,7 @@ disparador:
   titulo: "¿Cartismo no tiene los votos para imponer cambios a la senaduría vitalicia?"
 fuentes_count: 12
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/el-honor-que-queria-tener-voto.png
 ---
 
 # El honor que quería tener voto
@@ -78,3 +79,4 @@ La pista accionable, para quien quiera mirar a Paraguay en los próximos meses, 
 - [Destino Constitucional de los expresidentes — El Nacional](https://elnacional.com.py/editorial/destino-constitucional-expresidentes-n105216)
 - [Elecciones municipales: sepa qué cargos están en puja el 7 de junio — ABC Color, 04/05/2026](https://www.abc.com.py/politica/2026/05/04/elecciones-municipales-sepa-que-cargos-estan-en-puja-el-7-de-junio/)
 - [¿Futura dupla?: Alliana se muestra con Baruja en la residencia de Cartes — ABC Color, 04/05/2026](https://www.abc.com.py/politica/2026/05/04/futura-dupla-alliana-se-muestra-con-baruja-en-la-residencia-de-cartes/)
+          

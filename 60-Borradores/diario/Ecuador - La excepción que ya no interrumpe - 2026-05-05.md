@@ -20,6 +20,7 @@ disparador:
   titulo: "Ecuador lleva 835 días en estado de excepción con el Gobierno de Noboa y sumará más hasta finales de mayo"
 fuentes_count: 11
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/la-excepcion-que-ya-no-interrumpe.png
 ---
 
 # La excepción que ya no interrumpe
@@ -79,3 +80,4 @@ La pista accionable, para quien quiera mirar a Ecuador en los próximos meses, n
 - [Daniel Noboa decretó un nuevo estado de excepción en Ecuador para combatir al crimen organizado — Infobae, 03/04/2026](https://www.infobae.com/america/america-latina/2026/04/03/daniel-noboa-decreto-un-nuevo-estado-de-excepcion-en-ecuador-para-combatir-al-crimen-organizado/)
 - [Vuelve el toque de queda en nueve provincias de Ecuador: estas son las razones detrás de la decisión de Daniel Noboa — CNN, 29/04/2026](https://cnnespanol.cnn.com/2026/04/29/colombia/vuelve-toque-queda-ecuador-razones-orix)
 - [Organizaciones de Ecuador marchan contra la precarización laboral y políticas de Noboa — Infobae, 01/05/2026](https://www.infobae.com/america/agencias/2026/05/01/organizaciones-de-ecuador-marchan-contra-la-precarizacion-laboral-y-politicas-de-noboa/)
+             

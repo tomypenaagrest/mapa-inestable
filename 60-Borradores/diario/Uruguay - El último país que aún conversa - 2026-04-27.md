@@ -20,6 +20,7 @@ disparador:
   titulo: "Diálogo Social terminó reuniones con acuerdo del gobierno y PIT-CNT"
 fuentes_count: 9
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/el-ultimo-pais-que-aun-conversa.png
 ---
 
 # El último país que aún conversa
@@ -75,3 +76,4 @@ La pregunta que vale la pena dejar abierta no es si la mediación uruguaya sobre
 - [Nueva encuesta de Factum tras primer año de Orsi — El Observador](https://www.elobservador.com.uy/nacional/nueva-encuesta-factum-primer-ano-orsi-37-aprueba-la-gestion-y-41-la-desaprueba-n6036093)
 - [Seguridad pública Uruguay: Ceres advierte falta de recursos en plan de Orsi — Uruguay al día](https://uruguayaldia.com.uy/dudas-sobre-la-ejecucion-ceres-alerta-que-el-plan-de-seguridad-de-orsi-carece-de-fondos-y-apoyo-politico)
 - [La oposición profundiza la ofensiva contra el plan de seguridad del gobierno — Ámbito](https://www.ambito.com/uruguay/la-oposicion-profundiza-la-ofensiva-contra-el-plan-seguridad-del-gobierno-y-denuncia-falta-financiamiento-n6264522)
+           

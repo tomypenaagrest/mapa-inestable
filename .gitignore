@@ -5,7 +5,13 @@
 platform/frontend/.next/
 platform/frontend/node_modules/
 platform/frontend/.env*.local
-platform/frontend/src/content/
+
+# NOTA: platform/frontend/src/content/ NO se ignora.
+# El script `npm run prebuild` (copy-content.js) lo regenera desde el vault
+# antes de cada build local, pero ese script NO funciona en Vercel porque
+# el vault no es accesible. Por eso src/content/ tiene que vivir en git
+# para que Vercel tenga los .md disponibles en el deploy.
+# Ver BUG-005-contenido-vault-no-llega-a-vercel.md
 
 # Backend Python
 platform/backend/__pycache__/

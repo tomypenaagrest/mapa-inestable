@@ -20,6 +20,7 @@ disparador:
   titulo: "Bolivia crea una comisión abierta para reformar la Constitución de 2009 y despejar el camino a la inversión privada"
 fuentes_count: 9
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/la-refundacion-entra-en-comision.png
 ---
 
 # La refundación entra en comisión
@@ -70,3 +71,4 @@ Queda una pregunta para la que ningún país de la región tiene todavía respue
 - [Rodrigo Paz cumple seis meses en Bolivia entre cambios económicos y resistencia sindical — El Deber, 08/05/2026](https://eldeber.com.bo/pais/rodrigo-paz-cumple-seis-meses-bolivia-cambios-economicos-resistencia-sindical_1778195499)
 - [Paz abre cónclave, alerta de "sicariato" antidemocrático y pide trabajar por la estabilidad y unidad del país — El Deber, 09/05/2026](https://eldeber.com.bo/pais/paz-abre-conclave-alerta-sicariato-antidemocratico-pide-trabajar-estabilidad-unidad-pais_1778341974)
 - [Paz plantea nueva etapa de reformas y consensos para reactivar el país — El Deber, 10/05/2026](https://eldeber.com.bo/economia/paz-plantea-nueva-etapa-reformas-consensos-reactivar-pais_1778449457)
+            

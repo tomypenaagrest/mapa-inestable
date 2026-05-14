@@ -20,6 +20,7 @@ disparador:
   titulo: "Soy presidente del Uruguay, no hago política exterior representando una fuerza política"
 fuentes_count: 10
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/la-cubierta-donde-no-se-esperaba-ver-al-frente-amplio.png
 ---
 
 # La cubierta donde no se esperaba ver al Frente Amplio
@@ -72,3 +73,4 @@ La pregunta que queda abierta no es si Orsi tenía razones para subir al Nimitz 
 - [Visita histórica del Presidente Orsi al USS Nimitz — Embajada de Estados Unidos en Uruguay](https://uy.usembassy.gov/es/visita-historica-al-uss-nimitz/)
 - [Southern Seas 2026 — El presidente de Uruguay visita al portaaviones nuclear USS Nimitz — Zona Militar, 02/05/2026](https://www.zona-militar.com/2026/05/02/southern-seas-2026-el-presidente-de-uruguay-visita-al-portaaviones-nuclear-uss-nimitz-de-la-armada-de-ee-uu/)
 - [Orsi busca bajar la tensión política tras la visita al USS Nimitz — Prensa Mercosur, 06/05/2026](https://prensamercosur.org/2026/05/06/orsi-busca-bajar-la-tension-politica-tras-la-visita-al-uss-nimitz-mientras-persisten-cuestionamientos-en-el-oficialismo/)
+                                 

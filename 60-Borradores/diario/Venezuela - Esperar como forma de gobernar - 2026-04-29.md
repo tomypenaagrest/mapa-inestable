@@ -20,6 +20,7 @@ disparador:
   titulo: "Delcy Rodríguez rebasa los 100 días como presidenta encargada sin dar señales para una posible transición"
 fuentes_count: 10
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/esperar-como-forma-de-gobernar.png
 ---
 
 # Esperar como forma de gobernar
@@ -74,3 +75,4 @@ La pregunta que conviene dejar abierta es qué significa, para una sociedad, gob
 - [Migrantes venezolanos condicionan su regreso al país a una serie de mejoras económicas y sociales — Infobae, 17/04/2026](https://www.infobae.com/venezuela/2026/04/17/migrantes-venezolanos-condicionan-su-regreso-al-pais-a-una-serie-de-mejoras-economicas-y-sociales/)
 - [Hoy 27 de abril de 2026 está naciendo la unión económica y comercial entre Barbados y Venezuela — MIPPCI, 27/04/2026](https://mippci.gob.ve/hoy-27-de-abril-de-2026-estan-haciendo-la-union-economica-y-comercial-entre-barbados-y-venezuela-afirma-presidenta-e-delcy-rodriguez/)
 - [Situación de Venezuela — ACNUR / R4V](https://www.acnur.org/emergencias/situacion-de-venezuela)
+          

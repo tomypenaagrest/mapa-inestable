@@ -20,6 +20,7 @@ disparador:
   titulo: "¿Por qué hay 35 candidatos en Perú? Así explica CNN las elecciones más fragmentadas de Latinoamérica"
 fuentes_count: 13
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/la-eleccion-que-no-cabia-en-una-sola-hoja.png
 ---
 
 # La elección que no cabía en una sola hoja
@@ -77,3 +78,4 @@ Quienes miren a Perú en los próximos dos meses harán bien en observar menos l
 - [Última encuesta presidencial de Datum: resultados para Keiko Fujimori, Carlos Álvarez y los otros candidatos presidenciales — Infobae, 05/04/2026](https://www.infobae.com/peru/2026/04/05/ultima-encuesta-presidencial-de-datum-keiko-fujimori-lidera-carlos-alvarez-crece-y-rafael-lopez-aliaga-en-la-pugna-por-alcanzar-la-segunda-vuelta/)
 - [Sobre la fragmentación partidaria en Perú — CELAG](https://www.celag.org/sobre-la-fragmentacion-partidaria-en-peru/)
 - [¿Está el Perú al borde de otro colapso político en 2026? Informe internacional revela las claves detrás de la crisis — Infobae, 31/12/2025](https://www.infobae.com/peru/2025/12/31/esta-el-peru-al-borde-de-otro-colapso-politico-en-2026-informe-internacional-revela-las-claves-detras-de-la-crisis/)
+                     

@@ -20,6 +20,7 @@ disparador:
   titulo: "Milei reunió en Olivos a un grupo de influencers libertarios para recargar la \"batalla cultural\" desde las redes"
 fuentes_count: 10
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/la-cena-que-reemplazo-al-partido.png
 ---
 
 # La cena que reemplazó al partido
@@ -72,3 +73,4 @@ La pregunta que queda abierta no es solamente argentina. Es: qué sucede con la 
 - [Milei se plantó ante sus ministros y dio un "fuerte respaldo" a Adorni pese al malestar interno — La Nación, 08/05/2026](https://www.lanacion.com.ar/politica/milei-se-planto-ante-sus-ministros-y-dio-un-fuerte-respaldo-a-adorni-pese-al-malestar-interno-nid08052026/)
 - [Una semana en el mundo Milei: daño interminable, exigencias de cambio y llamados a votar en contra de Karina — Infobae, 06/05/2026](https://www.infobae.com/politica/2026/05/06/una-semana-en-el-mundo-milei-dano-interminable-exigencias-de-cambio-y-llamados-a-votar-en-contra-de-karina/)
 - [Milei reunió a su Gabinete en plena crisis interna del gobierno por el caso Adorni — Análisis Digital, 08/05/2026](https://www.analisisdigital.com.ar/nacionales/2026/05/08/milei-reune-su-gabinete-en-plena-crisis-interna-del-gobierno-por-el-caso-adorni)
+            

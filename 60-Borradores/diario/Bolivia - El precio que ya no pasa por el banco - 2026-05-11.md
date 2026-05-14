@@ -22,6 +22,7 @@ fuentes_count: 9
 agent_run_id: 2026-05-11T23:52:38-03:00
 agent_version: v2.0
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/el-precio-que-ya-no-pasa-por-el-banco.png
 ---
 
 # El precio que ya no pasa por el banco
@@ -71,3 +72,4 @@ Queda una pregunta que excede a Bolivia y que la región todavía no contestó: 
 - [Pactos que no cierran la crisis, gasolina bajo sospecha y un país sitiado por conflictos — El Post, 07/05/2026](https://elpost.com.bo/2026/05/07/pactos-que-no-cierran-la-crisis-gasolina-bajo-sospecha-y-un-pais-sitiado-por-conflictos/)
 - [Dólar paralelo en Bolivia: el rol de las plataformas P2P — Correo del Sur, 19/03/2026](https://correodelsur.com/economia/20260319/dolar-paralelo-en-bolivia-el-rol-de-las-plataformas-p2p.html)
 - [USDT es parte fundamental del dólar paralelo en Bolivia — CriptoNoticias](https://www.criptonoticias.com/mercados/usdt-parte-fundamental-dolar-paralelo-bolivia/)
+                 

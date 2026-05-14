@@ -19,6 +19,7 @@ disparador:
   titulo: "Paraguay se consolida y logra su segundo grado de inversión de Standard & Poor's"
 fuentes_count: 13
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/el-pais-convertido-en-activo.png
 ---
 
 # El país convertido en activo
@@ -76,3 +77,4 @@ La pista accionable, para quien quiera mirar a Paraguay en los próximos meses, 
 - [Economista advierte límites del salario mínimo en un mercado informal — La Nación, 03/05/2026](https://www.lanacion.com.py/negocios/2026/05/03/economista-advierte-limites-del-salario-minimo-en-un-mercado-informal/)
 - [Principales Resultados de Pobreza Monetaria EPHC 2024 — INE](https://www.ine.gov.py/Publicaciones/Biblioteca/documento/271/Pobreza%20Monetaria_%20EPHC%202024_INE.pdf)
 - [Paraguay reduce la pobreza. Pero la pregunta es otra: qué vida hay después de salir de ella — El Trueno, 18/04/2026](https://eltrueno.com.py/2026/04/18/paraguay-reduce-la-pobreza-pero-la-pregunta-es-otra-que-vida-hay-despues-de-salir-de-ella/)
+        
