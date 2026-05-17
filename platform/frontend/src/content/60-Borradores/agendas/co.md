@@ -2,61 +2,61 @@
 country_slug: co
 country_name: Colombia
 estado: borrador
-updated: 2026-05-11
+updated: 2026-05-16
 week: 20
 year: 2026
 google_news_gl: CO
 google_news_hl: es-419
 google_news_ceid: CO:es-419
-agent_run_id: 2026-05-11T17:00:00-03:00
+agent_run_id: 2026-05-16T14:37:16+00:00
 agent_version: v1.0
 agendas:
   - rank: 1
-    slug: primera-vuelta-presidencial
-    title: "Primera vuelta presidencial del 31 de mayo"
+    slug: audios-calarca-campana-sucia
+    title: "Audios 'Calarcá' y campaña sucia contra Cepeda"
     description: |
-      Colombia vivirá el 31 de mayo la primera vuelta presidencial con 41,2 millones de habilitados. La Registraduría blinda el sistema electoral entre acusaciones cruzadas: Hernán Penagos defiende el software de escrutinio mientras Petro lanza pullas sobre transparencia.
+      A 15 días de la primera vuelta, el viernes 15/5 Cepeda convoca rueda de prensa y denuncia "campaña sucia" tras audios atribuidos a Rogelio Benavides ('Calarcá'), jefe de disidencias FARC, que lo vinculaban con grupos armados. MinDefensa y Policía descartaron el audio: fue grabado por un extorsionista preso en Picaleña (Ibagué). Cepeda acusa a Uribe, Paloma Valencia, De la Espriella, Claudia López, Fajardo y Oviedo, y exige rectificación. En paralelo circulan imágenes virales falsas (caso Mateo Pérez) y la acusación de complicidad con el asesinato de Miguel Uribe Turbay.
     tendencia: subiendo
     eje: desorientacion
-    query: elecciones Colombia 31 mayo primera vuelta
+    query: Cepeda Calarcá audio campaña sucia
   - rank: 2
-    slug: asamblea-constituyente
-    title: "Convocatoria a Asamblea Nacional Constituyente"
+    slug: guerra-por-la-derecha
+    title: "Guerra por la derecha: De la Espriella vs. Paloma Valencia"
     description: |
-      Petro anunció el 1 de mayo la convocatoria formal a una Asamblea Nacional Constituyente. Comenzó la recolección de firmas para promover el referéndum. La maniobra busca dejar agenda más allá del fin de mandato.
+      La disputa por encarnar la oposición a Cepeda se vuelve frontal. De la Espriella (Defensores de la Patria) ya aparece arriba de Paloma Valencia (Centro Democrático) en varias encuestas y disputaría la segunda vuelta. Paloma envió carta formal invitándolo a debate; él respondió que ella terminará apoyándolo. La Defensoría advirtió que ambos siguen sin firmar el pacto de paz electoral y reportó 42% de incumplimiento del acuerdo. Reaparecen acusaciones cruzadas de "campaña sucia" también desde el bloque uribista.
     tendencia: subiendo
-    eje: desrepresentacion
-    query: Asamblea Constituyente Petro firmas referendum
+    eje: mediaciones
+    query: De la Espriella Paloma Valencia derecha segunda vuelta
   - rank: 3
-    slug: paz-urbana-atlantico
-    title: "Mesas de paz urbana del Atlántico"
+    slug: recta-final-cierres-debates
+    title: "Recta final al 31/5: cierres, debates y ausencias"
     description: |
-      El gobierno intentaría instalar mesas de paz urbana del Atlántico antes de las elecciones presidenciales. Operativos previos a la elección reabren el debate sobre el alcance real de la "paz total".
+      Dos semanas para la primera vuelta. Cepeda cierra en Plaza de Bolívar el 22/5, De la Espriella en Barranquilla el 23/5 (con Fuad Char) y luego Medellín, Paloma en Bogotá. El debate de RTVC del 13/5 quedó deslucido por la ausencia conjunta de los tres punteros, lo que abre una discusión pública sobre la calidad deliberativa del cierre. Encuestas (Invamer, GAD3, AtlasIntel, Guarumo-EcoAnalítica, CNC, Génesis Crea) convergen: Cepeda 35–42%, segunda vuelta probable.
+    tendencia: subiendo
+    eje: atencion
+    query: cierre campaña debate RTVC primera vuelta
+  - rank: 4
+    slug: paz-total-bajo-fuego
+    title: "Paz Total como objeto de campaña"
+    description: |
+      El balance crítico del programa central de Petro se vuelve munición electoral. Estudios recientes (Infobae 2/4, FIP, IEEE) muestran que las disidencias FARC pasaron de 3.275 a 9.634 miembros bajo Paz Total y que 2025 cerró con 173 uniformados asesinados, cifra más alta de la década. Las negociaciones con el ELN siguen suspendidas desde enero 2025 tras la crisis del Catatumbo. Paloma Valencia y De la Espriella usan la cifra como eje de campaña; Cepeda intenta defender el marco mientras lo asocian con grupos armados vía los audios falsos.
     tendencia: subiendo
     eje: estetizacion
-    query: mesas paz urbana Atlantico Petro elecciones
-  - rank: 4
-    slug: reforma-gas-natural
-    title: "Reforma del marco regulatorio del gas"
-    description: |
-      Proyecto de decreto del Ministerio de Minas modifica el marco regulatorio del mercado de gas natural (Decreto 1073 de 2015). Petro lo amplifica como bandera energética; el sector privado responde con preocupación.
-    tendencia: estable
-    eje: mediaciones
-    query: decreto gas natural Petro Minas reforma
+    query: paz total disidencias FARC ELN balance Petro
   - rank: 5
-    slug: petro-no-se-estafa
-    title: "Petro: \"al pueblo no se le estafa\""
+    slug: constituyente-firmas-20-julio
+    title: "Asamblea Constituyente: firmas activas hacia el 20 de julio"
     description: |
-      Petro asegura que "al pueblo colombiano no se le estafa" frente a denuncias de la oposición. La retórica anti-establishment se intensifica en la última fase del mandato.
+      La convocatoria formal del 1/5 sigue en marcha. Petro fija meta de 2,5 millones de firmas válidas a entregar al nuevo Congreso el 20 de julio, día de su instalación. La maniobra opera como agenda residual del mandato y como apuesta por dejar piso al sucesor — confirmando que el petrismo lee la elección como un fenómeno que no se cierra el 31/5. Esta semana el tema circula menos que la coyuntura electoral pero sigue como horizonte instalado.
     tendencia: estable
-    eje: desorientacion
-    query: Petro estafa Constitucion pueblo
+    eje: desrepresentacion
+    query: Constituyente firmas Petro Congreso 20 julio
 ---
 
 # Notas editoriales (no se renderiza en el sitio)
 
-Colombia llega a la semana 20 a tres semanas de la primera vuelta, lo que convierte al país en una agenda casi monotemática: todo se lee bajo la luz de la elección. Petro maximiza su capacidad de definir agenda residual: la convocatoria a una constituyente y el decreto del gas operan como movimientos para dejar piso al sucesor de su signo.
+Colombia entra a la última quincena pre-electoral con un giro que era previsible y aun así llega con violencia: la campaña sucia se vuelve el operador central de la conversación. El episodio del audio de "Calarcá" — desmentido en menos de 48 horas pero ya viralizado — condensa todo el repertorio de la desorientación epistemológica: una fuente con voz aparentemente autorizada (un disidente FARC), un canal verosímil (inteligencia que primero valida, fuerza pública que después descarta), candidatos opositores que lo amplifican sin esperar verificación, y el blanco —el candidato puntero— forzado a ocupar la posición defensiva de quien tiene que demostrar que no es lo que un montaje dice que es.
 
-Lo que **entra**: la dimensión de "blindaje electoral" como tema central — combina paranoia legítima, polarización institucional y el legado de denuncias de fraude post-2022. Lo que **sale**: el conflicto en Cauca con disidencias del ELN, que aparecen marginalmente esta semana.
+Lo que **entra** esta semana: la guerra por la derecha en su fase de definición — De la Espriella consolida ventaja sobre Paloma y la conversación se reorganiza alrededor de qué tipo de oposición a Cepeda se proyecta para la segunda vuelta. Lo que **sale**: las mesas de paz urbana del Atlántico y la reforma del gas, ambos temas de la live W20, pierden tracción frente al ruido electoral. La Constituyente baja un escalón pero no desaparece — funciona como horizonte de mediano plazo del proyecto petrista.
 
-El eje desorientación epistemológica está hoy más activo que nunca: la sospecha sobre el sistema electoral, instalada desde arriba por el oficialismo, contamina la posibilidad misma de un resultado legítimo.
+El cruce entre los audios falsos contra Cepeda y el balance crítico de la Paz Total es el rasgo interpretativo más fuerte de la semana: la oposición no necesita armar un caso, solo activar la sospecha de que "izquierda = complicidad con grupos armados", una equivalencia que el éxito limitado de la Paz Total termina alimentando independientemente de quién la dice. La elección colombiana se está jugando, otra vez, en el terreno donde la realidad y la imagen de la realidad se vuelven indistinguibles.

@@ -20,6 +20,7 @@ disparador:
   titulo: "¿Cartismo no tiene los votos para imponer cambios a la senaduría vitalicia?"
 fuentes_count: 12
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/el-honor-que-queria-tener-voto.png
 ---
 
 # El honor que quería tener voto

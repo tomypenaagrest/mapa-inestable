@@ -20,6 +20,7 @@ disparador:
   titulo: "¿Por qué hay 35 candidatos en Perú? Así explica CNN las elecciones más fragmentadas de Latinoamérica"
 fuentes_count: 13
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/la-eleccion-que-no-cabia-en-una-sola-hoja.png
 ---
 
 # La elección que no cabía en una sola hoja

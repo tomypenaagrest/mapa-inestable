@@ -6,15 +6,16 @@ import AnalisisColumn from "./AnalisisColumn";
 import { COUNTRY_NAMES } from "@/lib/country-data";
 import type { WeeklyCountryData } from "@/components/MapaCentrico";
 import type { CountryAgenda } from "@/lib/agendas";
-import type { PublicationMeta } from "@/lib/content";
+import type { PublicationMeta, AgentDraftMeta } from "@/lib/content";
 
 interface Props {
   weeklyCountries:   WeeklyCountryData[];
   agendasByCountry?: Record<string, CountryAgenda>;
   cards:             PublicationMeta[];
+  latestDrafts:      AgentDraftMeta[];
 }
 
-export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, cards }: Props) {
+export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, cards, latestDrafts }: Props) {
   const [hoveredCountry, setHoveredCountry]   = useState<string | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -69,7 +70,7 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, 
         </div>
 
         {/* Columna estática de últimos análisis */}
-        <AnalisisColumn cards={cards} />
+        <AnalisisColumn drafts={latestDrafts} />
       </div>
 
       {/* Tooltip hover — sigue el cursor, se renderiza solo si hay hover */}

@@ -20,6 +20,7 @@ disparador:
   titulo: "Bolivia crea una comisión abierta para reformar la Constitución de 2009 y despejar el camino a la inversión privada"
 fuentes_count: 9
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/la-refundacion-entra-en-comision.png
 ---
 
 # La refundación entra en comisión

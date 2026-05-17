@@ -20,6 +20,7 @@ disparador:
   titulo: "Delcy Rodríguez rebasa los 100 días como presidenta encargada sin dar señales para una posible transición"
 fuentes_count: 10
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/esperar-como-forma-de-gobernar.png
 ---
 
 # Esperar como forma de gobernar

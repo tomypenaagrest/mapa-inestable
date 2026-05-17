@@ -19,6 +19,7 @@ disparador:
   titulo: "Paraguay se consolida y logra su segundo grado de inversión de Standard & Poor's"
 fuentes_count: 13
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/el-pais-convertido-en-activo.png
 ---
 
 # El país convertido en activo

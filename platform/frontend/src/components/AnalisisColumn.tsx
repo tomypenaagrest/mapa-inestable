@@ -1,13 +1,13 @@
 import Link from "next/link";
-import type { PublicationMeta } from "@/lib/content";
-import MiniAnalysisCard from "./MiniAnalysisCard";
+import type { AgentDraftMeta } from "@/lib/content";
+import MiniDraftCard from "./MiniDraftCard";
 
 interface Props {
-  cards: PublicationMeta[];
+  drafts: AgentDraftMeta[];
 }
 
-export default function AnalisisColumn({ cards }: Props) {
-  const visible = cards.slice(0, 4);
+export default function AnalisisColumn({ drafts }: Props) {
+  const visible = drafts.slice(0, 4);
 
   return (
     <div style={{
@@ -48,8 +48,8 @@ export default function AnalisisColumn({ cards }: Props) {
         }}
       >
         {visible.length > 0 ? (
-          visible.map(card => (
-            <MiniAnalysisCard key={card.slug} card={card} />
+          visible.map(draft => (
+            <MiniDraftCard key={draft.slug} draft={draft} />
           ))
         ) : (
           <p style={{

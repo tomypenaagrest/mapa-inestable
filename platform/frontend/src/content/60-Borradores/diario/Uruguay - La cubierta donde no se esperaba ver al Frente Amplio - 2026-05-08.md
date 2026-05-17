@@ -20,6 +20,7 @@ disparador:
   titulo: "Soy presidente del Uruguay, no hago política exterior representando una fuerza política"
 fuentes_count: 10
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/la-cubierta-donde-no-se-esperaba-ver-al-frente-amplio.png
 ---
 
 # La cubierta donde no se esperaba ver al Frente Amplio

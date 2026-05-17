@@ -20,6 +20,7 @@ disparador:
   titulo: "Diálogo Social terminó reuniones con acuerdo del gobierno y PIT-CNT"
 fuentes_count: 9
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/el-ultimo-pais-que-aun-conversa.png
 ---
 
 # El último país que aún conversa

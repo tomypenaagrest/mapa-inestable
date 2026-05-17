@@ -20,6 +20,7 @@ disparador:
   titulo: "Milei reunió en Olivos a un grupo de influencers libertarios para recargar la \"batalla cultural\" desde las redes"
 fuentes_count: 10
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/la-cena-que-reemplazo-al-partido.png
 ---
 
 # La cena que reemplazó al partido

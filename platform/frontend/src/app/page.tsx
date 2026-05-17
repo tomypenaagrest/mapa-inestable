@@ -58,6 +58,7 @@ export default function HomePage() {
           weeklyCountries={data.weeklyCountries}
           agendasByCountry={agendasByCountry}
           cards={data.cards}
+          latestDrafts={data.latestDrafts}
         />
       </div>
 

@@ -2,61 +2,60 @@
 country_slug: ec
 country_name: Ecuador
 estado: publicada
-updated: 2026-05-11
-week: 20
+updated: '2026-05-17'
+week: 21
 year: 2026
 google_news_gl: EC
 google_news_hl: es-419
 google_news_ceid: EC:es-419
-agent_run_id: 2026-05-11T17:00:00-03:00
+agent_run_id: 2026-05-16T14:38:20+00:00
 agent_version: v1.0
 agendas:
   - rank: 1
-    slug: toque-de-queda-nocturno
-    title: "Toque de queda nocturno extendido"
+    slug: operativo-eeuu-sucumbios
+    title: "Operativo militar conjunto EE.UU.-Ecuador en Sucumbíos bajo cuestionamiento"
     description: |
-      Ecuador mantiene toque de queda nocturno entre el 3 y el 18 de mayo, de 23 a 5 horas, en respuesta a la escalada de violencia. La medida se renueva en lugar de levantarse y se consolida como herramienta permanente del gobierno Noboa.
+      Un grupo de 20 congresistas demócratas, liderados por Alexandria Ocasio-Cortez, firmó el 13 de mayo una carta al secretario de Defensa Pete Hegseth exigiendo suspender la operación militar conjunta con Ecuador. Una investigación de The New York Times y reportes de organismos de derechos humanos cuestionan el operativo del 3-6 de marzo en Sucumbíos —presentado por el gobierno como un golpe al grupo "Comandos de la Frontera"— y denuncian bombardeos contra civiles. Noboa defendió la operación el 14-15 de mayo: aseguró que la zona estaba vinculada al narcotráfico y ratificó la cooperación con EE.UU.
+    tendencia: subiendo
+    eje: mediaciones
+    query: operativo militar EEUU Sucumbios congresistas demócratas Noboa
+  - rank: 2
+    slug: noboa-oea-ejercito-criminal
+    title: "Noboa en la OEA: 'enfrentamos un ejército criminal de 80.000 integrantes'"
+    description: |
+      El 14 de mayo Daniel Noboa pronunció su discurso ante el Consejo Permanente de la OEA en Washington. Afirmó que las tres principales organizaciones narco-terroristas del Ecuador concentran más de 80.000 hombres y mujeres armados, frente a 37.000 efectivos de las FF.AA. y 56.000 de la Policía. Pidió a la organización identificar a las naciones que "no ayudan" al país y denunció que el crimen organizado penetró la política, la justicia, el sector empresarial y el sistema financiero vía lavado de dinero.
     tendencia: estable
     eje: estetizacion
-    query: toque de queda nocturno Ecuador Noboa
-  - rank: 2
-    slug: noboa-oea-washington
-    title: "Noboa en la OEA — 14 de mayo"
-    description: |
-      El presidente Daniel Noboa será recibido en el Consejo Permanente de la OEA en Washington el 14 de mayo. La visita amplifica la diplomacia de respaldo internacional al modelo de seguridad ecuatoriano. Estados Unidos respalda explícitamente la política de mano dura.
-    tendencia: subiendo
-    eje: mediaciones
-    query: Noboa OEA Washington 14 mayo Estados Unidos
+    query: Noboa OEA Washington ejército criminal 80000 narcoterrorismo
   - rank: 3
-    slug: cambio-gabinete-energia
-    title: "Cambio de gabinete: nuevo Ministro de Ambiente y Energía"
+    slug: olsen-primer-ano-reformas-coip
+    title: "Niels Olsen presenta el primer año de la Asamblea y anuncia reforma del COIP y del Código de la Función Judicial"
     description: |
-      Noboa designó a Juan Carlos Blum como nuevo Ministro de Ambiente y Energía, reemplazando a Inés Manzano tras un año y medio en el cargo. El cambio coincide con tensiones por crisis energética crónica y proyectos de inversión externa.
-    tendencia: estable
-    eje: desrepresentacion
-    query: Juan Carlos Blum Manzano Ambiente Energia
-  - rank: 4
-    slug: bonos-soberanos
-    title: "Emisión de bonos soberanos"
-    description: |
-      Ecuador colocó USD 1.000 millones en bonos soberanos a una tasa promedio de 8,5%, menor a la operación de enero. La señal de los mercados es positiva, pero la deuda externa sigue subiendo en paralelo a la agenda de seguridad.
-    tendencia: estable
-    eje: mediaciones
-    query: bonos soberanos Ecuador 8.5 emision
-  - rank: 5
-    slug: acuerdo-comercial-dominicana
-    title: "Acuerdo comercial con República Dominicana"
-    description: |
-      Noboa y Luis Abinader acordaron el 6 de mayo avanzar negociaciones para un acuerdo comercial bilateral y cooperación en sectores estratégicos. Ecuador busca diversificar relaciones más allá del eje EE.UU.-China.
+      El presidente de la Asamblea Nacional, Niels Olsen, presentó el 14 de mayo el informe del primer año de gestión: 55% de avance de la agenda parlamentaria, 28 leyes aprobadas (entre ellas Ley Orgánica de Inteligencia y Ley de Ciberseguridad). Para el segundo año anunció tres ejes prioritarios —reforma del COIP, reforma del Código de la Función Judicial y agenda de emprendimiento— y arremetió contra el correísmo. El oficialismo no dio paso a ningún juicio político contra ministros de Noboa durante el primer año.
     tendencia: subiendo
-    eje: mediaciones
-    query: Ecuador Republica Dominicana acuerdo comercial Abinader
+    eje: desrepresentacion
+    query: Niels Olsen informe primer año Asamblea Nacional COIP reforma judicial
+  - rank: 4
+    slug: violencia-los-rios-toque-queda
+    title: "Violencia persiste pese al toque de queda: 319 homicidios y 11 masacres en Los Ríos en 4 meses"
+    description: |
+      Los Ríos acumula 319 homicidios y 11 masacres en los primeros cuatro meses de 2026 pese a sucesivos estados de excepción. En 16 días del toque de queda vigente, 215 personas fueron asesinadas en Guayas, El Oro, Los Ríos y Santo Domingo. El 6 de mayo el Bloque de Seguridad ejecutó la Operación Forseti-Finisterra en Quevedo contra Los Lobos; la madrugada del 15 de mayo la Policía capturó en Guayaquil a 16 presuntos extorsionadores vinculados a Mafia 18, Choneros, Tiguerones, Águilas y Chone Killers. Ecuador acumula más de 2.500 homicidios en lo que va del año.
+    tendencia: subiendo
+    eje: desorientacion
+    query: Los Rios homicidios masacres toque queda Quevedo operativo Choneros
+  - rank: 5
+    slug: toque-queda-vencimiento
+    title: "Toque de queda nocturno vence el 18 de mayo y abre decisión política"
+    description: |
+      El toque de queda nocturno (23:00-05:00) vigente desde el 3 de mayo en nueve provincias y cuatro cantones expira el 18 de mayo. Según cifras del gobierno hay más de 2.000 detenidos durante la medida, 440 con vínculos criminales, y 1,7 toneladas de droga decomisadas. Es el quinto toque de queda de la gestión Noboa, que acumula más de 835 días bajo algún estado de excepción —cerca del 95% del mandato. La renovación o levantamiento al cierre de la semana 21 define el frame securitario del próximo mes.
+    tendencia: bajando
+    query: toque de queda nocturno fin 18 mayo renovación Ecuador
 ---
 
-# Notas editoriales (no se renderiza en el sitio)
+# Notas editoriales
 
-Ecuador en la semana 20 sigue construyendo una narrativa de gobierno de excepción permanente: el toque de queda nocturno no se levanta — se renueva. Lo que era una medida coyuntural se vuelve estructura. En paralelo, Noboa busca legitimidad internacional (OEA, Dominicana) como contrapeso a la dureza interna.
+La semana 21 marca un desplazamiento del eje noticioso ecuatoriano: el toque de queda —que dominó la live de W20— pierde centralidad simbólica y aparecen tres temas que reordenan la conversación. Primero, la **internacionalización del conflicto**: el operativo conjunto con EE.UU. en Sucumbíos pasa de hecho operativo a debate político en el Congreso estadounidense, con AOC y veinte demócratas pidiendo suspender la misión. Segundo, la **performance internacional de Noboa en la OEA**, donde el frame "ejército criminal de 80.000" reescala discursivamente el conflicto interno como guerra asimétrica con vocabulario contraterrorista. Tercero, la **consolidación institucional del oficialismo**: Niels Olsen presenta el primer año de una Asamblea que no aprobó ningún juicio político a ministros y anuncia reformas del COIP y del Código de la Función Judicial.
 
-Lo que **entra** esta semana: la asistencia formal a la OEA y el respaldo explícito de Estados Unidos al modelo Noboa. Lo que **sale**: el debate público sobre derechos humanos en operativos militares, que aparece menos esta semana.
+Lo que **entra** esta semana: la dimensión exterior del modelo de seguridad (operativos EE.UU. y cuestionamientos del Congreso norteamericano), el discurso OEA como pieza retórica, el balance del primer año de Olsen como vehículo legislativo del Ejecutivo, y la contra-narrativa de los datos duros de violencia en Los Ríos. Lo que **sale**: bonos soberanos, cambio de gabinete (ya consumado), acuerdo con Dominicana (firmado el 6 de mayo, sin tracción posterior).
 
-El eje estetización opera fuerte aquí: el toque de queda funciona menos como política de seguridad efectiva y más como signo visible de orden. La política y el espectáculo de la política empiezan a confundirse.
+El eje desorientación opera en la convivencia simultánea de dos relatos: el discurso del "control" (Noboa en la OEA: "ahora el Gobierno está en control") y los 319 homicidios y 11 masacres en una sola provincia en cuatro meses. La excepción permanente —835 días bajo algún estado de excepción— ya no necesita justificarse por resultados; opera como forma de gobernar.

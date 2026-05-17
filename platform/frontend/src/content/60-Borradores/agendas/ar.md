@@ -2,61 +2,63 @@
 country_slug: ar
 country_name: Argentina
 estado: borrador
-updated: 2026-05-11
-week: 20
+updated: 2026-05-16
+week: 21
 year: 2026
 google_news_gl: AR
 google_news_hl: es-419
 google_news_ceid: AR:es-419
-agent_run_id: 2026-05-11T17:00:00-03:00
+agent_run_id: 2026-05-16T15:00:00+00:00
 agent_version: v1.0
 agendas:
   - rank: 1
     slug: caso-adorni
-    title: "Caso Adorni y crisis del Gabinete"
+    title: "Caso Adorni: escalada material de la causa"
     description: |
-      El vocero presidencial Manuel Adorni quedó envuelto en nuevas contradicciones internas y en una polémica por sus contactos con un testigo clave mientras avanza la investigación judicial. La causa que vincula a un contratista con USD 245.000 en efectivo entregados al jefe de Gabinete tensiona la cohesión del gobierno.
+      La causa por enriquecimiento ilicito contra el jefe de Gabinete Manuel Adorni escala con nuevos elementos esta semana: el contratista Matias Tabar se presento el 15/5 en la fiscalia de Pollicita con facturas, remitos y chats que respaldan la version de USD 245.000 pagados en efectivo por la obra en Indio Cua. El mismo dia, la Justicia levanto el secreto fiscal y bancario de Francisco Adorni, hermano del jefe de Gabinete. Milei lo recibio en Olivos y le dio respaldo publico pese al malestar interno del Gabinete.
     tendencia: subiendo
     eje: desrepresentacion
-    query: Adorni contradicciones gabinete Milei
+    query: Adorni causa enriquecimiento contratista
   - rank: 2
-    slug: reforma-electoral
-    title: "Reforma electoral del oficialismo"
+    slug: universidades-incumplimiento-ley
+    title: "Universidades: marcha federal y desobediencia ejecutiva"
     description: |
-      La Libertad Avanza comenzó a sumar respaldos provinciales para avanzar con la reforma electoral impulsada por Milei. El gobierno intenta recuperar iniciativa política en el Congreso tras semanas atravesadas por la crisis interna.
+      Cuarta Marcha Federal Universitaria el martes 12/5 con epicentro en Plaza de Mayo y replicas en todo el pais. Gobernadores opositores (Kicillof, Llaryora, Pullaro) encabezaron columnas. El reclamo central no es solo presupuestario: el Ejecutivo desobedece la Ley de Financiamiento Universitario ya promulgada por el Congreso (tras rechazo del veto) y fallos judiciales que en dos instancias ordenaron aplicar los articulos 5 y 6. Quiebre institucional sostenido.
+    tendencia: subiendo
+    eje: desrepresentacion
+    query: marcha universitaria ley financiamiento incumplimiento
+  - rank: 3
+    slug: caputo-washington-china
+    title: "Caputo en Washington: alineamiento con EE.UU. y presion por China"
+    description: |
+      Santiago Caputo paso 48 horas en reuniones en Casa Blanca, Departamento de Estado y Capitolio. Estados Unidos le planteo preocupacion por el avance chino en recursos estrategicos argentinos: pidio frenar Ganfeng en Cauchari-Olaroz y cerrar la base espacial china de Neuquen. El mismo dia, el gobierno aprobo incentivos por USD 1.240 millones para la ampliacion de la mina de litio operada por capital chino.
     tendencia: subiendo
     eje: mediaciones
-    query: reforma electoral Milei provincias
-  - rank: 3
-    slug: movilizaciones-costo-vida
-    title: "Movilizaciones y caída del consumo"
-    description: |
-      Se espera una movilización masiva el martes a las 17 en Plaza de Mayo, replicada en capitales provinciales. El consumo en pymes acumula una caída del 3,5% en lo que va de 2026; el malestar económico se traslada a la calle.
-    tendencia: estable
-    eje: atencion
-    query: movilizacion Plaza de Mayo pymes consumo
+    query: Caputo Washington China Neuquen
   - rank: 4
-    slug: interna-lla-pro
-    title: "Tensión interna LLA-PRO"
+    slug: internas-gabinete
+    title: "Internas del Gabinete: Karina, Caputo, Bullrich"
     description: |
-      La continuidad de Adorni reaviva la fractura entre La Libertad Avanza y el PRO. Macri pidió cambios en el Gabinete; el oficialismo responde con señales de autonomía. La alianza electoral entra en zona de ruido visible.
-    tendencia: subiendo
+      La continuidad de Adorni amplifico las fricciones internas: disputa entre Karina Milei + los Menem y el estratega Santiago Caputo, chispazos por la irrupcion de Patricia Bullrich desmarcandose del jefe de Gabinete. Reportes describen gritos de Milei frente a ministros y un Gabinete en crisis de cohesion interna pese al respaldo publico al vocero-jefe de Gabinete.
+    tendencia: estable
     eje: desrepresentacion
-    query: Macri Milei PRO LLA alianza
+    query: internas gabinete Karina Caputo Bullrich
   - rank: 5
-    slug: licitacion-parana
-    title: "Licitación Vía Navegable del Paraná"
+    slug: inflacion-baja-contranarrativa
+    title: "Inflacion a la baja como contra-narrativa"
     description: |
-      El bloque opositor presentó un proyecto en Diputados para reclamar la suspensión inmediata del proceso licitatorio de la Vía Navegable Troncal del Río Paraná. Conflicto soberano-comercial vuelve a la agenda parlamentaria.
+      El IPC de abril marco 2,6 por ciento, primera desaceleracion significativa en casi un anio y la cifra mensual mas baja del ciclo. El BCRA acumulo mas de USD 7.800 millones desde enero; el dolar mayorista se proyecta estable en torno a 1.410 pesos para fin de mayo. El oficialismo usa el dato como agenda positiva mientras la causa Adorni y la marcha universitaria copan la portada.
     tendencia: subiendo
-    eje: desrepresentacion
-    query: hidrovia Parana licitacion suspension
+    eje: atencion
+    query: inflacion abril Argentina IPC INDEC
 ---
 
 # Notas editoriales (no se renderiza en el sitio)
 
-La semana 20 en Argentina queda atravesada por la crisis Adorni — primera vez en lo que va del año que un funcionario directo del círculo presidencial queda judicialmente comprometido en una causa con evidencia material (efectivo, testigos, refacciones). El gobierno responde con la reforma electoral como contra-narrativa: si la agenda judicial le quita aire al oficialismo, la agenda institucional le da algo positivo para ofrecer.
+Primera corrida de W21. Las tendencias se calculan contra la live W20 (promovida el 2026-05-12). Entre lunes 11/5 y sabado 16/5 pasaron tres cosas estructurales que justifican refrescar la agenda: (1) la causa Adorni dejo de ser conjetural y entro en fase de pruebas materiales (contratista entregando facturas, secreto fiscal levantado al hermano), (2) la Marcha Federal Universitaria del 12/5 cristalizo algo que no estaba prendido en la live anterior: el conflicto ya no es por presupuesto sino por el incumplimiento abierto de una ley vigente y de fallos judiciales, (3) el viaje de Caputo a Washington puso a Argentina en el centro de la pulseada EE.UU.-China por recursos criticos.
 
-Lo que **entra** esta semana: el caso Adorni con esta intensidad. Lo que **sale**: las discusiones sobre dolarización, que perdieron centralidad mediática (no aparecen en ninguna de las primeras 15 piezas leídas).
+Lo que entra: universidades-incumplimiento-ley, caputo-washington-china, inflacion-baja-contranarrativa. Lo que sale: reforma electoral (sin traccion mediatica esta semana), licitacion Via Navegable del Parana (desaparece de portadas), movilizaciones y caida del consumo (se desplaza hacia el cluster universitario, mas nitido). La tension LLA-PRO se reformula: Macri sale del foco; el ruido ahora es endogeno al oficialismo (Karina, Caputo, Bullrich).
 
-Tendencia editorial: el eje desrepresentación gana espacio. Las instituciones (Gabinete, Congreso, alianza electoral) están todas en pregunta esta semana.
+El eje desrepresentacion sigue dominante (3 de 5 agendas). Aparece mediaciones via la diplomacia geopolitica (Caputo-Washington), y atencion via la macro como contra-narrativa. El patron estructural de la semana: el gobierno desobedece simultaneamente al Congreso (universidades), a la Justicia (fallos universitarios + investigacion Adorni) y a la presion de su principal aliado externo (China en Neuquen/Jujuy), mientras intenta sostener la narrativa con el dato de inflacion.
+
+Nota de versionado: `date +%V` devuelve 20 el sabado 16/5 (W20 ISO no cierra hasta domingo 17/5). Pero la convencion editorial del proyecto, ya consignada en _resumen-2026-W21.md por las corridas hermanas de BR/CL/CO/EC/PY/PE/UY de hoy, establece que la corrida de viernes prepara la semana siguiente. Por eso este borrador declara week: 21.

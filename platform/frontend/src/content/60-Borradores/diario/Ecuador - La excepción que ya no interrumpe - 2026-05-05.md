@@ -20,6 +20,7 @@ disparador:
   titulo: "Ecuador lleva 835 días en estado de excepción con el Gobierno de Noboa y sumará más hasta finales de mayo"
 fuentes_count: 11
 published_in_site_at: 2026-05-12T14:00:14.293Z
+cover_image: 90-Portadas/diario/la-excepcion-que-ya-no-interrumpe.png
 ---
 
 # La excepción que ya no interrumpe

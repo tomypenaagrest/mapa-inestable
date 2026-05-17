@@ -1,4 +1,4 @@
-import { getAllPublications, type PublicationMeta } from "./content";
+import { getAllPublications, getAllAgentDrafts, type PublicationMeta, type AgentDraftMeta } from "./content";
 import { getLatestDispatch, type DispatchMeta } from "./despachos";
 import { EJES, AXIS_KEY_TO_SLUG, type AxisKey } from "./ejes";
 
@@ -40,6 +40,7 @@ export interface HomeWeeklyCountry {
 export interface HomeData {
   thisWeek:        HomeWeekStrip | null;
   cards:           PublicationMeta[];
+  latestDrafts:    AgentDraftMeta[];
   heatmap:         HomeHeatmapCell[];
   heatmapWeeks:    HomeWeekLabel[];
   weeklyCountries: HomeWeeklyCountry[];
@@ -109,6 +110,11 @@ export function getHomeData(): HomeData {
   // ---- Cards: top 5 más recientes ----
   const cards = pubs.slice(0, 5);
 
+  // ---- Borradores diarios: top 5 más recientes, sin promovidos ----
+  const latestDrafts = getAllAgentDrafts()
+    .filter(d => d.estado !== "promovido" && d.estado !== "publicado-en-sitio")
+    .slice(0, 5);
+
   // ---- Strip "Esta semana" ----
   const thisWeekPubs = pubs.filter(p => p.week === currentWeek && p.year === currentYear);
   let thisWeek: HomeWeekStrip | null = null;
@@ -174,6 +180,7 @@ export function getHomeData(): HomeData {
   return {
     thisWeek,
     cards,
+    latestDrafts,
     heatmap,
     heatmapWeeks,
     weeklyCountries,

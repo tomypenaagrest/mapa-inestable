@@ -2,61 +2,62 @@
 country_slug: bo
 country_name: Bolivia
 estado: publicada
-updated: 2026-05-11
+updated: '2026-05-17'
 week: 20
 year: 2026
 google_news_gl: BO
 google_news_hl: es-419
 google_news_ceid: BO:es-419
-agent_run_id: 2026-05-11T17:00:00-03:00
+agent_run_id: 2026-05-16T14:30:00Z
 agent_version: v1.0
 agendas:
   - rank: 1
-    slug: bloqueos-paro-nacional
-    title: "Bloqueos masivos y aislamiento de La Paz"
+    slug: paro-cob-renuncia-paz
+    title: "Paro indefinido COB y pedido de renuncia a Paz"
     description: |
-      Bolivia inicia la semana con 14 puntos de bloqueo que aíslan la sede de gobierno. Maestros urbanos y rurales, organizaciones vecinales, campesinos y sectores evistas convergen en movilizaciones simultáneas. Las clases quedaron suspendidas en todo el país.
+      La Central Obrera Boliviana cumple 12 días de paro indefinido con 60+ puntos de bloqueo en La Paz, El Alto y altiplano. El pliego de 211 demandas incluye 20% de aumento salarial y compromiso de no privatizar empresas estatales. Bases aymaras y mineros artesanales radicalizan la demanda hacia la renuncia del presidente; el jueves 14 chocaron con la policía en la Plaza Murillo con piedras, hondas y gases.
     tendencia: subiendo
     eje: mediaciones
-    query: bloqueos La Paz paro docente Bolivia
+    query: COB paro indefinido Paz renuncia bloqueos
   - rank: 2
-    slug: marcha-por-la-vida-evismo
-    title: "Marcha evista hacia La Paz"
+    slug: operativo-policial-militar-bloqueos
+    title: "Operativo policial-militar para levantar bloqueos"
     description: |
-      Sectores evistas iniciaron la "Marcha por la Vida para Salvar Bolivia" desde Caracollo rumbo a La Paz a partir del 12 de mayo. El conflicto interno del MAS sigue produciendo política en la calle pese a la fragmentación dirigencial.
+      El gobierno arrancó el sábado 16 una operación combinada de Policía y Fuerzas Armadas para desbloquear carreteras estratégicas, después de que pérdidas por camiones varados superaran los 720 mil dólares diarios. Paz advirtió que los intentos de "desestabilización" tendrán consecuencias legales y descartó renunciar.
     tendencia: subiendo
     eje: desrepresentacion
-    query: marcha por la vida evistas Caracollo
+    query: operativo policial militar bloqueos Bolivia carreteras
   - rank: 3
-    slug: docentes-paritarias
-    title: "Conflicto docente y paritarias"
+    slug: encuentro-nacional-paquete-leyes
+    title: "Encuentro Nacional, paquete de 10 leyes y reforma de la CPE"
     description: |
-      La Confederación de Trabajadores de Educación Urbana de Bolivia ejecuta paro con bloqueo de 24 horas. Las demandas incluyen incremento salarial acorde a la canasta familiar, jubilación al 100% y más recursos en educación pública.
-    tendencia: estable
-    eje: mediaciones
-    query: maestros CTEUB paritaria salarios
-  - rank: 4
-    slug: leyes-cuestionadas-tupak-katari
-    title: "Leyes cuestionadas y campesinos Tupak Katari"
-    description: |
-      La Federación Tupak Katari bloquea vías de ingreso a la sede de gobierno protestando contra la ley 1720, la intención de privatización de empresas, la ley antibloqueo y la ley Brisa. La agenda institucional gubernamental vive bajo presión territorial.
-    tendencia: estable
-    eje: desrepresentacion
-    query: ley 1720 antibloqueo Tupak Katari campesinos
-  - rank: 5
-    slug: crisis-economica-combustible
-    title: "Crisis energética y combustibles"
-    description: |
-      El contexto de los bloqueos se cruza con escasez crónica de combustibles y dólares. El gobierno enfrenta presión simultánea social, fiscal y de abastecimiento.
+      Paz convocó el 9 de mayo en Cochabamba un "Encuentro por el País" con 600 invitados, 6 de 9 gobernadores y la cúpula institucional, donde anunció un paquete de 10 proyectos de ley (hidrocarburos, minería, electricidad, inversiones, justicia, seguridad, reducción del Estado) y una comisión para reformar parcialmente la Constitución. El intento de mediación institucional corre en paralelo a la calle radicalizada que no fue invitada al acuerdo.
     tendencia: subiendo
-    eje: mediaciones
-    query: combustible escasez dolares Bolivia crisis
+    eje: desrepresentacion
+    query: Encuentro Nacional Cochabamba Paz paquete leyes reforma constitucional
+  - rank: 4
+    slug: gasolina-contaminada-ypfb
+    title: "Gasolina contaminada y transporte"
+    description: |
+      YPFB declaró "capítulo cerrado" la crisis de la gasolina importada con diolefinas y metales pesados que dañó motores de miles de vehículos, identificó tres causas (vacío regulatorio, tanques deteriorados, mezcla defectuosa) y desembolsó USD 2 millones en compensaciones. Transportistas y choferes no aceptan el cierre y mantienen bloqueos vinculados al reclamo: la "gasolina basura" fue el detonante del paro indefinido.
+    tendencia: estable
+    eje: desorientacion
+    query: gasolina contaminada YPFB transportistas Bolivia
+  - rank: 5
+    slug: presion-internacional-dialogo
+    title: "Pedido internacional de diálogo"
+    description: |
+      Ecuador y siete países sumaron pronunciamientos públicos pidiendo apertura de canales de diálogo entre el gobierno boliviano y los sectores movilizados. La crisis interna se internacionaliza mientras el gobierno endurece el frame de "conspiración" y los movimientos sociales rechazan negociar sin la renuncia previa de Paz.
+    tendencia: subiendo
+    query: Bolivia diálogo internacional crisis Ecuador países
 ---
 
 # Notas editoriales (no se renderiza en el sitio)
 
-Semana de máxima tensión social en Bolivia. La convergencia de bloqueos sindicales, marcha evista y conflicto docente produce un cuadro que excede al gobierno: lo que está en juego no es una reforma puntual, es la capacidad del Estado de sostenerse como interlocutor único frente a una multiplicidad de actores territoriales.
+Corrección de frame respecto del live W20 promovido el 11/5: la entrega anterior retrataba a Bolivia como si el MAS siguiera en el poder ("marcha evista por la vida", "campesinos Tupak Katari contra ley 1720"), cuando en realidad el gobierno desde noviembre 2025 es de Rodrigo Paz Pereira (PDC/Alianza). La ley 1720 fue abrogada y los protagonistas de la calle hoy son la COB y bases aymaras pidiendo la renuncia del presidente, no sectores evistas marchando contra el oficialismo.
 
-Lo que **entra** esta semana: la dimensión cuantitativa de los bloqueos (14 puntos simultáneos es una escala alta incluso para Bolivia). Lo que **sale**: el debate sobre litio y proyectos de inversión extranjera, que vuelven al fondo cuando la calle ocupa el primer plano.
+Lo que **entra** esta semana: el operativo policial-militar de desbloqueo (sábado 16), el Encuentro Nacional en Cochabamba con paquete de 10 leyes y reforma parcial de la CPE, el pedido internacional de diálogo, y la radicalización del paro hacia la exigencia de renuncia. Lo que **sale**: el frame "evista" del live previo, la mención a la ley 1720 (ya abrogada), el conflicto docente como agenda autónoma (queda absorbido en el paro COB).
 
-El eje erosión de mediaciones está hoy en su forma más visible: ningún actor político tradicional logra contener este malestar.
+El eje **mediaciones** domina: ningún canal institucional logra contener la presión. El Encuentro Nacional en Cochabamba se realiza con 6 gobernadores y la cúpula sectorial, pero sin los movimientos sociales movilizados — la mediación que el gobierno construye corre por arriba de la calle que se radicaliza. La aparición simultánea del operativo policial-militar y la convocatoria a un Acuerdo Nacional muestra que el Estado oscila entre dos modos de procesar el conflicto (fuerza y consenso institucional) sin tocar al actor que está movilizado.
+
+Sub-trama a monitorear: el discurso de "conspiración" del vocero presidencial (180 de las 211 demandas ya habían sido presentadas a gobiernos del MAS) tensiona la lectura del paro como continuidad del aparato sindical antiguo más que como reacción al programa Paz. El frame "es un boicot heredado" disputa la legitimidad del reclamo y desplaza el costo político.
