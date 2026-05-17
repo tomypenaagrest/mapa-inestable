@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Resumen semanal de agendas · Semana 20 · 2026 · Mapa Inestable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&family=Lora:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Color */
+  --mi-bg: #C5663A;
+  --mi-bg-warm: #B45729;
+  --mi-bg-paper: #F4E9D2;
+  --mi-bg-cream: #ECE0C5;
+  --mi-bg-dark: #1F2A12;
+  --mi-ink: #1F2A12;
+  --mi-ink-soft: #3D4A26;
+  --mi-ink-mute: #5C6638;
+  --mi-accent-gold: #E8C58A;
+  --mi-brand-gold: #E8B14B;
+  --mi-rule: #1F2A12;
+  --mi-rule-soft: #C8B894;
+  /* Ejes */
+  --mi-axis-deculturacion: #6B4A38;
+  --mi-axis-mediaciones: #4A5C30;
+  --mi-axis-desrepresentacion: #8A4A55;
+  --mi-axis-estetizacion: #B45729;
+  --mi-axis-desorientacion: #2D4A6B;
+  --mi-axis-atencion: #C8993E;
+  /* Tipografía */
+  --mi-font-display: 'Alfa Slab One', Georgia, serif;
+  --mi-font-title: 'Fraunces', Georgia, serif;
+  --mi-font-body: 'Lora', Georgia, serif;
+  --mi-font-mono: 'IBM Plex Mono', monospace;
+  /* Espaciado */
+  --mi-space-1: 4px; --mi-space-2: 8px; --mi-space-3: 16px;
+  --mi-space-4: 24px; --mi-space-5: 32px; --mi-space-6: 48px;
+  --mi-space-7: 72px; --mi-space-8: 96px; --mi-space-9: 128px;
+  /* Bordes y sombras */
+  --mi-border-hair: 1px solid var(--mi-ink);
+  --mi-border-soft: 1px solid var(--mi-rule-soft);
+  --mi-border-thick: 2px solid var(--mi-ink);
+  --mi-border-bold: 3px solid var(--mi-ink);
+  --mi-border-dashed: 1px dashed var(--mi-ink);
+  --mi-shadow-card: 6px 6px 0 var(--mi-ink);
+  --mi-shadow-card-lift: 8px 8px 0 var(--mi-ink);
+  --mi-shadow-hero: 12px 12px 0 var(--mi-ink);
+  --mi-header-h: 70px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--mi-bg); color: var(--mi-ink); font-family: var(--mi-font-body); font-size: 17px; line-height: 1.6; }
+
+/* ─────────── HEADER ─────────── */
+.site-header {
+  height: var(--mi-header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--mi-space-6);
+  border-bottom: var(--mi-border-bold);
+  background: var(--mi-bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.brand { display: inline-flex; align-items: center; gap: var(--mi-space-3); text-decoration: none; color: var(--mi-ink); }
+.brand-mark { width: 43px; height: 48px; background: var(--mi-ink); display: grid; place-items: center; color: var(--mi-brand-gold); font-family: var(--mi-font-display); font-size: 28px; }
+.brand-name { font-family: var(--mi-font-display); font-size: 22px; letter-spacing: -0.02em; text-transform: uppercase; line-height: 1; }
+.brand-sep { font-family: var(--mi-font-mono); font-size: 13px; color: var(--mi-ink-mute); padding: 0 2px; }
+.brand-tag { font-family: var(--mi-font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--mi-ink-soft); text-transform: lowercase; }
+.nav { display: flex; gap: var(--mi-space-1); list-style: none; }
+.nav a { display: inline-block; padding: var(--mi-space-2) var(--mi-space-3); font-family: var(--mi-font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--mi-ink); text-decoration: none; border: 2px solid transparent; }
+.nav a:hover { border-color: var(--mi-ink); }
+.nav a.is-active { background: var(--mi-ink); color: var(--mi-bg-paper); }
+
+/* ─────────── CONTAINER ─────────── */
+.container { max-width: 1200px; margin: 0 auto; padding: var(--mi-space-7) var(--mi-space-6); }
+
+/* ─────────── HERO ─────────── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--mi-space-7);
+  align-items: start;
+  margin-bottom: var(--mi-space-8);
+  padding-bottom: var(--mi-space-7);
+  border-bottom: var(--mi-border-bold);
+}
+.hero-eyebrow { font-family: var(--mi-font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mi-ink-soft); margin-bottom: var(--mi-space-3); }
+.hero-eyebrow .stamp { display: inline-block; padding: 2px 8px; background: var(--mi-ink); color: var(--mi-brand-gold); margin-right: var(--mi-space-2); }
+.hero h1 { font-family: var(--mi-font-display); font-size: 72px; line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: var(--mi-space-5); }
+.hero h1 small { display: block; font-family: var(--mi-font-title); font-style: italic; font-weight: 400; font-size: 28px; text-transform: none; letter-spacing: 0; margin-top: var(--mi-space-3); color: var(--mi-ink-soft); }
+.hero-lede { font-family: var(--mi-font-body); font-size: 19px; line-height: 1.55; color: var(--mi-ink-soft); max-width: 56ch; margin-bottom: var(--mi-space-5); }
+.hero-meta { display: flex; gap: var(--mi-space-5); padding-top: var(--mi-space-4); border-top: var(--mi-border-soft); font-family: var(--mi-font-mono); font-size: 12px; color: var(--mi-ink-mute); text-transform: uppercase; letter-spacing: 0.08em; }
+.hero-meta strong { display: block; font-size: 32px; color: var(--mi-ink); font-weight: 500; font-family: var(--mi-font-display); }
+
+.hero-cover {
+  aspect-ratio: 4/5;
+  background: var(--mi-bg-dark);
+  border: var(--mi-border-bold);
+  box-shadow: var(--mi-shadow-hero);
+  position: relative;
+  overflow: hidden;
+}
+.hero-cover-stamp {
+  position: absolute; top: var(--mi-space-4); left: var(--mi-space-4);
+  font-family: var(--mi-font-mono); font-size: 11px; color: var(--mi-brand-gold);
+  text-transform: uppercase; letter-spacing: 0.12em;
+}
+.hero-cover-title {
+  position: absolute; bottom: var(--mi-space-5); left: var(--mi-space-4); right: var(--mi-space-4);
+  font-family: var(--mi-font-display); color: var(--mi-bg-paper);
+  font-size: 56px; line-height: 0.92; text-transform: uppercase; letter-spacing: -0.01em;
+}
+.hero-cover-sub { font-family: var(--mi-font-title); font-style: italic; font-size: 22px; color: var(--mi-accent-gold); display: block; margin-top: var(--mi-space-2); font-weight: 400; text-transform: none; }
+.hero-cover-rays { position: absolute; inset: 0; opacity: 0.18; background:
+  repeating-linear-gradient(45deg, transparent 0 8px, var(--mi-brand-gold) 8px 9px); }
+
+/* ─────────── SECCIÓN TÍTULO ─────────── */
+.section-title { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--mi-space-5); padding-bottom: var(--mi-space-3); border-bottom: var(--mi-border-bold); }
+.section-title h2 { font-family: var(--mi-font-display); font-size: 36px; text-transform: uppercase; letter-spacing: -0.01em; }
+.section-title .meta { font-family: var(--mi-font-mono); font-size: 12px; color: var(--mi-ink-mute); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ─────────── GRID DE PAÍSES ─────────── */
+.countries-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--mi-space-5); margin-bottom: var(--mi-space-8); }
+
+.country-card {
+  background: var(--mi-bg-paper);
+  border: var(--mi-border-thick);
+  box-shadow: var(--mi-shadow-card);
+  padding: var(--mi-space-5);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.country-card.has-warn { background: var(--mi-bg-cream); border-color: var(--mi-bg-warm); }
+.country-card.has-warn::before { content: 'PRENSA ESCASA'; position: absolute; top: -10px; right: var(--mi-space-3); background: var(--mi-bg-warm); color: var(--mi-bg-paper); padding: 4px 10px; font-family: var(--mi-font-mono); font-size: 10px; letter-spacing: 0.12em; }
+
+.country-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--mi-space-3); padding-bottom: var(--mi-space-3); border-bottom: var(--mi-border-dashed); }
+.country-mark {
+  display: inline-flex; align-items: center; gap: var(--mi-space-2);
+  font-family: var(--mi-font-display); font-size: 26px; text-transform: uppercase; letter-spacing: -0.01em;
+}
+.country-iso { font-family: var(--mi-font-mono); font-size: 12px; padding: 3px 8px; background: var(--mi-ink); color: var(--mi-brand-gold); letter-spacing: 0.08em; }
+.country-count { font-family: var(--mi-font-mono); font-size: 11px; color: var(--mi-ink-mute); text-transform: uppercase; letter-spacing: 0.08em; }
+
+.agenda-list { list-style: none; margin-bottom: var(--mi-space-3); flex: 1; }
+.agenda-item { display: grid; grid-template-columns: 28px 18px 1fr; gap: 10px; align-items: start; padding: 8px 0; border-bottom: 1px dashed var(--mi-rule-soft); }
+.agenda-item:last-child { border-bottom: none; }
+.agenda-rank { font-family: var(--mi-font-mono); font-size: 14px; color: var(--mi-ink-mute); font-weight: 500; padding-top: 2px; }
+.agenda-trend { font-family: var(--mi-font-mono); font-weight: 600; font-size: 14px; text-align: center; padding-top: 2px; }
+.agenda-trend.up { color: #1F2A12; }
+.agenda-trend.down { color: var(--mi-ink-mute); }
+.agenda-trend.flat { color: var(--mi-ink-mute); }
+.agenda-content .agenda-topic { font-family: var(--mi-font-title); font-weight: 600; font-size: 16px; color: var(--mi-ink); display: block; line-height: 1.3; }
+.agenda-content .agenda-desc { font-family: var(--mi-font-body); font-size: 14px; color: var(--mi-ink-soft); line-height: 1.45; margin-top: 2px; }
+.agenda-eje { display: inline-block; font-family: var(--mi-font-mono); font-size: 10px; padding: 1px 6px; margin-top: 4px; color: var(--mi-bg-paper); text-transform: uppercase; letter-spacing: 0.08em; }
+
+.country-diff { font-family: var(--mi-font-mono); font-size: 11px; color: var(--mi-ink-mute); padding: var(--mi-space-2) 0; border-top: var(--mi-border-soft); border-bottom: var(--mi-border-soft); margin-bottom: var(--mi-space-3); display: flex; gap: 14px; flex-wrap: wrap; }
+.country-diff span strong { color: var(--mi-ink); font-weight: 500; }
+
+.country-foot { display: flex; justify-content: space-between; align-items: center; font-family: var(--mi-font-mono); font-size: 12px; }
+.country-foot a { color: var(--mi-ink); text-decoration: none; border-bottom: 2px solid var(--mi-ink); padding-bottom: 1px; text-transform: uppercase; letter-spacing: 0.08em; }
+.country-foot a:hover { background: var(--mi-ink); color: var(--mi-brand-gold); border-bottom-color: transparent; padding: 1px 4px; }
+.country-foot .updated { color: var(--mi-ink-mute); }
+
+.country-card.has-warn .warn-msg { font-family: var(--mi-font-body); font-style: italic; color: var(--mi-ink-soft); padding: var(--mi-space-3) 0; }
+
+/* ─────────── ANEXO ─────────── */
+.anexo { background: var(--mi-bg-dark); color: var(--mi-bg-paper); padding: var(--mi-space-7) var(--mi-space-6); margin: 0 calc(-1 * var(--mi-space-6)) var(--mi-space-7); border-top: var(--mi-border-bold); border-bottom: var(--mi-border-bold); }
+.anexo-container { max-width: 1100px; margin: 0 auto; }
+.anexo-eyebrow { font-family: var(--mi-font-mono); font-size: 11px; color: var(--mi-brand-gold); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: var(--mi-space-3); }
+.anexo h2 { font-family: var(--mi-font-display); font-size: 44px; line-height: 1; text-transform: uppercase; color: var(--mi-bg-paper); margin-bottom: var(--mi-space-3); }
+.anexo-lede { font-family: var(--mi-font-title); font-style: italic; font-size: 19px; max-width: 60ch; color: var(--mi-accent-gold); margin-bottom: var(--mi-space-6); }
+
+.anexo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--mi-space-6); }
+.anexo-block h3 { font-family: var(--mi-font-display); font-size: 22px; text-transform: uppercase; margin-bottom: var(--mi-space-3); color: var(--mi-brand-gold); padding-bottom: var(--mi-space-2); border-bottom: 2px solid var(--mi-brand-gold); }
+.anexo-block p { font-family: var(--mi-font-body); font-size: 15px; line-height: 1.6; color: var(--mi-bg-paper); margin-bottom: var(--mi-space-3); }
+.anexo-list { list-style: none; }
+.anexo-list li { padding: var(--mi-space-3) 0; border-bottom: 1px dashed rgba(244,233,210,0.25); display: grid; grid-template-columns: 1fr auto; gap: var(--mi-space-3); align-items: baseline; }
+.anexo-list li:last-child { border-bottom: none; }
+.anexo-list .topic { font-family: var(--mi-font-title); font-weight: 600; font-size: 16px; color: var(--mi-bg-paper); }
+.anexo-list .topic small { display: block; font-family: var(--mi-font-body); font-style: italic; font-weight: 400; font-size: 13px; color: var(--mi-accent-gold); margin-top: 2px; line-height: 1.4; }
+.anexo-list .scope { font-family: var(--mi-font-mono); font-size: 11px; color: var(--mi-accent-gold); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; padding: 3px 8px; border: 1px solid var(--mi-brand-gold); }
+
+.heatmap-table { width: 100%; border-collapse: collapse; font-family: var(--mi-font-mono); font-size: 11px; }
+.heatmap-table th { text-align: left; padding: 6px 4px; color: var(--mi-accent-gold); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; border-bottom: 1px solid var(--mi-brand-gold); }
+.heatmap-table th:first-child { text-align: left; }
+.heatmap-table td { text-align: center; padding: 6px 4px; color: var(--mi-bg-paper); border-bottom: 1px dashed rgba(244,233,210,0.18); }
+.heatmap-table td:first-child { text-align: left; font-family: var(--mi-font-title); font-weight: 600; font-size: 13px; }
+.cell-hi { background: var(--mi-bg-warm); color: var(--mi-bg-paper); }
+.cell-mid { background: rgba(180,87,41,0.45); }
+.cell-low { color: rgba(244,233,210,0.4); }
+
+/* ─────────── CIERRE ─────────── */
+.cierre { padding: var(--mi-space-7) 0; max-width: 70ch; margin: 0 auto; }
+.cierre-eyebrow { font-family: var(--mi-font-mono); font-size: 11px; color: var(--mi-ink-soft); text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: var(--mi-space-3); }
+.cierre p { font-family: var(--mi-font-body); font-size: 18px; line-height: 1.7; color: var(--mi-ink); margin-bottom: var(--mi-space-3); }
+.cierre p:first-of-type::first-letter { font-family: var(--mi-font-display); font-size: 64px; float: left; line-height: 0.85; margin: 6px 10px 0 0; color: var(--mi-bg-dark); }
+.cierre-signature { margin-top: var(--mi-space-5); padding-top: var(--mi-space-4); border-top: var(--mi-border-soft); font-family: var(--mi-font-mono); font-size: 12px; color: var(--mi-ink-soft); text-transform: uppercase; letter-spacing: 0.1em; }
+.cierre-link { display: inline-block; margin-top: var(--mi-space-5); padding: var(--mi-space-3) var(--mi-space-4); background: var(--mi-ink); color: var(--mi-brand-gold); font-family: var(--mi-font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border: var(--mi-border-thick); box-shadow: var(--mi-shadow-card); }
+.cierre-link:hover { box-shadow: var(--mi-shadow-card-lift); transform: translate(-2px,-2px); }
+
+/* ─────────── COLORES POR EJE ─────────── */
+.eje-deculturacion { background: var(--mi-axis-deculturacion); }
+.eje-mediaciones { background: var(--mi-axis-mediaciones); }
+.eje-desrepresentacion { background: var(--mi-axis-desrepresentacion); }
+.eje-estetizacion { background: var(--mi-axis-estetizacion); }
+.eje-desorientacion { background: var(--mi-axis-desorientacion); }
+.eje-atencion { background: var(--mi-axis-atencion); }
+
+/* ─────────── RESPONSIVE ─────────── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 48px; }
+  .countries-grid { grid-template-columns: 1fr; }
+  .anexo-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ HEADER ════════════════════ -->
+<header class="site-header">
+  <a class="brand" href="#">
+    <span class="brand-mark">*</span>
+    <span class="brand-name">Mapa Inestable</span>
+    <span class="brand-sep">·</span>
+    <span class="brand-tag">cartografía política del sur</span>
+  </a>
+  <nav>
+    <ul class="nav">
+      <li><a href="#">Despachos</a></li>
+      <li><a href="#" class="is-active">Semana</a></li>
+      <li><a href="#">Ensayos</a></li>
+      <li><a href="#">Mapa</a></li>
+      <li><a href="#">Acerca</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="container">
+
+  <!-- ════════════════════ HERO ════════════════════ -->
+  <section class="hero">
+    <div>
+      <div class="hero-eyebrow">
+        <span class="stamp">SEMANA 20</span> 2026 · 11 al 17 de mayo · resumen panorámico
+      </div>
+      <h1>
+        El estado de la conversación
+        <small>Diez países, cuarenta y dos agendas, una semana.</small>
+      </h1>
+      <p class="hero-lede">
+        La semana cerró con la corrupción otra vez instalada como tema dominante en cuatro países y la seguridad subiendo en seis. Los conflictos de representación, los pedidos de vacancia y los juicios a presidentes en ejercicio o pasados componen el ruido de fondo regional.
+      </p>
+      <div class="hero-meta">
+        <div><strong>10</strong>países</div>
+        <div><strong>42</strong>agendas activas</div>
+        <div><strong>8</strong>ejes activados</div>
+        <div><strong>1</strong>país con prensa escasa</div>
+      </div>
+    </div>
+    <div class="hero-cover">
+      <div class="hero-cover-rays"></div>
+      <div class="hero-cover-stamp">W20 · MAYO 2026</div>
+      <div class="hero-cover-title">
+        Sudamérica
+        <span class="hero-cover-sub">la semana en una página</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════ PAÍSES ════════════════════ -->
+  <section>
+    <header class="section-title">
+      <h2>País por país</h2>
+      <span class="meta">Ordenadas por rank · click al país abre la agenda live</span>
+    </header>
+
+    <div class="countries-grid">
+
+      <!-- ARGENTINA -->
+      <article class="country-card">
+        <header class="country-head">
+          <div class="country-mark">Argentina <span class="country-iso">AR</span></div>
+          <span class="country-count">5 agendas</span>
+        </header>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-rank">01</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Causa $LIBRA</span>
+              <p class="agenda-desc">Nuevas imputaciones avanzan sobre el entorno presidencial y reactivan el caso después de seis semanas en pausa.</p>
+              <span class="agenda-eje eje-desrepresentacion">Desrepresentación</span>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">02</span><span class="agenda-trend down">↓</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Inflación</span>
+              <p class="agenda-desc">Desaceleración del IPC reportada por INDEC contrasta con caída del salario real, baja del tema en agenda mediática.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">03</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Empleo y paritarias</span>
+              <p class="agenda-desc">Negociaciones trabadas con sindicatos del sector privado; el gobierno presiona por techos del 1% mensual.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">04</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Seguridad</span>
+              <p class="agenda-desc">Operativos Bullrich en CABA reavivan debate sobre militarización urbana y rol de las fuerzas federales.</p>
+              <span class="agenda-eje eje-desorientacion">Desorientación</span>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">05</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Movilidad jubilatoria</span>
+              <p class="agenda-desc">Proyecto de reforma vuelve al Congreso; movimiento de jubilados sostiene marcha semanal.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="country-diff">
+          <span><strong>Entra:</strong> Movilidad jubilatoria</span>
+          <span><strong>Sale:</strong> Litio y minería</span>
+          <span><strong>Cambia rank:</strong> Seguridad 3 → 4</span>
+        </div>
+        <footer class="country-foot">
+          <a href="#">Ver agenda · Argentina →</a>
+          <span class="updated">Actualizada vie 15-may 17:08</span>
+        </footer>
+      </article>
+
+      <!-- BRASIL -->
+      <article class="country-card">
+        <header class="country-head">
+          <div class="country-mark">Brasil <span class="country-iso">BR</span></div>
+          <span class="country-count">4 agendas</span>
+        </header>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-rank">01</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Reforma tributária</span>
+              <p class="agenda-desc">Pacto pelo IBS llega al Senado con apoyo cruzado de gobernadores; semana de votaciones decisivas.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">02</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">STF y Bolsonaro</span>
+              <p class="agenda-desc">Audiencia preliminar del AP 2668 con cinco ministros confirmados; estrategia de defensa apela a nulidad.</p>
+              <span class="agenda-eje eje-desrepresentacion">Desrepresentación</span>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">03</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Pacote fiscal</span>
+              <p class="agenda-desc">Arcabouço bajo presión por mercados; Haddad anuncia revisión de techo de gastos sociales.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">04</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">COP30 Belém</span>
+              <p class="agenda-desc">Preparativos logísticos y diplomáticos; tensión con sectores agropecuarios sobre compromisos de deforestación.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="country-diff">
+          <span><strong>Entra:</strong> Pacote fiscal</span>
+          <span><strong>Sale:</strong> Marco temporal indígena</span>
+        </div>
+        <footer class="country-foot">
+          <a href="#">Ver agenda · Brasil →</a>
+          <span class="updated">Actualizada vie 15-may 17:04</span>
+        </footer>
+      </article>
+
+      <!-- CHILE -->
+      <article class="country-card">
+        <header class="country-head">
+          <div class="country-mark">Chile <span class="country-iso">CL</span></div>
+          <span class="country-count">4 agendas</span>
+        </header>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-rank">01</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Caso Hermosilla</span>
+              <p class="agenda-desc">Nuevas filtraciones de chats salpican a Corte Suprema y vuelven a poner en duda la imparcialidad judicial.</p>
+              <span class="agenda-eje eje-mediaciones">Erosión de mediaciones</span>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">02</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Reforma de pensiones</span>
+              <p class="agenda-desc">Negociación en estancamiento; el gobierno de Boric busca acuerdo sobre el componente solidario antes del receso.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">03</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Seguridad</span>
+              <p class="agenda-desc">Violencia en Macrozona Sur recrudece tras atentado a camionero; debate sobre extensión del estado de excepción.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">04</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Cierre constitucional</span>
+              <p class="agenda-desc">Acuerdo transversal cierra etapa constituyente sin nuevo texto; debate por reformas parciales.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="country-diff">
+          <span><strong>Entra:</strong> Caso Hermosilla recurrente</span>
+          <span><strong>Sale:</strong> Indultos Boric</span>
+          <span><strong>Cambia rank:</strong> Seguridad 4 → 3</span>
+        </div>
+        <footer class="country-foot">
+          <a href="#">Ver agenda · Chile →</a>
+          <span class="updated">Actualizada vie 15-may 17:06</span>
+        </footer>
+      </article>
+
+      <!-- COLOMBIA -->
+      <article class="country-card">
+        <header class="country-head">
+          <div class="country-mark">Colombia <span class="country-iso">CO</span></div>
+          <span class="country-count">4 agendas</span>
+        </header>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-rank">01</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Reforma laboral</span>
+              <p class="agenda-desc">Senado vota el texto del gobierno con modificaciones; gremios advierten sobre impacto en pymes.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">02</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Crisis EPS Sanitas</span>
+              <p class="agenda-desc">Intervención de Supersalud expone fragilidad del sistema; cuatro millones de afiliados en incertidumbre.</p>
+              <span class="agenda-eje eje-mediaciones">Erosión de mediaciones</span>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">03</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Petro y Trump</span>
+              <p class="agenda-desc">Tensión por arancel a la cocaína anunciado desde Washington; respuesta diplomática colombiana en discusión.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">04</span><span class="agenda-trend down">↓</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Paz Total</span>
+              <p class="agenda-desc">Mesa con ELN sin avances; deserciones de comandantes territoriales debilitan el proceso.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="country-diff">
+          <span><strong>Entra:</strong> Arancel Trump</span>
+          <span><strong>Cambia rank:</strong> Paz Total 2 → 4</span>
+        </div>
+        <footer class="country-foot">
+          <a href="#">Ver agenda · Colombia →</a>
+          <span class="updated">Actualizada vie 15-may 17:11</span>
+        </footer>
+      </article>
+
+      <!-- PERÚ -->
+      <article class="country-card">
+        <header class="country-head">
+          <div class="country-mark">Perú <span class="country-iso">PE</span></div>
+          <span class="country-count">4 agendas</span>
+        </header>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-rank">01</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Vacancia Boluarte</span>
+              <p class="agenda-desc">Tercer pedido formal de vacancia presentado por bancada de izquierda; aritmética parlamentaria todavía insuficiente.</p>
+              <span class="agenda-eje eje-desrepresentacion">Desrepresentación</span>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">02</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Corte IDH y Petroperú</span>
+              <p class="agenda-desc">Sentencia inminente por derrame de Ventanilla; presión internacional por reparaciones a comunidades.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">03</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Crimen organizado en Lima</span>
+              <p class="agenda-desc">Sicariato dispara estadísticas mensuales; debate sobre estado de emergencia para Lima Metropolitana.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">04</span><span class="agenda-trend down">↓</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Juicio a Castillo</span>
+              <p class="agenda-desc">Audiencia oral con bajo seguimiento mediático; defensa cuestiona competencia del tribunal.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="country-diff">
+          <span><strong>Entra:</strong> Sicariato Lima</span>
+          <span><strong>Cambia rank:</strong> Castillo 2 → 4</span>
+        </div>
+        <footer class="country-foot">
+          <a href="#">Ver agenda · Perú →</a>
+          <span class="updated">Actualizada vie 15-may 17:09</span>
+        </footer>
+      </article>
+
+      <!-- BOLIVIA -->
+      <article class="country-card">
+        <header class="country-head">
+          <div class="country-mark">Bolivia <span class="country-iso">BO</span></div>
+          <span class="country-count">3 agendas</span>
+        </header>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-rank">01</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Elecciones 2025 sin MAS unificado</span>
+              <p class="agenda-desc">Tribunal electoral confirma inhabilitación de Evo; bloque oficialista llega fragmentado a la inscripción de candidaturas.</p>
+              <span class="agenda-eje eje-desrepresentacion">Desrepresentación</span>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">02</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Crisis del dólar</span>
+              <p class="agenda-desc">Escasez se profundiza; mercado paralelo cotiza al doble del oficial; protestas regionales en Santa Cruz.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">03</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Litio en el triángulo</span>
+              <p class="agenda-desc">Contratos con consorcios chino y ruso aún sin operativizar; oposición exige transparencia.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="country-diff">
+          <span><strong>Sin cambios mayores respecto a sem 19</strong></span>
+        </div>
+        <footer class="country-foot">
+          <a href="#">Ver agenda · Bolivia →</a>
+          <span class="updated">Actualizada vie 15-may 17:05</span>
+        </footer>
+      </article>
+
+      <!-- URUGUAY -->
+      <article class="country-card">
+        <header class="country-head">
+          <div class="country-mark">Uruguay <span class="country-iso">UY</span></div>
+          <span class="country-count">3 agendas</span>
+        </header>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-rank">01</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Gobierno Orsi</span>
+              <p class="agenda-desc">Primeras tensiones internas en el Frente Amplio por reparto de cargos; oposición ataca por el ritmo de las designaciones.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">02</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Plebiscito de seguridad</span>
+              <p class="agenda-desc">Cabildo Abierto recoge firmas para someter a plebiscito allanamientos nocturnos; debate por derechos civiles.</p>
+              <span class="agenda-eje eje-desorientacion">Desorientación</span>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">03</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Mercosur-UE en pausa</span>
+              <p class="agenda-desc">Acuerdo no avanza por veto francés; Cancillería evalúa estrategia bilateral con países europeos clave.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="country-diff">
+          <span><strong>Entra:</strong> Plebiscito de seguridad</span>
+        </div>
+        <footer class="country-foot">
+          <a href="#">Ver agenda · Uruguay →</a>
+          <span class="updated">Actualizada vie 15-may 17:03</span>
+        </footer>
+      </article>
+
+      <!-- ECUADOR -->
+      <article class="country-card">
+        <header class="country-head">
+          <div class="country-mark">Ecuador <span class="country-iso">EC</span></div>
+          <span class="country-count">4 agendas</span>
+        </header>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-rank">01</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Noboa y militarización</span>
+              <p class="agenda-desc">Tras reelección, gobierno extiende presencia militar en ocho provincias; críticas por suspensión de garantías.</p>
+              <span class="agenda-eje eje-desorientacion">Desorientación</span>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">02</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Crisis energética</span>
+              <p class="agenda-desc">Cortes de luz vuelven a Quito y Guayaquil; sequía y vetustez del sistema generan tarifazos.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">03</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Crimen organizado</span>
+              <p class="agenda-desc">Estado de excepción extendido por sexta vez consecutiva; cárceles bajo control de fuerzas armadas.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">04</span><span class="agenda-trend down">↓</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Yasuní suspendido</span>
+              <p class="agenda-desc">Plazo para cierre de pozos vence sin cumplimiento; comunidades amazónicas piden mediación internacional.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="country-diff">
+          <span><strong>Entra:</strong> Crisis energética</span>
+          <span><strong>Sale:</strong> Resultado segunda vuelta</span>
+        </div>
+        <footer class="country-foot">
+          <a href="#">Ver agenda · Ecuador →</a>
+          <span class="updated">Actualizada vie 15-may 17:07</span>
+        </footer>
+      </article>
+
+      <!-- VENEZUELA -->
+      <article class="country-card">
+        <header class="country-head">
+          <div class="country-mark">Venezuela <span class="country-iso">VE</span></div>
+          <span class="country-count">3 agendas</span>
+        </header>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-rank">01</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Sanciones y licencias</span>
+              <p class="agenda-desc">Disputa sobre la licencia de Chevron continúa; OFAC posterga decisión final por presión del Tesoro.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">02</span><span class="agenda-trend up">↑</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Maduro y Trump</span>
+              <p class="agenda-desc">Canje de migrantes detenidos en EEUU por liberación de presos políticos avanza por canal qatarí.</p>
+              <span class="agenda-eje eje-desrepresentacion">Desrepresentación</span>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">03</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Diáspora</span>
+              <p class="agenda-desc">Grupo de Lima desactivado de facto; nuevos países receptores endurecen requisitos migratorios.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="country-diff">
+          <span><strong>Cobertura de medios independientes limitada esta semana</strong></span>
+        </div>
+        <footer class="country-foot">
+          <a href="#">Ver agenda · Venezuela →</a>
+          <span class="updated">Actualizada vie 15-may 17:12</span>
+        </footer>
+      </article>
+
+      <!-- PARAGUAY · warn -->
+      <article class="country-card has-warn">
+        <header class="country-head">
+          <div class="country-mark">Paraguay <span class="country-iso">PY</span></div>
+          <span class="country-count">2 agendas</span>
+        </header>
+        <p class="warn-msg">Solo 4 piezas relevantes en la prensa local de la semana. La curaduría automática produjo 2 agendas mínimas; se recomienda revisión manual o cobertura desde prensa regional.</p>
+        <ul class="agenda-list">
+          <li class="agenda-item">
+            <span class="agenda-rank">01</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Gobierno Peña</span>
+              <p class="agenda-desc">Plan económico semestral presentado al Congreso; oposición denuncia ajuste fiscal disfrazado.</p>
+            </div>
+          </li>
+          <li class="agenda-item">
+            <span class="agenda-rank">02</span><span class="agenda-trend flat">→</span>
+            <div class="agenda-content">
+              <span class="agenda-topic">Itaipú</span>
+              <p class="agenda-desc">Negociación con Brasil sobre tarifa eléctrica continúa sin acuerdo final.</p>
+            </div>
+          </li>
+        </ul>
+        <footer class="country-foot">
+          <a href="#">Ver agenda · Paraguay →</a>
+          <span class="updated">Actualizada vie 15-may 17:14</span>
+        </footer>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════ ANEXO ════════════════════ -->
+</main>
+
+<aside class="anexo">
+  <div class="anexo-container">
+    <div class="anexo-eyebrow">Anexo · lecturas transversales</div>
+    <h2>Lo que cruza la región</h2>
+    <p class="anexo-lede">Cuatro capas que solo aparecen mirando los diez países juntos: temas que se repiten, señales débiles que podrían propagarse, silencios estructurales y dominancia de ejes.</p>
+
+    <div class="anexo-grid">
+
+      <div class="anexo-block">
+        <h3>Trending Sudamérica</h3>
+        <p>Temas que aparecieron en tres o más países la misma semana. Señal de un eje activándose regionalmente.</p>
+        <ul class="anexo-list">
+          <li>
+            <div class="topic">Seguridad y militarización<small>Operativos, estados de excepción, debate por uso interno de fuerzas armadas.</small></div>
+            <span class="scope">AR · CL · EC · PE</span>
+          </li>
+          <li>
+            <div class="topic">Conflicto entre poderes<small>Tensiones entre ejecutivos en ejercicio y poder judicial o legislativo.</small></div>
+            <span class="scope">AR · BR · PE · VE</span>
+          </li>
+          <li>
+            <div class="topic">Crisis económica como agenda<small>Inflación, escasez de divisas, ajuste fiscal en discusión simultánea.</small></div>
+            <span class="scope">AR · BO · BR</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="anexo-block">
+        <h3>Señales débiles</h3>
+        <p>Agendas que aparecen en un solo país esta semana pero tienen potencial de propagación regional. Vale la pena seguirlas.</p>
+        <ul class="anexo-list">
+          <li>
+            <div class="topic">Plebiscito de seguridad ciudadana<small>El intento uruguayo de plebiscitar allanamientos nocturnos podría replicarse en países donde la inseguridad domina la agenda.</small></div>
+            <span class="scope">UY</span>
+          </li>
+          <li>
+            <div class="topic">Arancel comercial como instrumento<small>El arancel Trump a la cocaína introduce una herramienta que podría aplicarse a otros productos regionales.</small></div>
+            <span class="scope">CO</span>
+          </li>
+          <li>
+            <div class="topic">Crisis energética estructural<small>Quito y Guayaquil con cortes prolongados; sistemas eléctricos envejecidos en otros países podrían seguir.</small></div>
+            <span class="scope">EC</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="anexo-block">
+        <h3>Silencios de la semana</h3>
+        <p>Ejes crónicos de país que no se conversaron. Lo no-dicho importa.</p>
+        <ul class="anexo-list">
+          <li>
+            <div class="topic">Crisis climática regional<small>Ningún país conversó esta semana sobre la emergencia hídrica que afecta a cuatro de los diez.</small></div>
+            <span class="scope">0/10</span>
+          </li>
+          <li>
+            <div class="topic">Migraciones intra-regionales<small>La diáspora venezolana redistribuida en la región no tuvo cobertura sostenida fuera de Venezuela.</small></div>
+            <span class="scope">1/10</span>
+          </li>
+          <li>
+            <div class="topic">Reforma del Estado<small>El debate sobre función pública y digitalización del Estado quedó ausente de la conversación pública.</small></div>
+            <span class="scope">0/10</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="anexo-block">
+        <h3>Eje × país · dominancia</h3>
+        <p>Qué eje conceptual activó cada agenda. Lecturas: la fila Desrepresentación cruza media región.</p>
+        <table class="heatmap-table">
+          <thead>
+            <tr><th>Eje</th><th>AR</th><th>BR</th><th>CL</th><th>CO</th><th>PE</th><th>BO</th><th>UY</th><th>EC</th><th>VE</th><th>PY</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Desrepresentación</td><td class="cell-hi">●</td><td class="cell-hi">●</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-hi">●</td><td class="cell-hi">●</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-hi">●</td><td class="cell-low">·</td></tr>
+            <tr><td>Mediaciones</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-hi">●</td><td class="cell-hi">●</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td></tr>
+            <tr><td>Desorientación</td><td class="cell-hi">●</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-hi">●</td><td class="cell-hi">●</td><td class="cell-low">·</td><td class="cell-low">·</td></tr>
+            <tr><td>Deculturación</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td></tr>
+            <tr><td>Estetización</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td></tr>
+            <tr><td>Atención</td><td class="cell-mid">○</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-mid">○</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td><td class="cell-low">·</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</aside>
+
+<main class="container">
+
+  <!-- ════════════════════ CIERRE ════════════════════ -->
+  <section class="cierre">
+    <div class="cierre-eyebrow">Apertura · una pregunta para la semana</div>
+    <p>La fila de Desrepresentación cruza la región como una geografía propia. Cinco países discuten esta semana algún conflicto entre el ejecutivo en ejercicio y los otros poderes del Estado: causas judiciales abiertas contra presidentes pasados o presentes, pedidos de vacancia, intentos de aritmética parlamentaria contra el oficialismo, disputas con el sistema judicial. La crisis de representación dejó de ser un fenómeno nacional y se volvió una atmósfera regional.</p>
+    <p>La pregunta que abre la semana, y que el despacho podrá tomar como hilo conductor: <em>¿qué pasa cuando la crisis de representación se sincroniza sin que medie ningún proceso de integración regional? ¿Es la misma crisis llegando con timing parecido a estados similares, o es un solo desplazamiento estructural manifestándose en varios escenarios a la vez?</em></p>
+
+    <a href="#" class="cierre-link">Leer el despacho de la semana →</a>
+
+    <div class="cierre-signature">
+      Generado · sábado 16 de mayo · 09:23 ART · Mapa Inestable<br>
+      Fuente del corpus: agendas semanales W20 · 10 países procesados
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

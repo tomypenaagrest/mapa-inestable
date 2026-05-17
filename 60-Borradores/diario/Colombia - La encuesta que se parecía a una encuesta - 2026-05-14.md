@@ -38,7 +38,7 @@ cover_prompt: |
   Tono: irónico, claustrofóbico.
 
   Aplicá la guía completa de estilo: 70-Producto/design-system/cover-style-guide.md
-  Guardar la imagen como: 90-Portadas/diario/la-encuesta-que-se-parecia-a-una-encuesta.png
+  Guardar la imagen como: 90-Portadas/diario/     
 ---
 
 # La encuesta que se parecía a una encuesta

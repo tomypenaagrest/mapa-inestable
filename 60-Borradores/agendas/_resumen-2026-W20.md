@@ -29,19 +29,28 @@ Borradores en `60-Borradores/agendas/`. Promovidos a `15-Países/agendas/` el mi
 
 **Diff vs. semana anterior:** primera generación — sin diff disponible
 
+**Nota (2026-05-16):** la nueva corrida de Argentina para esta misma fecha quedó archivada como W21 siguiendo la convención del proyecto (ver `_resumen-2026-W21.md`). El bloque de W20 conserva su estado original "promovido 2026-05-11".
+
 ---
 
 ## 🇧🇴 Bolivia
 
-**Status:** ✅ promovido 2026-05-11 · live en `15-Países/agendas/bo.md`
+**Status:** ✅ promovido 2026-05-17 · live en `15-Países/agendas/bo.md` (re-corrida W20 · corrección de frame)
 
-01. ↑ **Bloqueos masivos** · 14 puntos aíslan La Paz, paro nacional docente
-02. ↑ **Marcha evista "Por la Vida"** · desde Caracollo hacia La Paz
-03. → **Conflicto docente** · CTEUB paro de 24 horas con bloqueos
-04. → **Leyes cuestionadas** · campesinos Tupak Katari contra ley 1720 y antibloqueo
-05. ↑ **Crisis energética** · escasez de combustible y dólares
+01. ↑ **Paro indefinido COB y pedido de renuncia a Paz** · 12 días, 211 demandas, choques mineros-policía en Plaza Murillo (14/5)
+02. ↑ **Operativo policial-militar para levantar bloqueos** · arrancó 16/5; Paz advierte consecuencias legales por "desestabilización"
+03. ↑ **Encuentro Nacional Cochabamba + paquete de 10 leyes + reforma parcial CPE** · 9/5, 600 invitados, 6 de 9 gobernadores
+04. → **Gasolina contaminada y transporte** · YPFB cierra el capítulo, transportistas no aceptan; "gasolina basura" fue el detonante del paro
+05. ↑ **Pedido internacional de diálogo** · Ecuador + 7 países piden apertura de canales
 
-**Diff vs. semana anterior:** primera generación — sin diff disponible
+**Diff vs. semana anterior (W20, live 11/5):**
+- **Entran:** operativo policial-militar (16/5), Encuentro Nacional + paquete de 10 leyes (9/5), pedido internacional de diálogo, radicalización del paro hacia exigencia de renuncia.
+- **Salen:** "Marcha evista Por la Vida" (frame incorrecto: el oficialismo ya no es MAS desde noviembre 2025), "leyes cuestionadas Tupak Katari / ley 1720" (la ley fue abrogada), conflicto docente como agenda autónoma (absorbido en paro COB).
+- **Estables / transformadas:** "bloqueos masivos" → "paro indefinido COB"; "crisis energética combustibles" → "gasolina contaminada YPFB".
+
+**Nota:** ⚠ Segunda corrida dentro de W20. La primera del lunes 11/5 (live promovida 12/5) operaba con un frame desactualizado que retrataba a Bolivia como si el MAS siguiera en el poder. Esta entrega corrige el contexto: gobierno Paz Pereira (PDC) ~6 meses en el poder, COB y bases aymaras en la calle pidiendo renuncia. El borrador previo queda sobrescrito.
+
+`60-Borradores/agendas/bo.md`
 
 ---
 
