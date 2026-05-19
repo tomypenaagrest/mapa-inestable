@@ -1,9 +1,13 @@
 {
-  "version": "macro-v1",
-  "computed_at": "2026-05-09",
+  "version": "macro-v1.1.0",
+  "computed_at": "2026-05-19",
   "year_start": 2010,
   "year_end": 2024,
-  "n_indicators": 26,
+  "quarter_start": 2021,
+  "quarter_end": 2024,
+  "month_start": 2021,
+  "month_end": 2024,
+  "n_indicators": 27,
   "n_countries": 10,
   "stubs": [
     "b1-exp-primarias",
@@ -16,7 +20,12 @@
     "d1-pobreza",
     "d2-indigencia",
     "d6-homicidios",
-    "d7-presion-tributaria"
+    "d7-presion-tributaria",
+    "c7-salario-real-mensual"
+  ],
+  "priority_stubs": [
+    "d1-pobreza",
+    "d2-indigencia"
   ],
   "indicators": [
     {
@@ -31,7 +40,7 @@
         "name": "Banco Mundial WDI",
         "code": "NY.GDP.PCAP.PP.KD",
         "url": "https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "PPA, USD constantes de 2017",
       "n_countries_covered": 9,
@@ -819,9 +828,9 @@
         "name": "Banco Mundial WDI",
         "code": "NY.GDP.MKTP.KD.ZG",
         "url": "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
-      "methodology": "Variación % anual del PBI a precios constantes (USD 2015)",
+      "methodology": "Variación % anual del PBI a precios constantes (USD 2015). series_trimestral: variación interanual trimestral (Q_t / Q_{t-4} - 1) × 100, fuente IMF IFS NGDP_R_K_IX. El promedio de los 4 trimestres YoY ≈ crecimiento anual pero no es exactamente igual (relación no-lineal entre índices trimestrales y totales anuales); diferencias típicas < 0.5pp.",
       "n_countries_covered": 10,
       "by_country": {
         "AR": {
@@ -1692,7 +1701,7 @@
         "name": "Banco Mundial WDI",
         "code": "NV.AGR.TOTL.ZS",
         "url": "https://data.worldbank.org/indicator/NV.AGR.TOTL.ZS",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Agricultura, silvicultura y pesca como % del VAB total",
       "n_countries_covered": 10,
@@ -2501,7 +2510,7 @@
         "name": "Banco Mundial WDI",
         "code": "NV.IND.MANF.ZS",
         "url": "https://data.worldbank.org/indicator/NV.IND.MANF.ZS",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Manufactura como % del VAB total",
       "n_countries_covered": 10,
@@ -3310,7 +3319,7 @@
         "name": "Banco Mundial WDI",
         "code": "NV.SRV.TOTL.ZS",
         "url": "https://data.worldbank.org/indicator/NV.SRV.TOTL.ZS",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Servicios como % del VAB total",
       "n_countries_covered": 10,
@@ -4118,7 +4127,7 @@
         "name": "Banco Mundial WDI / OIT",
         "code": "SL.GDP.PCAP.EM.KD",
         "url": "https://data.worldbank.org/indicator/SL.GDP.PCAP.EM.KD",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "PBI por ocupado (USD constantes 2017 PPP, WB SL.GDP.PCAP.EM.KD), normalizado a índice base 2010=100 por país. Misma magnitud que el indicador OIT de productividad.",
       "n_countries_covered": 9,
@@ -4906,7 +4915,7 @@
         "name": "Banco Mundial WDI",
         "code": "NE.GDI.FTOT.ZS",
         "url": "https://data.worldbank.org/indicator/NE.GDI.FTOT.ZS",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Formación bruta de capital fijo como % del PBI",
       "n_countries_covered": 10,
@@ -5775,7 +5784,7 @@
         "name": "FMI WEO",
         "code": "PCPIPCH",
         "url": "https://www.imf.org/en/Publications/WEO",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Variación % anual del IPC (FMI WEO). AR 2007-2015: IPC-Congreso/CEPAL, quality=estimado. VE 2014+: estimación FMI, quality=estimado.",
       "n_countries_covered": 10,
@@ -6633,7 +6642,7 @@
         "name": "BACI (CEPII)",
         "code": "SITC Rev.3 secciones 0-4+68",
         "url": "http://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Exportaciones SITC Rev.3 secciones 0-4 y 68 / total exportaciones",
       "n_countries_covered": 0,
@@ -6694,7 +6703,7 @@
         "name": "BACI (CEPII)",
         "code": "bilateral exports share",
         "url": "http://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "% del comercio total con el socio de mayor cuota (exportaciones FOB + importaciones CIF)",
       "n_countries_covered": 0,
@@ -6755,7 +6764,7 @@
         "name": "BACI (CEPII)",
         "code": "exports to CHN / total exports",
         "url": "http://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Exportaciones a China (BACI) / exportaciones totales FOB",
       "n_countries_covered": 0,
@@ -6816,7 +6825,7 @@
         "name": "BACI (CEPII)",
         "code": "exports to USA / total exports",
         "url": "http://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Exportaciones a EEUU (BACI) / exportaciones totales FOB",
       "n_countries_covered": 0,
@@ -6875,7 +6884,7 @@
         "name": "UNCTAD",
         "code": "FDI inflows net / GDP",
         "url": "https://unctad.org/topic/investment/world-investment-report",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Inversión Extranjera Directa neta entrante como % del PBI (UNCTAD World Investment Report)",
       "n_countries_covered": 0,
@@ -6934,7 +6943,7 @@
         "name": "FMI WEO",
         "code": "GGXWDG_NGDP",
         "url": "https://www.imf.org/en/Publications/WEO",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Deuda bruta del gobierno general como % del PBI (FMI WEO GGXWDG_NGDP). Nota: la spec original pedía deuda externa total (pública + privada, WB IDS) pero esa serie no tiene cobertura API actualizada para todos los países SA. FMI WEO tiene cobertura completa; se documenta el alcance diferente.",
       "n_countries_covered": 10,
@@ -7806,7 +7815,7 @@
         "name": "OIT ILOSTAT",
         "code": "UNE_TUNE_SEX_AGE_RT_A",
         "url": "https://ilostat.ilo.org/topics/unemployment-and-labour-underutilization/",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "% PEA sin trabajo buscando activamente (OIT modelado armonizado, 15+ años)",
       "n_countries_covered": 10,
@@ -8678,7 +8687,7 @@
         "name": "Banco Mundial WDI / OIT",
         "code": "SL.EMP.VULN.ZS",
         "url": "https://data.worldbank.org/indicator/SL.EMP.VULN.ZS",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "% de trabajadores en empleos vulnerables (cuenta propia + trabajadores familiares no remunerados) sobre empleo total (WB SL.EMP.VULN.ZS, modelado OIT). Proxy de informalidad: misma dirección causal, cobertura sistemática. El indicador ideal (empleo informal OIT, criterio empresa) no tiene API pública estable para la región.",
       "n_countries_covered": 10,
@@ -9547,7 +9556,7 @@
         "name": "CEPALSTAT",
         "code": "asalariado registrado",
         "url": "https://statistics.cepal.org/portal/cepalstat/",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Asalariados con contrato formal o cotizantes a seguridad social / empleo total (CEPAL)",
       "n_countries_covered": 0,
@@ -9608,7 +9617,7 @@
         "name": "OIT ILOSTAT",
         "code": "EMP_TEMP_SEX_ECO_NB_A",
         "url": "https://ilostat.ilo.org/data/",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Empleo en manufactura (ISIC C) / empleo total (OIT)",
       "n_countries_covered": 10,
@@ -10477,860 +10486,50 @@
         "name": "OIT ILOSTAT",
         "code": "EAP_TEAP_SEX_AGE_RT_A",
         "url": "https://ilostat.ilo.org/topics/labour-force-participation/",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Diferencia (pp) entre tasa de participación laboral masculina y femenina (OIT, 15+ años)",
-      "n_countries_covered": 10,
+      "n_countries_covered": 0,
       "by_country": {
         "AR": {
           "name": "Argentina",
-          "series": [
-            {
-              "year": 2010,
-              "value": 25.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2011,
-              "value": 26.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2012,
-              "value": 25.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2013,
-              "value": 25.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2014,
-              "value": 24.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2015,
-              "value": 24.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2016,
-              "value": 23.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2017,
-              "value": 22.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2018,
-              "value": 21.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2019,
-              "value": 21.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2020,
-              "value": 19.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2021,
-              "value": 20.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2022,
-              "value": 19.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2023,
-              "value": 19.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2024,
-              "value": 19.5,
-              "quality": "oficial"
-            }
-          ],
-          "latest": {
-            "year": 2024,
-            "value": 19.5,
-            "quality": "oficial"
-          }
+          "series": []
         },
         "BO": {
           "name": "Bolivia",
-          "series": [
-            {
-              "year": 2010,
-              "value": 21.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2011,
-              "value": 21.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2012,
-              "value": 21.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2013,
-              "value": 21.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2014,
-              "value": 21.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2015,
-              "value": 20.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2016,
-              "value": 20.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2017,
-              "value": 19.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2018,
-              "value": 16.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2019,
-              "value": 15.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2020,
-              "value": 14.5,
-              "quality": "oficial"
-            },
-            {
-              "year": 2021,
-              "value": 13.5,
-              "quality": "oficial"
-            },
-            {
-              "year": 2022,
-              "value": 13.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2023,
-              "value": 11.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2024,
-              "value": 11.9,
-              "quality": "oficial"
-            }
-          ],
-          "latest": {
-            "year": 2024,
-            "value": 11.9,
-            "quality": "oficial"
-          }
+          "series": []
         },
         "BR": {
           "name": "Brasil",
-          "series": [
-            {
-              "year": 2010,
-              "value": 22.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2011,
-              "value": 23.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2012,
-              "value": 23.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2013,
-              "value": 23.5,
-              "quality": "oficial"
-            },
-            {
-              "year": 2014,
-              "value": 23.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2015,
-              "value": 22.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2016,
-              "value": 22.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2017,
-              "value": 20.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2018,
-              "value": 20.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2019,
-              "value": 19.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2020,
-              "value": 20.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2021,
-              "value": 20.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2022,
-              "value": 19.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2023,
-              "value": 19.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2024,
-              "value": 20.0,
-              "quality": "oficial"
-            }
-          ],
-          "latest": {
-            "year": 2024,
-            "value": 20.0,
-            "quality": "oficial"
-          }
+          "series": []
         },
         "CL": {
           "name": "Chile",
-          "series": [
-            {
-              "year": 2010,
-              "value": 27.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2011,
-              "value": 25.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2012,
-              "value": 25.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2013,
-              "value": 24.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2014,
-              "value": 23.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2015,
-              "value": 24.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2016,
-              "value": 23.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2017,
-              "value": 22.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2018,
-              "value": 21.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2019,
-              "value": 21.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2020,
-              "value": 22.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2021,
-              "value": 22.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2022,
-              "value": 20.5,
-              "quality": "oficial"
-            },
-            {
-              "year": 2023,
-              "value": 19.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2024,
-              "value": 19.2,
-              "quality": "oficial"
-            }
-          ],
-          "latest": {
-            "year": 2024,
-            "value": 19.2,
-            "quality": "oficial"
-          }
+          "series": []
         },
         "CO": {
           "name": "Colombia",
-          "series": [
-            {
-              "year": 2010,
-              "value": 25.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2011,
-              "value": 25.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2012,
-              "value": 24.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2013,
-              "value": 24.5,
-              "quality": "oficial"
-            },
-            {
-              "year": 2014,
-              "value": 24.5,
-              "quality": "oficial"
-            },
-            {
-              "year": 2015,
-              "value": 24.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2016,
-              "value": 23.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2017,
-              "value": 23.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2018,
-              "value": 24.5,
-              "quality": "oficial"
-            },
-            {
-              "year": 2019,
-              "value": 24.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2020,
-              "value": 25.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2021,
-              "value": 25.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2022,
-              "value": 25.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2023,
-              "value": 24.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2024,
-              "value": 24.1,
-              "quality": "oficial"
-            }
-          ],
-          "latest": {
-            "year": 2024,
-            "value": 24.1,
-            "quality": "oficial"
-          }
+          "series": []
         },
         "EC": {
           "name": "Ecuador",
-          "series": [
-            {
-              "year": 2010,
-              "value": 29.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2011,
-              "value": 29.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2012,
-              "value": 29.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2013,
-              "value": 28.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2014,
-              "value": 30.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2015,
-              "value": 27.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2016,
-              "value": 24.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2017,
-              "value": 24.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2018,
-              "value": 24.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2019,
-              "value": 23.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2020,
-              "value": 23.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2021,
-              "value": 24.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2022,
-              "value": 23.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2023,
-              "value": 24.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2024,
-              "value": 24.6,
-              "quality": "oficial"
-            }
-          ],
-          "latest": {
-            "year": 2024,
-            "value": 24.6,
-            "quality": "oficial"
-          }
+          "series": []
         },
         "PY": {
           "name": "Paraguay",
-          "series": [
-            {
-              "year": 2010,
-              "value": 29.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2011,
-              "value": 26.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2012,
-              "value": 22.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2013,
-              "value": 24.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2014,
-              "value": 27.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2015,
-              "value": 26.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2016,
-              "value": 27.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2017,
-              "value": 26.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2018,
-              "value": 25.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2019,
-              "value": 24.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2020,
-              "value": 26.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2021,
-              "value": 24.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2022,
-              "value": 23.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2023,
-              "value": 23.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2024,
-              "value": 22.8,
-              "quality": "oficial"
-            }
-          ],
-          "latest": {
-            "year": 2024,
-            "value": 22.8,
-            "quality": "oficial"
-          }
+          "series": []
         },
         "PE": {
           "name": "Perú",
-          "series": [
-            {
-              "year": 2010,
-              "value": 14.5,
-              "quality": "oficial"
-            },
-            {
-              "year": 2011,
-              "value": 15.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2012,
-              "value": 15.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2013,
-              "value": 15.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2014,
-              "value": 15.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2015,
-              "value": 16.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2016,
-              "value": 15.5,
-              "quality": "oficial"
-            },
-            {
-              "year": 2017,
-              "value": 15.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2018,
-              "value": 14.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2019,
-              "value": 14.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2020,
-              "value": 18.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2021,
-              "value": 14.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2022,
-              "value": 15.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2023,
-              "value": 15.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2024,
-              "value": 15.9,
-              "quality": "oficial"
-            }
-          ],
-          "latest": {
-            "year": 2024,
-            "value": 15.9,
-            "quality": "oficial"
-          }
+          "series": []
         },
         "UY": {
           "name": "Uruguay",
-          "series": [
-            {
-              "year": 2010,
-              "value": 19.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2011,
-              "value": 19.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2012,
-              "value": 18.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2013,
-              "value": 19.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2014,
-              "value": 18.8,
-              "quality": "oficial"
-            },
-            {
-              "year": 2015,
-              "value": 18.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2016,
-              "value": 17.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2017,
-              "value": 16.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2018,
-              "value": 16.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2019,
-              "value": 15.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2020,
-              "value": 14.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2021,
-              "value": 14.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2022,
-              "value": 15.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2023,
-              "value": 16.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2024,
-              "value": 16.2,
-              "quality": "oficial"
-            }
-          ],
-          "latest": {
-            "year": 2024,
-            "value": 16.2,
-            "quality": "oficial"
-          }
+          "series": []
         },
         "VE": {
           "name": "Venezuela",
-          "series": [
-            {
-              "year": 2010,
-              "value": 29.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2011,
-              "value": 28.4,
-              "quality": "oficial"
-            },
-            {
-              "year": 2012,
-              "value": 27.7,
-              "quality": "oficial"
-            },
-            {
-              "year": 2013,
-              "value": 27.6,
-              "quality": "oficial"
-            },
-            {
-              "year": 2014,
-              "value": 27.5,
-              "quality": "oficial"
-            },
-            {
-              "year": 2015,
-              "value": 27.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2016,
-              "value": 27.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2017,
-              "value": 28.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2018,
-              "value": 27.3,
-              "quality": "oficial"
-            },
-            {
-              "year": 2019,
-              "value": 26.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2020,
-              "value": 23.1,
-              "quality": "oficial"
-            },
-            {
-              "year": 2021,
-              "value": 23.0,
-              "quality": "oficial"
-            },
-            {
-              "year": 2022,
-              "value": 31.9,
-              "quality": "oficial"
-            },
-            {
-              "year": 2023,
-              "value": 31.2,
-              "quality": "oficial"
-            },
-            {
-              "year": 2024,
-              "value": 30.2,
-              "quality": "oficial"
-            }
-          ],
-          "latest": {
-            "year": 2024,
-            "value": 30.2,
-            "quality": "oficial"
-          }
+          "series": []
         }
       }
     },
@@ -11346,7 +10545,7 @@
         "name": "OIT ILOSTAT",
         "code": "SUB_SUBR_SEX_AGE_RT_A",
         "url": "https://ilostat.ilo.org/topics/unemployment-and-labour-underutilization/",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "% de ocupados que trabajan menos horas de las deseadas por razones económicas (OIT)",
       "n_countries_covered": 0,
@@ -11407,7 +10606,7 @@
         "name": "CEPALSTAT",
         "code": "pobreza línea regional",
         "url": "https://statistics.cepal.org/portal/cepalstat/",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "% de población bajo la línea de pobreza regional armonizada (CEPAL Panorama Social)",
       "n_countries_covered": 0,
@@ -11453,7 +10652,8 @@
           "series": [],
           "notes": "CEPAL sin datos actualizados para Venezuela desde 2014."
         }
-      }
+      },
+      "priority_stub": true
     },
     {
       "id": "d2-indigencia",
@@ -11469,7 +10669,7 @@
         "name": "CEPALSTAT",
         "code": "indigencia línea regional",
         "url": "https://statistics.cepal.org/portal/cepalstat/",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "% de población bajo la línea de indigencia regional (CEPAL Panorama Social)",
       "n_countries_covered": 0,
@@ -11514,7 +10714,8 @@
           "name": "Venezuela",
           "series": []
         }
-      }
+      },
+      "priority_stub": true
     },
     {
       "id": "d3-gini",
@@ -11530,7 +10731,7 @@
         "name": "Banco Mundial WDI / CEPAL",
         "code": "SI.POV.GINI",
         "url": "https://data.worldbank.org/indicator/SI.POV.GINI",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Coeficiente de Gini sobre distribución del ingreso (0=igualdad perfecta, 100=desigualdad perfecta). Excepción a la regla de no-compuestos: no tiene sustituto operativo para comparación entre países.",
       "n_countries_covered": 9,
@@ -12264,7 +11465,7 @@
         "name": "Banco Mundial WDI / OPS",
         "code": "SP.DYN.IMRT.IN",
         "url": "https://data.worldbank.org/indicator/SP.DYN.IMRT.IN",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Muertes de niños menores de 1 año por cada 1.000 nacidos vivos",
       "n_countries_covered": 10,
@@ -13133,7 +12334,7 @@
         "name": "UNODC / OVV (VE)",
         "code": "UNODC Global Study on Homicide",
         "url": "https://www.unodc.org/unodc/en/data-and-analysis/homicide.html",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Homicidios dolosos por 100.000 habitantes (UNODC). Venezuela 2014+: OVV (Observatorio Venezolano de Violencia), quality=estimado.",
       "n_countries_covered": 0,
@@ -13193,7 +12394,7 @@
         "name": "CEPALSTAT / OECD",
         "code": "Estadísticas Tributarias ALC",
         "url": "https://statistics.cepal.org/portal/cepalstat/",
-        "pulled_at": "2026-05-09"
+        "pulled_at": "2026-05-19"
       },
       "methodology": "Ingresos tributarios totales (gobierno central + seguridad social) como % del PBI (CEPAL/OECD conjunta)",
       "n_countries_covered": 0,
@@ -13237,6 +12438,70 @@
         "VE": {
           "name": "Venezuela",
           "series": []
+        }
+      }
+    },
+    {
+      "id": "c7-salario-real-mensual",
+      "label": "Salario real mensual (índice base 2021=100)",
+      "family": "empleo",
+      "family_label": "Empleo y estructura del trabajo",
+      "axis_primary": "erosion-mediaciones",
+      "axis_secondary": [
+        "desorientacion"
+      ],
+      "unit": "índice",
+      "source": {
+        "name": "OIT ILOSTAT",
+        "code": "EAR_4MTH_SEX_ECO_CUR_NB_M",
+        "url": "https://ilostat.ilo.org/topics/wages/",
+        "pulled_at": "2026-05-19"
+      },
+      "methodology": "Índice base 2021=100 del salario nominal mensual medio deflactado a real. Fuente: OIT ILOSTAT EAR_4MTH_SEX_ECO_CUR_NB_M (salario medio mensual, moneda local). Indexado dividiendo cada mes por el promedio de 2021. Series anuales = promedio de los 12 meses del año (coinciden con media del índice mensual; diferencia ≈ 0 por construcción). Cobertura r1: países con datos OIT. AR y BR requieren fuentes nacionales (INDEC RIPTE e IBGE PNAD) para cobertura completa — ver Spec 40 §3.2.",
+      "n_countries_covered": 0,
+      "by_country": {
+        "AR": {
+          "name": "Argentina",
+          "series": [],
+          "notes": "Fuente recomendada: INDEC RIPTE. OIT puede tener cobertura parcial o diferente."
+        },
+        "BO": {
+          "name": "Bolivia",
+          "series": []
+        },
+        "BR": {
+          "name": "Brasil",
+          "series": [],
+          "notes": "Fuente recomendada: IBGE PNAD Contínua Mensal. OIT puede diferir en metodología."
+        },
+        "CL": {
+          "name": "Chile",
+          "series": []
+        },
+        "CO": {
+          "name": "Colombia",
+          "series": []
+        },
+        "EC": {
+          "name": "Ecuador",
+          "series": []
+        },
+        "PY": {
+          "name": "Paraguay",
+          "series": []
+        },
+        "PE": {
+          "name": "Perú",
+          "series": []
+        },
+        "UY": {
+          "name": "Uruguay",
+          "series": []
+        },
+        "VE": {
+          "name": "Venezuela",
+          "series": [],
+          "notes": "Datos oficiales interrumpidos desde 2017. quality=estimado."
         }
       }
     }

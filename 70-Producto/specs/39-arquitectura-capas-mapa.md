@@ -748,6 +748,8 @@ Las 8 decisiones tácticas que estaban abiertas en r1 quedaron cerradas en r2 (d
 
 6. **Glyphs SVG concretos por capa.** El contrato fija que existan, pero el diseño visual de cada glyph se hace dentro de cada Spec 42-45 (o como bloque del design system aparte). En implementación r2, los 4 stubs pueden usar placeholders simples (un círculo o un símbolo neutral) hasta que las capas reales entren.
 
+7. **Subcapas / sub-dimensiones por capa (planteada por Tomás 2026-05-18).** Cada una de las 4 capas tiene una dimensión principal que define el color del mapa (PBI para precipitación, salario real para temperatura, etc.) pero conceptualmente puede tener **subindicadores secundarios** que enriquecen la lectura (inflación + inversión + deuda para precipitación; ratio mediano/promedio + pobreza para temperatura; etc.). El patrón es real y aplica a las 4 capas. Decisión a cerrar dentro de cada Spec 42-45 si se materializa visualmente como: (a) chips de subindicadores en el tooltip de hover, (b) sección expandida en el reading drawer, (c) controles de "vista" dentro del LayerController (ej. "precipitación · vista crecimiento" / "precipitación · vista inflación"), o combinación. Si el patrón se confirma como general, conviene extender el contrato `Layer` de Spec 39 con un campo opcional `subIndicators?: SubIndicator[]` en r3. Por ahora queda abierto a nivel de cada capa.
+
 ---
 
 ## No incluido en esta spec

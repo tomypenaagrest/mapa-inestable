@@ -14,6 +14,20 @@ Sitio web: https://mapainestable.substack.com (origen del proyecto, ahora en tra
 
 ---
 
+## Flujo de trabajo: Cowork vs VS Code
+
+El proyecto se trabaja desde dos entornos, con una división estricta de qué se hace en cada uno.
+
+**Claude Cowork — product design y documentación.** Acá se piensan ideas, se discuten decisiones de producto, se escriben briefs, se diseñan epics y se redactan specs. Toda escritura que vive en `70-Producto/` (specs, epics, design system, mockups conceptuales, arquitectura editorial) se origina o se edita desde Cowork. También viven acá los skills del plugin Mapa Inestable (`mapa-inestable.plugin`) y la conversación con esos skills.
+
+**VS Code (con Claude Code) — tecnología y coding.** Acá se implementa lo que las specs definen: cambios en `platform/frontend/`, `platform/backend/`, `platform/data/`, los scripts de `scripts/`, el sync de portadas, los pipelines de ingestión. Todo lo que es código vive acá. La conversación con Claude Code arranca leyendo la spec correspondiente y ejecuta sobre el código.
+
+**El handoff entre ambos es el archivo de spec mergeado.** Una vez que una spec queda "lista" en Cowork (estado: `lista` o `implementada-parcial`), se abre en VS Code y se ejecuta. Si durante la implementación aparecen ambigüedades, vuelven a Cowork como nueva conversación de diseño, se actualiza la spec, y la implementación retoma con el spec corregido. Nunca se cambia el diseño en VS Code sin reflejarlo en el spec correspondiente.
+
+**Regla práctica para los skills.** Los skills del plugin Mapa Inestable (analisis-semanal, despacho-semanal, agentes diarios, los futuros skills de orquestación PM) corren en Cowork. Cualquier skill que produzca código o toque `platform/` no encaja en este flujo — esas tareas se hacen leyendo el spec en VS Code.
+
+---
+
 ## Estado actual del proyecto
 
 ### Base de conocimientos (Obsidian)

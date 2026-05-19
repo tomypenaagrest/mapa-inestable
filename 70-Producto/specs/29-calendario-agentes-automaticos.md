@@ -46,14 +46,16 @@ Horarios en ART (`America/Argentina/Buenos_Aires`).
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                         RITMO SEMANAL                                    │
 ├─────────────────────────────────────────────────────────────────────────┤
-│ LUN  │ MAR  │ MIÉ  │ JUE  │ VIE              │ SÁB         │ DOM       │
-├──────┼──────┼──────┼──────┼──────────────────┼─────────────┼───────────┤
-│ daily│ daily│ daily│ daily│ daily (mañana)   │             │           │
-│      │      │      │      │                  │             │           │
-│ 09h: │      │      │      │ 17:00:           │ humano:     │ humano:   │
-│ rev. │      │      │      │ agenda-semanal   │ promote     │ escritura │
-│ pro- │      │      │      │ ×10 países       │ pendientes  │ despacho  │
-│ mote │      │      │      │ → resumen sem.   │             │           │
+│ LUN  │ MAR  │ MIÉ  │ JUE  │ VIE                │ SÁB         │ DOM     │
+├──────┼──────┼──────┼──────┼────────────────────┼─────────────┼─────────┤
+│ daily│ daily│ daily│ daily│ daily (mañana)     │             │         │
+│      │      │      │      │                    │             │         │
+│ 09h: │      │      │      │ 17:00:             │ humano:     │ humano: │
+│ rev. │      │      │      │ agenda-semanal     │ promote     │ escrit. │
+│ pro- │      │      │      │ ×10 países         │ pendientes  │ despacho│
+│ mote │      │      │      │ 18:00:             │             │         │
+│      │      │      │      │ pipeline-macro-    │             │         │
+│      │      │      │      │ refresh → resumen  │             │         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -63,6 +65,7 @@ Horarios en ART (`America/Argentina/Buenos_Aires`).
 |---|---|---|---|---|
 | Lun-Vie | 08:00 | `agente-diario` | borradores en `60-Borradores/diario/` | Revisar al pasar, sin obligación |
 | **Viernes** | **17:00** | **`agenda-semanal` × 10** | borradores en `60-Borradores/agendas/` + `_resumen-YYYY-W##.md` | — |
+| **Viernes** | **18:00** | **`pipeline-macro-refresh`** | `60-Borradores/pipeline-macro/_resumen-YYYY-W##.md` | Revisar frescura del JSON; ejecutar pipeline si es necesario |
 | Sábado | flexible | (humano) | revisa resumen semanal, comienza escritura | promote selectivo |
 | Domingo | flexible | (humano) | escritura del despacho semanal | usa agendas como capa intermedia |
 | Lunes | 09:00 | (humano) | revisión final + promote pendientes | `promover-agenda <slug>` desde Claude Code |
@@ -118,6 +121,26 @@ Horarios en ART (`America/Argentina/Buenos_Aires`).
 | Output | `15-Países/agendas/<slug>.md` con `estado: publicada` + archive del borrador en `_archive/<slug>-<fecha>.md` + marca en resumen semanal |
 | Edge case manejado | Live más reciente que borrador → pregunta antes de overwrite |
 | Estado | **Implementada** |
+
+### `pipeline-macro-refresh`
+
+| Campo | Valor |
+|---|---|
+| Spec de referencia | 40 (pipeline macro EPIC 03) |
+| Skill | `70-Producto/skills/pipeline-macro-refresh/SKILL.md` (staging) · importar a plugin desde Cowork |
+| Cadencia | Semanal, **viernes 18:00 ART** (después de agenda-semanal a 17:00) |
+| Trigger | Scheduled task de Cowork (1 instancia, no una por país) |
+| Input | `platform/data/indicators-macro/indicators-macro.json` |
+| Output | `60-Borradores/pipeline-macro/_resumen-YYYY-W##.md` |
+| Resumen | El propio archivo de output (1 archivo por semana) |
+| Promote | No aplica — la promote del JSON al frontend es manual (`cp`) |
+| Estado | **Definida en Spec 40** · scheduled task pendiente de crear en Cowork |
+
+**Qué supervisa:**
+- Frescura del JSON (`computed_at` > 7 días → alerta).
+- Cobertura de sub-anuales: `a2-crecimiento-pbi.series_trimestral` (capa precipitación) y `c7-salario-real-mensual.series_mensual` (capa temperatura).
+- Priority stubs: `d1-pobreza` y `d2-indigencia` (pendientes para capa temperatura Spec 43).
+- No ejecuta el script Python — supervisa y log.
 
 ### `analisis-semanal`
 

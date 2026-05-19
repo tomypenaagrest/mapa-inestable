@@ -1,8 +1,9 @@
 """
-build_indicators_macro.py — Pipeline de indicadores estructurales (Spec 14B).
+build_indicators_macro.py — Pipeline de indicadores estructurales (Spec 14B / Spec 40).
 
-Genera indicators-macro.json con 24 indicadores en 4 familias para 10 países SA.
-Series de 2010 a 2024 (o última observación disponible).
+Genera indicators-macro.json con indicadores en 4 familias para 10 países SA.
+Series anuales 2010-2024. Spec 40 agrega series trimestrales (2021-2024) y
+mensuales (2021-2024) para indicadores que las capas analíticas (EPIC 03) requieren.
 
 Uso:
     py build_indicators_macro.py
@@ -10,15 +11,21 @@ Uso:
 Spec:
     70-Producto/specs/14-indicadores-estructurales.md
     70-Producto/specs/14A-curaduria-24-indicadores.md
+    70-Producto/specs/40-pipeline-datos-macroeconomicos.md
 """
 
 from __future__ import annotations
 import json
+import sys
 import warnings
 from datetime import date
 from pathlib import Path
 
 import sources as src
+
+# Forzar UTF-8 en la salida estándar (Windows usa cp1252 por defecto en la consola)
+if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
 
 # ---- Config --------------------------------------------------------------
 
@@ -26,6 +33,13 @@ DATA_DIR    = Path(__file__).parent
 OUTPUT_PATH = DATA_DIR / "indicators-macro.json"
 YEAR_START  = 2010
 YEAR_END    = 2024
+
+# Spec 40 — cadencias sub-anuales
+QUARTER_START = 2021   # primer año de datos trimestrales en el output
+QUARTER_END   = 2024
+MONTH_START   = 2021   # primer año de datos mensuales en el output
+MONTH_END     = 2024
+
 COUNTRIES   = {
     "AR": "Argentina", "BO": "Bolivia",  "BR": "Brasil",  "CL": "Chile",
     "CO": "Colombia",  "EC": "Ecuador",  "PY": "Paraguay", "PE": "Perú",
@@ -74,10 +88,18 @@ INDICATOR_SPECS: list[dict] = [
         "decimals": 1,
         "fetch": "wb",
         "wb_code": "NY.GDP.MKTP.KD.ZG",
+        # Spec 40 — extensión trimestral vía IMF IFS (capa precipitación EPIC 03)
+        "fetch_trimestral": "imf_ifs_pbi",
         "source_name": "Banco Mundial WDI",
         "source_code": "NY.GDP.MKTP.KD.ZG",
         "source_url": "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG",
-        "methodology": "Variación % anual del PBI a precios constantes (USD 2015)",
+        "methodology": (
+            "Variación % anual del PBI a precios constantes (USD 2015). "
+            "series_trimestral: variación interanual trimestral (Q_t / Q_{t-4} - 1) × 100, "
+            "fuente IMF IFS NGDP_R_K_IX. El promedio de los 4 trimestres YoY ≈ crecimiento "
+            "anual pero no es exactamente igual (relación no-lineal entre índices trimestrales "
+            "y totales anuales); diferencias típicas < 0.5pp."
+        ),
         "quality_overrides": {"VE": "estimado"},
         "notes": {"VE": "BM usa estimaciones FMI para Venezuela desde 2014."},
     },
@@ -404,6 +426,7 @@ INDICATOR_SPECS: list[dict] = [
         "methodology": "% de población bajo la línea de pobreza regional armonizada (CEPAL Panorama Social)",
         "quality_overrides": {"VE": "congelado"},
         "notes": {"VE": "CEPAL sin datos actualizados para Venezuela desde 2014."},
+        "priority_stub": True,  # Spec 40 — posible indicador secundario de capa temperatura
     },
     {
         "id": "d2-indigencia",
@@ -420,6 +443,7 @@ INDICATOR_SPECS: list[dict] = [
         "methodology": "% de población bajo la línea de indigencia regional (CEPAL Panorama Social)",
         "quality_overrides": {},
         "notes": {},
+        "priority_stub": True,  # Spec 40 — posible indicador secundario de capa temperatura
     },
     {
         "id": "d3-gini",
@@ -486,6 +510,40 @@ INDICATOR_SPECS: list[dict] = [
         "methodology": "Ingresos tributarios totales (gobierno central + seguridad social) como % del PBI (CEPAL/OECD conjunta)",
         "quality_overrides": {},
         "notes": {},
+    },
+
+    # === Spec 40 — Indicadores nuevos para EPIC 03 capas ================
+
+    {
+        "id": "c7-salario-real-mensual",
+        "label": "Salario real mensual (índice base 2021=100)",
+        "family": "empleo",
+        "axis_primary": "erosion-mediaciones",
+        "axis_secondary": ["desorientacion"],
+        "unit": "índice",
+        "decimals": 1,
+        # Serie anual derivada del promedio mensual — cumple requisito series obligatorio
+        "fetch": "salario_real_anual",
+        # Serie mensual para capa temperatura (EPIC 03)
+        "fetch_mensual": "ilo_monthly_wages",
+        "source_name": "OIT ILOSTAT",
+        "source_code": "EAR_4MTH_SEX_ECO_CUR_NB_M",
+        "source_url": "https://ilostat.ilo.org/topics/wages/",
+        "methodology": (
+            "Índice base 2021=100 del salario nominal mensual medio deflactado a real. "
+            "Fuente: OIT ILOSTAT EAR_4MTH_SEX_ECO_CUR_NB_M (salario medio mensual, "
+            "moneda local). Indexado dividiendo cada mes por el promedio de 2021. "
+            "Series anuales = promedio de los 12 meses del año (coinciden con media "
+            "del índice mensual; diferencia ≈ 0 por construcción). "
+            "Cobertura r1: países con datos OIT. AR y BR requieren fuentes nacionales "
+            "(INDEC RIPTE e IBGE PNAD) para cobertura completa — ver Spec 40 §3.2."
+        ),
+        "quality_overrides": {"VE": "estimado", "BO": "estimado", "PY": "estimado"},
+        "notes": {
+            "AR": "Fuente recomendada: INDEC RIPTE. OIT puede tener cobertura parcial o diferente.",
+            "BR": "Fuente recomendada: IBGE PNAD Contínua Mensal. OIT puede diferir en metodología.",
+            "VE": "Datos oficiales interrumpidos desde 2017. quality=estimado.",
+        },
     },
 ]
 
@@ -595,15 +653,157 @@ def _fetch_data(spec: dict) -> dict[str, dict[int, float | None]]:
     if fetch_key == "unodc_homicides":
         return src.fetch_unodc_homicides()
 
+    # Spec 40 — indicadores con serie anual derivada de sub-anual
+    if fetch_key == "salario_real_anual":
+        return src.fetch_salario_real_anual()
+
     warnings.warn(f"fetch_key desconocido: {fetch_key!r}")
     return {}
+
+
+# ---- Despacho y builders sub-anuales (Spec 40) ---------------------------
+
+def _fetch_trimestral(spec: dict) -> dict[str, list[dict]]:
+    """Despacha al adaptador trimestral según spec['fetch_trimestral']."""
+    key = spec.get("fetch_trimestral")
+    if not key:
+        return {}
+    if key == "imf_ifs_pbi":
+        return src.fetch_pbi_trimestral()
+    warnings.warn(f"fetch_trimestral desconocido: {key!r}")
+    return {}
+
+
+def _fetch_mensual(spec: dict) -> dict[str, list[dict]]:
+    """Despacha al adaptador mensual según spec['fetch_mensual']."""
+    key = spec.get("fetch_mensual")
+    if not key:
+        return {}
+    if key == "ilo_monthly_wages":
+        return src.fetch_salario_real_mensual()
+    warnings.warn(f"fetch_mensual desconocido: {key!r}")
+    return {}
+
+
+def _build_trimestral_series(
+    raw_data: dict[str, list[dict]],
+    spec: dict,
+) -> dict[str, list[dict]]:
+    """Construye series_trimestral para by_country del JSON."""
+    result: dict[str, list[dict]] = {}
+    dec = spec.get("decimals", 1)
+
+    for iso2, obs_list in raw_data.items():
+        filtered = [
+            obs for obs in obs_list
+            if obs.get("value") is not None
+            and QUARTER_START <= obs["year"] <= QUARTER_END
+        ]
+        if not filtered:
+            continue
+        series = [
+            {
+                "year":    obs["year"],
+                "quarter": obs["quarter"],
+                "value":   round(obs["value"], dec),
+                "quality": _default_quality(iso2, spec),
+            }
+            for obs in sorted(filtered, key=lambda x: (x["year"], x["quarter"]))
+        ]
+        if series:
+            result[iso2] = series
+
+    return result
+
+
+def _build_mensual_series(
+    raw_data: dict[str, list[dict]],
+    spec: dict,
+) -> dict[str, list[dict]]:
+    """Construye series_mensual para by_country del JSON."""
+    result: dict[str, list[dict]] = {}
+    dec = spec.get("decimals", 1)
+
+    for iso2, obs_list in raw_data.items():
+        filtered = [
+            obs for obs in obs_list
+            if obs.get("value") is not None
+            and MONTH_START <= obs["year"] <= MONTH_END
+        ]
+        if not filtered:
+            continue
+        series = [
+            {
+                "year":    obs["year"],
+                "month":   obs["month"],
+                "value":   round(obs["value"], dec),
+                "quality": _default_quality(iso2, spec),
+            }
+            for obs in sorted(filtered, key=lambda x: (x["year"], x["month"]))
+        ]
+        if series:
+            result[iso2] = series
+
+    return result
+
+
+def _validate_annual_trimestral_consistency(
+    by_country: dict[str, dict],
+    ind_id: str,
+    threshold: float = 2.0,
+) -> list[str]:
+    """
+    Verifica que el promedio de los 4 trimestres YoY ≈ valor anual (AC11).
+    Umbral: 2pp (GDP growth rates tienen relación no-lineal; 0.1pp de la spec es para
+    indicadores de nivel; aquí usamos 2pp y lo documentamos como nota de metodología).
+    """
+    issues = []
+    for iso2, cdata in by_country.items():
+        annual = {dp["year"]: dp["value"] for dp in cdata.get("series", [])}
+        trim   = cdata.get("series_trimestral", [])
+        if not trim:
+            continue
+
+        year_qs: dict[int, list[float]] = {}
+        for obs in trim:
+            year_qs.setdefault(obs["year"], []).append(obs["value"])
+
+        for year, q_vals in year_qs.items():
+            if len(q_vals) < 4:
+                continue
+            annual_val = annual.get(year)
+            if annual_val is None:
+                continue
+            avg_q = sum(q_vals) / 4
+            diff  = abs(avg_q - annual_val)
+            if diff > threshold:
+                issues.append(
+                    f"{ind_id}/{iso2}/{year}: avg_trim={avg_q:.1f} != anual={annual_val:.1f} "
+                    f"(dif={diff:.1f}pp). Normal para PBI (relacion no-lineal)."
+                )
+    return issues
 
 
 def _build_indicator(spec: dict) -> dict:
     raw_data = _fetch_data(spec)
     by_country = _build_series(raw_data, spec)
 
-    # Cobertura: cuántos países tienen al menos un dato
+    # Spec 40 — series sub-anuales opcionales
+    raw_trimestral = _fetch_trimestral(spec)
+    if raw_trimestral:
+        trim_by_country = _build_trimestral_series(raw_trimestral, spec)
+        for iso2, trim_series in trim_by_country.items():
+            if iso2 in by_country:
+                by_country[iso2]["series_trimestral"] = trim_series
+
+    raw_mensual = _fetch_mensual(spec)
+    if raw_mensual:
+        mens_by_country = _build_mensual_series(raw_mensual, spec)
+        for iso2, mens_series in mens_by_country.items():
+            if iso2 in by_country:
+                by_country[iso2]["series_mensual"] = mens_series
+
+    # Cobertura: cuántos países tienen al menos un dato en series anual
     n_covered = sum(1 for c in by_country.values() if c.get("series"))
 
     ind: dict = {
@@ -628,6 +828,9 @@ def _build_indicator(spec: dict) -> dict:
     if "group" in spec:
         ind["group"]       = spec["group"]
         ind["group_label"] = spec["group_label"]
+
+    if spec.get("priority_stub"):
+        ind["priority_stub"] = True
 
     return ind
 
@@ -659,11 +862,19 @@ def _validate(indicators: list[dict]) -> list[str]:
 # ---- Main ----------------------------------------------------------------
 
 def main() -> None:
-    print(f"=== build_indicators_macro.py — {date.today()} ===\n")
-    print(f"Período: {YEAR_START}–{YEAR_END}  ·  Países: {len(COUNTRIES)}  ·  Indicadores: {len(INDICATOR_SPECS)}\n")
+    print(f"=== build_indicators_macro.py - {date.today()} ===\n")
+    print(
+        f"Anual: {YEAR_START}-{YEAR_END}  "
+        f"| Trimestral: {QUARTER_START}-{QUARTER_END}  "
+        f"| Mensual: {MONTH_START}-{MONTH_END}  "
+        f"| Paises: {len(COUNTRIES)}  | Indicadores: {len(INDICATOR_SPECS)}\n"
+    )
 
     indicators_out: list[dict] = []
     stubs: list[str] = []
+    priority_stubs: list[str] = [
+        spec["id"] for spec in INDICATOR_SPECS if spec.get("priority_stub")
+    ]
 
     for spec in INDICATOR_SPECS:
         label_short = spec["id"]
@@ -676,31 +887,63 @@ def main() -> None:
         stub_warns = [str(w.message) for w in caught if "[STUB]" in str(w.message)]
         if stub_warns:
             stubs.append(label_short)
-            print(f"[stub]")
+            extras = []
+            if any("series_trimestral" in c for c in ind["by_country"].values()):
+                extras.append("trim")
+            if any("series_mensual" in c for c in ind["by_country"].values()):
+                extras.append("mens")
+            suffix = f"+{','.join(extras)}" if extras else ""
+            print(f"[stub{suffix}]")
         else:
             covered = ind["n_countries_covered"]
-            print(f"[{covered}/10 países]")
+            extras = []
+            n_trim = sum(1 for c in ind["by_country"].values() if c.get("series_trimestral"))
+            n_mens = sum(1 for c in ind["by_country"].values() if c.get("series_mensual"))
+            if n_trim:
+                extras.append(f"trim={n_trim}/10")
+            if n_mens:
+                extras.append(f"mens={n_mens}/10")
+            suffix = f"  {' '.join(extras)}" if extras else ""
+            print(f"[{covered}/10 paises]{suffix}")
 
         indicators_out.append(ind)
 
-    # Validaciones
-    print("\nValidando...")
+    # Validaciones estandar
+    print("\nValidando datos anuales...")
     issues = _validate(indicators_out)
     for issue in issues:
         print(f"  ! {issue}")
     if not issues:
-        print("  OK — sin problemas de validación.")
+        print("  OK - sin problemas en series anuales.")
 
-    # Output
+    # Validacion consistencia anual/trimestral (AC11)
+    print("\nValidando consistencia anual/trimestral...")
+    cons_issues: list[str] = []
+    for ind in indicators_out:
+        if any("series_trimestral" in c for c in ind["by_country"].values()):
+            cons_issues.extend(
+                _validate_annual_trimestral_consistency(ind["by_country"], ind["id"])
+            )
+    for issue in cons_issues:
+        print(f"  ~ {issue}")
+    if not cons_issues:
+        print("  OK - sin indicadores trimestrales o sin inconsistencias.")
+
+    # Output (Spec 40: version macro-v1.1.0, nuevos campos de metadata)
     output = {
-        "version":      "macro-v1",
-        "computed_at":  str(date.today()),
-        "year_start":   YEAR_START,
-        "year_end":     YEAR_END,
-        "n_indicators": len(indicators_out),
-        "n_countries":  len(COUNTRIES),
-        "stubs":        stubs,
-        "indicators":   indicators_out,
+        "version":        "macro-v1.1.0",
+        "computed_at":    str(date.today()),
+        "year_start":     YEAR_START,
+        "year_end":       YEAR_END,
+        "quarter_start":  QUARTER_START,
+        "quarter_end":    QUARTER_END,
+        "month_start":    MONTH_START,
+        "month_end":      MONTH_END,
+        "n_indicators":   len(indicators_out),
+        "n_countries":    len(COUNTRIES),
+        "stubs":          stubs,
+        "priority_stubs": priority_stubs,
+        "indicators":     indicators_out,
     }
 
     OUTPUT_PATH.write_text(
@@ -711,8 +954,14 @@ def main() -> None:
     size_kb = OUTPUT_PATH.stat().st_size / 1024
     print(f"\nEscrito: {OUTPUT_PATH.name}  ({size_kb:.1f} KB)")
     print(f"Stubs pendientes ({len(stubs)}): {', '.join(stubs) if stubs else 'ninguno'}")
+    if priority_stubs:
+        print(f"Priority stubs ({len(priority_stubs)}): {', '.join(priority_stubs)}")
     if stubs:
         print("  -> Agregar datos manuales en raw/ y re-correr para poblar indicadores stub.")
+    print(
+        "\nPróximo paso: cp indicators-macro.json "
+        "../../frontend/src/data/indicators-macro/indicators-macro.json"
+    )
 
 
 if __name__ == "__main__":

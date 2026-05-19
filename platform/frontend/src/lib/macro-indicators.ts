@@ -10,9 +10,29 @@ export interface MacroDataPoint {
   quality: Quality;
 }
 
+/** Spec 40 — datapoint trimestral (series_trimestral opcional). */
+export interface MacroTrimestralDataPoint {
+  year: number;
+  quarter: number;
+  value: number;
+  quality: Quality;
+}
+
+/** Spec 40 — datapoint mensual (series_mensual opcional). */
+export interface MacroMensualDataPoint {
+  year: number;
+  month: number;
+  value: number;
+  quality: Quality;
+}
+
 export interface MacroCountryData {
   name: string;
   series: MacroDataPoint[];
+  /** Spec 40 — opcional, solo en indicadores con cadencia trimestral. */
+  series_trimestral?: MacroTrimestralDataPoint[];
+  /** Spec 40 — opcional, solo en indicadores con cadencia mensual. */
+  series_mensual?: MacroMensualDataPoint[];
   latest?: MacroDataPoint;
   notes?: string;
 }
@@ -44,12 +64,18 @@ export interface MacroIndicator {
 /* === METADATA ==================================================== */
 
 export const MACRO_META = {
-  version:    raw.version,
-  computed_at: raw.computed_at,
-  year_start: raw.year_start,
-  year_end:   raw.year_end,
-  stubs:      raw.stubs as string[],
-} as const;
+  version:        raw.version,
+  computed_at:    raw.computed_at,
+  year_start:     raw.year_start,
+  year_end:       raw.year_end,
+  stubs:          raw.stubs as string[],
+  // Spec 40 — campos opcionales (presentes a partir de macro-v1.1.0)
+  quarter_start:  (raw as any).quarter_start as number | undefined,
+  quarter_end:    (raw as any).quarter_end as number | undefined,
+  month_start:    (raw as any).month_start as number | undefined,
+  month_end:      (raw as any).month_end as number | undefined,
+  priority_stubs: (raw as any).priority_stubs as string[] | undefined,
+};
 
 /* === DATOS ======================================================= */
 
