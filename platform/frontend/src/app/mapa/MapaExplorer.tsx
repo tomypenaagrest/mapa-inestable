@@ -1,287 +1,258 @@
 "use client";
-import { useCallback } from "react";
+// Spec 39 — MapaExplorer rediseñado: layout 3 zonas (rail | mapa + slider | drawer on-demand)
+
+import { useCallback, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import MapaTorresGarcia from "@/components/MapaTorresGarcia";
-import { COUNTRY_NAMES } from "@/lib/country-data";
 import Link from "next/link";
+import MapaTorresGarcia from "@/components/MapaTorresGarcia";
+import LayerController   from "@/components/LayerController";
+import LayerLegend       from "@/components/LayerLegend";
+import LayerTimeSlider   from "@/components/LayerTimeSlider";
+import LayerReadingDrawer from "@/components/LayerReadingDrawer";
+import CountryModalPanel  from "@/components/CountryModalPanel";
+import { COUNTRY_NAMES } from "@/lib/country-data";
+import { LAYERS, getLayer, getGlobalDateRange, isLayerId } from "@/lib/layers";
+import type { LayerId, LayerPeriod } from "@/lib/layers";
+import type { ReadingGuides } from "@/lib/reading-guides";
+import type { CountryAgenda } from "@/lib/agendas";
+import type { WeeklyCountryData } from "@/components/MapaCentrico";
 
-const AXIS_LABELS: Record<string, string> = {
-  deculturacion:     "Deculturación",
-  mediaciones:       "Erosión de mediaciones",
-  desrepresentacion: "Desrepresentación",
-  estetizacion:      "Estetización",
-  desorientacion:    "Desorientación epistemológica",
-  atencion:          "Atención",
-};
+interface MapaExplorerProps {
+  readingGuides: ReadingGuides;
+  agendasByCountry: Record<string, CountryAgenda>;
+  weeklyCountries: WeeklyCountryData[];
+}
 
-const AXIS_KEYS = Object.keys(AXIS_LABELS);
-
-const ALL_COUNTRIES = [
-  { slug: "ar", name: "Argentina" },
-  { slug: "bo", name: "Bolivia" },
-  { slug: "br", name: "Brasil" },
-  { slug: "cl", name: "Chile" },
-  { slug: "co", name: "Colombia" },
-  { slug: "ec", name: "Ecuador" },
-  { slug: "pe", name: "Perú" },
-  { slug: "py", name: "Paraguay" },
-  { slug: "uy", name: "Uruguay" },
-  { slug: "ve", name: "Venezuela" },
-];
-
-export default function MapaExplorer() {
-  const router = useRouter();
+export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCountries }: MapaExplorerProps) {
+  const router       = useRouter();
   const searchParams = useSearchParams();
 
-  const activePais  = searchParams.getAll("pais");
-  const activeEjes  = searchParams.getAll("eje");
-  const activePeriod = searchParams.get("periodo") ?? "todos";
+  // ── Modal de país (cuando no hay capa activa) ──────────────────────────────
+  const [modalSlug, setModalSlug] = useState<string | null>(null);
 
-  function buildUrl(nextPais: string[], nextEjes: string[], period: string) {
+  // ── URL state ─────────────────────────────────────────────────────────────
+
+  const activePais    = searchParams.getAll("pais");
+  const activeEjes    = searchParams.getAll("eje");
+  const activePeriodo = searchParams.get("periodo") ?? "todos";
+
+  // Capa activa (query param ?capa=)
+  const rawCapa      = searchParams.get("capa") ?? "";
+  const activeLayerId: LayerId | null = isLayerId(rawCapa) ? rawCapa : null;
+
+  // Fecha del slider (query param ?t=) — default: defaultPeriod de la capa activa o hoy
+  const rawT = searchParams.get("t");
+  const { end: globalEnd, start: globalStart } = getGlobalDateRange();
+  const defaultSliderDate = activeLayerId
+    ? getLayer(activeLayerId).defaultPeriod.date
+    : globalEnd;
+  const sliderDate = rawT ?? defaultSliderDate;
+
+  // Drawer de guía de lectura (?guia=1)
+  const guiaOpen  = searchParams.get("guia") === "1";
+
+  // Estado local para mobile bottom sheet
+  const [mobileSheetOpen, setMobileSheetOpen] = useState(false);
+
+  // ── Helpers de URL ────────────────────────────────────────────────────────
+
+  function buildUrl(opts: {
+    pais?: string[];
+    eje?: string[];
+    periodo?: string;
+    capa?: LayerId | null;
+    t?: string;
+    guia?: boolean;
+  }) {
     const p = new URLSearchParams();
-    nextPais.forEach(s => p.append("pais", s));
-    nextEjes.forEach(e => p.append("eje", e));
-    if (period !== "todos") p.set("periodo", period);
+    const pais    = opts.pais    ?? activePais;
+    const eje     = opts.eje     ?? activeEjes;
+    const periodo = opts.periodo ?? activePeriodo;
+    const capa    = "capa"  in opts ? opts.capa    : activeLayerId;
+    const t       = "t"     in opts ? opts.t       : (rawT ?? null);
+    const guia    = "guia"  in opts ? opts.guia    : guiaOpen;
+
+    pais.forEach(s => p.append("pais", s));
+    eje.forEach(e  => p.append("eje", e));
+    if (periodo !== "todos") p.set("periodo", periodo);
+    if (capa) p.set("capa", capa);
+    if (capa && t) p.set("t", t);
+    if (guia) p.set("guia", "1");
     const q = p.toString();
     return `/mapa${q ? `?${q}` : ""}`;
   }
 
-  const togglePais = useCallback((slug: string, additive = false) => {
-    let next: string[];
-    if (additive) {
-      next = activePais.includes(slug)
-        ? activePais.filter(s => s !== slug)
-        : [...activePais, slug];
-    } else {
-      next = activePais.includes(slug) && activePais.length === 1
-        ? []
-        : [slug];
-    }
-    router.push(buildUrl(next, activeEjes, activePeriod));
-  }, [router, activePais, activeEjes, activePeriod]);
+  // ── Handlers ──────────────────────────────────────────────────────────────
 
-  const handleCountryClick = useCallback((slug: string) => {
-    togglePais(slug, false);
-  }, [togglePais]);
+  const togglePais = useCallback((slug: string) => {
+    const next = activePais.includes(slug)
+      ? activePais.filter(s => s !== slug)
+      : [...activePais, slug];
+    router.push(buildUrl({ pais: next }));
+  }, [activePais, activeEjes, activePeriodo, activeLayerId, rawT, guiaOpen]);
 
   const toggleEje = useCallback((key: string) => {
     const next = activeEjes.includes(key)
       ? activeEjes.filter(e => e !== key)
       : [...activeEjes, key];
-    router.push(buildUrl(activePais, next, activePeriod));
-  }, [router, activePais, activeEjes, activePeriod]);
+    router.push(buildUrl({ eje: next }));
+  }, [activePais, activeEjes, activePeriodo, activeLayerId, rawT, guiaOpen]);
 
-  const clearAll = useCallback(() => {
-    router.push("/mapa");
-  }, [router]);
+  const handleCountryClick = useCallback((slug: string) => {
+    if (!activeLayerId) {
+      // Sin capa: abre el modal de país (igual que el home)
+      setModalSlug(slug);
+    } else {
+      // Con capa: filtra el corpus
+      togglePais(slug);
+    }
+  }, [activeLayerId, togglePais]);
+
+  const handleLayerChange = useCallback((id: LayerId | null) => {
+    if (id === null) {
+      router.push(buildUrl({ capa: null, t: undefined, guia: false }));
+    } else {
+      const defaultT = getLayer(id).defaultPeriod.date;
+      router.push(buildUrl({ capa: id, t: defaultT, guia: false }));
+    }
+  }, [activePais, activeEjes, activePeriodo]);
+
+  const handleSliderChange = useCallback((date: string) => {
+    router.replace(buildUrl({ t: date }), { scroll: false });
+  }, [activePais, activeEjes, activePeriodo, activeLayerId, guiaOpen]);
+
+  const handleOpenGuide  = useCallback(() => router.push(buildUrl({ guia: true })),  [activePais, activeEjes, activePeriodo, activeLayerId, rawT]);
+  const handleCloseGuide = useCallback(() => router.push(buildUrl({ guia: false })), [activePais, activeEjes, activePeriodo, activeLayerId, rawT]);
+
+  const clearAll = useCallback(() => router.push("/mapa"), [router]);
+
+  // ── Capa activa + período ─────────────────────────────────────────────────
+
+  const activeLayer = activeLayerId ? getLayer(activeLayerId) : null;
+  const activePeriod: LayerPeriod | null = activeLayer
+    ? (activeLayer.getLastPeriodBefore(sliderDate) ?? null)
+    : null;
+
+  const activeLayerProps = activeLayer && activePeriod
+    ? { layer: activeLayer, period: activePeriod }
+    : undefined;
 
   const hasFilters = activePais.length > 0 || activeEjes.length > 0;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "calc(100vh - 120px)" }}>
-
-      {/* Metabar */}
+    <>
+      {/* Layout principal — llena el viewport debajo del header */}
       <div style={{
-        padding: "var(--mi-space-3) var(--mi-space-5)",
-        borderBottom: "var(--mi-border-bold)",
         display: "flex",
-        alignItems: "center",
-        gap: "var(--mi-space-3)",
-        background: "var(--mi-bg-paper)",
-        flexWrap: "wrap",
+        height: "calc(100vh - var(--mi-header-h))",
+        overflow: "hidden",
       }}>
-        <Link href="/" style={{
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: "var(--mi-text-xs)",
-          color: "var(--mi-ink-mute)",
-          letterSpacing: "0.06em",
-        }}>
-          ← Inicio
-        </Link>
-        <span style={{ color: "var(--mi-ink-mute)", fontSize: 10 }}>·</span>
-        <span style={{
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: "var(--mi-text-xs)",
-          letterSpacing: "0.06em",
-          color: "var(--mi-ink)",
-          fontWeight: 700,
-        }}>
-          Mapa
-        </span>
-        <span style={{
-          marginLeft: "auto",
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: "var(--mi-text-xs)",
-          color: "var(--mi-ink-mute)",
-        }}>
-          Click → filtrar · Shift+click → multi-select · Doble-click → ver ficha
-        </span>
-      </div>
 
-      {/* Main: mapa + sidebar */}
-      <div style={{ display: "flex", flex: 1 }}>
+        {/* ── Rail izquierdo ── */}
+        <LayerController
+          activeLayerId={activeLayerId}
+          onLayerChange={handleLayerChange}
+        />
 
-        {/* Filtros laterales sticky */}
-        <div style={{
-          width: 240,
-          flexShrink: 0,
-          borderRight: "var(--mi-border-bold)",
-          background: "var(--mi-bg-paper)",
-          padding: "var(--mi-space-4) var(--mi-space-3)",
-          position: "sticky",
-          top: 0,
-          height: "fit-content",
-          overflowY: "auto",
-          maxHeight: "100vh",
-        }}>
-          {/* Countries filter */}
+        {/* ── Área central: mapa + slider + resultados (solo si hay filtros) ── */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+
+          {/* Mapa — flex: 1, llena el espacio disponible */}
           <div style={{
-            fontFamily: "var(--mi-font-mono)",
-            fontSize: "var(--mi-text-xs)",
-            textTransform: "uppercase",
-            letterSpacing: "var(--mi-tracking-widest)",
-            color: "var(--mi-ink-mute)",
-            marginBottom: "var(--mi-space-2)",
-          }}>
-            País
-          </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--mi-space-1)", marginBottom: "var(--mi-space-4)" }}>
-            {ALL_COUNTRIES.map(c => (
-              <button
-                key={c.slug}
-                onClick={() => togglePais(c.slug)}
-                style={{
-                  fontFamily: "var(--mi-font-mono)",
-                  fontSize: 10,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  padding: "3px 8px",
-                  border: `2px solid ${activePais.includes(c.slug) ? "var(--mi-ink)" : "var(--mi-rule-soft)"}`,
-                  background: activePais.includes(c.slug) ? "var(--mi-ink)" : "transparent",
-                  color: activePais.includes(c.slug) ? "var(--mi-bg-paper)" : "var(--mi-ink-soft)",
-                  cursor: "pointer",
-                }}
-              >
-                {c.slug.toUpperCase()}
-              </button>
-            ))}
-          </div>
-
-          {/* Axes filter */}
-          <div style={{
-            fontFamily: "var(--mi-font-mono)",
-            fontSize: "var(--mi-text-xs)",
-            textTransform: "uppercase",
-            letterSpacing: "var(--mi-tracking-widest)",
-            color: "var(--mi-ink-mute)",
-            marginBottom: "var(--mi-space-2)",
-          }}>
-            Eje
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--mi-space-1)", marginBottom: "var(--mi-space-4)" }}>
-            {AXIS_KEYS.map(key => (
-              <button
-                key={key}
-                onClick={() => toggleEje(key)}
-                style={{
-                  fontFamily: "var(--mi-font-mono)",
-                  fontSize: 10,
-                  textAlign: "left",
-                  padding: "4px 8px",
-                  border: `2px solid ${activeEjes.includes(key) ? `var(--mi-axis-${key})` : "var(--mi-rule-soft)"}`,
-                  background: activeEjes.includes(key) ? `var(--mi-axis-${key})` : "transparent",
-                  color: activeEjes.includes(key) ? "white" : "var(--mi-ink-soft)",
-                  cursor: "pointer",
-                }}
-              >
-                {AXIS_LABELS[key]}
-              </button>
-            ))}
-          </div>
-
-          {/* Clear */}
-          {hasFilters && (
-            <button
-              onClick={clearAll}
-              style={{
-                width: "100%",
-                fontFamily: "var(--mi-font-mono)",
-                fontSize: 10,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                padding: "6px 8px",
-                border: "2px solid var(--mi-ink)",
-                background: "transparent",
-                color: "var(--mi-ink)",
-                cursor: "pointer",
-              }}
-            >
-              Limpiar filtros ✕
-            </button>
-          )}
-        </div>
-
-        {/* Map + results */}
-        <div style={{ flex: 1, overflow: "hidden" }}>
-          {/* Map */}
-          <div style={{
-            borderBottom: "var(--mi-border-bold)",
-            padding: "var(--mi-space-4)",
+            flex: 1,
+            position: "relative",
             background: "var(--mi-bg-cream)",
+            overflow: "hidden",
+            minHeight: 0,
           }}>
             <MapaTorresGarcia
               variant="explorer"
               filters={{ pais: activePais, eje: activeEjes }}
+              activeLayer={activeLayerProps}
               onCountryClick={handleCountryClick}
             />
-          </div>
 
-          {/* Results */}
-          <div style={{ padding: "var(--mi-space-5)" }}>
-            {hasFilters ? (
-              <ResultadosFiltrados pais={activePais} ejes={activeEjes} />
-            ) : (
-              <div style={{
-                fontFamily: "var(--mi-font-mono)",
-                fontSize: "var(--mi-text-xs)",
-                color: "var(--mi-ink-mute)",
-                letterSpacing: "0.06em",
-                textAlign: "center",
-                padding: "var(--mi-space-5)",
-              }}>
-                Hacé click en un país o un eje para filtrar el corpus
-              </div>
+            {/* Leyenda flotante — superior derecha */}
+            {activeLayer && activePeriod && (
+              <LayerLegend
+                layer={activeLayer}
+                period={activePeriod}
+                sliderDate={sliderDate}
+                onOpenReadingGuide={handleOpenGuide}
+              />
             )}
           </div>
+
+          {/* Time slider — solo cuando hay capa activa */}
+          {activeLayer && (
+            <LayerTimeSlider
+              layer={activeLayer}
+              sliderDate={sliderDate}
+              activePeriod={activePeriod}
+              onSliderChange={handleSliderChange}
+              globalStart={globalStart}
+              globalEnd={globalEnd}
+            />
+          )}
+
+          {/* Resultados — solo cuando hay filtros activos */}
+          {hasFilters && (
+            <div style={{
+              padding:    "var(--mi-space-4) var(--mi-space-5)",
+              borderTop:  "var(--mi-border-bold)",
+              overflowY:  "auto",
+              maxHeight:  "28vh",
+              background: "var(--mi-bg-paper)",
+              flexShrink: 0,
+            }}>
+              <ResultadosFiltrados pais={activePais} ejes={activeEjes} />
+            </div>
+          )}
         </div>
       </div>
-    </div>
+
+      {/* ── Modal de país (sin capa activa) ── */}
+      {modalSlug && !activeLayerId && (
+        <CountryModalPanel
+          countrySlug={modalSlug}
+          weeklyCountries={weeklyCountries}
+          agendaSummary={agendasByCountry[modalSlug]}
+          onClose={() => setModalSlug(null)}
+        />
+      )}
+
+      {/* ── Reading drawer ── */}
+      {guiaOpen && activeLayerId && (
+        <LayerReadingDrawer
+          layerId={activeLayerId}
+          readingGuides={readingGuides}
+          onClose={handleCloseGuide}
+        />
+      )}
+    </>
   );
 }
 
 // ── Resultados ───────────────────────────────────────────────────────────────
 
 function ResultadosFiltrados({ pais, ejes }: { pais: string[]; ejes: string[] }) {
-  // Placeholder — replace with real corpus query when backend is connected
   const paisLabel = pais.map(s => COUNTRY_NAMES[s] ?? s).join(", ");
   const ejeLabel  = ejes.join(", ");
 
   return (
     <div>
       <div style={{
-        fontFamily: "var(--mi-font-mono)",
-        fontSize: "var(--mi-text-xs)",
+        fontFamily:    "var(--mi-font-mono)",
+        fontSize:      "var(--mi-text-xs)",
         textTransform: "uppercase",
         letterSpacing: "var(--mi-tracking-widest)",
-        color: "var(--mi-ink-mute)",
-        marginBottom: "var(--mi-space-3)",
+        color:         "var(--mi-ink-mute)",
+        marginBottom:  "var(--mi-space-3)",
       }}>
         Resultados
         {paisLabel && ` · ${paisLabel}`}
-        {ejeLabel && ` · ${ejeLabel}`}
+        {ejeLabel  && ` · ${ejeLabel}`}
       </div>
-
-      {/* Placeholder cards — replace with real analysis cards from corpus */}
       <div style={{ color: "var(--mi-ink-mute)", fontFamily: "var(--mi-font-mono)", fontSize: "var(--mi-text-xs)" }}>
         Los resultados del corpus filtrado aparecerán aquí cuando el backend esté conectado.
         <br /><br />

@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/copy-content.js && node scripts/sync-covers.mjs",
-    "predev": "node scripts/sync-covers.mjs",
+    "prebuild": "node scripts/copy-content.js && node scripts/sync-covers.mjs && node scripts/sync-polygons.mjs",
+    "predev": "node scripts/sync-covers.mjs && node scripts/sync-polygons.mjs",
     "build": "next build",
     "start": "next start",
     "sync-covers": "node scripts/sync-covers.mjs"

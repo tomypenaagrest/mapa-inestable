@@ -11,7 +11,7 @@ const path = require("path");
 const VAULT = path.join(__dirname, "..", "..", "..");
 const OUT = path.join(__dirname, "..", "src", "content");
 
-const DIRS = ["15-Países", "60-Borradores", "30-Autores", "35-Conceptos-clave", "50-Publicaciones"];
+const DIRS = ["15-Países", "60-Borradores", "30-Autores", "35-Conceptos-clave", "50-Publicaciones", "70-Producto/lecturas-capas"];
 
 function copyMdRecursive(src, dest) {
   if (!fs.existsSync(src)) {

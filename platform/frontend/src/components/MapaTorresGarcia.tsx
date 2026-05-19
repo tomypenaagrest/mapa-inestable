@@ -1,5 +1,7 @@
 "use client";
 import { useCallback, useRef, useState } from "react";
+import polygonsJson from "@/data/paises-poligonos.json";
+import type { Layer, LayerPeriod } from "@/lib/layers";
 
 // ── Data ────────────────────────────────────────────────────────────────────
 
@@ -16,30 +18,27 @@ const COUNTRIES = [
   { slug: "ve", name: "Venezuela", capital: "Caracas",         cx: 795.3,  cy: 1166.0 },
 ] as const;
 
-// Hot-zone polygons — approximate regions in 1280×1380 SVG space.
-// Order: large countries first (lower Z-index), small countries last (higher Z-index).
-// These are editorially calibrated approximations; use herramienta-hotzones.html to refine.
-const HOTZONES: Record<string, string> = {
-  br: "413,648 460,609 527,620 521,718 658,774 694,849 811,877 887,963 891,1018 674,1046 619,1107 308,1054 344,787 449,710",
-  ar: "597,643 733,648 670,126 544,411 586,628",
-  cl: "752,690 817,679 711,114 675,101 748,677",
-  pe: "809,860 956,785 1050,882 1075,1040 992,1038",
-  co: "880,1204 881,1097 955,1071 1031,1144 1172,1174 1157,1202 1028,1213 889,1213",
-  bo: "709,693 797,696 887,788 798,868 727,859 678,784",
-  ve: "873,1205 870,1122 797,1027 717,1077 713,1169",
-  py: "705,660 681,756 528,723 536,652",
-  ec: "967,1083 986,1041 1078,1044 1192,1122 1176,1149 1061,1149",
-  uy: "480,593 572,610 550,478 489,487",
-};
+// Polígonos leídos del vault JSON (SSOT: 70-Producto/design-system/mapa/paises-poligonos.json)
+const HOTZONES: Record<string, [number, number][]> = polygonsJson as unknown as Record<string, [number, number][]>;
 
-// Analysis counts (0 = no analyses published → muted state)
-// These are placeholder values; replace with real data from the corpus.
+function pointsAttr(slug: string): string {
+  const poly = HOTZONES[slug];
+  if (!poly) return "";
+  return poly.map(([x, y]) => `${x},${y}`).join(" ");
+}
+
+// Analysis counts (placeholder — replace with real corpus data)
 const DEFAULT_ANALYSIS_COUNTS: Record<string, number> = {
   ar: 18, bo: 6, br: 15, cl: 12, co: 14,
   ec: 4,  pe: 8, py: 3,  uy: 5,  ve: 9,
 };
 
 // ── Types ────────────────────────────────────────────────────────────────────
+
+export interface ActiveLayerProps {
+  layer: Layer;
+  period: LayerPeriod;
+}
 
 export interface MapaTorresGarciaProps {
   variant: "home" | "explorer";
@@ -48,6 +47,7 @@ export interface MapaTorresGarciaProps {
     eje?: string[];
   };
   countryAnalysisCounts?: Record<string, number>;
+  activeLayer?: ActiveLayerProps;
   onCountryClick?: (slug: string) => void;
   onCountryHover?: (slug: string | null) => void;
 }
@@ -58,6 +58,7 @@ export default function MapaTorresGarcia({
   variant,
   filters,
   countryAnalysisCounts = DEFAULT_ANALYSIS_COUNTS,
+  activeLayer,
   onCountryClick,
   onCountryHover,
 }: MapaTorresGarciaProps) {
@@ -95,12 +96,35 @@ export default function MapaTorresGarcia({
     }
   }, [onCountryClick]);
 
-  // Fill color for hot-zones based on current state
+  // Computa fill y opacity de cada hotzone
   function getHotzoneStyle(slug: string): React.CSSProperties {
     const hovered = hoveredSlug === slug;
     const active  = isActive(slug);
     const empty   = isEmpty(slug);
 
+    // Con capa activa: fill viene del bucket de la capa
+    if (activeLayer) {
+      const value = activeLayer.layer.getValueForCountry(slug, activeLayer.period);
+      if (value !== null) {
+        const bucket = activeLayer.layer.legend.buckets.find(b => b.bucketIndex === value.bucketIndex);
+        const fillColor = bucket?.color ?? (activeLayer.layer.legend.noDataColor ?? "#C8B894");
+        return {
+          fill: fillColor,
+          fillOpacity: 0.55,
+          opacity: 1,
+          transition: "fill 250ms cubic-bezier(0.2,0,0,1), opacity 150ms",
+        };
+      }
+      // Sin dato
+      return {
+        fill: activeLayer.layer.legend.noDataColor ?? "#C8B894",
+        fillOpacity: 0.3,
+        opacity: 1,
+        transition: "fill 250ms cubic-bezier(0.2,0,0,1), opacity 150ms",
+      };
+    }
+
+    // Sin capa activa: comportamiento original
     const BASE_OPACITY = empty ? "0.06" : "0";
     const HOVER_HOME   = "rgba(192,83,46,0.15)";
     const HOVER_EXPL   = "rgba(192,83,46,0.20)";
@@ -127,18 +151,18 @@ export default function MapaTorresGarcia({
     };
   }
 
-  // Capital cross color
   function getCapitalStroke(slug: string): string {
     if (hoveredSlug === slug) return "var(--mi-accent-gold)";
     if (isActive(slug)) return "var(--mi-accent-gold)";
     return "#c0532e";
   }
 
-  // Capital cross background (only for active state)
   function getCapitalBg(slug: string): string {
     if (isActive(slug)) return "var(--mi-accent-gold)";
     return "transparent";
   }
+
+  const slugOrder = ["br", "ar", "cl", "pe", "co", "bo", "ve", "py", "ec", "uy"] as const;
 
   return (
     <div
@@ -171,7 +195,6 @@ export default function MapaTorresGarcia({
       </a>
 
       {/* Static artwork: Torres García SVG */}
-      {/* aria-hidden because the overlay SVG carries all semantic content */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/mapa/mapa-torres-garcia.svg"
@@ -202,22 +225,37 @@ export default function MapaTorresGarcia({
       >
         <title>Mapa de Sudamérica invertido con las 10 capitales — referencia a Torres García, América Invertida (1943)</title>
 
+        {/* Filtro Gaussian blur — aplicado al fill de capa solo cuando hay capa activa.
+            Difumina fronteras para respetar el carácter simbólico del dibujo Torres García.
+            stdDeviation 18: fronteras se difuminan sin que países chicos desaparezcan. */}
+        {activeLayer && (
+          <defs>
+            <filter id="capa-blur" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="18" />
+            </filter>
+          </defs>
+        )}
+
         {/* Hot-zone polygons — large countries first (lower Z), small last (higher Z) */}
         <g id="hotzones">
-          {(["br", "ar", "cl", "pe", "co", "bo", "ve", "py", "ec", "uy"] as const).map((slug) => {
+          {slugOrder.map((slug) => {
             const country = COUNTRIES.find(c => c.slug === slug)!;
-            const count = countryAnalysisCounts[slug] ?? 0;
+            const count   = countryAnalysisCounts[slug] ?? 0;
+            const pts     = pointsAttr(slug);
+            if (!pts) return null;
             return (
               <polygon
                 key={slug}
                 id={`hot-${slug}`}
-                points={HOTZONES[slug]}
+                points={pts}
                 style={{
                   ...getHotzoneStyle(slug),
                   cursor: "pointer",
                   stroke: hoveredSlug === slug || isActive(slug) ? "rgba(192,83,46,0.4)" : "transparent",
                   strokeWidth: 1.5,
                   outline: "none",
+                  // Aplica blur al fill de capa; NO en hover/active sin capa ni en home
+                  filter: activeLayer ? "url(#capa-blur)" : undefined,
                 }}
                 tabIndex={0}
                 role="button"
@@ -238,15 +276,14 @@ export default function MapaTorresGarcia({
           })}
         </g>
 
-
-        {/* Interactive capital markers — overlay on top of static SVG capitals */}
+        {/* Interactive capital markers — siempre encima de cualquier capa */}
         <g id="capitals-interactive" aria-hidden="true">
           {COUNTRIES.map((c) => {
-            const empty = isEmpty(c.slug);
-            const active = isActive(c.slug);
+            const empty   = isEmpty(c.slug);
+            const active  = isActive(c.slug);
             const hovered = hoveredSlug === c.slug;
-            const stroke = getCapitalStroke(c.slug);
-            const bg = getCapitalBg(c.slug);
+            const stroke  = getCapitalStroke(c.slug);
+            const bg      = getCapitalBg(c.slug);
 
             return (
               <g
@@ -254,7 +291,6 @@ export default function MapaTorresGarcia({
                 transform={`translate(${c.cx} ${c.cy})`}
                 style={{ opacity: empty ? 0.5 : 1, transition: "opacity 150ms" }}
               >
-                {/* Active state background */}
                 {(active || hovered) && (
                   <rect
                     x="-20" y="-20"
@@ -263,10 +299,6 @@ export default function MapaTorresGarcia({
                     style={{ transition: "fill 150ms" }}
                   />
                 )}
-                {/* New-analysis dot (top-right) — placeholder, hook up to lastVisit logic */}
-                {/* Followed dot (bottom-left) — placeholder, hook up to localStorage */}
-
-                {/* Cross lines — rendered on top of the static SVG crosses */}
                 <line
                   x1="-14" y1="-14" x2="14" y2="14"
                   stroke={stroke}

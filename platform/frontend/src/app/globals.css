@@ -438,6 +438,18 @@ img, svg {
   padding: 1px 4px;
 }
 
+/* === READING GUIDE (Spec 39 — drawer de guía de lectura de capa) ========= */
+
+.mi-reading-guide h1 { font-family: var(--mi-font-mono); font-size: var(--mi-text-xs); letter-spacing: var(--mi-tracking-widest); text-transform: uppercase; color: var(--mi-ink-mute); margin: var(--mi-space-4) 0 var(--mi-space-2); padding-bottom: var(--mi-space-1); border-bottom: var(--mi-border-dashed); }
+.mi-reading-guide h2 { font-family: var(--mi-font-mono); font-size: var(--mi-text-xs); letter-spacing: var(--mi-tracking-widest); text-transform: uppercase; color: var(--mi-ink-mute); margin: var(--mi-space-4) 0 var(--mi-space-2); padding-bottom: var(--mi-space-1); border-bottom: var(--mi-border-dashed); }
+.mi-reading-guide p  { margin-bottom: var(--mi-space-3); line-height: var(--mi-leading-relaxed); color: var(--mi-ink-soft); }
+.mi-reading-guide ul, .mi-reading-guide ol { padding-left: var(--mi-space-4); margin-bottom: var(--mi-space-3); }
+.mi-reading-guide li { line-height: var(--mi-leading-relaxed); color: var(--mi-ink-soft); margin-bottom: 2px; }
+.mi-reading-guide strong { font-weight: 700; color: var(--mi-ink); }
+.mi-reading-guide a  { color: var(--mi-ink); border-bottom: 1px solid var(--mi-rule-soft); }
+.mi-reading-guide a:hover { border-bottom-color: var(--mi-ink); }
+.mi-reading-guide code { font-family: var(--mi-font-mono); font-size: 0.9em; background: var(--mi-bg-cream); padding: 1px 4px; }
+
 /* Secciones colapsables */
 .mi-details {
   border: var(--mi-border-thick);

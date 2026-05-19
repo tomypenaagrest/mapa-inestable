@@ -62,6 +62,31 @@ export default function HomePage() {
         />
       </div>
 
+      {/* CTA capas analíticas — Spec 39 */}
+      <div style={{
+        padding:       "var(--mi-space-3) var(--mi-space-5)",
+        borderBottom:  "var(--mi-border-bold)",
+        background:    "var(--mi-bg-paper)",
+        display:       "flex",
+        alignItems:    "center",
+        justifyContent:"space-between",
+        gap:           "var(--mi-space-3)",
+        flexWrap:      "wrap",
+      }}>
+        <span style={{
+          fontFamily:    "var(--mi-font-mono)",
+          fontSize:      "var(--mi-text-xs)",
+          color:         "var(--mi-ink-mute)",
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+        }}>
+          Cuatro capas sobre el mapa: viento, temperatura, presión, precipitación
+        </span>
+        <Link href="/mapa" className="mi-btn mi-btn--ghost">
+          Explorar capas analíticas →
+        </Link>
+      </div>
+
       {/* ── POST-FOLD SUPERIOR ──────────────────────────────────── */}
 
       {/* Bloque "Esta semana" — debajo del mapa */}
