@@ -1,7 +1,7 @@
 ---
 spec: 41
 titulo: Pipeline de datos políticos para capa viento — MVP coding editorial manual
-estado: borrador-r2
+estado: implementada
 autor: Tomás (con Claude · Cowork)
 fecha: 2026-05-18
 revision: 2026-05-19 (r2) — cerradas las 6 decisiones tácticas abiertas en r1

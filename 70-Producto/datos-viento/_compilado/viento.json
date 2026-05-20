@@ -1,0 +1,67 @@
+{
+  "version": "viento-v1.0.0",
+  "computed_at": "2026-05-20T20:29:38.705Z",
+  "range": {
+    "start_week": {
+      "year": 2026,
+      "week": 18
+    },
+    "end_week": {
+      "year": 2026,
+      "week": 19
+    }
+  },
+  "by_country": {
+    "ar": {
+      "name": "Argentina",
+      "series_semanal": [
+        {
+          "year": 2026,
+          "week": 18,
+          "rank": 3,
+          "direccion": "pro-mercado",
+          "intensidad": 0.85,
+          "justificativo": "Argentina completó la segunda revisión del acuerdo con el FMI con calificación positiva, liberó restricciones cambiarias adicionales para operaciones financieras y el Ejecutivo envió al Congreso el proyecto de presupuesto con superávit primario proyectado del 1.5% del PBI para 2027. La dirección pro-mercado fue consistente y sin señales de contrapeso en la semana.",
+          "eventos": [
+            "Aprobación de segunda revisión FMI con desembolso de USD 1.200M (FMI, 2026-04-29) ↑ pro-mercado",
+            "Liberación de cepo cambiario para personas jurídicas no financieras (BCRA Comunicación A 7982, 2026-04-30) ↑ pro-mercado",
+            "Presentación de presupuesto 2027 con meta de superávit primario 1.5% PBI (Mecon, 2026-05-01) ↑ pro-mercado",
+            "Sin novedades en gasto social ni regulaciones sectoriales nuevas → neutro"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-01"
+        },
+        {
+          "year": 2026,
+          "week": 19,
+          "rank": 1,
+          "direccion": "pro-mercado",
+          "intensidad": 0.4,
+          "justificativo": "Semana de relativa calma normativa. El gobierno no introdujo medidas nuevas de desregulación ni ajuste adicional. Declaraciones del Ministro de Economía reafirmaron el camino del superávit pero sin acciones materiales. Rank baja respecto a W18 porque el movimiento efectivo de la semana fue menor — la orientación pro-mercado sigue presente en el discurso pero no hubo movimientos materiales nuevos.",
+          "eventos": [
+            "Declaraciones del Ministro de Economía ratificando compromisos FMI (Infobae, 2026-05-06) → neutro (discurso sin acción)",
+            "Licitación de bonos CER con buena demanda (BCRA, 2026-05-07) ↑ leve pro-mercado",
+            "Sin nuevas regulaciones sectoriales ni decretos de desregulación"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-08"
+        }
+      ],
+      "latest": {
+        "year": 2026,
+        "week": 19,
+        "rank": 1,
+        "direccion": "pro-mercado",
+        "intensidad": 0.4,
+        "justificativo": "Semana de relativa calma normativa. El gobierno no introdujo medidas nuevas de desregulación ni ajuste adicional. Declaraciones del Ministro de Economía reafirmaron el camino del superávit pero sin acciones materiales. Rank baja respecto a W18 porque el movimiento efectivo de la semana fue menor — la orientación pro-mercado sigue presente en el discurso pero no hubo movimientos materiales nuevos.",
+        "eventos": [
+          "Declaraciones del Ministro de Economía ratificando compromisos FMI (Infobae, 2026-05-06) → neutro (discurso sin acción)",
+          "Licitación de bonos CER con buena demanda (BCRA, 2026-05-07) ↑ leve pro-mercado",
+          "Sin nuevas regulaciones sectoriales ni decretos de desregulación"
+        ],
+        "codificador": "tomas",
+        "fecha_coding": "2026-05-08"
+      }
+    }
+  }
+}

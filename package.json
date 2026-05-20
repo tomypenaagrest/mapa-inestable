@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "promote-draft":  "node scripts/promote-draft.mjs",
-    "promote-agenda": "node scripts/promote-agenda.mjs"
+    "promote-agenda": "node scripts/promote-agenda.mjs",
+    "build-viento":   "node platform/data/coding-viento/build_viento.mjs",
+    "build-viento:dry": "node platform/data/coding-viento/build_viento.mjs --dry-run"
   },
   "dependencies": {
     "gray-matter": "^4.0.3"
