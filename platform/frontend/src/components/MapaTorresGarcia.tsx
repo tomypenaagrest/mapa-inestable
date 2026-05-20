@@ -3,6 +3,129 @@ import { useCallback, useRef, useState } from "react";
 import polygonsJson from "@/data/paises-poligonos.json";
 import type { Layer, LayerPeriod } from "@/lib/layers";
 
+// ── Tooltip ───────────────────────────────────────────────────────────────────
+
+interface TooltipState {
+  slug: string;
+  name: string;
+  x: number;
+  y: number;
+}
+
+function LayerTooltip({
+  tooltip,
+  activeLayer,
+  period,
+}: {
+  tooltip: TooltipState;
+  activeLayer: { layer: Layer; period: LayerPeriod };
+  period: LayerPeriod;
+}) {
+  const value = activeLayer.layer.getValueForCountry(tooltip.slug, period);
+  const isRecesion = value && value.raw < -0.5;
+  const isCrecimiento = value && value.raw > 0.5;
+
+  const LEFT_OFFSET = 12;
+  const TOP_OFFSET  = -60;
+
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        left: tooltip.x + LEFT_OFFSET,
+        top: tooltip.y + TOP_OFFSET,
+        width: 220,
+        background: "var(--mi-bg-paper)",
+        border: "var(--mi-border-bold)",
+        boxShadow: "4px 4px 0 var(--mi-ink)",
+        padding: "var(--mi-space-2) var(--mi-space-3)",
+        pointerEvents: "none",
+        zIndex: 20,
+      }}
+    >
+      {/* Sello + nombre */}
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--mi-space-1)", marginBottom: 4 }}>
+        <span style={{
+          fontFamily: "var(--mi-font-mono)",
+          fontSize: 9,
+          fontWeight: 700,
+          letterSpacing: "0.1em",
+          color: "var(--mi-ink)",
+          background: "var(--mi-rule-soft)",
+          padding: "2px 5px",
+        }}>
+          {tooltip.slug.toUpperCase()}
+        </span>
+        <span style={{
+          fontFamily: "var(--mi-font-display)",
+          fontSize: "var(--mi-text-sm)",
+          color: "var(--mi-ink)",
+          lineHeight: 1.1,
+        }}>
+          {tooltip.name}
+        </span>
+      </div>
+
+      {/* Período */}
+      <div style={{
+        fontFamily: "var(--mi-font-mono)",
+        fontSize: 8,
+        color: "var(--mi-ink-mute)",
+        letterSpacing: "0.06em",
+        marginBottom: 6,
+      }}>
+        {period.label} · PBI
+      </div>
+
+      {/* Valor */}
+      {value ? (
+        <>
+          <div style={{
+            fontFamily: "var(--mi-font-display)",
+            fontSize: "var(--mi-text-xl)",
+            lineHeight: 1,
+            color: isRecesion
+              ? "var(--mi-precipitacion-3)"
+              : isCrecimiento
+                ? "var(--mi-ink)"
+                : "var(--mi-ink-mute)",
+          }}>
+            {value.raw >= 0 ? "+" : ""}{value.raw.toFixed(1)}%
+          </div>
+          <div style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: 8,
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
+            color: isRecesion ? "var(--mi-precipitacion-3)" : "var(--mi-ink-mute)",
+            marginTop: 2,
+          }}>
+            {isRecesion ? "recesión" : isCrecimiento ? "crecimiento" : "sin cambio"}
+          </div>
+        </>
+      ) : (
+        <div style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-mute)" }}>
+          Sin dato
+        </div>
+      )}
+
+      {/* CTA */}
+      <div style={{
+        fontFamily: "var(--mi-font-mono)",
+        fontSize: 8,
+        color: "var(--mi-ink-mute)",
+        marginTop: 6,
+        borderTop: "1px solid var(--mi-rule-soft)",
+        paddingTop: 4,
+        letterSpacing: "0.04em",
+      }}>
+        Click · abrir análisis →
+      </div>
+    </div>
+  );
+}
+
 // ── Data ────────────────────────────────────────────────────────────────────
 
 const COUNTRIES = [
@@ -64,23 +187,41 @@ export default function MapaTorresGarcia({
 }: MapaTorresGarciaProps) {
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const activePais = filters?.pais ?? [];
 
   const isActive = (slug: string) => activePais.includes(slug);
   const isEmpty   = (slug: string) => (countryAnalysisCounts[slug] ?? 0) === 0;
 
-  const handleMouseEnter = useCallback((slug: string) => {
+  const handleMouseEnter = useCallback((slug: string, e: React.MouseEvent) => {
     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    const country = COUNTRIES.find(c => c.slug === slug);
+    const rect = containerRef.current?.getBoundingClientRect();
+    const x = rect ? e.clientX - rect.left : e.clientX;
+    const y = rect ? e.clientY - rect.top  : e.clientY;
     hoverTimerRef.current = setTimeout(() => {
       setHoveredSlug(slug);
+      if (activeLayer && country) {
+        setTooltip({ slug, name: country.name, x, y });
+      }
       onCountryHover?.(slug);
     }, 200);
-  }, [onCountryHover]);
+  }, [onCountryHover, activeLayer]);
+
+  const handleMouseMove = useCallback((slug: string, e: React.MouseEvent) => {
+    if (!activeLayer) return;
+    const rect = containerRef.current?.getBoundingClientRect();
+    const x = rect ? e.clientX - rect.left : e.clientX;
+    const y = rect ? e.clientY - rect.top  : e.clientY;
+    setTooltip(prev => prev?.slug === slug ? { ...prev, x, y } : prev);
+  }, [activeLayer]);
 
   const handleMouseLeave = useCallback(() => {
     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
     setHoveredSlug(null);
+    setTooltip(null);
     onCountryHover?.(null);
   }, [onCountryHover]);
 
@@ -166,6 +307,7 @@ export default function MapaTorresGarcia({
 
   return (
     <div
+      ref={containerRef}
       style={{
         position: "relative",
         width: "100%",
@@ -223,8 +365,6 @@ export default function MapaTorresGarcia({
         role="img"
         aria-label="Mapa interactivo de Sudamérica invertido"
       >
-        <title>Mapa de Sudamérica invertido con las 10 capitales — referencia a Torres García, América Invertida (1943)</title>
-
         {/* Filtro Gaussian blur — aplicado al fill de capa solo cuando hay capa activa.
             Difumina fronteras para respetar el carácter simbólico del dibujo Torres García.
             stdDeviation 18: fronteras se difuminan sin que países chicos desaparezcan. */}
@@ -260,7 +400,8 @@ export default function MapaTorresGarcia({
                 tabIndex={0}
                 role="button"
                 aria-label={`${country.name}${count > 0 ? `, ${count} análisis publicados` : ", sin análisis publicados"}`}
-                onMouseEnter={() => handleMouseEnter(slug)}
+                onMouseEnter={(e) => handleMouseEnter(slug, e)}
+                onMouseMove={(e) => handleMouseMove(slug, e)}
                 onClick={() => handleClick(slug)}
                 onKeyDown={(e) => handleKeyDown(e, slug)}
                 onFocus={() => {
@@ -318,6 +459,15 @@ export default function MapaTorresGarcia({
           })}
         </g>
       </svg>
+
+      {/* Tooltip on-hover A.4 — solo cuando hay capa activa */}
+      {tooltip && activeLayer && (
+        <LayerTooltip
+          tooltip={tooltip}
+          activeLayer={activeLayer}
+          period={activeLayer.period}
+        />
+      )}
     </div>
   );
 }

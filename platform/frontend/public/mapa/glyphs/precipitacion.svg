@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Nube con gotas de lluvia — precipitación / crecimiento económico -->
-  <path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"/>
-  <line x1="8" y1="19" x2="8" y2="21"/>
-  <line x1="12" y1="17" x2="12" y2="21"/>
-  <line x1="16" y1="19" x2="16" y2="21"/>
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 22 Q8 14 16 13 Q18 8 26 10 Q34 8 36 16 Q42 16 40 24 L10 24 Z"/>
+  <line x1="16" y1="30" x2="14" y2="36"/>
+  <line x1="24" y1="30" x2="22" y2="38"/>
+  <line x1="32" y1="30" x2="30" y2="36"/>
 </svg>

@@ -125,6 +125,9 @@ export default function LayerLegend({ layer, period, sliderDate, onOpenReadingGu
                   lineHeight: 1.3,
                 }}>
                   {b.label}
+                  {b.rangeDescription && (
+                    <span style={{ color: "var(--mi-ink-mute)" }}> · {b.rangeDescription}</span>
+                  )}
                 </span>
               </div>
             ))}
@@ -147,6 +150,33 @@ export default function LayerLegend({ layer, period, sliderDate, onOpenReadingGu
               </span>
             </div>
           </div>
+
+          {/* Dirección — B.4: solo para capas continuous, aclara que color = magnitud */}
+          {layer.legend.type === "continuous" && (
+            <div style={{
+              padding: "var(--mi-space-1) var(--mi-space-2)",
+              borderTop: "1px solid var(--mi-rule-soft)",
+            }}>
+              <div style={{
+                fontFamily: "var(--mi-font-mono)",
+                fontSize: 8,
+                color: "var(--mi-ink-mute)",
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                marginBottom: 3,
+              }}>
+                Dirección
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-soft)" }}>
+                  + crecimiento · color = magnitud
+                </span>
+                <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-mute)" }}>
+                  − recesión · mismo color · ver tooltip
+                </span>
+              </div>
+            </div>
+          )}
 
           {/* Fuente */}
           <div style={{

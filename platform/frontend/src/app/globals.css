@@ -106,6 +106,15 @@
   --mi-axis-desorientacion:    #2D4A6B;
   --mi-axis-atencion:          #C8993E;
   --mi-axis-contexto:          #5C6638;
+
+  /* Spec 42 — Capa Precipitación: escala secuencial gris (nubosidad — más oscuro = más precipitación) */
+  --mi-precipitacion-0: #e0e0e0;  /* sin cambio · cielo casi despejado */
+  --mi-precipitacion-1: #ababab;  /* leve       · nubes ligeras        */
+  --mi-precipitacion-2: #787878;  /* moderado   · nublado              */
+  --mi-precipitacion-3: #4a4a4a;  /* fuerte     · nubes de tormenta    */
+  --mi-precipitacion-4: #1e1e1e;  /* extremo    · tormenta             */
+  --mi-precipitacion-nodata: var(--mi-ink-mute);
+  --mi-precipitacion-stale:  var(--mi-rule-soft);
 }
 
 /* === SPEC 34B — utilidades columna análisis ====================== */

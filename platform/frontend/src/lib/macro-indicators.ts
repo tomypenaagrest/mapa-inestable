@@ -144,3 +144,17 @@ export function formatMacroValue(ind: MacroIndicator, value: number): string {
 export function hasData(ind: MacroIndicator, iso2: string): boolean {
   return (ind.by_country[iso2]?.series?.length ?? 0) > 0;
 }
+
+/** Devuelve un indicador por su id (lanza si no existe). */
+export function getIndicator(id: string): MacroIndicator {
+  const ind = MACRO_INDICATORS.find(i => i.id === id);
+  if (!ind) throw new Error(`Indicador no encontrado: ${id}`);
+  return ind;
+}
+
+/** Devuelve los datos de un país para un indicador dado (slug en minúsculas → ISO2 mayúsculas). */
+export function getByCountry(indicatorId: string, countrySlug: string): MacroCountryData | null {
+  const ind = getIndicator(indicatorId);
+  const iso2 = countrySlug.toUpperCase();
+  return ind.by_country[iso2] ?? null;
+}

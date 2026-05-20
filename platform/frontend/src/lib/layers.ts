@@ -46,6 +46,18 @@ export interface LayerValue {
   quality: LayerQuality;
 }
 
+/** Spec 42 — Sub-indicador asociado a una capa. Enriquece sin reemplazar el indicador principal. */
+export interface LayerSubIndicator {
+  slug: string;
+  label: string;
+  unit: string;
+  /** Si true, un valor más alto es peor (inflación, deuda). Afecta el color de la sparkline en el drawer. */
+  invertGood?: boolean;
+  getValueForCountry(countrySlug: string, period: LayerPeriod): LayerValue | null;
+  /** Devuelve hasta 8 puntos históricos anuales para la sparkline. */
+  getSeries(countrySlug: string): Array<{ key: string; value: number; quality: LayerQuality }>;
+}
+
 export interface Layer {
   id: LayerId;
   label: string;
@@ -62,6 +74,10 @@ export interface Layer {
   getValueForCountry(countrySlug: string, period: LayerPeriod): LayerValue | null;
   getLastPeriodBefore(date: string): LayerPeriod | null;
   readingGuideSlug: string;
+  /** Spec 42 — Sub-indicadores opcionales que enriquecen la lectura del drawer. */
+  subIndicators?: LayerSubIndicator[];
+  /** Spec 42 — Texto editorial curado por país (piloto). Slug en minúsculas → párrafo HTML. */
+  editorialByCountry?: Record<string, string>;
 }
 
 // ── Registry ──────────────────────────────────────────────────────────────────

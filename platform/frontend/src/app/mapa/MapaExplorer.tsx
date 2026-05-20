@@ -9,9 +9,10 @@ import LayerController   from "@/components/LayerController";
 import LayerLegend       from "@/components/LayerLegend";
 import LayerTimeSlider   from "@/components/LayerTimeSlider";
 import LayerReadingDrawer from "@/components/LayerReadingDrawer";
+import type { ActiveCountryForLayer } from "@/components/LayerReadingDrawer";
 import CountryModalPanel  from "@/components/CountryModalPanel";
 import { COUNTRY_NAMES } from "@/lib/country-data";
-import { LAYERS, getLayer, getGlobalDateRange, isLayerId } from "@/lib/layers";
+import { getLayer, getGlobalDateRange, isLayerId } from "@/lib/layers";
 import type { LayerId, LayerPeriod } from "@/lib/layers";
 import type { ReadingGuides } from "@/lib/reading-guides";
 import type { CountryAgenda } from "@/lib/agendas";
@@ -29,6 +30,9 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
 
   // ── Modal de país (cuando no hay capa activa) ──────────────────────────────
   const [modalSlug, setModalSlug] = useState<string | null>(null);
+
+  // ── País seleccionado en modo capa (A.4) ──────────────────────────────────
+  const [layerCountry, setLayerCountry] = useState<string | null>(null);
 
   // ── URL state ─────────────────────────────────────────────────────────────
 
@@ -100,15 +104,16 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
 
   const handleCountryClick = useCallback((slug: string) => {
     if (!activeLayerId) {
-      // Sin capa: abre el modal de país (igual que el home)
+      // Sin capa: abre el modal de país
       setModalSlug(slug);
     } else {
-      // Con capa: filtra el corpus
-      togglePais(slug);
+      // Con capa: abre el drawer A.4 con datos del país
+      setLayerCountry(prev => prev === slug ? null : slug);
     }
-  }, [activeLayerId, togglePais]);
+  }, [activeLayerId]);
 
   const handleLayerChange = useCallback((id: LayerId | null) => {
+    setLayerCountry(null);
     if (id === null) {
       router.push(buildUrl({ capa: null, t: undefined, guia: false }));
     } else {
@@ -221,8 +226,23 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
         />
       )}
 
-      {/* ── Reading drawer ── */}
-      {guiaOpen && activeLayerId && (
+      {/* ── Drawer de país con capa activa (A.4) ── */}
+      {layerCountry && activeLayer && activePeriod && (
+        <LayerReadingDrawer
+          layerId={activeLayerId!}
+          readingGuides={readingGuides}
+          onClose={() => setLayerCountry(null)}
+          activeCountry={{
+            layer: activeLayer,
+            countrySlug: layerCountry,
+            countryName: COUNTRY_NAMES[layerCountry] ?? layerCountry,
+            period: activePeriod,
+          }}
+        />
+      )}
+
+      {/* ── Reading drawer genérico (guía de lectura) ── */}
+      {guiaOpen && activeLayerId && !layerCountry && (
         <LayerReadingDrawer
           layerId={activeLayerId}
           readingGuides={readingGuides}
