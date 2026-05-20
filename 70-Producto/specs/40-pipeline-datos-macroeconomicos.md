@@ -15,7 +15,7 @@ afecta:
   - platform/frontend/src/lib/layers/precipitacion.ts (consume PBI trimestral del JSON)
   - platform/frontend/src/lib/layers/temperatura.ts (consume salario real mensual del JSON)
   - 70-Producto/specs/29-calendario-agentes-automaticos.md (agregar entrada de pipeline-macro-refresh)
-  - mapa-inestable.plugin/skills/pipeline-macro-refresh/ (NUEVO skill supervisor)
+  - 70-Producto/skills/pipeline-macro-refresh/ (NUEVO skill supervisor)
 depende_de: [14, 14A, 39]
 depende_blanda_de: [29]
 relaciona_con:
@@ -295,7 +295,7 @@ Coherente con Spec 29 (calendario de agentes), se crea un skill nuevo del plugin
 
 **Skill `pipeline-macro-refresh`:**
 
-- Vive en `mapa-inestable.plugin/skills/pipeline-macro-refresh/SKILL.md`.
+- Vive en `70-Producto/skills/pipeline-macro-refresh/SKILL.md`.
 - Activación: scheduled task (ver abajo) o manual ("refrescá el pipeline macro").
 - **Dónde corre (decisión #10 r2):** el script Python `build_indicators_macro.py` se ejecuta en el **sandbox bash de Cowork**, disparado por el skill. El skill orquesta + el sandbox ejecuta. Requiere que el sandbox tenga network access para llamar a la API del Banco Mundial. Validar en implementación.
   - Fallback si el sandbox no puede ejecutar Python con network access: el skill solo supervisa (chequea frescura del JSON actual, detecta atraso), Tomás corre el script manualmente en su laptop y commitea. Decisión cae en implementación si el camino primario falla.
@@ -384,7 +384,7 @@ Esta spec no impone el código de cada capa — eso lo hace cada Spec 42-43. Per
 | `platform/data/indicators-macro/README.md` | ACTUALIZAR — documentar contrato público, cadencia de refresh, política de versionado, dónde leer el CHANGELOG |
 | `platform/data/indicators-macro/CHANGELOG.md` | NUEVO — versionado semver del JSON, entrada inicial documenta el bump de Spec 40 |
 | `platform/frontend/src/lib/macro-indicators.ts` | EXTENDER — agregar tipos `series_trimestral?` y `series_mensual?` al `MacroCountryData` |
-| `mapa-inestable.plugin/skills/pipeline-macro-refresh/SKILL.md` | NUEVO — skill supervisor (ver §7) |
+| `70-Producto/skills/pipeline-macro-refresh/SKILL.md` | NUEVO — skill supervisor (ver §7) |
 | `60-Borradores/pipeline-macro/` | NUEVO directorio del vault — donde el skill deja los `_resumen-YYYY-W##.md` |
 | `70-Producto/specs/29-calendario-agentes-automaticos.md` | ACTUALIZAR — agregar entrada de `pipeline-macro-refresh` viernes 18:00 ART |
 

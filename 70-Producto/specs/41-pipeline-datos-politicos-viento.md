@@ -14,7 +14,7 @@ afecta:
   - platform/frontend/src/data/coding-viento/viento.json (sync del compilado para consumo del frontend)
   - platform/frontend/src/lib/viento.ts (NUEVO — tipos + helpers para leer el JSON)
   - platform/frontend/src/lib/layers/viento.ts (consumirá del nuevo lib en Spec 44)
-  - mapa-inestable.plugin/skills/coding-viento/ (NUEVO skill que asiste el coding semanal)
+  - 70-Producto/skills/coding-viento/ (NUEVO skill que asiste el coding semanal)
   - 70-Producto/specs/29-calendario-agentes-automaticos.md (agregar entrada de coding-viento)
 depende_de: [39]
 depende_blanda_de: [29, 27]
@@ -180,7 +180,7 @@ La intensidad (opcional, 0-1) modula visualmente: un rank +2 con intensidad 0.9 
 
 ### 2. Skill `coding-viento` (asiste el coding semanal)
 
-Vive en `mapa-inestable.plugin/skills/coding-viento/SKILL.md`. Cumple un rol equivalente al de los otros skills editoriales del plugin (analisis-semanal, despacho-semanal).
+Vive en `70-Producto/skills/coding-viento/SKILL.md`. Cumple un rol equivalente al de los otros skills editoriales del plugin (analisis-semanal, despacho-semanal).
 
 **Activación:**
 
@@ -351,7 +351,7 @@ Si el editor no codifica una semana, los borradores quedan en `estado: borrador`
 | `platform/data/coding-viento/README.md` | NUEVO |
 | `platform/frontend/src/data/coding-viento/viento.json` | NUEVO — copia sincronizada del compilado para consumo del frontend |
 | `platform/frontend/src/lib/viento.ts` | NUEVO — tipos + helpers para leer el JSON |
-| `mapa-inestable.plugin/skills/coding-viento/SKILL.md` | NUEVO skill (ver §2) |
+| `70-Producto/skills/coding-viento/SKILL.md` | NUEVO skill (ver §2) |
 | `70-Producto/specs/29-calendario-agentes-automaticos.md` | ACTUALIZAR — agregar entradas viernes 16:00 (recordatorio) + viernes 19:00 (build) |
 
 ---
@@ -453,7 +453,7 @@ Esta spec se diseña en Cowork. La implementación se ejecuta en una sesión de 
 3. **Crear `build_viento.mjs`** en `platform/data/coding-viento/`. Implementar parseo de .md, validación, generación del JSON, copia a `src/data/`.
 4. **Smoke test del build** con los 1-2 archivos del paso 2: JSON generado correctamente, sin warnings.
 5. **Crear `lib/viento.ts`** con tipos + helpers básicos. Type-check pasa.
-6. **Crear el skill `coding-viento`** en `mapa-inestable.plugin/skills/coding-viento/SKILL.md`. Implementar las 7 responsabilidades de §2. Smoke test: pedirle al skill que cree el coding de Argentina para la semana actual.
+6. **Crear el skill `coding-viento`** en `70-Producto/skills/coding-viento/SKILL.md`. Implementar las 7 responsabilidades de §2. Smoke test: pedirle al skill que cree el coding de Argentina para la semana actual.
 7. **Crear los 2 scheduled tasks** en Cowork (viernes 16:00 recordatorio + viernes 19:00 build).
 8. **Actualizar Spec 29** con las dos entradas.
 9. **Spec 41B (placeholder)** creada como spec hija — el contenido real se diseña en una sesión futura cuando haya material acumulado.

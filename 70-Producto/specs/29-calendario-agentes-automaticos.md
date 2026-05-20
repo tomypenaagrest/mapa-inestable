@@ -134,13 +134,13 @@ Horarios en ART (`America/Argentina/Buenos_Aires`).
 | Campo | Valor |
 |---|---|
 | Spec de referencia | 41 (pipeline de datos políticos para capa viento) |
-| Skill | `mapa-inestable.plugin/skills/coding-viento/SKILL.md` (modo scheduled: crea recordatorio) |
+| Skill | `70-Producto/skills/coding-viento/SKILL.md` (suelto en vault — decisión 2026-05-19, no en plugin) |
 | Cadencia | Semanal, **viernes 16:00 ART** (antes del agenda-semanal a 17:00) |
-| Trigger | Scheduled task de Cowork (1 instancia, no por país) |
+| Trigger | Scheduled task `mapa-inestable-coding-viento-recordatorio` (1 instancia, no por país) |
 | Input | Archivos `70-Producto/datos-viento/<slug>/YYYY-W##.md` existentes (lee coding previo para pre-rellenar) |
-| Output | `70-Producto/datos-viento/<slug>/YYYY-W##.md` × 10 en `estado: borrador` + `_compilado/_recordatorio-YYYY-W##.md` (checklist) |
+| Output | `70-Producto/datos-viento/<slug>/YYYY-W##.md` × 10 en `estado: borrador` + `_recordatorio-YYYY-W##.md` (checklist) |
 | Promote | Humano: el editor codifica con el skill `coding-viento` y cambia cada .md a `estado: publicada` |
-| Estado | **Definida en Spec 41** · scheduled task pendiente de crear en Cowork |
+| Estado | **Activo desde 2026-05-19** · scheduled task creada, primera corrida viernes 2026-05-22 16:04 ART |
 
 **Qué hace:**
 - Crea los 10 archivos de coding de la semana en borrador (si no existen).
@@ -152,14 +152,14 @@ Horarios en ART (`America/Argentina/Buenos_Aires`).
 
 | Campo | Valor |
 |---|---|
-| Spec de referencia | 41 (pipeline de datos políticos para capa viento) |
+| Spec de referencia | 41 (pipeline de datos políticos para capa viento, decisión #14 r2) |
 | Script | `node platform/data/coding-viento/build_viento.mjs` |
-| Cadencia | Semanal, **viernes 19:00 ART** (después del coding humano) + on-publish vía skill |
-| Trigger | Scheduled task de Cowork (red de seguridad) + skill `coding-viento` al publicar un coding |
-| Input | `70-Producto/datos-viento/<slug>/*.md` con `estado: publicada` |
+| Cadencia | Semanal, **viernes 19:00 ART** (red de seguridad) + on-publish vía skill `coding-viento` (trigger primario) |
+| Trigger | Scheduled task `mapa-inestable-build-viento` (red de seguridad) + skill `coding-viento` al cambiar `estado: borrador` → `estado: publicada` (trigger primario) |
+| Input | `70-Producto/datos-viento/<slug>/*.md` con `estado: publicada` (cualquier número ≥ 1 país válido — decisión #15 r2) |
 | Output | `70-Producto/datos-viento/_compilado/viento.json` + `platform/frontend/src/data/coding-viento/viento.json` + `_log-YYYY-W##.md` |
 | Promote | No aplica — el JSON es output directo del pipeline |
-| Estado | **Implementada en Spec 41** · scheduled task pendiente de crear en Cowork |
+| Estado | **Activo desde 2026-05-19** · scheduled task creada, primera corrida viernes 2026-05-22 19:08 ART |
 
 **Qué supervisa:**
 - Valida rank ∈ {-3..+3}, intensidad ∈ [0,1], campos obligatorios presentes, `country_slug` coincide con carpeta.
@@ -172,20 +172,23 @@ Horarios en ART (`America/Argentina/Buenos_Aires`).
 | Campo | Valor |
 |---|---|
 | Spec de referencia | 40 (pipeline macro EPIC 03) |
-| Skill | `70-Producto/skills/pipeline-macro-refresh/SKILL.md` (staging) · importar a plugin desde Cowork |
+| Skill | `70-Producto/skills/pipeline-macro-refresh/SKILL.md` (suelto en vault — decisión 2026-05-19, no en plugin) |
 | Cadencia | Semanal, **viernes 18:00 ART** (después de agenda-semanal a 17:00) |
-| Trigger | Scheduled task de Cowork (1 instancia, no una por país) |
+| Trigger | Scheduled task `mapa-inestable-pipeline-macro-refresh` (1 instancia, no una por país) |
 | Input | `platform/data/indicators-macro/indicators-macro.json` |
-| Output | `60-Borradores/pipeline-macro/_resumen-YYYY-W##.md` |
-| Resumen | El propio archivo de output (1 archivo por semana) |
-| Promote | No aplica — la promote del JSON al frontend es manual (`cp`) |
-| Estado | **Definida en Spec 40** · scheduled task pendiente de crear en Cowork |
+| Output | Auto-promote o borrador según política: si triviales → copia directa a `platform/frontend/src/data/indicators-macro/`; si materiales → `60-Borradores/pipeline-macro/<YYYY-W##>/indicators-macro.json`. Siempre `_resumen-YYYY-W##.md` |
+| Resumen | El propio archivo de resumen (1 archivo por semana) |
+| Promote | **Auto-promote con umbral del 5%** (decisión #12 r2 de Spec 40): cambios triviales (ningún datapoint > 5% + sin indicadores nuevos + sin stubs completados) se promueven solos; cambios materiales esperan review manual de Tomás |
+| Estado | **Activo desde 2026-05-19** · scheduled task creada, primera corrida viernes 2026-05-22 18:05 ART |
 
-**Qué supervisa:**
+**Modo dual (decisión #10 r2):**
+- **Si el sandbox bash de Cowork puede ejecutar Python con network access**: ejecuta `build_indicators_macro.py` directamente y aplica auto-promote.
+- **Si no puede**: solo modo supervisor + chequeo de frescura, deja aviso para que Tomás corra el script desde su laptop.
+
+**Qué supervisa siempre:**
 - Frescura del JSON (`computed_at` > 7 días → alerta).
 - Cobertura de sub-anuales: `a2-crecimiento-pbi.series_trimestral` (capa precipitación) y `c7-salario-real-mensual.series_mensual` (capa temperatura).
 - Priority stubs: `d1-pobreza` y `d2-indigencia` (pendientes para capa temperatura Spec 43).
-- No ejecuta el script Python — supervisa y log.
 
 ### `analisis-semanal`
 
@@ -284,6 +287,7 @@ Los agentes no se superponen en horario para evitar confusión cognitiva (dos no
 | 2026-05-11 | Creación del documento + entrada inicial para `agente-diario`, `agenda-semanal`, `promover-agenda`, `analisis-semanal`, `despacho-semanal` | Spec 28 destapó la necesidad de un calendario unificado |
 | 2026-05-11 | Spec 28 ejecutada — 10 scheduled tasks creadas (`mapa-inestable-agenda-{slug}-semanal`) + script `promote-agenda.mjs`. `promover-agenda` quedó como script Node en lugar de skill del plugin (alineación con `promote-draft.mjs` de Spec 24) | Implementación |
 | 2026-05-20 | Spec 41 ejecutada — `coding-viento-recordatorio` (viernes 16:00) + `build-viento` (viernes 19:00) agregados al calendario. Skill `coding-viento` en el plugin ZIP. Pipeline `build_viento.mjs` implementado. JSON compilado + copia frontend. | Spec 41 implementada |
+| 2026-05-19 | Las 3 scheduled tasks del epic 03 creadas en Cowork: `mapa-inestable-coding-viento-recordatorio` (viernes 16:00 ART, cron `0 16 * * 5`), `mapa-inestable-pipeline-macro-refresh` (viernes 18:00 ART, cron `0 18 * * 5`), `mapa-inestable-build-viento` (viernes 19:00 ART, cron `0 19 * * 5`). SKILL.md de `coding-viento` y `pipeline-macro-refresh` escritos en `70-Producto/skills/` (decisión: skills sueltos en vault, no en plugin, para uso personal). Primera corrida real: viernes 2026-05-22 | Cierre operativo de Specs 40 y 41. El epic 03 pasa a tener sus 3 agentes activos en el calendario semanal |
 
 ---
 
