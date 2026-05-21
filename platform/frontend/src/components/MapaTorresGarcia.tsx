@@ -349,6 +349,7 @@ export default function MapaTorresGarcia({
           height: "100%",
           display: "block",
           pointerEvents: "none",
+          objectFit: "contain",
         }}
       />
 

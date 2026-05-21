@@ -1,17 +1,30 @@
 "use client";
-// Spec 39 — Rail izquierdo de /mapa: toggle de capas + filtros país/eje.
 
 import Image from "next/image";
 import { LAYER_IDS, LAYERS } from "@/lib/layers";
-import type { LayerId } from "@/lib/layers";
+import type { LayerId, Layer, LayerPeriod } from "@/lib/layers";
+import LayerTimeSlider from "@/components/LayerTimeSlider";
 
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+interface PeriodNav {
+  layer: Layer;
+  activePeriod: LayerPeriod | null;
+  onPrevPeriod: () => void;
+  onNextPeriod: () => void;
+  hasPrev: boolean;
+  hasNext: boolean;
+}
 
 interface LayerControllerProps {
   activeLayerId: LayerId | null;
   onLayerChange: (id: LayerId | null) => void;
+  periodNav?: PeriodNav;
 }
 
-const LABEL_STYLE: React.CSSProperties = {
+// ── Styles ────────────────────────────────────────────────────────────────────
+
+const SECTION_LABEL: React.CSSProperties = {
   fontFamily:    "var(--mi-font-mono)",
   fontSize:      "var(--mi-text-xs)",
   textTransform: "uppercase",
@@ -20,7 +33,9 @@ const LABEL_STYLE: React.CSSProperties = {
   marginBottom:  "var(--mi-space-2)",
 };
 
-export default function LayerController({ activeLayerId, onLayerChange }: LayerControllerProps) {
+// ── Component ─────────────────────────────────────────────────────────────────
+
+export default function LayerController({ activeLayerId, onLayerChange, periodNav }: LayerControllerProps) {
   return (
     <div style={{
       width: 240,
@@ -32,9 +47,9 @@ export default function LayerController({ activeLayerId, onLayerChange }: LayerC
       height: "100%",
     }}>
 
-      <div style={LABEL_STYLE}>Capas</div>
+      {/* Layer list */}
+      <div style={SECTION_LABEL}>Capas</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-
         <LayerOption
           isActive={activeLayerId === null}
           onClick={() => onLayerChange(null)}
@@ -42,7 +57,6 @@ export default function LayerController({ activeLayerId, onLayerChange }: LayerC
           subLabel="Navegación editorial"
           glyphSrc={null}
         />
-
         {LAYER_IDS.map(id => {
           const layer = LAYERS[id];
           return (
@@ -57,11 +71,30 @@ export default function LayerController({ activeLayerId, onLayerChange }: LayerC
           );
         })}
       </div>
+
+      {/* Period navigator — only when a layer is active */}
+      {periodNav && (
+        <div style={{
+          borderTop: "1px solid var(--mi-rule-soft)",
+          marginTop: "var(--mi-space-4)",
+          paddingTop: "var(--mi-space-3)",
+        }}>
+          <div style={SECTION_LABEL}>Período</div>
+          <LayerTimeSlider
+            layer={periodNav.layer}
+            activePeriod={periodNav.activePeriod}
+            onPrevPeriod={periodNav.onPrevPeriod}
+            onNextPeriod={periodNav.onNextPeriod}
+            hasPrev={periodNav.hasPrev}
+            hasNext={periodNav.hasNext}
+          />
+        </div>
+      )}
     </div>
   );
 }
 
-// ── Opción de capa individual ──────────────────────────────────────────────
+// ── Layer option ──────────────────────────────────────────────────────────────
 
 function LayerOption({
   isActive,

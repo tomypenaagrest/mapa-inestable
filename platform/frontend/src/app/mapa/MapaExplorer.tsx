@@ -7,12 +7,11 @@ import Link from "next/link";
 import MapaTorresGarcia from "@/components/MapaTorresGarcia";
 import LayerController   from "@/components/LayerController";
 import LayerLegend       from "@/components/LayerLegend";
-import LayerTimeSlider   from "@/components/LayerTimeSlider";
 import LayerReadingDrawer from "@/components/LayerReadingDrawer";
 import type { ActiveCountryForLayer } from "@/components/LayerReadingDrawer";
 import CountryModalPanel  from "@/components/CountryModalPanel";
 import { COUNTRY_NAMES } from "@/lib/country-data";
-import { getLayer, getGlobalDateRange, isLayerId } from "@/lib/layers";
+import { getLayer, isLayerId } from "@/lib/layers";
 import type { LayerId, LayerPeriod } from "@/lib/layers";
 import type { ReadingGuides } from "@/lib/reading-guides";
 import type { CountryAgenda } from "@/lib/agendas";
@@ -44,12 +43,11 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
   const rawCapa      = searchParams.get("capa") ?? "";
   const activeLayerId: LayerId | null = isLayerId(rawCapa) ? rawCapa : null;
 
-  // Fecha del slider (query param ?t=) — default: defaultPeriod de la capa activa o hoy
+  // Fecha del slider (query param ?t=) — default: defaultPeriod de la capa activa
   const rawT = searchParams.get("t");
-  const { end: globalEnd, start: globalStart } = getGlobalDateRange();
   const defaultSliderDate = activeLayerId
     ? getLayer(activeLayerId).defaultPeriod.date
-    : globalEnd;
+    : "";
   const sliderDate = rawT ?? defaultSliderDate;
 
   // Drawer de guía de lectura (?guia=1)
@@ -142,6 +140,20 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
     ? { layer: activeLayer, period: activePeriod }
     : undefined;
 
+  const activePeriodIndex = activePeriod && activeLayer
+    ? activeLayer.periods.findIndex(p => p.date === activePeriod.date)
+    : -1;
+
+  const handlePrevPeriod = useCallback(() => {
+    if (!activeLayer || activePeriodIndex <= 0) return;
+    handleSliderChange(activeLayer.periods[activePeriodIndex - 1].date);
+  }, [activeLayer, activePeriodIndex, handleSliderChange]);
+
+  const handleNextPeriod = useCallback(() => {
+    if (!activeLayer || activePeriodIndex < 0 || activePeriodIndex >= activeLayer.periods.length - 1) return;
+    handleSliderChange(activeLayer.periods[activePeriodIndex + 1].date);
+  }, [activeLayer, activePeriodIndex, handleSliderChange]);
+
   const hasFilters = activePais.length > 0 || activeEjes.length > 0;
 
   return (
@@ -157,6 +169,14 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
         <LayerController
           activeLayerId={activeLayerId}
           onLayerChange={handleLayerChange}
+          periodNav={activeLayer && activePeriod ? {
+            layer: activeLayer,
+            activePeriod,
+            onPrevPeriod: handlePrevPeriod,
+            onNextPeriod: handleNextPeriod,
+            hasPrev: activePeriodIndex > 0,
+            hasNext: activePeriodIndex >= 0 && activePeriodIndex < activeLayer.periods.length - 1,
+          } : undefined}
         />
 
         {/* ── Área central: mapa + slider + resultados (solo si hay filtros) ── */}
@@ -187,18 +207,6 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
               />
             )}
           </div>
-
-          {/* Time slider — solo cuando hay capa activa */}
-          {activeLayer && (
-            <LayerTimeSlider
-              layer={activeLayer}
-              sliderDate={sliderDate}
-              activePeriod={activePeriod}
-              onSliderChange={handleSliderChange}
-              globalStart={globalStart}
-              globalEnd={globalEnd}
-            />
-          )}
 
           {/* Resultados — solo cuando hay filtros activos */}
           {hasFilters && (
