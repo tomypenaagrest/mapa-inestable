@@ -1,13 +1,16 @@
 "use client";
 // Spec 39 — MapaExplorer rediseñado: layout 3 zonas (rail | mapa + slider | drawer on-demand)
+// Spec 46 — Integra LayerOnboarding (auto-trigger primera visita) + LayerGlossaryChip
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import MapaTorresGarcia from "@/components/MapaTorresGarcia";
 import LayerController   from "@/components/LayerController";
 import LayerLegend       from "@/components/LayerLegend";
 import LayerReadingDrawer from "@/components/LayerReadingDrawer";
+import LayerOnboarding   from "@/components/LayerOnboarding";
+import LayerGlossaryChip from "@/components/LayerGlossaryChip";
 import type { ActiveCountryForLayer } from "@/components/LayerReadingDrawer";
 import CountryModalPanel  from "@/components/CountryModalPanel";
 import { COUNTRY_NAMES } from "@/lib/country-data";
@@ -16,14 +19,22 @@ import type { LayerId, LayerPeriod } from "@/lib/layers";
 import type { ReadingGuides } from "@/lib/reading-guides";
 import type { CountryAgenda } from "@/lib/agendas";
 import type { WeeklyCountryData } from "@/components/MapaCentrico";
+import type { OnboardingContent } from "@/lib/onboarding-content";
+import { hasSeenOnboarding } from "@/lib/onboarding-state";
 
 interface MapaExplorerProps {
   readingGuides: ReadingGuides;
   agendasByCountry: Record<string, CountryAgenda>;
   weeklyCountries: WeeklyCountryData[];
+  onboardingContent: OnboardingContent;
 }
 
-export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCountries }: MapaExplorerProps) {
+export default function MapaExplorer({
+  readingGuides,
+  agendasByCountry,
+  weeklyCountries,
+  onboardingContent,
+}: MapaExplorerProps) {
   const router       = useRouter();
   const searchParams = useSearchParams();
 
@@ -32,6 +43,24 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
 
   // ── País seleccionado en modo capa (A.4) ──────────────────────────────────
   const [layerCountry, setLayerCountry] = useState<string | null>(null);
+
+  // ── Onboarding overlay ────────────────────────────────────────────────────
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
+
+  // Auto-trigger: 400ms tras mount, si no está visto o si ?onboarding=1
+  useEffect(() => {
+    const forceOpen = searchParams.get("onboarding") === "1";
+    const timer = setTimeout(() => {
+      if (forceOpen || !hasSeenOnboarding()) {
+        setOnboardingOpen(true);
+      }
+    }, 400);
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const openOnboarding  = useCallback(() => setOnboardingOpen(true),  []);
+  const closeOnboarding = useCallback(() => setOnboardingOpen(false), []);
 
   // ── URL state ─────────────────────────────────────────────────────────────
 
@@ -102,10 +131,8 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
 
   const handleCountryClick = useCallback((slug: string) => {
     if (!activeLayerId) {
-      // Sin capa: abre el modal de país
       setModalSlug(slug);
     } else {
-      // Con capa: abre el drawer A.4 con datos del país
       setLayerCountry(prev => prev === slug ? null : slug);
     }
   }, [activeLayerId]);
@@ -204,8 +231,15 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
                 period={activePeriod}
                 sliderDate={sliderDate}
                 onOpenReadingGuide={handleOpenGuide}
+                onOpenOnboarding={openOnboarding}
               />
             )}
+
+            {/* Chip glosario — inferior izquierda */}
+            <LayerGlossaryChip
+              glossary={onboardingContent.glossary}
+              onOpenOnboarding={openOnboarding}
+            />
           </div>
 
           {/* Resultados — solo cuando hay filtros activos */}
@@ -223,6 +257,14 @@ export default function MapaExplorer({ readingGuides, agendasByCountry, weeklyCo
           )}
         </div>
       </div>
+
+      {/* ── Onboarding overlay — Spec 46 ── */}
+      {onboardingOpen && onboardingContent.panels.length > 0 && (
+        <LayerOnboarding
+          content={onboardingContent}
+          onClose={closeOnboarding}
+        />
+      )}
 
       {/* ── Modal de país (sin capa activa) ── */}
       {modalSlug && !activeLayerId && (

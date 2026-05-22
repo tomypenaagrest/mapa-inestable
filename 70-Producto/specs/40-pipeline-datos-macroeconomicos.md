@@ -456,9 +456,17 @@ Esta spec no impone el código de cada capa — eso lo hace cada Spec 42-43. Per
 
 ## Decisiones abiertas
 
-Solo queda **una decisión genuinamente abierta** post-r2 (las otras 5 que estaban en r1 quedaron cerradas — ver tabla de Decisiones tomadas r2):
+Quedan **dos decisiones abiertas** post-implementación:
 
 1. **Historial de revisiones retroactivas**: ¿se mantiene `historial-revisiones.json` con cada revisión que hace una fuente, o el CHANGELOG alcanza? Tomás decidió posponer: **se decide después** de ver cuántas revisiones aparecen en las primeras 4-6 semanas de operación del pipeline ya implementado. La decisión no bloquea implementación de r2 — el CHANGELOG cubre el caso básico y el `historial-revisiones.json` se puede agregar en una pasada posterior sin breaking change.
+
+2. **Cobertura OIT para AR y BR en `c7-salario-real-mensual`** (decisión post-corrida con red). El código está implementado y llama a `EAR_4MTH_SEX_ECO_CUR_NB_M`. Las notas del indicador en `build_indicators_macro.py` advierten que OIT puede tener cobertura parcial para Argentina (rec: INDEC RIPTE) y Brasil (rec: IBGE PNAD Contínua Mensal). Esto es crítico porque AR y BR son los países piloto de Spec 43 (capa temperatura). Tres caminos posibles **después de correr el pipeline con acceso a red**:
+
+   - **Camino A** — OIT cubre AR y BR (aunque sea parcial): todo bien, Spec 43 implementable con los piloto originales.
+   - **Camino B** — OIT no cubre AR o BR: ampliar `sources.py` con scrapers nacionales (INDEC RIPTE + IBGE PNAD Contínua) antes de implementar Spec 43. Puede tratarse como sub-spec 40B o directamente como tarea acotada en la misma sesión.
+   - **Camino C** — Cambiar el piloto de Spec 43 a 3 países con buena cobertura OIT confirmada (ej. CL + UY + PE), y dejar AR + BR para una iteración posterior con fuentes nacionales.
+
+   **Acción**: correr `py build_indicators_macro.py` con internet, verificar `c7.n_countries_covered` y el reporte de `[STUB]` por país, y elegir camino explícitamente antes de arrancar la implementación de Spec 43.
 
 ---
 

@@ -80,4 +80,7 @@ export const presionLayer: Layer = {
   },
   getLastPeriodBefore,
   readingGuideSlug: "presion",
+
+  legendMicrocopy: "El color codifica el nivel del índice agregado de confianza institucional.",
+  shortIntro: "La presión atmosférica equivale a la densidad institucional: cuando baja, las mediaciones se aflojan y la vida colectiva pierde anclaje. El índice agrega confianza en gobierno, parlamento, partidos y tribunales según Latinobarómetro.",
 };

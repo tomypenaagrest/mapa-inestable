@@ -497,10 +497,11 @@ def _compute_salario_real_mensual(
 ) -> dict[str, list[dict]]:
     """
     Computa series mensuales de salario real indexadas a base 2021=100.
-    Fuente: OIT ILOSTAT EAR_4MTH_SEX_ECO_CUR_NB_M (salario mensual, moneda local).
+    Fuente: OIT ILOSTAT EAR_EMTA_SEX_NB_M (salario mensual promedio, moneda local).
+    Sustituye EAR_4MTH_SEX_ECO_CUR_NB_M (deprecado 2026). Cobertura SA: ~5/10.
     Países sin datos en ILO emiten [STUB] y devuelven lista vacía.
     """
-    raw = _ilo_fetch_monthly("EAR_4MTH_SEX_ECO_CUR_NB_M")
+    raw = _ilo_fetch_monthly("EAR_EMTA_SEX_NB_M")
     result: dict[str, list[dict]] = {iso2: [] for iso2 in COUNTRIES_SA}
 
     for iso2 in COUNTRIES_SA:

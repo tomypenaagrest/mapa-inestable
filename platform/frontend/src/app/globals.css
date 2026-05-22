@@ -115,6 +115,28 @@
   --mi-precipitacion-4: #1e1e1e;  /* extremo    · tormenta             */
   --mi-precipitacion-nodata: var(--mi-ink-mute);
   --mi-precipitacion-stale:  var(--mi-rule-soft);
+
+  /* Spec 43 — Capa Temperatura: escala secuencial terracota cálida (sesgo amarillo cálido — diferenciable de precipitación) */
+  --mi-temperatura-0: #f1e6d4;  /* estancado  · neutro tibio, crema cálida */
+  --mi-temperatura-1: #e8c89a;  /* leve                                     */
+  --mi-temperatura-2: #d4995a;  /* moderada                                 */
+  --mi-temperatura-3: #b9682b;  /* fuerte                                   */
+  --mi-temperatura-4: #834010;  /* extrema                                  */
+  --mi-temperatura-nodata: var(--mi-ink-mute);
+  --mi-temperatura-stale:  var(--mi-rule-soft);
+
+  /* Spec 44 — Capa Viento: escala secuencial ocre profundo (sesgo tierra — diferenciable de precipitación y temperatura) */
+  --mi-viento-0: #ecdcc4;  /* bucket 0 · Neutro — base ocre lavado */
+  --mi-viento-1: #d4b07c;  /* bucket 1 · leve */
+  --mi-viento-2: #b08144;  /* bucket 2 · moderado */
+  --mi-viento-3: #74511f;  /* bucket 3 · fuerte */
+  --mi-viento-nodata:       var(--mi-ink-mute);
+  --mi-viento-stale:        var(--mi-rule-soft);
+  --mi-viento-glyph-stroke: var(--mi-ink);
+  /* Alias de dirección — declarados por convención del DS; la dirección vive en el glyph, no en el color */
+  --mi-viento-direccion-pro-estado:  currentColor;
+  --mi-viento-direccion-neutro:      currentColor;
+  --mi-viento-direccion-pro-mercado: currentColor;
 }
 
 /* === SPEC 34B — utilidades columna análisis ====================== */

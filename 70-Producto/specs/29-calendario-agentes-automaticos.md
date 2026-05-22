@@ -69,10 +69,10 @@ Horarios en ART (`America/Argentina/Buenos_Aires`).
 | Día | Hora ART | Agente | Output | Acción humana asociada |
 |---|---|---|---|---|
 | Lun-Vie | 08:00 | `agente-diario` | borradores en `60-Borradores/diario/` | Revisar al pasar, sin obligación |
-| **Viernes** | **16:00** | **`coding-viento-recordatorio`** | borradores base en `70-Producto/datos-viento/<slug>/YYYY-W##.md` + `_compilado/_recordatorio-YYYY-W##.md` | Coding humano: editor codifica ~16:30-17:30 con skill `coding-viento` |
-| **Viernes** | **17:00** | **`agenda-semanal` × 10** | borradores en `60-Borradores/agendas/` + `_resumen-YYYY-W##.md` | — |
-| **Viernes** | **18:00** | **`pipeline-macro-refresh`** | `60-Borradores/pipeline-macro/_resumen-YYYY-W##.md` | Revisar frescura del JSON; ejecutar pipeline si es necesario |
-| **Viernes** | **19:00** | **`build-viento`** | `70-Producto/datos-viento/_compilado/viento.json` + `_log-YYYY-W##.md` + copia a `platform/frontend/src/data/coding-viento/viento.json` | Verificar log en `_compilado/` |
+| **Primer viernes del trimestre** (1er vie de ene/abr/jul/oct) | **16:00** | **`coding-viento-recordatorio`** | borradores base en `70-Producto/datos-viento/<slug>/YYYY-Q#.md` + `_compilado/_recordatorio-YYYY-Q#.md` | Coding humano: editor revisa el trimestre cerrado y publica ~16:30 con skill `coding-viento` |
+| **Viernes** (semanal) | **17:00** | **`agenda-semanal` × 10** | borradores en `60-Borradores/agendas/` + `_resumen-YYYY-W##.md` | — |
+| **Viernes** (semanal) | **18:00** | **`pipeline-macro-refresh`** | `60-Borradores/pipeline-macro/_resumen-YYYY-W##.md` | Revisar frescura del JSON; ejecutar pipeline si es necesario |
+| **Primer viernes del trimestre** | **19:00** | **`build-viento`** | `70-Producto/datos-viento/_compilado/viento.json` + `_log-YYYY-Q#.md` + copia a `platform/frontend/src/data/coding-viento/viento.json` | Verificar log en `_compilado/` |
 | Sábado | flexible | (humano) | revisa resumen semanal, comienza escritura | promote selectivo |
 | Domingo | flexible | (humano) | escritura del despacho semanal | usa agendas como capa intermedia |
 | Lunes | 09:00 | (humano) | revisión final + promote pendientes | `promover-agenda <slug>` desde Claude Code |
@@ -133,38 +133,40 @@ Horarios en ART (`America/Argentina/Buenos_Aires`).
 
 | Campo | Valor |
 |---|---|
-| Spec de referencia | 41 (pipeline de datos políticos para capa viento) |
-| Skill | `70-Producto/skills/coding-viento/SKILL.md` (suelto en vault — decisión 2026-05-19, no en plugin) |
-| Cadencia | Semanal, **viernes 16:00 ART** (antes del agenda-semanal a 17:00) |
-| Trigger | Scheduled task `mapa-inestable-coding-viento-recordatorio` (1 instancia, no por país) |
-| Input | Archivos `70-Producto/datos-viento/<slug>/YYYY-W##.md` existentes (lee coding previo para pre-rellenar) |
-| Output | `70-Producto/datos-viento/<slug>/YYYY-W##.md` × 10 en `estado: borrador` + `_recordatorio-YYYY-W##.md` (checklist) |
-| Promote | Humano: el editor codifica con el skill `coding-viento` y cambia cada .md a `estado: publicada` |
-| Estado | **Activo desde 2026-05-19** · scheduled task creada, primera corrida viernes 2026-05-22 16:04 ART |
+| Spec de referencia | 41 (pipeline de datos políticos para capa viento, r3) |
+| Skill | `70-Producto/skills/coding-viento/SKILL.md` (suelto en vault — decisión 2026-05-19, no en plugin; reescrito a cadencia trimestral en r3 de Spec 41) |
+| Cadencia | **Trimestral** (r3 — 2026-05-21): primer viernes de enero/abril/julio/octubre **16:00 ART**. Cron `0 16 1-7 1,4,7,10 5` |
+| Trigger | Scheduled task `mapa-inestable-coding-viento-recordatorio` (1 instancia, no por país). Pendiente reagendar en Cowork de `0 16 * * 5` (semanal) a `0 16 1-7 1,4,7,10 5` (primer viernes del trimestre) |
+| Input | Archivos `70-Producto/datos-viento/<slug>/YYYY-Q#.md` del trimestre cerrado (si ya existían — el editor pudo haberlos ido editando durante el trimestre) o los del trimestre anterior para pre-rellenar coding previo |
+| Output | `70-Producto/datos-viento/<slug>/YYYY-Q#.md` × 10 en `estado: borrador` + `_recordatorio-YYYY-Q#.md` (checklist) |
+| Promote | Humano: el editor revisa con el skill `coding-viento` y cambia cada .md a `estado: publicada` |
+| Estado | **Activo desde 2026-05-19 (régimen semanal)** · reagendamiento a trimestral pendiente con el cambio r3 de Spec 41 (decisión #20). Próxima corrida real con régimen trimestral: viernes 2026-07-03 16:00 ART (cierre de Q2-2026) |
 
-**Qué hace:**
-- Crea los 10 archivos de coding de la semana en borrador (si no existen).
-- Pre-rellena rank tentativo = semana anterior (continuidad por default).
-- Deja el archivo resumen `_recordatorio-YYYY-W##.md` con checklist de los 10 países.
+**Qué hace (r3 — trimestral):**
+- Crea los 10 archivos de coding del trimestre **cerrado** (el anterior) en borrador, si no existen.
+- Si el archivo del trimestre cerrado ya existía (porque el editor lo fue editando durante el trimestre), NO lo sobrescribe — solo lo abre.
+- Pre-rellena rank tentativo = trimestre anterior (continuidad por default).
+- Deja el archivo resumen `_recordatorio-YYYY-Q#.md` con checklist de los 10 países.
 - **No genera rank propio** — solo prepara el terreno para el coding humano.
 
 ### `build-viento`
 
 | Campo | Valor |
 |---|---|
-| Spec de referencia | 41 (pipeline de datos políticos para capa viento, decisión #14 r2) |
+| Spec de referencia | 41 (pipeline de datos políticos para capa viento, decisión #14 r2 + #20/#21 r3) |
 | Script | `node platform/data/coding-viento/build_viento.mjs` |
-| Cadencia | Semanal, **viernes 19:00 ART** (red de seguridad) + on-publish vía skill `coding-viento` (trigger primario) |
-| Trigger | Scheduled task `mapa-inestable-build-viento` (red de seguridad) + skill `coding-viento` al cambiar `estado: borrador` → `estado: publicada` (trigger primario) |
-| Input | `70-Producto/datos-viento/<slug>/*.md` con `estado: publicada` (cualquier número ≥ 1 país válido — decisión #15 r2) |
-| Output | `70-Producto/datos-viento/_compilado/viento.json` + `platform/frontend/src/data/coding-viento/viento.json` + `_log-YYYY-W##.md` |
+| Cadencia | **Trimestral** (r3 — 2026-05-21): primer viernes de enero/abril/julio/octubre **19:00 ART** (red de seguridad). Cron `0 19 1-7 1,4,7,10 5`. Trigger primario sigue siendo on-publish vía skill `coding-viento` |
+| Trigger | Scheduled task `mapa-inestable-build-viento` (red de seguridad) + skill `coding-viento` al cambiar `estado: borrador` → `estado: publicada` (trigger primario). Pendiente reagendar en Cowork de `0 19 * * 5` (semanal) a `0 19 1-7 1,4,7,10 5` (primer viernes del trimestre) |
+| Input | `70-Producto/datos-viento/<slug>/YYYY-Q#.md` con `estado: publicada` (cualquier número ≥ 1 país válido — decisión #15 r2 sigue valiendo) |
+| Output | `70-Producto/datos-viento/_compilado/viento.json` (formato `viento-v2.0.0` r3 — breaking) + `platform/frontend/src/data/coding-viento/viento.json` + `_log-YYYY-Q#.md` |
 | Promote | No aplica — el JSON es output directo del pipeline |
-| Estado | **Activo desde 2026-05-19** · scheduled task creada, primera corrida viernes 2026-05-22 19:08 ART |
+| Estado | **Activo desde 2026-05-19 (régimen semanal)** · reagendamiento a trimestral pendiente con el cambio r3 de Spec 41. Próxima corrida real con régimen trimestral: viernes 2026-07-03 19:00 ART (cierre de Q2-2026) |
 
 **Qué supervisa:**
-- Valida rank ∈ {-3..+3}, intensidad ∈ [0,1], campos obligatorios presentes, `country_slug` coincide con carpeta.
+- Valida rank ∈ {-3..+3}, intensidad ∈ [0,1], quarter ∈ {1..4}, campos obligatorios presentes, `country_slug` coincide con carpeta.
+- Ignora archivos en subcarpetas como `_historico-semanal/` (la regex `^\d{4}-Q\d\.md$` solo matchea archivos trimestrales).
 - Solo incluye `estado: publicada` en el JSON.
-- Loguea resumen en `_compilado/_log-YYYY-W##.md`.
+- Loguea resumen en `_compilado/_log-YYYY-Q#.md`.
 - Detecta si hubo cambios respecto a la corrida anterior y lo anota en el log.
 
 ### `pipeline-macro-refresh`
@@ -288,6 +290,7 @@ Los agentes no se superponen en horario para evitar confusión cognitiva (dos no
 | 2026-05-11 | Spec 28 ejecutada — 10 scheduled tasks creadas (`mapa-inestable-agenda-{slug}-semanal`) + script `promote-agenda.mjs`. `promover-agenda` quedó como script Node en lugar de skill del plugin (alineación con `promote-draft.mjs` de Spec 24) | Implementación |
 | 2026-05-20 | Spec 41 ejecutada — `coding-viento-recordatorio` (viernes 16:00) + `build-viento` (viernes 19:00) agregados al calendario. Skill `coding-viento` en el plugin ZIP. Pipeline `build_viento.mjs` implementado. JSON compilado + copia frontend. | Spec 41 implementada |
 | 2026-05-19 | Las 3 scheduled tasks del epic 03 creadas en Cowork: `mapa-inestable-coding-viento-recordatorio` (viernes 16:00 ART, cron `0 16 * * 5`), `mapa-inestable-pipeline-macro-refresh` (viernes 18:00 ART, cron `0 18 * * 5`), `mapa-inestable-build-viento` (viernes 19:00 ART, cron `0 19 * * 5`). SKILL.md de `coding-viento` y `pipeline-macro-refresh` escritos en `70-Producto/skills/` (decisión: skills sueltos en vault, no en plugin, para uso personal). Primera corrida real: viernes 2026-05-22 | Cierre operativo de Specs 40 y 41. El epic 03 pasa a tener sus 3 agentes activos en el calendario semanal |
+| 2026-05-21 | **Cambio de cadencia de los 2 agentes de coding viento** por cascada de la decisión #17 de Spec 41 r3 (cadencia editorial semanal → trimestral). `coding-viento-recordatorio` y `build-viento` pasan de viernes semanal a primer viernes del trimestre. Crons nuevos: `0 16 1-7 1,4,7,10 5` y `0 19 1-7 1,4,7,10 5` (primeros 7 días de enero/abril/julio/octubre si es viernes — efectivamente primer viernes del trimestre). Calendario semanal y fichas de inventario actualizados. Pendiente operativo: reagendar las dos scheduled tasks en Cowork (eliminar las viejas, crear las nuevas con los crons trimestrales). `pipeline-macro-refresh` y `agenda-semanal` siguen semanales — el cambio aplica solo a los dos agentes de viento. Próxima corrida real con régimen trimestral: viernes 2026-07-03 (cierre de Q2-2026, primer viernes del Q3) | Tomás eligió bajar la cadencia editorial de viento porque "semanal es mucho" (52 codings/año/país × 10 países = 520 codings/año, insostenible para codificador único). Trimestral (40/año) alinea con Spec 42/43 y aprovecha mejor la lectura agregada. Spec 29 absorbe el cambio operativo |
 
 ---
 

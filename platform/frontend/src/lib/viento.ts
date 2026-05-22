@@ -88,6 +88,22 @@ export function getLastVientoBeforeWeek(
   return best;
 }
 
+/** Devuelve los eventos del último entry publicado de un país antes o en (year, week), o null. */
+export function getEventsForCountry(slug: string, periodKey: string): string[] | null {
+  const match = periodKey.match(/^(\d{4})-W(\d{2})$/);
+  if (!match) return null;
+  const entry = getLastVientoBeforeWeek(slug, Number(match[1]), Number(match[2]));
+  return entry?.eventos ?? null;
+}
+
+/** Devuelve el justificativo del último entry publicado de un país antes o en (year, week), o null. */
+export function getJustificativoForCountry(slug: string, periodKey: string): string | null {
+  const match = periodKey.match(/^(\d{4})-W(\d{2})$/);
+  if (!match) return null;
+  const entry = getLastVientoBeforeWeek(slug, Number(match[1]), Number(match[2]));
+  return entry?.justificativo ?? null;
+}
+
 /** Lista todas las semanas únicas que tienen al menos 1 país codificado. */
 export function getAvailableWeeks(): VientoWeekRef[] {
   const seen = new Set<string>();

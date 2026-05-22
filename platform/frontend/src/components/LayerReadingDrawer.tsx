@@ -3,7 +3,7 @@
 // Sin capa activa: guía de lectura genérica (HTML del vault).
 // Con capa + país seleccionado: layout A.4 — header PBI + lectura + subindicadores.
 
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import type { LayerId, Layer, LayerPeriod, LayerSubIndicator } from "@/lib/layers";
 import type { ReadingGuides } from "@/lib/reading-guides";
 
@@ -165,13 +165,29 @@ function SubIndicatorRow({
 
 // ── Layout A.4 — país seleccionado con capa activa ───────────────────────────
 
+function SectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <div style={{
+      fontFamily: "var(--mi-font-mono)",
+      fontSize: 9,
+      color: "var(--mi-ink-mute)",
+      textTransform: "uppercase",
+      letterSpacing: "0.1em",
+      marginBottom: "var(--mi-space-2)",
+      paddingBottom: "var(--mi-space-1)",
+      borderBottom: "1px solid var(--mi-rule-soft)",
+    }}>
+      {children}
+    </div>
+  );
+}
+
 function CountryLayerContent({ ac }: { ac: ActiveCountryForLayer }) {
   const { layer, countrySlug, countryName, period } = ac;
   const value = layer.getValueForCountry(countrySlug, period);
   const editorial = layer.editorialByCountry?.[countrySlug];
-
-  const isRecesion = value && value.raw < -0.5;
-  const isCrecimiento = value && value.raw > 0.5;
+  const events = layer.getEventsForCountry?.(countrySlug, period) ?? null;
+  const justificativo = layer.getJustificativoForCountry?.(countrySlug, period) ?? null;
 
   return (
     <div style={{ padding: "var(--mi-space-3) var(--mi-space-4) var(--mi-space-6)" }}>
@@ -185,7 +201,6 @@ function CountryLayerContent({ ac }: { ac: ActiveCountryForLayer }) {
         paddingBottom: "var(--mi-space-3)",
         borderBottom: "var(--mi-border-bold)",
       }}>
-        {/* Sello */}
         <div style={{
           fontFamily: "var(--mi-font-mono)",
           fontSize: 11,
@@ -199,9 +214,7 @@ function CountryLayerContent({ ac }: { ac: ActiveCountryForLayer }) {
         }}>
           {countrySlug.toUpperCase()}
         </div>
-
         <div style={{ flex: 1, minWidth: 0 }}>
-          {/* Nombre */}
           <div style={{
             fontFamily: "var(--mi-font-display)",
             fontSize: "var(--mi-text-lg)",
@@ -211,47 +224,41 @@ function CountryLayerContent({ ac }: { ac: ActiveCountryForLayer }) {
           }}>
             {countryName}
           </div>
-          {/* Período */}
           <div style={{
             fontFamily: "var(--mi-font-mono)",
             fontSize: 9,
             color: "var(--mi-ink-mute)",
             letterSpacing: "0.06em",
           }}>
-            {period.label} · PBI
+            {period.label} · {layer.shortLabel}
           </div>
         </div>
       </div>
 
-      {/* Valor PBI grande */}
+      {/* Valor principal — layer-genérico via value.formatted */}
       {value ? (
         <div style={{ marginBottom: "var(--mi-space-3)" }}>
           <div style={{
             fontFamily: "var(--mi-font-display)",
             fontSize: "var(--mi-text-3xl)",
             lineHeight: 1,
-            color: isRecesion
-              ? "var(--mi-precipitacion-3)"
-              : isCrecimiento
-                ? "var(--mi-ink)"
-                : "var(--mi-ink-mute)",
+            color: "var(--mi-ink)",
             letterSpacing: "-0.02em",
           }}>
-            {value.raw >= 0 ? "+" : ""}{value.raw.toFixed(1)}%
+            {value.formatted}
           </div>
-          <div style={{
-            fontFamily: "var(--mi-font-mono)",
-            fontSize: 10,
-            color: isRecesion ? "var(--mi-precipitacion-3)" : "var(--mi-ink-mute)",
-            textTransform: "uppercase",
-            letterSpacing: "0.08em",
-            marginTop: 2,
-          }}>
-            {isRecesion ? "recesión" : isCrecimiento ? "crecimiento" : "sin cambio"}
-            {value.quality === "estimado" && (
-              <span style={{ marginLeft: 6, color: "var(--mi-accent-warn)" }}>estimado</span>
-            )}
-          </div>
+          {value.quality === "estimado" && (
+            <div style={{
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: 10,
+              color: "var(--mi-accent-warn)",
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              marginTop: 2,
+            }}>
+              estimado
+            </div>
+          )}
         </div>
       ) : (
         <div style={{
@@ -264,20 +271,9 @@ function CountryLayerContent({ ac }: { ac: ActiveCountryForLayer }) {
         </div>
       )}
 
-      {/* Bloque Lectura */}
+      {/* Bloque Lectura editorial */}
       <div style={{ marginBottom: "var(--mi-space-4)" }}>
-        <div style={{
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: 9,
-          color: "var(--mi-ink-mute)",
-          textTransform: "uppercase",
-          letterSpacing: "0.1em",
-          marginBottom: "var(--mi-space-2)",
-          paddingBottom: "var(--mi-space-1)",
-          borderBottom: "1px solid var(--mi-rule-soft)",
-        }}>
-          Lectura
-        </div>
+        <SectionLabel>Lectura editorial</SectionLabel>
         {editorial ? (
           <p style={{
             fontFamily: "var(--mi-font-body)",
@@ -301,21 +297,52 @@ function CountryLayerContent({ ac }: { ac: ActiveCountryForLayer }) {
         )}
       </div>
 
+      {/* Spec 44 — Bloque Eventos clave (solo cuando la capa expone eventos) */}
+      {events && events.length > 0 && (
+        <div style={{ marginBottom: "var(--mi-space-4)" }}>
+          <SectionLabel>Eventos clave</SectionLabel>
+          <ul style={{
+            margin: 0,
+            paddingLeft: "var(--mi-space-3)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}>
+            {events.map((ev, i) => (
+              <li key={i} style={{
+                fontFamily: "var(--mi-font-body)",
+                fontSize: "var(--mi-text-xs)",
+                color: "var(--mi-ink-soft)",
+                lineHeight: "var(--mi-leading-normal)",
+              }}>
+                {ev}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Spec 44 — Bloque Justificativo (solo cuando la capa lo expone) */}
+      {justificativo && (
+        <div style={{ marginBottom: "var(--mi-space-4)" }}>
+          <SectionLabel>Justificativo</SectionLabel>
+          <p style={{
+            fontFamily: "var(--mi-font-body)",
+            fontSize: "var(--mi-text-xs)",
+            color: "var(--mi-ink-mute)",
+            lineHeight: "var(--mi-leading-relaxed)",
+            margin: 0,
+            fontStyle: "italic",
+          }}>
+            {justificativo}
+          </p>
+        </div>
+      )}
+
       {/* Bloque Subindicadores */}
       {layer.subIndicators && layer.subIndicators.length > 0 && (
         <div>
-          <div style={{
-            fontFamily: "var(--mi-font-mono)",
-            fontSize: 9,
-            color: "var(--mi-ink-mute)",
-            textTransform: "uppercase",
-            letterSpacing: "0.1em",
-            marginBottom: "var(--mi-space-2)",
-            paddingBottom: "var(--mi-space-1)",
-            borderBottom: "1px solid var(--mi-rule-soft)",
-          }}>
-            Subindicadores
-          </div>
+          <SectionLabel>Subindicadores</SectionLabel>
           {layer.subIndicators.map(sub => (
             <SubIndicatorRow
               key={sub.slug}

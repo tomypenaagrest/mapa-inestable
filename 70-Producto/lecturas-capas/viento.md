@@ -1,31 +1,65 @@
 ---
 layer: viento
-titulo: "Viento · cómo se lee la capa de orientación político-económica"
+title: Viento · orientación pro-mercado / pro-estado
+last_updated: 2026-05-21
 ---
 
-# Por qué viento
+# Viento
 
-[1-2 párrafos: el viento como metáfora de la dirección del sistema, no de su velocidad. Un viento no es "bueno" ni "malo" — dice hacia dónde se inclina la arquitectura institucional del Estado. Conexión con el eje de erosión de mediaciones: en qué medida el Estado amplía o retira mediaciones entre el mercado y la vida cotidiana.]
+El viento político-económico no es bueno ni malo: dice hacia dónde sopla el régimen en una semana dada. Un viento fuerte pro-mercado puede ser una liberalización necesaria o una transferencia de riesgo al ciudadano — depende del marco. Lo mismo para el pro-estado. Esta capa no juzga la orientación: la registra.
 
-# Qué muestra exactamente
+El proyecto usa "pro-mercado ↔ pro-estado" en lugar de "derecha ↔ izquierda" porque el eje izquierda-derecha mezcla dimensiones culturales, identitarias e históricas que esta capa no mide. Lo que sí mide es concreto: ¿el Estado esta semana amplió o retiró su mediación entre el mercado y la vida cotidiana? ¿Reguló o desreguló? ¿Gastó o ajustó? ¿Firmó con el FMI o resistió? El coding editorial responde estas preguntas semana a semana con fuentes trazables.
 
-[Definición operativa: orientación dominante del régimen político-económico en un eje pro-estado / pro-mercado, codificada editorialmente por el equipo de Mapa Inestable con base en: política tributaria, gasto social como % del PBI, regulación de sectores estratégicos, política cambiaria, y composición del gabinete económico. Escala: −2 (muy pro-estado) a +2 (muy pro-mercado), con 0 como posición mixta.]
+## Cómo se lee
 
-# Cómo leer los colores
+- **El color del país codifica la magnitud absoluta del movimiento** — cuán fuerte fue el cambio en la semana, independientemente de la dirección. Más oscuro = movimiento más intenso.
+- **El glyph sobre el país codifica la dirección:** una onda con punta apuntando a la derecha = pro-mercado; la misma onda espejada (apuntando izquierda) = pro-estado; dashes estáticos sin punta = neutro. Esta capa diverge del patrón de precipitación y temperatura: la dirección no vive solo en el tooltip — está visible en el mapa porque es la lectura principal del viento.
+- **Bucket 0 "Neutro" no es lectura política, es lectura semanal.** El coding mide el cambio en la semana, no el posicionamiento absoluto del gobierno. Un gobierno fuertemente pro-mercado en una semana sin novedades materiales tiene rank 0. La orientación estructural del régimen vive en la serie histórica, no en el dato de la semana.
+- **La cadencia es semanal.** Cada viernes el editor codifica los 10 países en la escala −3..+3. Cuando el slider apunta a una fecha entre dos semanas, el mapa muestra la última semana publicada para cada país.
 
-[Mapping bucket → significado político-económico. Esta capa es editorial — involucra juicio, no solo cálculo. El proceso de codificación y los criterios están documentados en Spec 44.]
+## Escala
 
-- **Muy pro-estado (azul profundo):** Estado como actor económico dominante, regulación extensa, gasto social alto.
-- **Pro-estado (azul medio):** Inclinación estatista sin dominio total.
-- **Mixto (neutro):** Sin orientación dominante clara, o en transición.
-- **Pro-mercado (terracota):** Desregulación, apertura, reducción del Estado.
-- **Muy pro-mercado (terracota profundo):** Liberalización extensiva, Estado mínimo, privatizaciones.
+| rank | Magnitud | Dirección | Lectura |
+|------|----------|-----------|---------|
+| +3 | fuerte | pro-mercado | semana de movimientos materiales fuertes hacia la desregulación / liberalización / acuerdo con acreedores |
+| +2 | moderado | pro-mercado | semana con varias señales claras pro-mercado pero sin cambio estructural único |
+| +1 | leve | pro-mercado | señal leve — discurso más que acción, o una medida puntual de alcance limitado |
+| 0 | Neutro | — | sin cambios materiales en la semana — no implica neutralidad del gobierno |
+| −1 | leve | pro-estado | señal leve hacia regulación / gasto / control |
+| −2 | moderado | pro-estado | varias señales pro-estado sin medida estructural única |
+| −3 | fuerte | pro-estado | semana de movimientos fuertes hacia la regulación / estatización / ruptura con acreedores |
 
-# Limitaciones y honestidad
+## Eventos clave por país-semana
 
-[Esta capa involucra juicio editorial y, por tanto, riesgo de sesgo. Los criterios de codificación están disponibles en Spec 44 y en el JSON del dataset. La categoría "muy pro-mercado" no implica que el mercado funcione bien — solo que esa es la orientación institucional. Igual para "muy pro-estado". El viento dice dirección, no resultado.]
+El drawer muestra los eventos clave del último coding publicado para cada país cuando se abre al hacer click. Cada evento sale literal del archivo de coding; el codificador los formula con la fuente entre paréntesis y una flecha indicando si suman pro-mercado (↑), pro-estado (↓) o neutro (→).
 
-# Para profundizar
+## Lectura por país (piloto r1)
 
-- [Criterios de codificación editorial](../../70-Producto/specs/44-capa-viento.md)
-- [Fuentes utilizadas para la codificación](../../70-Producto/specs/44-capa-viento.md)
+### Argentina
+
+Argentina abre la serie semanal del viento con dos lecturas publicadas: W18 (rank +3, intensidad 0.85) y W19 (rank +1, intensidad 0.4).
+
+W18 fue una semana densa: la segunda revisión del acuerdo FMI con desembolso de USD 1.200M, la liberación del cepo para personas jurídicas no financieras y la presentación del presupuesto 2027 con meta de superávit primario del 1.5% del PBI. Tres señales materiales en la misma semana — de ahí el rank +3 y la intensidad alta.
+
+W19 fue calma normativa. Las declaraciones del Ministro reafirmaron el camino del superávit pero sin acciones nuevas. El rank baja a +1 porque el movimiento efectivo de la semana fue menor. La orientación pro-mercado sigue presente en el discurso pero no hubo movimientos materiales nuevos.
+
+El ciclo de dos semanas ilustra la diferencia entre "semana decisiva" y "semana de mantenimiento": misma dirección, distinta intensidad. La modulación visual del fill (más opaco en W18, menos en W19) captura esa diferencia sin agregar un bucket nuevo.
+
+## Otros países
+
+> Lectura curada pendiente para Bolivia, Brasil, Chile, Colombia, Ecuador, Paraguay, Perú, Uruguay, Venezuela. El coding está en curso — cobertura mínima a alcanzar antes de la implementación técnica completa: AR ≥4 semanas, BR/CL ≥2 semanas, resto ≥1 semana. Brasil y Chile entran en la lectura editorial en r2; los demás en r3.
+
+## Fuente y método
+
+- **Coding editorial Mapa Inestable** (Spec 41, pipeline `viento-v1.0.0`). Codificador único en r1: Tomás Peña Agrest.
+- **Escala discreta −3..+3**, 7 niveles. Aplicada semana a semana por país.
+- **Criterios de coding:** política tributaria y fiscal (superávit/déficit, ajuste/gasto), política cambiaria y financiera (cepo, tipo de cambio, acuerdos), regulación sectorial (privatizaciones, desregulaciones, controles de precios), política exterior económica (acuerdos con acreedores, bloques regionales), discurso del gobierno (alineamiento o divergencia con los ejes anteriores).
+- **Trazabilidad:** cada coding lleva codificador, fecha, justificativo y eventos clave con fuente. Los archivos viven en `70-Producto/datos-viento/<slug>/YYYY-W##.md`.
+- **Cobertura semanal:** cada viernes a las ~16-17 ART el editor codifica las 10 semanas.
+
+## Limitaciones
+
+- El coding es interpretativo. El mismo evento puede ser codificado de manera diferente por codificadores distintos. En r1 hay un único codificador (Tomás) — la consistencia interna es alta, el margen de sesgo individual también.
+- La capa muestra el cambio de la semana, no la orientación acumulada del régimen. Un gobierno estructuralmente pro-mercado con una semana de rank 0 no es "neutro" — la neutralidad es de la semana, no del gobierno.
+- Países sin coding histórico aparecen como "sin dato" en el mapa.
+- Subindicadores ausentes en r1. El bloque "Noticias por sector" (regulación/fiscal/discurso/exterior) llegará en r3 con Spec 41B una vez acumuladas 8-12 semanas de coding.

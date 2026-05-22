@@ -54,6 +54,8 @@ export interface MacroIndicator {
   unit: string;
   source: MacroSource;
   methodology: string;
+  /** Spec 40B — metodología per-país cuando la fuente varía (ej: c7 con nacionales + OIT). */
+  methodology_by_country?: Record<string, string>;
   n_countries_covered: number;
   by_country: Record<string, MacroCountryData>;
   /** Opcional: agrupa sub-indicadores (A3 sectorial) */

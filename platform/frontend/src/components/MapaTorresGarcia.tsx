@@ -22,8 +22,6 @@ function LayerTooltip({
   period: LayerPeriod;
 }) {
   const value = activeLayer.layer.getValueForCountry(tooltip.slug, period);
-  const isRecesion = value && value.raw < -0.5;
-  const isCrecimiento = value && value.raw > 0.5;
 
   const LEFT_OFFSET = 12;
   const TOP_OFFSET  = -60;
@@ -67,7 +65,7 @@ function LayerTooltip({
         </span>
       </div>
 
-      {/* Período */}
+      {/* Período · Capa */}
       <div style={{
         fontFamily: "var(--mi-font-mono)",
         fontSize: 8,
@@ -75,35 +73,19 @@ function LayerTooltip({
         letterSpacing: "0.06em",
         marginBottom: 6,
       }}>
-        {period.label} · PBI
+        {period.label} · {activeLayer.layer.shortLabel}
       </div>
 
-      {/* Valor */}
+      {/* Valor — usa value.formatted para ser layer-genérico */}
       {value ? (
-        <>
-          <div style={{
-            fontFamily: "var(--mi-font-display)",
-            fontSize: "var(--mi-text-xl)",
-            lineHeight: 1,
-            color: isRecesion
-              ? "var(--mi-precipitacion-3)"
-              : isCrecimiento
-                ? "var(--mi-ink)"
-                : "var(--mi-ink-mute)",
-          }}>
-            {value.raw >= 0 ? "+" : ""}{value.raw.toFixed(1)}%
-          </div>
-          <div style={{
-            fontFamily: "var(--mi-font-mono)",
-            fontSize: 8,
-            textTransform: "uppercase",
-            letterSpacing: "0.08em",
-            color: isRecesion ? "var(--mi-precipitacion-3)" : "var(--mi-ink-mute)",
-            marginTop: 2,
-          }}>
-            {isRecesion ? "recesión" : isCrecimiento ? "crecimiento" : "sin cambio"}
-          </div>
-        </>
+        <div style={{
+          fontFamily: "var(--mi-font-display)",
+          fontSize: "var(--mi-text-xl)",
+          lineHeight: 1,
+          color: "var(--mi-ink)",
+        }}>
+          {value.formatted}
+        </div>
       ) : (
         <div style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-mute)" }}>
           Sin dato
@@ -249,9 +231,13 @@ export default function MapaTorresGarcia({
       if (value !== null) {
         const bucket = activeLayer.layer.legend.buckets.find(b => b.bucketIndex === value.bucketIndex);
         const fillColor = bucket?.color ?? (activeLayer.layer.legend.noDataColor ?? "#C8B894");
+        // Spec 44 §3.4 — modulación por intensidad para la capa viento
+        const fillOpacity = (activeLayer.layer.id === "viento" && value.intensidad !== undefined)
+          ? 0.7 + 0.3 * value.intensidad
+          : 0.55;
         return {
           fill: fillColor,
-          fillOpacity: 0.55,
+          fillOpacity,
           opacity: 1,
           transition: "fill 250ms cubic-bezier(0.2,0,0,1), opacity 150ms",
         };
@@ -349,7 +335,7 @@ export default function MapaTorresGarcia({
           height: "100%",
           display: "block",
           pointerEvents: "none",
-          objectFit: "contain",
+          objectFit: variant === "explorer" ? "contain" : undefined,
         }}
       />
 
@@ -417,6 +403,57 @@ export default function MapaTorresGarcia({
             );
           })}
         </g>
+
+        {/* Spec 44 — Glyph orientado viento: encima del fill, debajo de capitals */}
+        {activeLayer?.layer.id === "viento" && (
+          <g id="viento-glyphs" aria-hidden="true">
+            {COUNTRIES.map((c) => {
+              const value = activeLayer.layer.getValueForCountry(c.slug, activeLayer.period);
+              if (!value) return null;
+              const rank = value.raw;
+              const GLYPH_SIZE = 28;
+              const halfSize = GLYPH_SIZE / 2;
+              const isNeutro = rank === 0;
+              const isProEstado = rank < 0;
+              return (
+                <g key={c.slug} style={{ pointerEvents: "none" }}>
+                  {isNeutro ? (
+                    <image
+                      href="/mapa/glyphs/viento-neutro.svg"
+                      x={c.cx - halfSize}
+                      y={c.cy - halfSize}
+                      width={GLYPH_SIZE}
+                      height={GLYPH_SIZE}
+                      style={{ color: "var(--mi-viento-glyph-stroke)" }}
+                    />
+                  ) : isProEstado ? (
+                    /* Mecánica V3: pro-estado = viento.svg espejado horizontalmente */
+                    <g transform={`translate(${c.cx}, ${c.cy}) scale(-1, 1) translate(${-c.cx}, ${-c.cy})`}>
+                      <image
+                        href="/mapa/glyphs/viento.svg"
+                        x={c.cx - halfSize}
+                        y={c.cy - halfSize}
+                        width={GLYPH_SIZE}
+                        height={GLYPH_SIZE}
+                        style={{ color: "var(--mi-viento-glyph-stroke)" }}
+                      />
+                    </g>
+                  ) : (
+                    /* pro-mercado = viento.svg sin transformar (apunta a la derecha) */
+                    <image
+                      href="/mapa/glyphs/viento.svg"
+                      x={c.cx - halfSize}
+                      y={c.cy - halfSize}
+                      width={GLYPH_SIZE}
+                      height={GLYPH_SIZE}
+                      style={{ color: "var(--mi-viento-glyph-stroke)" }}
+                    />
+                  )}
+                </g>
+              );
+            })}
+          </g>
+        )}
 
         {/* Interactive capital markers — siempre encima de cualquier capa */}
         <g id="capitals-interactive" aria-hidden="true">

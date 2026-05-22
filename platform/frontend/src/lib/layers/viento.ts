@@ -1,85 +1,140 @@
-// Spec 39 — Stub de capa Viento (orientación político-económica)
-// Datos sintéticos. Spec 44 reemplaza con implementación real.
-// Escala diverging: negativo = pro-estado, positivo = pro-mercado, 0 = neutro
+// Spec 44 — Capa Viento: orientación pro-mercado / pro-estado
+// Reemplaza el stub sintético de Spec 39.
+// Indicador principal: rank entero -3..+3 del coding manual editorial (Spec 41).
+// Cadencia: semanal. 4 buckets de magnitud. Glyph orientado sobre el mapa (mecánica V3).
 
 import type { Layer, LayerPeriod, LayerValue } from "../layers";
+import {
+  VIENTO_DATA,
+  getLastVientoBeforeWeek,
+  getAvailableWeeks,
+  getEventsForCountry as getEventsHelper,
+  getJustificativoForCountry as getJustificativoHelper,
+} from "../viento";
 
-const SYNTHETIC: Record<string, Record<string, number>> = {
-  ar: { "2021": -2, "2022": -2, "2023": -2, "2024": 1 },
-  bo: { "2021": -2, "2022": -2, "2023": -1, "2024": -1 },
-  br: { "2021": 1,  "2022": 1,  "2023": -1, "2024": -1 },
-  cl: { "2021": 0,  "2022": -1, "2023": -1, "2024": 0 },
-  co: { "2021": 0,  "2022": 1,  "2023": 1,  "2024": 1 },
-  ec: { "2021": 0,  "2022": 0,  "2023": 2,  "2024": 2 },
-  pe: { "2021": -1, "2022": 0,  "2023": 0,  "2024": 0 },
-  py: { "2021": 1,  "2022": 1,  "2023": 1,  "2024": 1 },
-  uy: { "2021": -1, "2022": -1, "2023": -1, "2024": 0 },
-  ve: { "2021": -2, "2022": -2, "2023": -2, "2024": -2 },
-};
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
-const BUCKET_MAP: Record<number, { label: string; color: string; range: string }> = {
-  [-2]: { label: "Muy pro-estado",   color: "#2D4A6B", range: "Orientación estatista fuerte" },
-  [-1]: { label: "Pro-estado",       color: "#4A6B8A", range: "Orientación estatista moderada" },
-  [0]:  { label: "Mixto",            color: "#C8B894", range: "Sin orientación dominante clara" },
-  [1]:  { label: "Pro-mercado",      color: "#B47A4A", range: "Orientación pro-mercado moderada" },
-  [2]:  { label: "Muy pro-mercado",  color: "#8A4A1A", range: "Orientación pro-mercado fuerte" },
-};
-
-const PERIODS: LayerPeriod[] = [
-  { key: "2021", date: "2021-12-31", label: "2021" },
-  { key: "2022", date: "2022-12-31", label: "2022" },
-  { key: "2023", date: "2023-12-31", label: "2023" },
-  { key: "2024", date: "2024-12-31", label: "2024" },
-];
-
-function getLastPeriodBefore(date: string): LayerPeriod | null {
-  const sorted = [...PERIODS].sort((a, b) => b.date.localeCompare(a.date));
-  return sorted.find(p => p.date <= date) ?? null;
+/** Último día ISO (domingo) de la semana ISO dada. */
+function isoWeekEndDate(year: number, week: number): string {
+  const jan4 = new Date(Date.UTC(year, 0, 4));
+  const jan4Day = (jan4.getUTCDay() + 6) % 7; // 0 = lunes
+  const mondayWeek1 = new Date(jan4.getTime() - jan4Day * 86400000);
+  const sunday = new Date(mondayWeek1.getTime() + ((week - 1) * 7 + 6) * 86400000);
+  return sunday.toISOString().slice(0, 10);
 }
+
+export function magnitudBucket(rank: number): number {
+  return Math.abs(rank); // 0, 1, 2, 3
+}
+
+export function direction(rank: number): "pro-estado" | "neutro" | "pro-mercado" {
+  if (rank > 0) return "pro-mercado";
+  if (rank < 0) return "pro-estado";
+  return "neutro";
+}
+
+export function formatViento(rank: number): string {
+  const sign = rank > 0 ? "+" : rank < 0 ? "−" : "";
+  return `${sign}${Math.abs(rank)} ${direction(rank)}`;
+}
+
+// ── Construcción de períodos ──────────────────────────────────────────────────
+
+function buildPeriods(): LayerPeriod[] {
+  const weeks = getAvailableWeeks();
+  if (weeks.length === 0) {
+    const now = new Date();
+    const year = now.getUTCFullYear();
+    const week = 1;
+    return [{
+      key: `${year}-W${String(week).padStart(2, "0")}`,
+      date: isoWeekEndDate(year, week),
+      label: `Sem ${week} · ${year}`,
+    }];
+  }
+  return weeks.map(w => ({
+    key: `${w.year}-W${String(w.week).padStart(2, "0")}`,
+    date: isoWeekEndDate(w.year, w.week),
+    label: `Sem ${w.week} · ${w.year}`,
+  }));
+}
+
+// ── Textos editoriales piloto (solo AR en r1) ─────────────────────────────────
+
+const EDITORIAL: Record<string, string> = {
+  ar: "Argentina lleva dos semanas consecutivas con orientación pro-mercado (W18 rank +3, W19 rank +1). El ciclo actual combina un ancla institucional fuerte (acuerdo FMI, superávit primario) con calma normativa entre semanas. La magnitud del movimiento bajó de W18 a W19 — el gobierno no introdujo medidas nuevas de desregulación pero la orientación dominante se mantiene. Lectura cruzada: el viento pro-mercado convive con restricciones cambiarias parciales aún vigentes — la coherencia del régimen es alta en los ejes macro/fiscal, más débil en el eje regulatorio cotidiano.",
+};
+
+// ── Layer ─────────────────────────────────────────────────────────────────────
+
+const PERIODS = buildPeriods();
 
 export const vientoLayer: Layer = {
   id: "viento",
-  label: "Viento · orientación político-económica",
+  label: "Viento · orientación pro-mercado / pro-estado",
   shortLabel: "Viento",
   glyphSrc: "/mapa/glyphs/viento.svg",
   category: "editorial",
-  description: "Hacia dónde sopla el viento institucional. Orientación dominante del régimen político-económico en un eje pro-estado / pro-mercado.",
-  unit: "escala −2 (pro-estado) a +2 (pro-mercado)",
-  cadence: "anual",
+  description: "Dirección y velocidad del cambio político-económico en la semana. Coding editorial manual: rank −3 (pro-estado) a +3 (pro-mercado). El color codifica la magnitud; el glyph orientado sobre el país codifica la dirección.",
+  unit: "rank −3 (pro-estado) a +3 (pro-mercado)",
+  cadence: "semanal",
+
   legend: {
-    type: "diverging",
-    buckets: Object.entries(BUCKET_MAP).map(([k, v]) => ({
-      bucketIndex: Number(k),
-      label: v.label,
-      color: v.color,
-      rangeDescription: v.range,
-    })).sort((a, b) => a.bucketIndex - b.bucketIndex),
-    noDataColor: "#C8B894",
+    type: "continuous",
+    buckets: [
+      { bucketIndex: 0, label: "Neutro",   color: "var(--mi-viento-0)", rangeDescription: "|rank| = 0 · sin movimiento direccional" },
+      { bucketIndex: 1, label: "leve",     color: "var(--mi-viento-1)", rangeDescription: "|rank| = 1" },
+      { bucketIndex: 2, label: "moderado", color: "var(--mi-viento-2)", rangeDescription: "|rank| = 2" },
+      { bucketIndex: 3, label: "fuerte",   color: "var(--mi-viento-3)", rangeDescription: "|rank| = 3" },
+    ],
+    noDataColor: "var(--mi-viento-nodata, #5C6638)",
+    qualityFlagColor: "var(--mi-viento-stale, #C8B894)",
   },
+
   source: {
-    name: "Coding editorial Mapa Inestable (datos sintéticos — Spec 44 implementa real)",
-    url: "https://mapainestable.substack.com",
-    publishedDate: "2024-12-31",
-    lastFetched: "2025-01-01",
+    name: "Coding editorial Mapa Inestable (Spec 41) — viento-v1.0.0",
+    url: "/mapa/capas/viento",
+    publishedDate: VIENTO_DATA.computed_at,
+    lastFetched: VIENTO_DATA.computed_at,
   },
+
   periods: PERIODS,
   defaultPeriod: PERIODS[PERIODS.length - 1],
-  getValueForCountry(countrySlug, period) {
-    const yearData = SYNTHETIC[countrySlug];
-    if (!yearData) return null;
-    const year = period.key.slice(0, 4);
-    const bucket = yearData[year];
-    if (bucket === undefined) return null;
-    const prevYear = String(Number(year) - 1);
-    const prevBucket = yearData[prevYear];
+
+  getValueForCountry(countrySlug, period): LayerValue | null {
+    const match = period.key.match(/^(\d{4})-W(\d{2})$/);
+    if (!match) return null;
+    const year = Number(match[1]);
+    const week = Number(match[2]);
+    const entry = getLastVientoBeforeWeek(countrySlug, year, week);
+    if (!entry) return null;
     return {
-      raw: bucket,
-      formatted: BUCKET_MAP[bucket]?.label ?? String(bucket),
-      bucketIndex: bucket,
-      delta: prevBucket !== undefined ? bucket - prevBucket : undefined,
-      quality: "estimado",
+      raw: entry.rank,
+      formatted: formatViento(entry.rank),
+      bucketIndex: magnitudBucket(entry.rank),
+      delta: undefined,
+      quality: "oficial",
+      intensidad: entry.intensidad,
     };
   },
-  getLastPeriodBefore,
+
+  getLastPeriodBefore(date): LayerPeriod | null {
+    const sorted = [...PERIODS].sort((a, b) => b.date.localeCompare(a.date));
+    return sorted.find(p => p.date <= date) ?? null;
+  },
+
   readingGuideSlug: "viento",
+
+  editorialByCountry: EDITORIAL,
+
+  getEventsForCountry(slug, period) {
+    return getEventsHelper(slug, period.key);
+  },
+
+  getJustificativoForCountry(slug, period) {
+    return getJustificativoHelper(slug, period.key);
+  },
+
+  legendMicrocopy: "El color codifica magnitud · el glyph sobre cada país codifica dirección (pro-mercado ↔ pro-estado).",
+  shortIntro: "El viento político sopla hacia el mercado o hacia el estado: hacia la derecha indica orientación pro-mercado, hacia la izquierda pro-estado, dashes neutros sin orientación dominante. El color codifica la magnitud del cambio semanal — cuán fuerte sopla — no su dirección.",
 };

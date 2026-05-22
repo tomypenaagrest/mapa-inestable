@@ -1,10 +1,10 @@
 ---
 spec: 41
 titulo: Pipeline de datos políticos para capa viento — MVP coding editorial manual
-estado: implementada
+estado: implementada-parcial-r3
 autor: Tomás (con Claude · Cowork)
 fecha: 2026-05-18
-revision: 2026-05-19 (r2) — cerradas las 6 decisiones tácticas abiertas en r1
+revision: 2026-05-21 (r3) — **cambio de cadencia editorial: semanal → trimestral.** Decisión de Tomás 2026-05-21 al revisar Spec 44 ("semanal es mucho"). La operación editorial completa baja a un coding por país por trimestre (4/país/año × 10 países = 40 codings/año, en lugar de 52 semanales). El régimen normal: el archivo del trimestre se edita en `estado: borrador` durante el trimestre (agregando eventos a medida que ocurren) y se publica al cierre (primer viernes del trimestre siguiente). Schema del .md cambia: `year + quarter` (1-4) en lugar de `year + week` (1-52). Nombre de archivo: `2026-Q2.md`. JSON bumpea a `viento-v2.0.0` (breaking: `series_semanal` → `series_trimestral`). Helpers `getLastVientoBeforeQuarter` y `getAvailableQuarters` reemplazan a sus equivalentes semanales. Spec 29 actualizada: schedules viernes 16:00 / 19:00 ART pasan a primer viernes del trimestre siguiente (cron `0 16 1-7 1,4,7,10 5` y `0 19 1-7 1,4,7,10 5`). Spec 44 hereda automáticamente la cadencia. Caso especial: migración de AR W18+W19 → AR Q2-2026 promediado en este mismo sprint (régimen normal arranca con Q2-2026 ya migrado, Q3-2026 se codifica al cierre el viernes 2 de octubre 2026). 2026-05-19 (r2) — cerradas las 6 decisiones tácticas abiertas en r1
 epic: 03
 afecta:
   - 70-Producto/datos-viento/ (NUEVO directorio del vault — fuente editorial de la capa viento)
@@ -48,7 +48,7 @@ Diseñar el algoritmo ahora sería inventar reglas arbitrarias. La aproximación
 
 Esto cumple la decisión 7 del epic (codificación híbrida) en dos pasos: el override existe desde r1 (porque es lo único que hay); el algoritmo se suma cuando hay material para diseñarlo bien.
 
-**Lo que entra en r1:**
+**Lo que entra en r1 (régimen original, ahora deprecado por r3):**
 
 - Esquema del archivo de coding semanal por país: `70-Producto/datos-viento/<slug>/YYYY-W##.md`.
 - Escala diverging discreta -3 a +3 con 7 buckets y labels editoriales claras.
@@ -58,6 +58,17 @@ Esto cumple la decisión 7 del epic (codificación híbrida) en dos pasos: el ov
 - JSON consumible por la capa viento de Spec 44, formato compatible con el contrato `Layer` de Spec 39.
 - Operación borrador → promote: el `.md` se escribe como `estado: borrador`, Tomás revisa, promueve a `estado: publicada`. Solo lo publicado entra al JSON.
 - Trazabilidad: cada coding lleva fecha, codificador, eventos clave que lo justifican (con fuentes), rank previo.
+
+**Lo que entra en r3 (cambio de cadencia 2026-05-21):**
+
+- Cadencia editorial baja de semanal a trimestral (4 codings/país/año × 10 países = 40 codings/año, en lugar de los 520 originales).
+- Esquema del archivo de coding trimestral por país: `70-Producto/datos-viento/<slug>/YYYY-Q#.md` (ej. `2026-Q2.md`).
+- Escala -3 a +3 intacta. Lo que cambia es la unidad temporal del coding: el rank captura **movimiento estructural del trimestre**, no de la semana.
+- Régimen del archivo en curso: el archivo del trimestre vivo se edita en `estado: borrador` durante todo el trimestre (agregando eventos a medida que ocurren). Al cierre del trimestre el editor revisa, sintetiza y publica.
+- Schedules de Spec 29 cambian: `coding-viento-recordatorio` y `build-viento` pasan de viernes semanal a **primer viernes del trimestre siguiente** (cron `0 16 1-7 1,4,7,10 5` y `0 19 1-7 1,4,7,10 5`).
+- Helpers de `lib/viento.ts`: `getLastVientoBeforeQuarter(slug, year, quarter)` y `getAvailableQuarters()` reemplazan a sus equivalentes semanales.
+- JSON compilado bumpea a `viento-v2.0.0` (breaking change: `series_semanal` → `series_trimestral`).
+- Caso especial — migración: los archivos `2026-W18.md` y `2026-W19.md` de AR (ya publicados en r1/r2) se promedian en un único `2026-Q2.md` con rank +2 (round del promedio +2.0), justificativo sintético cubriendo ambas semanas, marca explícita `regimen: migracion-semanal` en frontmatter. Los .md originales se mueven a `70-Producto/datos-viento/ar/_historico-semanal/`. Los 10 borradores W21 generados por el recordatorio del 2026-05-20 se eliminan (régimen deprecado).
 
 **Lo que NO entra en r1:**
 
@@ -86,48 +97,55 @@ Lo que sí existe que sirve como referencia conceptual:
 
 ### 1. Sistema de coding editorial
 
-#### 1.1 Estructura del vault
+#### 1.1 Estructura del vault (r3 — trimestral)
 
-Un archivo `.md` por país por semana:
+Un archivo `.md` por país por trimestre:
 
 ```
 70-Producto/datos-viento/
 ├── _compilado/
-│   └── viento.json              ← output del pipeline (no editado a mano)
+│   └── viento.json              ← output del pipeline v2.0.0 (no editado a mano)
 ├── ar/
-│   ├── 2026-W18.md
-│   ├── 2026-W19.md
-│   └── 2026-W20.md
+│   ├── _historico-semanal/      ← archivos del régimen r1/r2 (W18, W19) preservados
+│   │   ├── 2026-W18.md
+│   │   └── 2026-W19.md
+│   ├── 2026-Q2.md               ← entrada migrada (W18+W19 promediadas, marca regimen: migracion-semanal)
+│   ├── 2026-Q3.md               ← se codifica al cierre de Q3, viernes 2 oct 2026
+│   └── 2026-Q4.md               ← se codifica al cierre de Q4, viernes 2 ene 2027
 ├── bo/
-│   ├── 2026-W19.md
-│   └── 2026-W20.md
+│   ├── 2026-Q2.md
+│   └── ...
 ├── br/
 │   └── ...
 └── (8 países más)
 ```
 
-**Por qué carpeta por país y archivo por semana**:
+**Por qué carpeta por país y archivo por trimestre**:
 
 - Aislación: el coding de un país no contamina al de otro.
 - Trazabilidad: cada coding tiene una fecha y un autor identificable.
-- Append-only conceptual: nunca se borra una semana pasada, solo se agrega la nueva o se corrige in-situ.
+- Append-only conceptual: nunca se borra un trimestre pasado, solo se agrega el nuevo o se corrige in-situ.
+- Cadencia coherente con el slider de Spec 39 (trimestral en Spec 42/43/44) — sin agregación en runtime.
 - Escalable: si crece el equipo y un codificador se hace cargo de 3 países, su trabajo está organizado.
-- Permite ver historia rápido: `ls 70-Producto/datos-viento/ar/` lista todas las semanas codificadas de Argentina.
+- Permite ver historia rápido: `ls 70-Producto/datos-viento/ar/` lista todos los trimestres codificados de Argentina.
 
-#### 1.2 Esquema del archivo de coding semanal
+**Subcarpeta `_historico-semanal/`** (r3): preserva los archivos del régimen semanal anterior por trazabilidad. El pipeline `build_viento.mjs` los ignora porque están fuera del scan (regex `^\d{4}-Q\d\.md$`).
+
+#### 1.2 Esquema del archivo de coding trimestral (r3)
 
 ```yaml
 ---
 country_slug: ar
 country_name: Argentina
 year: 2026
-week: 20
-fecha_coding: 2026-05-15        # cuándo se codificó (puede ser != viernes si se atrasó)
-codificador: tomas               # quién lo hizo
-rank: 2                          # entero -3..+3 (ver §1.3)
+quarter: 2                       # entero 1..4 (Q1=ene-mar, Q2=abr-jun, Q3=jul-sep, Q4=oct-dic)
+fecha_coding: 2026-07-03         # cuándo se codificó (primer viernes del trimestre siguiente en el régimen normal; fecha de migración para entradas del histórico)
+codificador: tomas
+rank: 2                          # entero -3..+3 (ver §1.3) — captura movimiento estructural del trimestre
 direccion: pro-mercado           # derivado de rank, explícito para legibilidad humana
-intensidad: 0.7                  # opcional 0-1: qué tan fuerte fue el cambio respecto a la semana anterior
+intensidad: 0.7                  # opcional 0-1: qué tan fuerte fue el movimiento del trimestre
 estado: borrador                 # borrador | publicada (solo publicadas entran al JSON)
+regimen: trimestral              # trimestral | migracion-semanal (entradas migradas del régimen r1/r2)
 
 # Campos reservados para Spec 41B (algoritmo):
 # algorithmic_baseline: null      # el algoritmo populará: { rank, generated_at, source_signals }
@@ -136,29 +154,33 @@ estado: borrador                 # borrador | publicada (solo publicadas entran 
 
 # Justificativo
 
-[1-3 frases que explican por qué el rank de esta semana es el que es.
-Si no hubo cambios respecto a la semana anterior, decirlo explícitamente.]
+[1-3 frases que explican por qué el rank del trimestre es el que es.
+Si no hubo cambios materiales respecto al trimestre anterior, decirlo explícitamente.
+Capturar la lectura agregada del trimestre, no de una semana específica.]
 
-# Eventos clave de la semana
+# Eventos clave del trimestre
 
-- Anuncio de [política/decreto/ley] [fuente]
+- Anuncio de [política/decreto/ley] [fuente] [fecha aprox.]
 - Discurso de [funcionario] [fuente]
 - (etc.)
 
 Cada evento clave puede tener su propia tendencia (↑ pro-mercado, ↓ pro-estado, → neutro).
+A lo largo del trimestre el archivo se va llenando con eventos a medida que ocurren — al cierre se sintetizan.
 
 # Coding previo (contexto)
 
-- Semana 19: rank +1 — moderación tras anuncio fiscal
-- Semana 18: rank +1 — sin cambios materiales
-- Semana 17: rank 0 — fase de espera por elecciones provinciales
+- 2026-Q1: rank +2 — fase de ajuste inicial del régimen
+- 2025-Q4: rank +1 — transición pos-electoral
+- 2025-Q3: rank 0 — fase de campaña electoral
 ```
 
 **Notas:**
 
-- El skill `coding-viento` (§2) pre-rellena el bloque "Coding previo" leyendo las 3-5 semanas anteriores de ese país.
-- "Justificativo" y "Eventos clave" son obligatorios (con texto, aunque sean breves) — sin ellos el coding pierde trazabilidad. El pipeline valida.
-- "Fuentes" en los eventos son recomendadas pero no bloqueantes en r1 (el coding refleja la lectura editorial, no requiere citas).
+- El skill `coding-viento` (§2) pre-rellena el bloque "Coding previo" leyendo los 3-5 trimestres anteriores de ese país.
+- "Justificativo" y "Eventos clave del trimestre" son obligatorios (con texto, aunque sean breves) — sin ellos el coding pierde trazabilidad. El pipeline valida.
+- "Fuentes" en los eventos son recomendadas pero no bloqueantes (el coding refleja la lectura editorial, no requiere citas).
+- Régimen del archivo en curso: durante el trimestre el archivo vive en `estado: borrador` y se va editando (agregando eventos a medida que aparecen). Al cierre del trimestre el editor revisa, sintetiza la lectura agregada y publica.
+- Campo `regimen` distingue entradas naturales (`trimestral`) de entradas migradas del régimen semanal (`migracion-semanal`). El pipeline no las trata distinto; el lector y futuros codificadores tienen la marca.
 
 #### 1.3 Escala numérica -3 a +3
 
@@ -174,58 +196,71 @@ Cada evento clave puede tener su propia tendencia (↑ pro-mercado, ↓ pro-esta
 | **+2** | pro-mercado | ▒▒ terracota medio | Cambios moderados pro-mercado: desregulación sectorial, recortes de gasto, ajustes fiscales |
 | **+3** | muy pro-mercado | ▒▒▒ terracota intenso | Cambios estructurales fuertes pro-mercado en la semana: privatizaciones, desregulación masiva, ajuste fiscal severo, ortodoxia FMI |
 
-**Importante:** la escala mide **dirección del cambio en la semana**, no posicionamiento absoluto del gobierno. Un gobierno fuertemente pro-mercado que pasa una semana sin novedades materiales tiene rank 0 (no +3 "porque siempre es pro-mercado"). Esto resuelve el problema señalado en el epic: la capa muestra **movimiento**, no etiqueta política estática.
+**Importante (r3):** la escala mide **dirección del cambio en el trimestre**, no posicionamiento absoluto del gobierno. Un gobierno fuertemente pro-mercado que pasa un trimestre sin novedades materiales tiene rank 0 (no +3 "porque siempre es pro-mercado"). Esto resuelve el problema señalado en el epic: la capa muestra **movimiento estructural del trimestre**, no etiqueta política estática.
 
-La intensidad (opcional, 0-1) modula visualmente: un rank +2 con intensidad 0.9 se renderiza ligeramente más saturado que un rank +2 con intensidad 0.5. Esto permite distinguir "una semana decisiva" de "una semana de coding habitual" sin agregar buckets.
+**Cambio r3 — qué captura el rank ahora.** En r1/r2 el rank captaba el cambio semanal. En r3 capta la lectura agregada del trimestre: el editor mira los eventos clave del trimestre como un todo, sintetiza la dirección dominante, y asigna un rank único. Un trimestre con 3 anuncios pro-mercado fuertes y 1 medida pro-estado moderada da probablemente rank +2 o +3, no la suma neta de ranks semanales — el coding trimestral es **una lectura sintética**, no una agregación aritmética.
 
-### 2. Skill `coding-viento` (asiste el coding semanal)
+La intensidad (opcional, 0-1) modula visualmente: un rank +2 con intensidad 0.9 se renderiza ligeramente más saturado que un rank +2 con intensidad 0.5. Permite distinguir "un trimestre decisivo" de "un trimestre de cambios incrementales" sin agregar buckets.
+
+### 2. Skill `coding-viento` (asiste el coding trimestral)
 
 Vive en `70-Producto/skills/coding-viento/SKILL.md`. Cumple un rol equivalente al de los otros skills editoriales del plugin (analisis-semanal, despacho-semanal).
 
+**Cambio r3.** El skill se reescribe para operar sobre trimestres. La estructura del SKILL.md se mantiene (siete responsabilidades, principio de aislación, principio "no genera rank") pero las referencias a "semana" pasan a "trimestre", el formato del archivo cambia (YYYY-Q#.md), y el flujo de promoción se afina (durante el trimestre se edita en borrador; al cierre se publica).
+
 **Activación:**
 
-- Manual: "codifiquemos viento", "vamos a hacer el coding semanal de [país]", "el coding de viento de esta semana".
-- Scheduled task: viernes 16:00 ART crea un recordatorio en el vault (no codifica solo, solo recuerda).
+- Manual: "codifiquemos viento", "vamos a hacer el coding trimestral de [país]", "el coding de viento de este trimestre", "abrí el archivo del trimestre vivo de [país]".
+- Scheduled task: primer viernes del trimestre 16:00 ART crea un recordatorio en el vault — recuerda al editor que el trimestre anterior cerró y hay que publicar el archivo correspondiente (no codifica solo).
 
 **Qué hace el skill:**
 
-1. Detecta la semana actual (ISO).
-2. Para cada país (o el país que se pida), revisa si ya existe `70-Producto/datos-viento/<slug>/YYYY-W##.md`.
-3. Si no existe: crea un borrador con el frontmatter pre-rellenado, el bloque "Coding previo" poblado con las 3-5 semanas anteriores del país, y rank tentativo = rank de la semana anterior (continuidad por default — el editor lo cambia si hubo movimiento).
-4. Pre-rellena "Eventos clave de la semana" leyendo `15-Países/agendas/<slug>.md` (Spec 27) y los borradores de la semana de ese país en `60-Borradores/diario/` (Spec 23). Estos eventos son insumo del coding, no la decisión.
-5. Pide al editor (Tomás u otro) confirmar/ajustar rank, llenar justificativo, marcar eventos relevantes.
-6. Cuando el editor dice "publicalo": cambia `estado: borrador` a `estado: publicada`.
-7. Opcional: al terminar la semana de los 10 países, ofrece correr `build_viento.mjs` para regenerar el JSON compilado.
+1. Detecta el trimestre actual (Q1=ene-mar, Q2=abr-jun, Q3=jul-sep, Q4=oct-dic).
+2. Para cada país (o el país que se pida), revisa si ya existe `70-Producto/datos-viento/<slug>/YYYY-Q#.md`.
+3. Si no existe: crea un borrador con el frontmatter pre-rellenado, el bloque "Coding previo" poblado con los 3-5 trimestres anteriores del país, y rank tentativo = rank del trimestre anterior (continuidad por default — el editor lo cambia si hubo movimiento).
+4. Pre-rellena "Eventos clave del trimestre" leyendo `15-Países/agendas/<slug>.md` (Spec 27) y los borradores del trimestre de ese país en `60-Borradores/diario/` (Spec 23). Estos eventos son insumo del coding, no la decisión.
+5. Pide al editor (Tomás u otro) confirmar/ajustar rank, llenar justificativo agregado, sintetizar eventos relevantes.
+6. **Dos momentos de uso distintos:**
+   - **Durante el trimestre en curso:** el editor agrega eventos al archivo en `estado: borrador` a medida que ocurren. El skill puede activarse varias veces por trimestre. El JSON no incluye este archivo hasta que se publique.
+   - **Al cierre del trimestre** (primer viernes del trimestre siguiente, disparado por el scheduled task `coding-viento-recordatorio`): el editor revisa el archivo del trimestre cerrado, sintetiza la lectura agregada, ajusta el rank si hace falta, y cambia `estado: borrador` → `estado: publicada`. Ese cambio dispara `build_viento.mjs` (trigger on-publish heredado de decisión #14 r2).
+7. Opcional: al terminar el coding de los 10 países del trimestre cerrado, ofrece correr `build_viento.mjs` manualmente como red de seguridad.
 
 **Aislación:**
 
-- Un skill, un país, una semana. Si el editor pide "codificá los 10 países", el skill lo hace en serie, archivo por archivo, con confirmación entre cada uno. No mega-batches.
+- Un skill, un país, un trimestre. Si el editor pide "codificá los 10 países", el skill lo hace en serie, archivo por archivo, con confirmación entre cada uno. No mega-batches.
 - Si el editor pide solo un país, el skill no toca los demás.
 
-**No genera el rank.** El skill **pre-rellena** con el rank de la semana anterior como continuidad por default. El editor lo confirma o cambia. **El skill nunca decide solo.** Esta restricción es deliberada en r1 — el algoritmo de Spec 41B podrá generar candidatos, pero esta versión es 100% editorial.
+**No genera el rank.** El skill **pre-rellena** con el rank del trimestre anterior como continuidad por default. El editor lo confirma o cambia. **El skill nunca decide solo.** Esta restricción es deliberada — el algoritmo de Spec 41B podrá generar candidatos cuando haya 8-12 trimestres acumulados (2-3 años de coding manual a cadencia trimestral, vs los 8-12 semanas originales con cadencia semanal), pero esta versión es 100% editorial.
 
-### 3. Pipeline `build_viento.mjs`
+### 3. Pipeline `build_viento.mjs` (r3 — trimestral)
 
 Script Node.js (JavaScript) que vive en `platform/data/coding-viento/build_viento.mjs`. Análogo conceptual a `build_indicators_macro.py` de Spec 40, pero más simple porque no consume APIs externas — solo lee el vault y compila.
 
+**Cambios r3 vs r2:**
+
+- Regex de nombre de archivo: `^(\d{4})-Q(\d)\.md$` (en lugar de `^(\d{4})-W(\d{2})\.md$`).
+- Validación: `quarter` ∈ {1, 2, 3, 4} (en lugar de `week` ∈ 1..52).
+- Contrato del JSON bumpea a `viento-v2.0.0` (breaking).
+- Ignora archivos en subcarpetas `_historico-semanal/` automáticamente (la regex solo matchea Q#).
+
 **Qué hace:**
 
-1. Recorre `70-Producto/datos-viento/<slug>/*.md` para los 10 países.
+1. Recorre `70-Producto/datos-viento/<slug>/*.md` para los 10 países (subcarpetas como `_historico-semanal/` se ignoran por la regex).
 2. Filtra solo los archivos con `estado: publicada`.
-3. Parsea frontmatter de cada uno con `gray-matter` (ya usado en `lib/agendas.ts` y similares).
-4. Valida: `rank` ∈ {-3, -2, -1, 0, 1, 2, 3}; `intensidad` ∈ [0, 1] si presente; campos obligatorios presentes; `country_slug` coincide con la carpeta padre.
+3. Parsea frontmatter de cada uno con `gray-matter`.
+4. Valida: `rank` ∈ {-3, -2, -1, 0, 1, 2, 3}; `intensidad` ∈ [0, 1] si presente; `quarter` ∈ {1, 2, 3, 4}; campos obligatorios presentes; `country_slug` coincide con la carpeta padre.
 5. Construye un objeto `VientoData`:
 
 ```ts
 interface VientoData {
-  version: string;                  // "viento-v1.0.0"
+  version: string;                  // "viento-v2.0.0"
   computed_at: string;              // ISO timestamp
-  range: { start_week: { year, week }, end_week: { year, week } };
+  range: { start_quarter: { year, quarter }, end_quarter: { year, quarter } };
   by_country: Record<string, {
     name: string;
-    series_semanal: {
+    series_trimestral: {
       year: number;
-      week: number;
+      quarter: number;              // 1..4
       rank: number;                 // -3..+3
       direccion: "pro-estado" | "neutro" | "pro-mercado";
       intensidad?: number;
@@ -233,28 +268,29 @@ interface VientoData {
       eventos: string[];            // bullets del .md
       codificador: string;
       fecha_coding: string;
+      regimen?: "trimestral" | "migracion-semanal";  // r3 — distingue entradas naturales de migradas
     }[];
-    latest?: /* última semana publicada */;
+    latest?: /* último trimestre publicado */;
   }>;
 }
 ```
 
 6. Lo serializa a `70-Producto/datos-viento/_compilado/viento.json` (vault, fuente canónica).
 7. Lo copia también a `platform/frontend/src/data/coding-viento/viento.json` para que el frontend lo importe sin reach al vault en build.
-8. Loguea resumen: "compiladas N semanas de M países; X warnings".
+8. Loguea resumen: "compilados N trimestres de M países; X warnings".
 
 **Frecuencia:**
 
-- Cada vez que se publica un `.md` (manual o vía skill).
-- Scheduled task viernes 19:00 ART (después del coding humano de viernes 16:00) corre el build automático para asegurar que el JSON está fresco al cerrar la semana.
+- Cada vez que se publica un `.md` (manual o vía skill — trigger on-publish heredado de decisión #14 r2).
+- Scheduled task **primer viernes del trimestre siguiente** 19:00 ART (después del coding humano de 16:00) corre el build automático como red de seguridad.
 
-### 4. Conexión con `interface Layer` de Spec 39
+### 4. Conexión con `interface Layer` de Spec 39 (r3 — trimestral)
 
-La capa viento (Spec 44) consume este JSON y re-empaqueta en formato `Layer`:
+La capa viento (Spec 44) consume este JSON y re-empaqueta en formato `Layer`. **Nota r3:** el bucket model real de Spec 44 r2+ es escala secuencial intensidad (4 buckets de magnitud absoluta + glyph orientado para dirección). El bloque de código aquí abajo es ilustrativo de cómo Spec 41 entrega el dato — el detalle de buckets/paleta cae en Spec 44.
 
 ```ts
-// platform/frontend/src/lib/layers/viento.ts
-import { VIENTO_DATA } from "@/lib/viento";
+// platform/frontend/src/lib/layers/viento.ts (esquema simplificado)
+import { VIENTO_DATA, getLastVientoBeforeQuarter } from "@/lib/viento";
 
 export const vientoLayer: Layer = {
   id: "viento",
@@ -262,48 +298,48 @@ export const vientoLayer: Layer = {
   shortLabel: "Viento",
   glyphSrc: "/mapa/glyphs/viento.svg",
   category: "editorial",
-  description: "Dirección del cambio político-económico cada semana, codificada en escala -3 a +3.",
+  description: "Dirección y velocidad del cambio político-económico en el trimestre, codificada en escala -3 a +3.",
   unit: "rank -3 a +3",
-  cadence: "semanal",
-  periods: buildPeriodsFromWeekly(VIENTO_DATA.by_country),
-  defaultPeriod: /* última semana publicada */,
-  legend: {
-    type: "diverging",
-    buckets: [
-      { bucketIndex: -3, label: "muy pro-estado",  color: "var(--mi-viento-estado-3)" },
-      { bucketIndex: -2, label: "pro-estado",      color: "var(--mi-viento-estado-2)" },
-      { bucketIndex: -1, label: "leve pro-estado", color: "var(--mi-viento-estado-1)" },
-      { bucketIndex:  0, label: "neutro",          color: "var(--mi-viento-neutro)" },
-      { bucketIndex: +1, label: "leve pro-mercado",color: "var(--mi-viento-mercado-1)" },
-      { bucketIndex: +2, label: "pro-mercado",     color: "var(--mi-viento-mercado-2)" },
-      { bucketIndex: +3, label: "muy pro-mercado", color: "var(--mi-viento-mercado-3)" },
-    ],
-    noDataColor: "var(--mi-ink-mute)",
-  },
+  cadence: "trimestral",          // r3: era "semanal"
+  periods: buildPeriodsFromQuarters(VIENTO_DATA.by_country),
+  defaultPeriod: /* último trimestre publicado */,
+  legend: { /* ver Spec 44 §3 — escala secuencial intensidad 4 buckets */ },
   source: {
-    name: "Coding editorial Mapa Inestable",
-    url: "/mapa/capas/viento",     // página dedicada de Spec 39B cuando exista
+    name: "Coding editorial Mapa Inestable (viento-v2.0.0)",
+    url: "/mapa/capas/viento",
     publishedDate: VIENTO_DATA.computed_at,
     lastFetched: VIENTO_DATA.computed_at,
   },
   getValueForCountry(slug, period) {
-    const country = VIENTO_DATA.by_country[slug];
-    if (!country) return null;
-    const dp = country.series_semanal.find(d => d.year === period.year && d.week === period.week);
-    if (!dp) return null;
+    // period.key tiene formato "YYYY-Q#" (ej. "2026-Q2")
+    const match = period.key.match(/^(\d{4})-Q(\d)$/);
+    if (!match) return null;
+    const year = Number(match[1]);
+    const quarter = Number(match[2]);
+    // Helper de lib/viento.ts: devuelve el último entry publicado ≤ (year, quarter)
+    const entry = getLastVientoBeforeQuarter(slug, year, quarter);
+    if (!entry) return null;
     return {
-      raw: dp.rank,
-      formatted: `${dp.rank > 0 ? "+" : ""}${dp.rank} · ${dp.direccion}`,
-      bucketIndex: dp.rank,
-      quality: "oficial",          // siempre oficial en r1: es coding editorial firmado
+      raw: entry.rank,
+      formatted: formatViento(entry.rank),  // "+2 pro-mercado" etc. — ver Spec 44 §3.5
+      bucketIndex: Math.abs(entry.rank),     // 0..3 (escala secuencial intensidad de Spec 44)
+      quality: "oficial",
     };
   },
-  getLastPeriodBefore(date) { /* ... */ },
+  getLastPeriodBefore(date) { /* recorre periods[], devuelve último ≤ date */ },
   readingGuideSlug: "viento",
 };
 ```
 
-Spec 44 (capa viento) hereda este código y lo refina. Esta spec (41) solo asegura que el JSON está bien formado.
+Spec 44 (capa viento) hereda este código y lo refina (paleta, glyph orientado, modulación por intensidad, etc.). Esta spec (41) solo asegura que el JSON está bien formado.
+
+**Helpers expuestos por `lib/viento.ts` (r3):**
+
+- `getCountryViento(slug): VientoCountryData | null`.
+- `getLatestByCountry(): Record<string, VientoQuarterEntry>`.
+- `getVientoForQuarter(slug, year, quarter): VientoQuarterEntry | null`.
+- `getLastVientoBeforeQuarter(slug, year, quarter): VientoQuarterEntry | null` (modelo de tiempo por capa).
+- `getAvailableQuarters(): { year, quarter }[]` (períodos del slider).
 
 ### 5. Override editorial — concepto en MVP vs futuro
 
@@ -324,18 +360,27 @@ En r1 estos campos quedan **comentados en el template** generado por el skill �
 
 Esto preserva forward-compatibility: el formato del .md no rompe cuando llegue el algoritmo.
 
-### 6. Operación: scheduled task
+### 6. Operación: scheduled task (r3 — trimestral)
 
-Registrado en Spec 29 (calendario de agentes). Una sola tarea automatizada en r1:
+Registrado en Spec 29 (calendario de agentes). Dos tareas automatizadas con cadencia trimestral:
 
 | Cadencia | Hora | Tarea | Qué hace |
 |---|---|---|---|
-| Viernes | 16:00 ART | `coding-viento-recordatorio` | Crea/abre los 10 archivos `2026-W##.md` de la semana en `70-Producto/datos-viento/<slug>/` con frontmatter pre-rellenado en `estado: borrador`. Deja un archivo resumen `_recordatorio-2026-W##.md` con checklist de los 10 países. NO genera rank — solo prepara el terreno para que el editor codifique. |
-| Viernes | 19:00 ART | `build-viento` | Corre `build_viento.mjs`. Si hubo cambios desde la corrida anterior, regenera el JSON compilado y deja log en `_compilado/_log-2026-W##.md`. |
+| Primer viernes del trimestre (enero, abril, julio, octubre) | 16:00 ART | `coding-viento-recordatorio` | Crea/abre los 10 archivos `YYYY-Q#.md` del trimestre **cerrado** (el anterior) en `70-Producto/datos-viento/<slug>/` con frontmatter pre-rellenado en `estado: borrador`. Si el archivo ya existe (porque el editor lo fue editando durante el trimestre), no lo sobrescribe — solo lo abre y recuerda al editor que el trimestre cerró y hay que sintetizar + publicar. Deja un archivo resumen `_recordatorio-YYYY-Q#.md` con checklist de los 10 países. NO genera rank. |
+| Primer viernes del trimestre | 19:00 ART | `build-viento` | Corre `build_viento.mjs`. Red de seguridad — el trigger primario sigue siendo on-publish vía skill. Si hubo cambios desde la corrida anterior, regenera el JSON compilado y deja log en `_compilado/_log-YYYY-Q#.md`. |
 
-**Cadencia humana** (no automatizada, depende del editor): viernes ~16:30-17:30 ART, el editor entra a Cowork, activa el skill `coding-viento`, va país por país completando los 10 borradores y marcándolos como `estado: publicada`. A las 19:00 el build automático recoge lo publicado.
+**Cron expressions (Spec 29):**
 
-Si el editor no codifica una semana, los borradores quedan en `estado: borrador`, el build los ignora, el JSON queda sin update de esa semana. La capa viento mostrará el último período publicado disponible (modelo de tiempo por capa de Spec 39).
+- `coding-viento-recordatorio`: `0 16 1-7 1,4,7,10 5` (minuto 0 de hora 16, primeros 7 días del mes en enero/abril/julio/octubre, si es viernes — efectivamente el primer viernes de cada trimestre).
+- `build-viento`: `0 19 1-7 1,4,7,10 5`.
+
+**Cadencia humana** (no automatizada, depende del editor):
+
+- **Durante el trimestre en curso**: el editor puede entrar en cualquier momento a `70-Producto/datos-viento/<slug>/YYYY-Q#.md` (creado a mano o por el skill al pedirlo) y agregar eventos a medida que ocurren. El archivo vive en `estado: borrador` durante todo el trimestre. El JSON no lo incluye.
+- **Primer viernes del trimestre siguiente, ~16:30 ART**: el recordatorio dispara. El editor entra a Cowork, activa el skill `coding-viento`, va país por país revisando el archivo del trimestre cerrado, sintetiza la lectura agregada, ajusta el rank, y publica (cambia `estado: borrador` → `estado: publicada`). El trigger on-publish dispara `build_viento.mjs` automáticamente para cada publish.
+- **19:00 ART**: el build automático corre como red de seguridad por si algún `.md` se publicó por edición manual sin pasar por el skill.
+
+Si el editor no codifica un trimestre, los borradores quedan en `estado: borrador`, el build los ignora, el JSON queda sin update de ese trimestre. La capa viento mostrará el último trimestre publicado disponible (modelo de tiempo por capa de Spec 39, vía `getLastVientoBeforeQuarter`).
 
 ---
 
@@ -407,6 +452,20 @@ Si el editor no codifica una semana, los borradores quedan en `estado: borrador`
 | 9 | Operación | Scheduled task viernes 16:00 ART (recordatorio) + viernes 19:00 ART (build). Coding humano entre medio | Coherente con calendario de agentes de Spec 29. No interfiere con task de agendas (17:00) ni con pipeline macro (18:00) |
 | 10 | Pipeline tecnología | Script Node.js (`build_viento.mjs`), no Python | Más simple — solo lee `.md` del vault y produce `.json`. No requiere las dependencias del pipeline macro (requests, scrapers). Reusa `gray-matter` ya en el frontend |
 
+### Cerradas en r3 (sesión 2026-05-21 — cambio de cadencia editorial)
+
+Cambio de fondo: la operación editorial baja de semanal a trimestral. Decisión de Tomás 2026-05-21 al revisar Spec 44 ("semanal es mucho"). El cambio cascadea a Spec 29 (schedules) y Spec 44 (cadencia de la capa visual).
+
+| # | Tema | Decisión | Razón |
+|---|---|---|---|
+| 17 | Cadencia editorial | **Trimestral** (4 codings/país/año × 10 países = 40 codings/año). El rank captura movimiento estructural del trimestre, no de la semana | Operacionalmente más sostenible (52 codings/año/país → 4/año/país). El movimiento estructural se lee mejor en agregados trimestrales; semanal agrega ruido. La cadencia coincide 1:1 con Spec 42/43, lo que elimina la divergencia (e) de Spec 44 r1/r2 (cadencia semanal con `getLastVientoBeforeWeek` como fallback) — Spec 44 baja de 5 divergencias a 4 |
+| 18 | Schema del .md | `year + quarter` (1-4) en lugar de `year + week` (1-52). Nombre de archivo `YYYY-Q#.md`. Campo nuevo `regimen: trimestral \| migracion-semanal` distingue entradas naturales de entradas migradas del régimen r1/r2 | Trazabilidad de la transición y futura compatibilidad con Spec 41B (algoritmo híbrido) que podrá filtrar por régimen si hace falta |
+| 19 | Régimen del archivo en curso | El archivo del trimestre vivo se edita en `estado: borrador` durante todo el trimestre (agregando eventos a medida que ocurren). Se publica al cierre del trimestre (primer viernes del trimestre siguiente, disparado por scheduled task) | Combina "lectura sintética" (el editor revisa al cierre con todo el material visible) con "registro incremental" (los eventos no se olvidan porque se anotan a medida que ocurren). El JSON no incluye trimestres en curso — solo cerrados |
+| 20 | Schedules de Spec 29 | `coding-viento-recordatorio` y `build-viento` pasan de viernes semanal a primer viernes del trimestre. Crons: `0 16 1-7 1,4,7,10 5` y `0 19 1-7 1,4,7,10 5` | Coherente con la cadencia editorial. Spec 29 se actualiza en este mismo sprint |
+| 21 | Versionado del JSON | `viento-v2.0.0` (breaking: `series_semanal` → `series_trimestral`; `start_week`/`end_week` → `start_quarter`/`end_quarter`) | Cambio de contrato del campo principal — debe ser breaking. El frontend `lib/viento.ts` se reescribe en consecuencia (los tipos de TypeScript no son compatibles con la versión anterior) |
+| 22 | Migración de archivos r1/r2 | AR W18 (rank +3) + AR W19 (rank +1) → AR Q2-2026 con rank +2 (`Math.round(Math.abs((3+1)/2)) = 2`, dirección pro-mercado), justificativo sintético cubriendo ambas semanas, `regimen: migracion-semanal`, `intensidad: 0.6` (promedio de 0.85 y 0.4 redondeado). Los archivos W18 y W19 originales se mueven a `70-Producto/datos-viento/ar/_historico-semanal/`. Los 10 borradores W21 generados por el recordatorio del 2026-05-20 se eliminan (régimen deprecado) | Conservar trazabilidad histórica sin contaminar el régimen trimestral. La marca `migracion-semanal` permite al lector entender que el rank Q2-2026 viene de promediar 2 semanas, no de sintetizar el trimestre entero |
+| 23 | Spec 44 hereda la cadencia | Spec 44 r3 absorbe el cambio: `cadence: "trimestral"` declarado, `buildPeriods` usa `getAvailableQuarters()` en lugar de `getAvailableWeeks()`, `getValueForCountry` usa `getLastVientoBeforeQuarter` en lugar de `getLastVientoBeforeWeek`. La divergencia (e) "cadencia semanal" se cae como divergencia local — Spec 44 queda con 4 divergencias en lugar de 5 | Coherencia entre las 4 capas del epic. La capa viento se alinea con Spec 42/43 en cadencia |
+
 ### Cerradas en r2 (sesión 2026-05-19, segunda pasada — cierre de tácticas abiertas)
 
 | # | Tema | Decisión | Razón |
@@ -469,6 +528,7 @@ Tiempo estimado: **3-4 días** de implementación + el coding piloto (que es tra
 |---|---|---|
 | 2026-05-18 | Creación de la spec en sesión de Cowork. Alcance MVP manual editorial — algoritmo postergado a Spec 41B. Sistema completo: archivos `.md` por país-semana en el vault, escala -3 a +3, skill `coding-viento` que asiste, pipeline Node.js que compila JSON, scheduled tasks integrados al calendario de Spec 29 | Diseñar el algoritmo sin material editorial sería inventar reglas. El coding manual es el input necesario para entender qué patrones existen antes de automatizar. La cadencia semanal + la escala diverging discreta resuelven la decisión 1 del epic (pro-mercado/pro-estado en lugar de izquierda/derecha) sin perder operatividad |
 | 2026-05-19 (r2) | Cerradas las 6 decisiones tácticas abiertas en r1: (#11) Tomás único codificador, multi-codificador se evalúa cuando aparezca segundo; (#12) eventos clave siguen como bullets de texto libre, no rank por evento; (#13) paleta CSS concreta cae en Spec 44; (#14) trigger on-publish vía skill + viernes 19:00 como red de seguridad; (#15) cobertura ≥1 país válida; (#16) histórico de revisiones pospuesto, se decide tras 4-6 semanas operativas. Agregados 2 criterios de aceptación (AC13-AC14). La spec queda lista para handoff a VS Code sin decisiones bloqueantes | Tomás revisó r1 y cerró las tácticas. No queda nada pendiente de diseño |
+| 2026-05-21 (r3) | **Cambio de cadencia editorial: semanal → trimestral.** 7 decisiones nuevas cerradas (#17-#23): cadencia trimestral, schema del .md con `year + quarter`, régimen del archivo en curso (editar borrador durante el trimestre, publicar al cierre), schedules de Spec 29 reagendados a primer viernes del trimestre siguiente, versionado del JSON a `viento-v2.0.0` (breaking), migración de los archivos r1/r2 ya publicados (AR W18+W19 → AR Q2-2026 promediado con marca `regimen: migracion-semanal`), y Spec 44 hereda automáticamente la cadencia. Estado de la spec pasa de `implementada` a `implementada-parcial-r3` porque el código actual del pipeline (regex de nombre de archivo, contrato del JSON, helpers) está implementado contra r2 — la implementación r3 requiere sesión nueva de VS Code | Tomás revisó Spec 44 r2 y dijo: "semanal es mucho". La operación semanal exige 52 codings/año/país × 10 países = 520 codings/año, lo que en producción real es insostenible para un codificador único. Trimestral (40/año) es comparable a la producción de despachos semanales del proyecto. Plus: alinea la cadencia con Spec 42/43, eliminando la única divergencia técnica fuerte que Spec 44 tenía (cadencia semanal) y dejando 4 divergencias en vez de 5 |
 
 ---
 

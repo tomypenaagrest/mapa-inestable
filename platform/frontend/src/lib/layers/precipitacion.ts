@@ -196,4 +196,7 @@ export const precipitacionLayer: Layer = {
   ),
 
   editorialByCountry: EDITORIAL,
+
+  legendMicrocopy: "El color codifica magnitud · la dirección crecimiento/recesión aparece en el tooltip y en la sección Dirección.",
+  shortIntro: "El crecimiento del PBI es la precipitación: lluvia abundante corresponde a expansión, sequía a recesión. La metáfora describe el sistema sin asignarle valor moral. El color codifica solo la magnitud del cambio — no distingue si llueve o si hay sequía. Esa distinción aparece en el tooltip y en el drawer.",
 };

@@ -1,6 +1,6 @@
 {
   "version": "viento-v1.0.0",
-  "computed_at": "2026-05-20T20:29:38.705Z",
+  "computed_at": "2026-05-22T00:34:42.316Z",
   "range": {
     "start_week": {
       "year": 2026,
@@ -8,7 +8,7 @@
     },
     "end_week": {
       "year": 2026,
-      "week": 19
+      "week": 21
     }
   },
   "by_country": {
@@ -45,22 +45,378 @@
           ],
           "codificador": "tomas",
           "fecha_coding": "2026-05-08"
+        },
+        {
+          "year": 2026,
+          "week": 21,
+          "rank": 1,
+          "direccion": "pro-mercado",
+          "intensidad": 0.3,
+          "justificativo": "Continuidad desde W19 (+1). Semana sin medidas nuevas materializadas de desregulación o ajuste; el IPC de abril (2,6%) y la acumulación de reservas del BCRA refuerzan el programa sin innovación normativa. Las internas Karina/Caputo/Bullrich y la causa Adorni operan sobre eje desrepresentación, no sobre viento. La señal mixta del día Caputo en Washington (presión por base china + incentivos USD 1.240M a litio chino) se compensa entre sí.",
+          "eventos": [
+            "Caputo en Washington: alineamiento con EE.UU., presión por frenar a Ganfeng en Cauchari-Olaroz y cerrar la base espacial china de Neuquén; mismo día se aprueban incentivos por USD 1.240M para ampliación de mina de litio operada por capital chino (agenda W21 #3) → señal mixta, tracción geopolítica más que económica interna (sugerido — confirmar)",
+            "IPC de abril 2,6%, primera desaceleración significativa en casi un año; BCRA acumuló >USD 7.800M desde enero; dólar mayorista proyectado estable ~1.410 (agenda W21 #5) ↑ leve pro-mercado (consolidación del programa, sin medida nueva) (sugerido — confirmar)",
+            "Cuarta Marcha Federal Universitaria 12/5; Ejecutivo desobedece la Ley de Financiamiento Universitario ya promulgada y dos fallos judiciales (agenda W21 #2) → neutro respecto al eje pro-mercado/pro-estado (es eje desrepresentación, no movimiento económico estructural) (sugerido — confirmar)",
+            "Causa Adorni escala con elementos materiales (contratista entrega facturas, secreto fiscal levantado al hermano); internas Karina/Caputo/Bullrich visibles (agendas W21 #1 y #4) → neutro en eje viento (afecta cohesión política, no orientación económica) (sugerido — confirmar)",
+            "Sin nuevas medidas materiales de desregulación o ajuste adicional en la semana (continuidad respecto a W19) (sugerido — confirmar)"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-20"
         }
       ],
       "latest": {
         "year": 2026,
-        "week": 19,
+        "week": 21,
         "rank": 1,
         "direccion": "pro-mercado",
-        "intensidad": 0.4,
-        "justificativo": "Semana de relativa calma normativa. El gobierno no introdujo medidas nuevas de desregulación ni ajuste adicional. Declaraciones del Ministro de Economía reafirmaron el camino del superávit pero sin acciones materiales. Rank baja respecto a W18 porque el movimiento efectivo de la semana fue menor — la orientación pro-mercado sigue presente en el discurso pero no hubo movimientos materiales nuevos.",
+        "intensidad": 0.3,
+        "justificativo": "Continuidad desde W19 (+1). Semana sin medidas nuevas materializadas de desregulación o ajuste; el IPC de abril (2,6%) y la acumulación de reservas del BCRA refuerzan el programa sin innovación normativa. Las internas Karina/Caputo/Bullrich y la causa Adorni operan sobre eje desrepresentación, no sobre viento. La señal mixta del día Caputo en Washington (presión por base china + incentivos USD 1.240M a litio chino) se compensa entre sí.",
         "eventos": [
-          "Declaraciones del Ministro de Economía ratificando compromisos FMI (Infobae, 2026-05-06) → neutro (discurso sin acción)",
-          "Licitación de bonos CER con buena demanda (BCRA, 2026-05-07) ↑ leve pro-mercado",
-          "Sin nuevas regulaciones sectoriales ni decretos de desregulación"
+          "Caputo en Washington: alineamiento con EE.UU., presión por frenar a Ganfeng en Cauchari-Olaroz y cerrar la base espacial china de Neuquén; mismo día se aprueban incentivos por USD 1.240M para ampliación de mina de litio operada por capital chino (agenda W21 #3) → señal mixta, tracción geopolítica más que económica interna (sugerido — confirmar)",
+          "IPC de abril 2,6%, primera desaceleración significativa en casi un año; BCRA acumuló >USD 7.800M desde enero; dólar mayorista proyectado estable ~1.410 (agenda W21 #5) ↑ leve pro-mercado (consolidación del programa, sin medida nueva) (sugerido — confirmar)",
+          "Cuarta Marcha Federal Universitaria 12/5; Ejecutivo desobedece la Ley de Financiamiento Universitario ya promulgada y dos fallos judiciales (agenda W21 #2) → neutro respecto al eje pro-mercado/pro-estado (es eje desrepresentación, no movimiento económico estructural) (sugerido — confirmar)",
+          "Causa Adorni escala con elementos materiales (contratista entrega facturas, secreto fiscal levantado al hermano); internas Karina/Caputo/Bullrich visibles (agendas W21 #1 y #4) → neutro en eje viento (afecta cohesión política, no orientación económica) (sugerido — confirmar)",
+          "Sin nuevas medidas materiales de desregulación o ajuste adicional en la semana (continuidad respecto a W19) (sugerido — confirmar)"
         ],
         "codificador": "tomas",
-        "fecha_coding": "2026-05-08"
+        "fecha_coding": "2026-05-20"
+      }
+    },
+    "bo": {
+      "name": "Bolivia",
+      "series_semanal": [
+        {
+          "year": 2026,
+          "week": 21,
+          "rank": 0,
+          "direccion": "neutro",
+          "intensidad": 0.7,
+          "justificativo": "Primera semana de coding viento para Bolivia. Empate de fuerzas materializadas: el gobierno Paz anuncia paquete pro-mercado de 10 leyes en Cochabamba pero sin sanción legislativa, mientras la COB sostiene paro indefinido con 60+ puntos de bloqueo (presión pro-estado materializada) y el Ejecutivo responde con operativo policial-militar combinado. Ningún viento neto se impone; intensidad alta porque la semana es decisiva en términos políticos.",
+          "eventos": [
+            "Encuentro Nacional en Cochabamba (9/5): Paz anunció paquete de 10 proyectos de ley (hidrocarburos, minería, electricidad, inversiones, justicia, seguridad, reducción del Estado) y comisión para reforma parcial de la CPE (agenda W21 #3) ↑ pro-mercado (anuncio sin sanción legislativa todavía) (sugerido — confirmar)",
+            "Operativo policial-militar combinado (16/5) para desbloquear carreteras, después de pérdidas por camiones varados superiores a USD 720 mil diarios (agenda W21 #2) → neutro en eje viento (acción de fuerza, no medida económica estructural) (sugerido — confirmar)",
+            "COB cumple 12+ días de paro indefinido con 60+ puntos de bloqueo; pliego de 211 demandas incluye 20% de aumento salarial y compromiso de no privatizar empresas estatales (agenda W21 #1) → presión pro-estado desde la calle (sin concesión del gobierno) (sugerido — confirmar)",
+            "YPFB declaró \"capítulo cerrado\" la crisis de gasolina contaminada, identificó tres causas y desembolsó USD 2M en compensaciones (agenda W21 #4) → neutro (sugerido — confirmar)",
+            "Ecuador y siete países suman pedido internacional de diálogo; gobierno endurece frame de \"conspiración\" y descarta renuncia (agenda W21 #5) → neutro (sugerido — confirmar)"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-20"
+        }
+      ],
+      "latest": {
+        "year": 2026,
+        "week": 21,
+        "rank": 0,
+        "direccion": "neutro",
+        "intensidad": 0.7,
+        "justificativo": "Primera semana de coding viento para Bolivia. Empate de fuerzas materializadas: el gobierno Paz anuncia paquete pro-mercado de 10 leyes en Cochabamba pero sin sanción legislativa, mientras la COB sostiene paro indefinido con 60+ puntos de bloqueo (presión pro-estado materializada) y el Ejecutivo responde con operativo policial-militar combinado. Ningún viento neto se impone; intensidad alta porque la semana es decisiva en términos políticos.",
+        "eventos": [
+          "Encuentro Nacional en Cochabamba (9/5): Paz anunció paquete de 10 proyectos de ley (hidrocarburos, minería, electricidad, inversiones, justicia, seguridad, reducción del Estado) y comisión para reforma parcial de la CPE (agenda W21 #3) ↑ pro-mercado (anuncio sin sanción legislativa todavía) (sugerido — confirmar)",
+          "Operativo policial-militar combinado (16/5) para desbloquear carreteras, después de pérdidas por camiones varados superiores a USD 720 mil diarios (agenda W21 #2) → neutro en eje viento (acción de fuerza, no medida económica estructural) (sugerido — confirmar)",
+          "COB cumple 12+ días de paro indefinido con 60+ puntos de bloqueo; pliego de 211 demandas incluye 20% de aumento salarial y compromiso de no privatizar empresas estatales (agenda W21 #1) → presión pro-estado desde la calle (sin concesión del gobierno) (sugerido — confirmar)",
+          "YPFB declaró \"capítulo cerrado\" la crisis de gasolina contaminada, identificó tres causas y desembolsó USD 2M en compensaciones (agenda W21 #4) → neutro (sugerido — confirmar)",
+          "Ecuador y siete países suman pedido internacional de diálogo; gobierno endurece frame de \"conspiración\" y descarta renuncia (agenda W21 #5) → neutro (sugerido — confirmar)"
+        ],
+        "codificador": "tomas",
+        "fecha_coding": "2026-05-20"
+      }
+    },
+    "br": {
+      "name": "Brasil",
+      "series_semanal": [
+        {
+          "year": 2026,
+          "week": 21,
+          "rank": -1,
+          "direccion": "pro-estado",
+          "justificativo": "Primera semana de coding viento para Brasil. La única señal económica estructural es la PEC del 6x1 (jornada 44→40h sin reducción salarial) con cronograma legislativo activo: empuje pro-estado moderado del gobierno Lula en su último año. Los otros cuatro ejes dominantes de la semana (Banco Master, reforma del STF, encuestas, posse TSE) operan sobre desrepresentación e institucionalidad, no sobre viento.",
+          "eventos": [
+            "Acuerdo (13/5) entre ministros del gobierno Lula y líderes de la Câmara para encaminar PEC que reduce jornada semanal de 44 a 40 horas, sin reducción salarial; Comisión Especial vota dictamen 27/5, plenario 28/5 (agenda W21 #3) ↓ pro-estado (regulación laboral que costos para el sector privado) (sugerido — confirmar)",
+            "Operação Compliance Zero (6ª fase Off-Balance, 13/5): PF investiga pagos del Banco Master a Ciro Nogueira (PP-PI) por R$ 300-500 mil mensuales (agenda W21 #1) → neutro en eje viento (afecta sistema político, no medida económica estructural) (sugerido — confirmar)",
+            "Reforma del STF empujada por el escándalo Master: Flávio Dino presentó esquema de 15 ejes; 10 de 12 pré-candidatos a Presidencia se manifestaron contra el STF (agenda W21 #2) → neutro en eje viento (eje desrepresentación/institucional) (sugerido — confirmar)",
+            "Encuestas Real Time Big Data (4/5): Lula 40% vs. Flávio 34-36% en primer turno; Lula 44% aprobación / 53% desaprobación (agenda W21 #4) → neutro (sugerido — confirmar)",
+            "Posse de Nunes Marques como presidente del TSE (12/5) a cinco meses de la elección; reaproximación Planalto-Senado (agenda W21 #5) → neutro (sugerido — confirmar)"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-20"
+        }
+      ],
+      "latest": {
+        "year": 2026,
+        "week": 21,
+        "rank": -1,
+        "direccion": "pro-estado",
+        "justificativo": "Primera semana de coding viento para Brasil. La única señal económica estructural es la PEC del 6x1 (jornada 44→40h sin reducción salarial) con cronograma legislativo activo: empuje pro-estado moderado del gobierno Lula en su último año. Los otros cuatro ejes dominantes de la semana (Banco Master, reforma del STF, encuestas, posse TSE) operan sobre desrepresentación e institucionalidad, no sobre viento.",
+        "eventos": [
+          "Acuerdo (13/5) entre ministros del gobierno Lula y líderes de la Câmara para encaminar PEC que reduce jornada semanal de 44 a 40 horas, sin reducción salarial; Comisión Especial vota dictamen 27/5, plenario 28/5 (agenda W21 #3) ↓ pro-estado (regulación laboral que costos para el sector privado) (sugerido — confirmar)",
+          "Operação Compliance Zero (6ª fase Off-Balance, 13/5): PF investiga pagos del Banco Master a Ciro Nogueira (PP-PI) por R$ 300-500 mil mensuales (agenda W21 #1) → neutro en eje viento (afecta sistema político, no medida económica estructural) (sugerido — confirmar)",
+          "Reforma del STF empujada por el escándalo Master: Flávio Dino presentó esquema de 15 ejes; 10 de 12 pré-candidatos a Presidencia se manifestaron contra el STF (agenda W21 #2) → neutro en eje viento (eje desrepresentación/institucional) (sugerido — confirmar)",
+          "Encuestas Real Time Big Data (4/5): Lula 40% vs. Flávio 34-36% en primer turno; Lula 44% aprobación / 53% desaprobación (agenda W21 #4) → neutro (sugerido — confirmar)",
+          "Posse de Nunes Marques como presidente del TSE (12/5) a cinco meses de la elección; reaproximación Planalto-Senado (agenda W21 #5) → neutro (sugerido — confirmar)"
+        ],
+        "codificador": "tomas",
+        "fecha_coding": "2026-05-20"
+      }
+    },
+    "cl": {
+      "name": "Chile",
+      "series_semanal": [
+        {
+          "year": 2026,
+          "week": 21,
+          "rank": 2,
+          "direccion": "pro-mercado",
+          "justificativo": "Primera semana de coding viento para Chile. El paquete legislativo central — Ley de Reconstrucción Nacional con IVA 0% a vivienda, ajustes a gratuidad/Sence y subsidio al empleo formal — avanza en Hacienda con despacho meta al Senado antes de la Cuenta Pública del 1/6. Empuje pro-mercado coherente y activo del gobierno Kast en su segundo mes, con cónclave en Cerro Castillo para alinear bancadas. Los otros ejes dominantes (migración, seguridad, Cuenta Pública, fricciones intra-coalición) no tocan viento.",
+          "eventos": [
+            "Ley de Reconstrucción Nacional avanza en Comisión de Hacienda: IVA 0% a la vivienda por 12 meses, $400.000M para reconstrucción post-incendios, subsidio al empleo formal, ajustes a gratuidad y Sence; meta despacho al Senado antes del 1/6 (agenda W21 #1) ↑ pro-mercado (recorte selectivo de impuestos + ajuste a programas sociales universitarios) (sugerido — confirmar)",
+            "Indicación del Ejecutivo que obligaría a Fonasa, Isapres, AFP, hospitales, colegios y jardines a entregar datos de migrantes irregulares al Servicio Nacional de Migraciones; primer vuelo de expulsión (agenda W21 #2) → neutro en eje viento (eje securitario/migratorio, no estructural económico) (sugerido — confirmar)",
+            "Cuenta Pública del 1/6 en preparación con ejes de seguridad, migración, reactivación económica y componente social; Gobierno la enmarca como \"día de la República\" (agenda W21 #3) → neutro (sugerido — confirmar)",
+            "Tren de Aragua: secuestros duplicados en RM (63 casos en 2025, 37 extorsivos); Gobierno crea Observatorio de Secuestros; operativo detiene a 22 personas por lavado de USD 4M (agenda W21 #4) → neutro (sugerido — confirmar)",
+            "Cónclave en Cerro Castillo con bancada republicana, UDI, RN, Evópoli, Demócratas, Vanessa Kaiser y PNL para alinear a senadores con la Reconstrucción Nacional (agenda W21 #5) → neutro (sugerido — confirmar)"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-20"
+        }
+      ],
+      "latest": {
+        "year": 2026,
+        "week": 21,
+        "rank": 2,
+        "direccion": "pro-mercado",
+        "justificativo": "Primera semana de coding viento para Chile. El paquete legislativo central — Ley de Reconstrucción Nacional con IVA 0% a vivienda, ajustes a gratuidad/Sence y subsidio al empleo formal — avanza en Hacienda con despacho meta al Senado antes de la Cuenta Pública del 1/6. Empuje pro-mercado coherente y activo del gobierno Kast en su segundo mes, con cónclave en Cerro Castillo para alinear bancadas. Los otros ejes dominantes (migración, seguridad, Cuenta Pública, fricciones intra-coalición) no tocan viento.",
+        "eventos": [
+          "Ley de Reconstrucción Nacional avanza en Comisión de Hacienda: IVA 0% a la vivienda por 12 meses, $400.000M para reconstrucción post-incendios, subsidio al empleo formal, ajustes a gratuidad y Sence; meta despacho al Senado antes del 1/6 (agenda W21 #1) ↑ pro-mercado (recorte selectivo de impuestos + ajuste a programas sociales universitarios) (sugerido — confirmar)",
+          "Indicación del Ejecutivo que obligaría a Fonasa, Isapres, AFP, hospitales, colegios y jardines a entregar datos de migrantes irregulares al Servicio Nacional de Migraciones; primer vuelo de expulsión (agenda W21 #2) → neutro en eje viento (eje securitario/migratorio, no estructural económico) (sugerido — confirmar)",
+          "Cuenta Pública del 1/6 en preparación con ejes de seguridad, migración, reactivación económica y componente social; Gobierno la enmarca como \"día de la República\" (agenda W21 #3) → neutro (sugerido — confirmar)",
+          "Tren de Aragua: secuestros duplicados en RM (63 casos en 2025, 37 extorsivos); Gobierno crea Observatorio de Secuestros; operativo detiene a 22 personas por lavado de USD 4M (agenda W21 #4) → neutro (sugerido — confirmar)",
+          "Cónclave en Cerro Castillo con bancada republicana, UDI, RN, Evópoli, Demócratas, Vanessa Kaiser y PNL para alinear a senadores con la Reconstrucción Nacional (agenda W21 #5) → neutro (sugerido — confirmar)"
+        ],
+        "codificador": "tomas",
+        "fecha_coding": "2026-05-20"
+      }
+    },
+    "co": {
+      "name": "Colombia",
+      "series_semanal": [
+        {
+          "year": 2026,
+          "week": 21,
+          "rank": 0,
+          "direccion": "neutro",
+          "justificativo": "Primera semana de coding viento para Colombia. Semana puramente electoral a 15 días de la primera vuelta del 31/5: audios Calarcá vs Cepeda, guerra por la derecha, recta final de campañas. Sin medidas económicas estructurales nuevas del Ejecutivo Petro en discusión.",
+          "eventos": [
+            "Audios \"Calarcá\" contra Cepeda desmentidos en menos de 48 horas (montaje desde extorsionista preso); episodio dominante de la campaña (agenda W21 #1) → neutro en eje viento (eje desorientación, no medida económica) (sugerido — confirmar)",
+            "Guerra por la derecha: De la Espriella (Defensores de la Patria) consolida ventaja sobre Paloma Valencia (CD); ambos sin firmar pacto de paz electoral (agenda W21 #2) → neutro (sugerido — confirmar)",
+            "Recta final al 31/5: cierres de campaña Cepeda 22/5 Plaza de Bolívar, De la Espriella 23/5 Barranquilla, Paloma Bogotá; encuestas convergen Cepeda 35-42% (agenda W21 #3) → neutro (sugerido — confirmar)",
+            "Paz Total como objeto de campaña: disidencias FARC pasaron de 3.275 a 9.634 miembros bajo Petro; 173 uniformados asesinados en 2025 (agenda W21 #4) → neutro en eje viento (sugerido — confirmar)",
+            "Constituyente: Petro fija meta de 2,5M firmas válidas para 20/7; agenda residual del mandato (agenda W21 #5) → neutro (anuncio sin tracción material esta semana) (sugerido — confirmar)",
+            "Sin medidas económicas estructurales nuevas en la semana (fiscal, regulación, gasto) — agenda dominante es electoral (sugerido — confirmar)"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-20"
+        }
+      ],
+      "latest": {
+        "year": 2026,
+        "week": 21,
+        "rank": 0,
+        "direccion": "neutro",
+        "justificativo": "Primera semana de coding viento para Colombia. Semana puramente electoral a 15 días de la primera vuelta del 31/5: audios Calarcá vs Cepeda, guerra por la derecha, recta final de campañas. Sin medidas económicas estructurales nuevas del Ejecutivo Petro en discusión.",
+        "eventos": [
+          "Audios \"Calarcá\" contra Cepeda desmentidos en menos de 48 horas (montaje desde extorsionista preso); episodio dominante de la campaña (agenda W21 #1) → neutro en eje viento (eje desorientación, no medida económica) (sugerido — confirmar)",
+          "Guerra por la derecha: De la Espriella (Defensores de la Patria) consolida ventaja sobre Paloma Valencia (CD); ambos sin firmar pacto de paz electoral (agenda W21 #2) → neutro (sugerido — confirmar)",
+          "Recta final al 31/5: cierres de campaña Cepeda 22/5 Plaza de Bolívar, De la Espriella 23/5 Barranquilla, Paloma Bogotá; encuestas convergen Cepeda 35-42% (agenda W21 #3) → neutro (sugerido — confirmar)",
+          "Paz Total como objeto de campaña: disidencias FARC pasaron de 3.275 a 9.634 miembros bajo Petro; 173 uniformados asesinados en 2025 (agenda W21 #4) → neutro en eje viento (sugerido — confirmar)",
+          "Constituyente: Petro fija meta de 2,5M firmas válidas para 20/7; agenda residual del mandato (agenda W21 #5) → neutro (anuncio sin tracción material esta semana) (sugerido — confirmar)",
+          "Sin medidas económicas estructurales nuevas en la semana (fiscal, regulación, gasto) — agenda dominante es electoral (sugerido — confirmar)"
+        ],
+        "codificador": "tomas",
+        "fecha_coding": "2026-05-20"
+      }
+    },
+    "ec": {
+      "name": "Ecuador",
+      "series_semanal": [
+        {
+          "year": 2026,
+          "week": 21,
+          "rank": 0,
+          "direccion": "neutro",
+          "justificativo": "Primera semana de coding viento para Ecuador. Conversación pública dominada por eje securitario (operativo EE.UU.-Sucumbíos, OEA, toque de queda en 9 provincias). El anuncio de Olsen sobre la agenda del segundo año de Asamblea (emprendimiento + reforma judicial pro-empresa) queda sin tracción material esta semana.",
+          "eventos": [
+            "Operativo militar conjunto EE.UU.-Ecuador en Sucumbíos bajo cuestionamiento: 20 congresistas demócratas (lideradxs por AOC) piden suspender la misión; NYT y HR cuestionan operativo del 3-6 de marzo (agenda W21 #1) → neutro en eje viento (sugerido — confirmar)",
+            "Noboa en la OEA (14/5): frame \"ejército criminal de 80.000 integrantes\"; pidió a la OEA identificar naciones que \"no ayudan\" (agenda W21 #2) → neutro en eje viento (acto retórico, no medida económica) (sugerido — confirmar)",
+            "Niels Olsen presentó (14/5) informe del primer año de Asamblea: 28 leyes aprobadas (incluida Ley Orgánica de Inteligencia y Ley de Ciberseguridad); anuncia reforma del COIP, del Código de la Función Judicial y agenda de emprendimiento para el segundo año (agenda W21 #3) → leve pro-mercado (agenda de emprendimiento + reforma judicial pro-empresa, sin sanción legislativa todavía) (sugerido — confirmar)",
+            "319 homicidios y 11 masacres en Los Ríos en 4 meses pese a estados de excepción; +2.500 homicidios en lo que va del año (agenda W21 #4) → neutro (sugerido — confirmar)",
+            "Toque de queda nocturno (23:00-05:00) en 9 provincias vence el 18/5; 5° toque de queda del mandato; +835 días bajo algún estado de excepción (~95% del mandato) (agenda W21 #5) → neutro (sugerido — confirmar)"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-20"
+        }
+      ],
+      "latest": {
+        "year": 2026,
+        "week": 21,
+        "rank": 0,
+        "direccion": "neutro",
+        "justificativo": "Primera semana de coding viento para Ecuador. Conversación pública dominada por eje securitario (operativo EE.UU.-Sucumbíos, OEA, toque de queda en 9 provincias). El anuncio de Olsen sobre la agenda del segundo año de Asamblea (emprendimiento + reforma judicial pro-empresa) queda sin tracción material esta semana.",
+        "eventos": [
+          "Operativo militar conjunto EE.UU.-Ecuador en Sucumbíos bajo cuestionamiento: 20 congresistas demócratas (lideradxs por AOC) piden suspender la misión; NYT y HR cuestionan operativo del 3-6 de marzo (agenda W21 #1) → neutro en eje viento (sugerido — confirmar)",
+          "Noboa en la OEA (14/5): frame \"ejército criminal de 80.000 integrantes\"; pidió a la OEA identificar naciones que \"no ayudan\" (agenda W21 #2) → neutro en eje viento (acto retórico, no medida económica) (sugerido — confirmar)",
+          "Niels Olsen presentó (14/5) informe del primer año de Asamblea: 28 leyes aprobadas (incluida Ley Orgánica de Inteligencia y Ley de Ciberseguridad); anuncia reforma del COIP, del Código de la Función Judicial y agenda de emprendimiento para el segundo año (agenda W21 #3) → leve pro-mercado (agenda de emprendimiento + reforma judicial pro-empresa, sin sanción legislativa todavía) (sugerido — confirmar)",
+          "319 homicidios y 11 masacres en Los Ríos en 4 meses pese a estados de excepción; +2.500 homicidios en lo que va del año (agenda W21 #4) → neutro (sugerido — confirmar)",
+          "Toque de queda nocturno (23:00-05:00) en 9 provincias vence el 18/5; 5° toque de queda del mandato; +835 días bajo algún estado de excepción (~95% del mandato) (agenda W21 #5) → neutro (sugerido — confirmar)"
+        ],
+        "codificador": "tomas",
+        "fecha_coding": "2026-05-20"
+      }
+    },
+    "pe": {
+      "name": "Perú",
+      "series_semanal": [
+        {
+          "year": 2026,
+          "week": 21,
+          "rank": 0,
+          "direccion": "neutro",
+          "justificativo": "Primera semana de coding viento para Perú. Semana de transición electoral con balotaje Keiko vs Sánchez confirmado para el 7/6. Sin medidas económicas estructurales del Ejecutivo Boluarte en sus últimas semanas; el coding inicial captura el reposo del Ejecutivo en ejercicio, no la orientación esperable del próximo gobierno.",
+          "eventos": [
+            "ONPE cierra cómputo de primera vuelta al 100%; balotaje confirmado Keiko Fujimori (Fuerza Popular, 17,18%) vs. Roberto Sánchez (Juntos por el Perú, 12,03%) el 7/6; empate técnico Ipsos 38-38, IEP 50,8-49,2 (agenda W21 #1) → neutro en eje viento (sugerido — confirmar)",
+            "Rafael López Aliaga (RP) rechaza resultados y denuncia fraude sin pruebas; misión observadora UE no halla elementos (agenda W21 #2) → neutro (eje desorientación, no económico) (sugerido — confirmar)",
+            "Indulto a Pedro Castillo como vector de campaña: Sánchez sostiene la promesa; Comisión de Indultos declaró inadmisible un pedido el 30/4; abogado Ayala anunció (11/5) que reformulará solicitud (agenda W21 #3) → neutro (sugerido — confirmar)",
+            "Ola de ataques extorsivos al transporte (13-15/5): asesinato de chofer Lima-Callao por negarse a S/3 cupo diario; 70% de empresas formales bajo amenaza; casos +478% en 5 años (agenda W21 #4) → neutro en eje viento (eje mediaciones/Estado ausente, no medida económica estructural) (sugerido — confirmar)",
+            "Disputa por la sede del debate: Sánchez retó a Keiko a debatir en Chota; Keiko rechazó; JNE aún no fija fecha ni sede (agenda W21 #5) → neutro (sugerido — confirmar)"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-20"
+        }
+      ],
+      "latest": {
+        "year": 2026,
+        "week": 21,
+        "rank": 0,
+        "direccion": "neutro",
+        "justificativo": "Primera semana de coding viento para Perú. Semana de transición electoral con balotaje Keiko vs Sánchez confirmado para el 7/6. Sin medidas económicas estructurales del Ejecutivo Boluarte en sus últimas semanas; el coding inicial captura el reposo del Ejecutivo en ejercicio, no la orientación esperable del próximo gobierno.",
+        "eventos": [
+          "ONPE cierra cómputo de primera vuelta al 100%; balotaje confirmado Keiko Fujimori (Fuerza Popular, 17,18%) vs. Roberto Sánchez (Juntos por el Perú, 12,03%) el 7/6; empate técnico Ipsos 38-38, IEP 50,8-49,2 (agenda W21 #1) → neutro en eje viento (sugerido — confirmar)",
+          "Rafael López Aliaga (RP) rechaza resultados y denuncia fraude sin pruebas; misión observadora UE no halla elementos (agenda W21 #2) → neutro (eje desorientación, no económico) (sugerido — confirmar)",
+          "Indulto a Pedro Castillo como vector de campaña: Sánchez sostiene la promesa; Comisión de Indultos declaró inadmisible un pedido el 30/4; abogado Ayala anunció (11/5) que reformulará solicitud (agenda W21 #3) → neutro (sugerido — confirmar)",
+          "Ola de ataques extorsivos al transporte (13-15/5): asesinato de chofer Lima-Callao por negarse a S/3 cupo diario; 70% de empresas formales bajo amenaza; casos +478% en 5 años (agenda W21 #4) → neutro en eje viento (eje mediaciones/Estado ausente, no medida económica estructural) (sugerido — confirmar)",
+          "Disputa por la sede del debate: Sánchez retó a Keiko a debatir en Chota; Keiko rechazó; JNE aún no fija fecha ni sede (agenda W21 #5) → neutro (sugerido — confirmar)"
+        ],
+        "codificador": "tomas",
+        "fecha_coding": "2026-05-20"
+      }
+    },
+    "py": {
+      "name": "Paraguay",
+      "series_semanal": [
+        {
+          "year": 2026,
+          "week": 21,
+          "rank": 0,
+          "direccion": "neutro",
+          "justificativo": "Primera semana de coding viento para Paraguay. Semana dominada por la crisis interna del cartismo (caída de Galeano/Rivas, denuncia a Bachi, escándalo Ueno Bank) — eje desrepresentación. La agenda pro-mercado anunciada (acuerdo IA-Taiwán, Anexo C de Itaipú) queda sin tracción material o frenada por el clima preelectoral brasileño.",
+          "eventos": [
+            "Caída de Galeano (renuncia al Senado 12/5 tras condena a 13 años por lavado y narcotráfico) y Rivas (renuncia 11-12/5 tras anulación de sobreseimiento); denuncia formal a Bachi Núñez ante Fiscalía por lesión de confianza, tráfico de influencias y cobro indebido (agenda W21 #1) → neutro en eje viento (eje desrepresentación) (sugerido — confirmar)",
+            "Acuerdo IA con Taiwán: Sopaia lo calificó \"delirio\" (5-10 ingenieros locales con experiencia); Peña reconoció que es un \"enorme desafío\" y presionó a Lula por más energía (agenda W21 #2) → leve pro-mercado (apertura a inversión externa, sin sanción ni reglamentación esta semana) (sugerido — confirmar)",
+            "Captura de Narciso Ayala alias \"Bugão\" (11/5) en Encarnación; operación Surcos del Sur identificó 20 inmuebles por USD 25M vinculados al esquema de lavado (agenda W21 #3) → neutro (sugerido — confirmar)",
+            "Ueno Bank concentra USD 806M de fondos públicos en 30 meses; Peña fue socio comercial del Grupo Vázquez hasta abril del año anterior (agenda W21 #4) → neutro en eje viento (conflicto de interés / eje mediaciones, no medida económica estructural nueva) (sugerido — confirmar)",
+            "Acuerdo tarifario Itaipú (USD 19,28/kW-mes Lula-Peña 2024-2026) expira el 31/12; borrador del Anexo C listo pero negociación frenada por clima preelectoral brasileño (agenda W21 #5) → neutro (sugerido — confirmar)"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-20"
+        }
+      ],
+      "latest": {
+        "year": 2026,
+        "week": 21,
+        "rank": 0,
+        "direccion": "neutro",
+        "justificativo": "Primera semana de coding viento para Paraguay. Semana dominada por la crisis interna del cartismo (caída de Galeano/Rivas, denuncia a Bachi, escándalo Ueno Bank) — eje desrepresentación. La agenda pro-mercado anunciada (acuerdo IA-Taiwán, Anexo C de Itaipú) queda sin tracción material o frenada por el clima preelectoral brasileño.",
+        "eventos": [
+          "Caída de Galeano (renuncia al Senado 12/5 tras condena a 13 años por lavado y narcotráfico) y Rivas (renuncia 11-12/5 tras anulación de sobreseimiento); denuncia formal a Bachi Núñez ante Fiscalía por lesión de confianza, tráfico de influencias y cobro indebido (agenda W21 #1) → neutro en eje viento (eje desrepresentación) (sugerido — confirmar)",
+          "Acuerdo IA con Taiwán: Sopaia lo calificó \"delirio\" (5-10 ingenieros locales con experiencia); Peña reconoció que es un \"enorme desafío\" y presionó a Lula por más energía (agenda W21 #2) → leve pro-mercado (apertura a inversión externa, sin sanción ni reglamentación esta semana) (sugerido — confirmar)",
+          "Captura de Narciso Ayala alias \"Bugão\" (11/5) en Encarnación; operación Surcos del Sur identificó 20 inmuebles por USD 25M vinculados al esquema de lavado (agenda W21 #3) → neutro (sugerido — confirmar)",
+          "Ueno Bank concentra USD 806M de fondos públicos en 30 meses; Peña fue socio comercial del Grupo Vázquez hasta abril del año anterior (agenda W21 #4) → neutro en eje viento (conflicto de interés / eje mediaciones, no medida económica estructural nueva) (sugerido — confirmar)",
+          "Acuerdo tarifario Itaipú (USD 19,28/kW-mes Lula-Peña 2024-2026) expira el 31/12; borrador del Anexo C listo pero negociación frenada por clima preelectoral brasileño (agenda W21 #5) → neutro (sugerido — confirmar)"
+        ],
+        "codificador": "tomas",
+        "fecha_coding": "2026-05-20"
+      }
+    },
+    "uy": {
+      "name": "Uruguay",
+      "series_semanal": [
+        {
+          "year": 2026,
+          "week": 21,
+          "rank": 1,
+          "direccion": "pro-mercado",
+          "justificativo": "Primera semana de coding viento para Uruguay. Dos señales pro-mercado materializadas desde un Ejecutivo de FA: el ministro Oddone reitera que la Rendición de Cuentas no tendrá recursos adicionales y anuncia \"medidas correctivas del gasto\", y Orsi descarta estatizar AFAP (\"no está en nuestro espíritu\") y acuerda mesa de 60 días con administradoras. La presión PIT-CNT por reducción de jornada e impuesto al 1% más rico aún no se materializa — paro general convocado recién para el 10/6.",
+          "eventos": [
+            "Encuesta Equipos Consultores (14/5) al cumplirse primer año Orsi: desaprobación 48%, aprobación 27%; balance neto -21 (vs. -7 en febrero); Cosse llama explícitamente a la autocrítica (\"luz amarilla\") (agenda W21 #1) → neutro en eje viento (eje desrepresentación) (sugerido — confirmar)",
+            "Primer aniversario de la muerte de Mujica (13/5): sello conmemorativo del Correo Uruguayo; Orsi participó del acto; MPP anuncia dos meses de actividades (agenda W21 #2) → neutro (sugerido — confirmar)",
+            "Ministro Oddone (Economía) reitera que Rendición de Cuentas no tendrá \"recursos adicionales\"; no descarta medidas correctivas del gasto ante crecimiento más bajo 2025-2026; PIT-CNT anuncia paro general el 10/6 reclamando impuesto al 1% más rico, reducción de jornada sin pérdida salarial y mejora seguridad social (agenda W21 #4) ↑ leve pro-mercado por el lado del Ejecutivo (restricción fiscal anunciada) — sin sanción presupuestaria todavía (sugerido — confirmar)",
+            "Reforma previsional: Ejecutivo recibe informe final del diálogo social, mantiene sistema de tres pilares, no impacta fondos individuales; Orsi descarta estatizar AFAP (\"no está en nuestro espíritu\") y acuerda mesa de 60 días con administradoras (agenda W21 #5) → leve pro-mercado (decisión política de no estatizar) (sugerido — confirmar)",
+            "USS Nimitz / Orsi-Trump pendiente / fractura interna FA: PIT-CNT critica visita al portaaviones; canciller Lubetkin confirma que reunión Orsi-Trump \"está acordada\" (agenda W21 #3) → neutro (sugerido — confirmar)"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-20"
+        }
+      ],
+      "latest": {
+        "year": 2026,
+        "week": 21,
+        "rank": 1,
+        "direccion": "pro-mercado",
+        "justificativo": "Primera semana de coding viento para Uruguay. Dos señales pro-mercado materializadas desde un Ejecutivo de FA: el ministro Oddone reitera que la Rendición de Cuentas no tendrá recursos adicionales y anuncia \"medidas correctivas del gasto\", y Orsi descarta estatizar AFAP (\"no está en nuestro espíritu\") y acuerda mesa de 60 días con administradoras. La presión PIT-CNT por reducción de jornada e impuesto al 1% más rico aún no se materializa — paro general convocado recién para el 10/6.",
+        "eventos": [
+          "Encuesta Equipos Consultores (14/5) al cumplirse primer año Orsi: desaprobación 48%, aprobación 27%; balance neto -21 (vs. -7 en febrero); Cosse llama explícitamente a la autocrítica (\"luz amarilla\") (agenda W21 #1) → neutro en eje viento (eje desrepresentación) (sugerido — confirmar)",
+          "Primer aniversario de la muerte de Mujica (13/5): sello conmemorativo del Correo Uruguayo; Orsi participó del acto; MPP anuncia dos meses de actividades (agenda W21 #2) → neutro (sugerido — confirmar)",
+          "Ministro Oddone (Economía) reitera que Rendición de Cuentas no tendrá \"recursos adicionales\"; no descarta medidas correctivas del gasto ante crecimiento más bajo 2025-2026; PIT-CNT anuncia paro general el 10/6 reclamando impuesto al 1% más rico, reducción de jornada sin pérdida salarial y mejora seguridad social (agenda W21 #4) ↑ leve pro-mercado por el lado del Ejecutivo (restricción fiscal anunciada) — sin sanción presupuestaria todavía (sugerido — confirmar)",
+          "Reforma previsional: Ejecutivo recibe informe final del diálogo social, mantiene sistema de tres pilares, no impacta fondos individuales; Orsi descarta estatizar AFAP (\"no está en nuestro espíritu\") y acuerda mesa de 60 días con administradoras (agenda W21 #5) → leve pro-mercado (decisión política de no estatizar) (sugerido — confirmar)",
+          "USS Nimitz / Orsi-Trump pendiente / fractura interna FA: PIT-CNT critica visita al portaaviones; canciller Lubetkin confirma que reunión Orsi-Trump \"está acordada\" (agenda W21 #3) → neutro (sugerido — confirmar)"
+        ],
+        "codificador": "tomas",
+        "fecha_coding": "2026-05-20"
+      }
+    },
+    "ve": {
+      "name": "Venezuela",
+      "series_semanal": [
+        {
+          "year": 2026,
+          "week": 21,
+          "rank": 1,
+          "direccion": "pro-mercado",
+          "justificativo": "Primera semana de coding viento para Venezuela. Una sola señal pero materializada y estructural: el Banco Mundial vuelve a Venezuela tras 20 años con visita oficial de Susana Cordeiro Guerra (VP América Latina) el 15-16/5 — primera visita del organismo desde 2019. Normalización institucional financiera con sesgo pro-mercado dentro del modelo de transición Delcy Rodríguez / plan EE.UU.-Qatar. Los otros ejes dominantes (CIJ Esequibo, racionamiento eléctrico, bloqueos digitales) no tocan viento.",
+          "eventos": [
+            "Banco Mundial vuelve a Venezuela tras 20 años: reunión Delcy Rodríguez con Susana Cordeiro Guerra (VP BM América Latina) en Caracas el 15-16/5; primera visita oficial del organismo desde 2019 (agenda W21 #2) ↑ pro-mercado (normalización institucional financiera) (sugerido — confirmar)",
+            "CIJ cierra audiencias por Esequibo (11/5) e inicia deliberación; Venezuela compareció presencialmente por primera vez (6/5 y 8/5) pero ratificó no reconocer la jurisdicción del tribunal (agenda W21 #1) → neutro en eje viento (eje desorientación, no medida económica) (sugerido — confirmar)",
+            "Racionamiento eléctrico récord en 14 años: demanda 15.579 MW (9/5), 80% del parque termoeléctrico fuera de servicio, apagones 5-10h diarias; Plan de Ahorro Energético 45 días venció 5/5 sin alivio; reportes técnicos cifran USD 60 mil millones la inversión necesaria (agenda W21 #3) → neutro en eje viento (crisis material, no decisión política nueva) (sugerido — confirmar)",
+            "Plan post-Maduro EE.UU.-Qatar deja fuera a María Corina Machado (CNN 10/5); ex presos políticos lanzan en Táchira (16/5) \"gran cruzada nacional\" para relanzar la oposición (agenda W21 #4) → neutro (sugerido — confirmar)",
+            "200+ sitios web bloqueados (incluidos 65 medios) según sindicatos de prensa y derechos digitales; coexiste con discurso de \"nueva etapa\" (agenda W21 #5) → neutro (sugerido — confirmar)"
+          ],
+          "codificador": "tomas",
+          "fecha_coding": "2026-05-20"
+        }
+      ],
+      "latest": {
+        "year": 2026,
+        "week": 21,
+        "rank": 1,
+        "direccion": "pro-mercado",
+        "justificativo": "Primera semana de coding viento para Venezuela. Una sola señal pero materializada y estructural: el Banco Mundial vuelve a Venezuela tras 20 años con visita oficial de Susana Cordeiro Guerra (VP América Latina) el 15-16/5 — primera visita del organismo desde 2019. Normalización institucional financiera con sesgo pro-mercado dentro del modelo de transición Delcy Rodríguez / plan EE.UU.-Qatar. Los otros ejes dominantes (CIJ Esequibo, racionamiento eléctrico, bloqueos digitales) no tocan viento.",
+        "eventos": [
+          "Banco Mundial vuelve a Venezuela tras 20 años: reunión Delcy Rodríguez con Susana Cordeiro Guerra (VP BM América Latina) en Caracas el 15-16/5; primera visita oficial del organismo desde 2019 (agenda W21 #2) ↑ pro-mercado (normalización institucional financiera) (sugerido — confirmar)",
+          "CIJ cierra audiencias por Esequibo (11/5) e inicia deliberación; Venezuela compareció presencialmente por primera vez (6/5 y 8/5) pero ratificó no reconocer la jurisdicción del tribunal (agenda W21 #1) → neutro en eje viento (eje desorientación, no medida económica) (sugerido — confirmar)",
+          "Racionamiento eléctrico récord en 14 años: demanda 15.579 MW (9/5), 80% del parque termoeléctrico fuera de servicio, apagones 5-10h diarias; Plan de Ahorro Energético 45 días venció 5/5 sin alivio; reportes técnicos cifran USD 60 mil millones la inversión necesaria (agenda W21 #3) → neutro en eje viento (crisis material, no decisión política nueva) (sugerido — confirmar)",
+          "Plan post-Maduro EE.UU.-Qatar deja fuera a María Corina Machado (CNN 10/5); ex presos políticos lanzan en Táchira (16/5) \"gran cruzada nacional\" para relanzar la oposición (agenda W21 #4) → neutro (sugerido — confirmar)",
+          "200+ sitios web bloqueados (incluidos 65 medios) según sindicatos de prensa y derechos digitales; coexiste con discurso de \"nueva etapa\" (agenda W21 #5) → neutro (sugerido — confirmar)"
+        ],
+        "codificador": "tomas",
+        "fecha_coding": "2026-05-20"
       }
     }
   }

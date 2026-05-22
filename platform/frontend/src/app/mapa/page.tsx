@@ -4,6 +4,7 @@ import MapaExplorer from "./MapaExplorer";
 import { getReadingGuides } from "@/lib/reading-guides";
 import { getAllCountryAgendas } from "@/lib/agendas";
 import { getHomeData } from "@/lib/home";
+import { getOnboardingContent } from "@/lib/onboarding-content";
 
 export const metadata: Metadata = {
   title: "Mapa analítico",
@@ -11,9 +12,10 @@ export const metadata: Metadata = {
 };
 
 export default function MapaPage() {
-  const readingGuides    = getReadingGuides();
-  const agendasByCountry = getAllCountryAgendas();
+  const readingGuides      = getReadingGuides();
+  const agendasByCountry   = getAllCountryAgendas();
   const { weeklyCountries } = getHomeData();
+  const onboardingContent  = getOnboardingContent();
 
   return (
     <Suspense fallback={
@@ -31,6 +33,7 @@ export default function MapaPage() {
         readingGuides={readingGuides}
         agendasByCountry={agendasByCountry}
         weeklyCountries={weeklyCountries}
+        onboardingContent={onboardingContent}
       />
     </Suspense>
   );

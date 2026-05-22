@@ -527,16 +527,16 @@ INDICATOR_SPECS: list[dict] = [
         # Serie mensual para capa temperatura (EPIC 03)
         "fetch_mensual": "ilo_monthly_wages",
         "source_name": "OIT ILOSTAT",
-        "source_code": "EAR_4MTH_SEX_ECO_CUR_NB_M",
+        "source_code": "EAR_EMTA_SEX_NB_M",
         "source_url": "https://ilostat.ilo.org/topics/wages/",
         "methodology": (
-            "Índice base 2021=100 del salario nominal mensual medio deflactado a real. "
-            "Fuente: OIT ILOSTAT EAR_4MTH_SEX_ECO_CUR_NB_M (salario medio mensual, "
-            "moneda local). Indexado dividiendo cada mes por el promedio de 2021. "
-            "Series anuales = promedio de los 12 meses del año (coinciden con media "
-            "del índice mensual; diferencia ≈ 0 por construcción). "
-            "Cobertura r1: países con datos OIT. AR y BR requieren fuentes nacionales "
-            "(INDEC RIPTE e IBGE PNAD) para cobertura completa — ver Spec 40 §3.2."
+            "Índice base 2021=100 del salario nominal mensual medio. "
+            "Fuente: OIT ILOSTAT EAR_EMTA_SEX_NB_M (Average monthly earnings of employees "
+            "by sex, local currency). Sustituye EAR_4MTH_SEX_ECO_CUR_NB_M (deprecado 2026). "
+            "Indexado dividiendo cada mes por el promedio de 2021. "
+            "Series anuales = promedio de los 12 meses del año. "
+            "Cobertura SA r1: ~5/10 (BOL, COL, ECU, PER, URY). "
+            "AR, BR, CL, PY, VE requieren fuentes nacionales — ver Spec 40 §3.2."
         ),
         "quality_overrides": {"VE": "estimado", "BO": "estimado", "PY": "estimado"},
         "notes": {

@@ -1,6 +1,6 @@
 {
   "version": "macro-v1.1.0",
-  "computed_at": "2026-05-19",
+  "computed_at": "2026-05-21",
   "year_start": 2010,
   "year_end": 2024,
   "quarter_start": 2021,
@@ -40,7 +40,7 @@
         "name": "Banco Mundial WDI",
         "code": "NY.GDP.PCAP.PP.KD",
         "url": "https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "PPA, USD constantes de 2017",
       "n_countries_covered": 9,
@@ -828,7 +828,7 @@
         "name": "Banco Mundial WDI",
         "code": "NY.GDP.MKTP.KD.ZG",
         "url": "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Variación % anual del PBI a precios constantes (USD 2015). series_trimestral: variación interanual trimestral (Q_t / Q_{t-4} - 1) × 100, fuente IMF IFS NGDP_R_K_IX. El promedio de los 4 trimestres YoY ≈ crecimiento anual pero no es exactamente igual (relación no-lineal entre índices trimestrales y totales anuales); diferencias típicas < 0.5pp.",
       "n_countries_covered": 10,
@@ -1701,7 +1701,7 @@
         "name": "Banco Mundial WDI",
         "code": "NV.AGR.TOTL.ZS",
         "url": "https://data.worldbank.org/indicator/NV.AGR.TOTL.ZS",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Agricultura, silvicultura y pesca como % del VAB total",
       "n_countries_covered": 10,
@@ -2510,7 +2510,7 @@
         "name": "Banco Mundial WDI",
         "code": "NV.IND.MANF.ZS",
         "url": "https://data.worldbank.org/indicator/NV.IND.MANF.ZS",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Manufactura como % del VAB total",
       "n_countries_covered": 10,
@@ -3319,7 +3319,7 @@
         "name": "Banco Mundial WDI",
         "code": "NV.SRV.TOTL.ZS",
         "url": "https://data.worldbank.org/indicator/NV.SRV.TOTL.ZS",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Servicios como % del VAB total",
       "n_countries_covered": 10,
@@ -4127,7 +4127,7 @@
         "name": "Banco Mundial WDI / OIT",
         "code": "SL.GDP.PCAP.EM.KD",
         "url": "https://data.worldbank.org/indicator/SL.GDP.PCAP.EM.KD",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "PBI por ocupado (USD constantes 2017 PPP, WB SL.GDP.PCAP.EM.KD), normalizado a índice base 2010=100 por país. Misma magnitud que el indicador OIT de productividad.",
       "n_countries_covered": 9,
@@ -4915,7 +4915,7 @@
         "name": "Banco Mundial WDI",
         "code": "NE.GDI.FTOT.ZS",
         "url": "https://data.worldbank.org/indicator/NE.GDI.FTOT.ZS",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Formación bruta de capital fijo como % del PBI",
       "n_countries_covered": 10,
@@ -5784,7 +5784,7 @@
         "name": "FMI WEO",
         "code": "PCPIPCH",
         "url": "https://www.imf.org/en/Publications/WEO",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Variación % anual del IPC (FMI WEO). AR 2007-2015: IPC-Congreso/CEPAL, quality=estimado. VE 2014+: estimación FMI, quality=estimado.",
       "n_countries_covered": 10,
@@ -6642,7 +6642,7 @@
         "name": "BACI (CEPII)",
         "code": "SITC Rev.3 secciones 0-4+68",
         "url": "http://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Exportaciones SITC Rev.3 secciones 0-4 y 68 / total exportaciones",
       "n_countries_covered": 0,
@@ -6703,7 +6703,7 @@
         "name": "BACI (CEPII)",
         "code": "bilateral exports share",
         "url": "http://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "% del comercio total con el socio de mayor cuota (exportaciones FOB + importaciones CIF)",
       "n_countries_covered": 0,
@@ -6764,7 +6764,7 @@
         "name": "BACI (CEPII)",
         "code": "exports to CHN / total exports",
         "url": "http://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Exportaciones a China (BACI) / exportaciones totales FOB",
       "n_countries_covered": 0,
@@ -6825,7 +6825,7 @@
         "name": "BACI (CEPII)",
         "code": "exports to USA / total exports",
         "url": "http://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Exportaciones a EEUU (BACI) / exportaciones totales FOB",
       "n_countries_covered": 0,
@@ -6884,7 +6884,7 @@
         "name": "UNCTAD",
         "code": "FDI inflows net / GDP",
         "url": "https://unctad.org/topic/investment/world-investment-report",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Inversión Extranjera Directa neta entrante como % del PBI (UNCTAD World Investment Report)",
       "n_countries_covered": 0,
@@ -6943,7 +6943,7 @@
         "name": "FMI WEO",
         "code": "GGXWDG_NGDP",
         "url": "https://www.imf.org/en/Publications/WEO",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Deuda bruta del gobierno general como % del PBI (FMI WEO GGXWDG_NGDP). Nota: la spec original pedía deuda externa total (pública + privada, WB IDS) pero esa serie no tiene cobertura API actualizada para todos los países SA. FMI WEO tiene cobertura completa; se documenta el alcance diferente.",
       "n_countries_covered": 10,
@@ -7815,7 +7815,7 @@
         "name": "OIT ILOSTAT",
         "code": "UNE_TUNE_SEX_AGE_RT_A",
         "url": "https://ilostat.ilo.org/topics/unemployment-and-labour-underutilization/",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "% PEA sin trabajo buscando activamente (OIT modelado armonizado, 15+ años)",
       "n_countries_covered": 10,
@@ -8687,7 +8687,7 @@
         "name": "Banco Mundial WDI / OIT",
         "code": "SL.EMP.VULN.ZS",
         "url": "https://data.worldbank.org/indicator/SL.EMP.VULN.ZS",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "% de trabajadores en empleos vulnerables (cuenta propia + trabajadores familiares no remunerados) sobre empleo total (WB SL.EMP.VULN.ZS, modelado OIT). Proxy de informalidad: misma dirección causal, cobertura sistemática. El indicador ideal (empleo informal OIT, criterio empresa) no tiene API pública estable para la región.",
       "n_countries_covered": 10,
@@ -9556,7 +9556,7 @@
         "name": "CEPALSTAT",
         "code": "asalariado registrado",
         "url": "https://statistics.cepal.org/portal/cepalstat/",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Asalariados con contrato formal o cotizantes a seguridad social / empleo total (CEPAL)",
       "n_countries_covered": 0,
@@ -9617,7 +9617,7 @@
         "name": "OIT ILOSTAT",
         "code": "EMP_TEMP_SEX_ECO_NB_A",
         "url": "https://ilostat.ilo.org/data/",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Empleo en manufactura (ISIC C) / empleo total (OIT)",
       "n_countries_covered": 10,
@@ -10486,50 +10486,860 @@
         "name": "OIT ILOSTAT",
         "code": "EAP_TEAP_SEX_AGE_RT_A",
         "url": "https://ilostat.ilo.org/topics/labour-force-participation/",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Diferencia (pp) entre tasa de participación laboral masculina y femenina (OIT, 15+ años)",
-      "n_countries_covered": 0,
+      "n_countries_covered": 10,
       "by_country": {
         "AR": {
           "name": "Argentina",
-          "series": []
+          "series": [
+            {
+              "year": 2010,
+              "value": 25.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2011,
+              "value": 26.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2012,
+              "value": 25.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2013,
+              "value": 25.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2014,
+              "value": 24.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2015,
+              "value": 24.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2016,
+              "value": 23.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2017,
+              "value": 22.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2018,
+              "value": 21.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2019,
+              "value": 21.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2020,
+              "value": 19.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "value": 20.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 19.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 19.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 19.5,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 19.5,
+            "quality": "oficial"
+          }
         },
         "BO": {
           "name": "Bolivia",
-          "series": []
+          "series": [
+            {
+              "year": 2010,
+              "value": 21.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2011,
+              "value": 21.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2012,
+              "value": 21.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2013,
+              "value": 21.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2014,
+              "value": 21.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2015,
+              "value": 20.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2016,
+              "value": 20.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2017,
+              "value": 19.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2018,
+              "value": 16.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2019,
+              "value": 15.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2020,
+              "value": 14.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "value": 13.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 13.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 11.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 11.9,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 11.9,
+            "quality": "oficial"
+          }
         },
         "BR": {
           "name": "Brasil",
-          "series": []
+          "series": [
+            {
+              "year": 2010,
+              "value": 22.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2011,
+              "value": 23.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2012,
+              "value": 23.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2013,
+              "value": 23.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2014,
+              "value": 23.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2015,
+              "value": 22.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2016,
+              "value": 22.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2017,
+              "value": 20.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2018,
+              "value": 20.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2019,
+              "value": 19.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2020,
+              "value": 20.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "value": 20.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 19.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 19.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 20.0,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 20.0,
+            "quality": "oficial"
+          }
         },
         "CL": {
           "name": "Chile",
-          "series": []
+          "series": [
+            {
+              "year": 2010,
+              "value": 27.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2011,
+              "value": 25.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2012,
+              "value": 25.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2013,
+              "value": 24.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2014,
+              "value": 23.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2015,
+              "value": 24.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2016,
+              "value": 23.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2017,
+              "value": 22.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2018,
+              "value": 21.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2019,
+              "value": 21.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2020,
+              "value": 22.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "value": 22.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 20.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 19.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 19.2,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 19.2,
+            "quality": "oficial"
+          }
         },
         "CO": {
           "name": "Colombia",
-          "series": []
+          "series": [
+            {
+              "year": 2010,
+              "value": 25.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2011,
+              "value": 25.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2012,
+              "value": 24.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2013,
+              "value": 24.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2014,
+              "value": 24.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2015,
+              "value": 24.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2016,
+              "value": 23.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2017,
+              "value": 23.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2018,
+              "value": 24.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2019,
+              "value": 24.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2020,
+              "value": 25.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "value": 25.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 25.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 24.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 24.1,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 24.1,
+            "quality": "oficial"
+          }
         },
         "EC": {
           "name": "Ecuador",
-          "series": []
+          "series": [
+            {
+              "year": 2010,
+              "value": 29.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2011,
+              "value": 29.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2012,
+              "value": 29.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2013,
+              "value": 28.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2014,
+              "value": 30.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2015,
+              "value": 27.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2016,
+              "value": 24.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2017,
+              "value": 24.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2018,
+              "value": 24.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2019,
+              "value": 23.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2020,
+              "value": 23.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "value": 24.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 23.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 24.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 24.6,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 24.6,
+            "quality": "oficial"
+          }
         },
         "PY": {
           "name": "Paraguay",
-          "series": []
+          "series": [
+            {
+              "year": 2010,
+              "value": 29.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2011,
+              "value": 26.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2012,
+              "value": 22.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2013,
+              "value": 24.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2014,
+              "value": 27.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2015,
+              "value": 26.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2016,
+              "value": 27.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2017,
+              "value": 26.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2018,
+              "value": 25.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2019,
+              "value": 24.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2020,
+              "value": 26.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "value": 24.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 23.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 23.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 22.8,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 22.8,
+            "quality": "oficial"
+          }
         },
         "PE": {
           "name": "Perú",
-          "series": []
+          "series": [
+            {
+              "year": 2010,
+              "value": 14.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2011,
+              "value": 15.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2012,
+              "value": 15.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2013,
+              "value": 15.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2014,
+              "value": 15.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2015,
+              "value": 16.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2016,
+              "value": 15.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2017,
+              "value": 15.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2018,
+              "value": 14.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2019,
+              "value": 14.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2020,
+              "value": 18.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "value": 14.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 15.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 15.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 15.9,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 15.9,
+            "quality": "oficial"
+          }
         },
         "UY": {
           "name": "Uruguay",
-          "series": []
+          "series": [
+            {
+              "year": 2010,
+              "value": 19.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2011,
+              "value": 19.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2012,
+              "value": 18.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2013,
+              "value": 19.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2014,
+              "value": 18.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2015,
+              "value": 18.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2016,
+              "value": 17.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2017,
+              "value": 16.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2018,
+              "value": 16.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2019,
+              "value": 15.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2020,
+              "value": 14.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "value": 14.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 15.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 16.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 16.2,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 16.2,
+            "quality": "oficial"
+          }
         },
         "VE": {
           "name": "Venezuela",
-          "series": []
+          "series": [
+            {
+              "year": 2010,
+              "value": 29.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2011,
+              "value": 28.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2012,
+              "value": 27.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2013,
+              "value": 27.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2014,
+              "value": 27.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2015,
+              "value": 27.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2016,
+              "value": 27.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2017,
+              "value": 28.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2018,
+              "value": 27.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2019,
+              "value": 26.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2020,
+              "value": 23.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "value": 23.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 31.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 31.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 30.2,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 30.2,
+            "quality": "oficial"
+          }
         }
       }
     },
@@ -10545,7 +11355,7 @@
         "name": "OIT ILOSTAT",
         "code": "SUB_SUBR_SEX_AGE_RT_A",
         "url": "https://ilostat.ilo.org/topics/unemployment-and-labour-underutilization/",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "% de ocupados que trabajan menos horas de las deseadas por razones económicas (OIT)",
       "n_countries_covered": 0,
@@ -10606,7 +11416,7 @@
         "name": "CEPALSTAT",
         "code": "pobreza línea regional",
         "url": "https://statistics.cepal.org/portal/cepalstat/",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "% de población bajo la línea de pobreza regional armonizada (CEPAL Panorama Social)",
       "n_countries_covered": 0,
@@ -10669,7 +11479,7 @@
         "name": "CEPALSTAT",
         "code": "indigencia línea regional",
         "url": "https://statistics.cepal.org/portal/cepalstat/",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "% de población bajo la línea de indigencia regional (CEPAL Panorama Social)",
       "n_countries_covered": 0,
@@ -10731,7 +11541,7 @@
         "name": "Banco Mundial WDI / CEPAL",
         "code": "SI.POV.GINI",
         "url": "https://data.worldbank.org/indicator/SI.POV.GINI",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Coeficiente de Gini sobre distribución del ingreso (0=igualdad perfecta, 100=desigualdad perfecta). Excepción a la regla de no-compuestos: no tiene sustituto operativo para comparación entre países.",
       "n_countries_covered": 9,
@@ -11465,7 +12275,7 @@
         "name": "Banco Mundial WDI / OPS",
         "code": "SP.DYN.IMRT.IN",
         "url": "https://data.worldbank.org/indicator/SP.DYN.IMRT.IN",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Muertes de niños menores de 1 año por cada 1.000 nacidos vivos",
       "n_countries_covered": 10,
@@ -12334,7 +13144,7 @@
         "name": "UNODC / OVV (VE)",
         "code": "UNODC Global Study on Homicide",
         "url": "https://www.unodc.org/unodc/en/data-and-analysis/homicide.html",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Homicidios dolosos por 100.000 habitantes (UNODC). Venezuela 2014+: OVV (Observatorio Venezolano de Violencia), quality=estimado.",
       "n_countries_covered": 0,
@@ -12394,7 +13204,7 @@
         "name": "CEPALSTAT / OECD",
         "code": "Estadísticas Tributarias ALC",
         "url": "https://statistics.cepal.org/portal/cepalstat/",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
       "methodology": "Ingresos tributarios totales (gobierno central + seguridad social) como % del PBI (CEPAL/OECD conjunta)",
       "n_countries_covered": 0,
@@ -12453,12 +13263,12 @@
       "unit": "índice",
       "source": {
         "name": "OIT ILOSTAT",
-        "code": "EAR_4MTH_SEX_ECO_CUR_NB_M",
+        "code": "EAR_EMTA_SEX_NB_M",
         "url": "https://ilostat.ilo.org/topics/wages/",
-        "pulled_at": "2026-05-19"
+        "pulled_at": "2026-05-21"
       },
-      "methodology": "Índice base 2021=100 del salario nominal mensual medio deflactado a real. Fuente: OIT ILOSTAT EAR_4MTH_SEX_ECO_CUR_NB_M (salario medio mensual, moneda local). Indexado dividiendo cada mes por el promedio de 2021. Series anuales = promedio de los 12 meses del año (coinciden con media del índice mensual; diferencia ≈ 0 por construcción). Cobertura r1: países con datos OIT. AR y BR requieren fuentes nacionales (INDEC RIPTE e IBGE PNAD) para cobertura completa — ver Spec 40 §3.2.",
-      "n_countries_covered": 0,
+      "methodology": "Índice base 2021=100 del salario nominal mensual medio. Fuente: OIT ILOSTAT EAR_EMTA_SEX_NB_M (Average monthly earnings of employees by sex, local currency). Sustituye EAR_4MTH_SEX_ECO_CUR_NB_M (deprecado 2026). Indexado dividiendo cada mes por el promedio de 2021. Series anuales = promedio de los 12 meses del año. Cobertura SA r1: ~5/10 (BOL, COL, ECU, PER, URY). AR, BR, CL, PY, VE requieren fuentes nacionales — ver Spec 40 §3.2.",
+      "n_countries_covered": 5,
       "by_country": {
         "AR": {
           "name": "Argentina",
@@ -12467,7 +13277,323 @@
         },
         "BO": {
           "name": "Bolivia",
-          "series": []
+          "series": [
+            {
+              "year": 2021,
+              "value": 100.0,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "value": 101.4,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "value": 103.3,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "value": 106.0,
+              "quality": "estimado"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 106.0,
+            "quality": "estimado"
+          },
+          "series_mensual": [
+            {
+              "year": 2021,
+              "month": 1,
+              "value": 97.8,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 2,
+              "value": 100.3,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 3,
+              "value": 105.1,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 4,
+              "value": 99.3,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 5,
+              "value": 99.7,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 6,
+              "value": 99.2,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 7,
+              "value": 99.3,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 8,
+              "value": 100.3,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 9,
+              "value": 100.4,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 10,
+              "value": 98.7,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 11,
+              "value": 100.6,
+              "quality": "estimado"
+            },
+            {
+              "year": 2021,
+              "month": 12,
+              "value": 99.2,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 1,
+              "value": 101.5,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 2,
+              "value": 100.4,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 3,
+              "value": 99.8,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 4,
+              "value": 102.7,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 5,
+              "value": 99.5,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 6,
+              "value": 104.6,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 7,
+              "value": 99.5,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 8,
+              "value": 99.3,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 9,
+              "value": 102.8,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 10,
+              "value": 100.8,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 11,
+              "value": 102.7,
+              "quality": "estimado"
+            },
+            {
+              "year": 2022,
+              "month": 12,
+              "value": 102.8,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 1,
+              "value": 100.5,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 2,
+              "value": 104.8,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 3,
+              "value": 101.5,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 4,
+              "value": 103.1,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 5,
+              "value": 102.8,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 6,
+              "value": 102.1,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 7,
+              "value": 103.3,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 8,
+              "value": 107.6,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 9,
+              "value": 100.0,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 10,
+              "value": 104.4,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 11,
+              "value": 105.3,
+              "quality": "estimado"
+            },
+            {
+              "year": 2023,
+              "month": 12,
+              "value": 104.0,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 1,
+              "value": 104.5,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 2,
+              "value": 108.1,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 3,
+              "value": 104.4,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 4,
+              "value": 106.5,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 5,
+              "value": 108.0,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 6,
+              "value": 107.5,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 7,
+              "value": 110.3,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 8,
+              "value": 104.5,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 9,
+              "value": 106.9,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 10,
+              "value": 104.0,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 11,
+              "value": 107.0,
+              "quality": "estimado"
+            },
+            {
+              "year": 2024,
+              "month": 12,
+              "value": 100.3,
+              "quality": "estimado"
+            }
+          ]
         },
         "BR": {
           "name": "Brasil",
@@ -12480,11 +13606,643 @@
         },
         "CO": {
           "name": "Colombia",
-          "series": []
+          "series": [
+            {
+              "year": 2021,
+              "value": 100.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 124.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 137.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 152.1,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 152.1,
+            "quality": "oficial"
+          },
+          "series_mensual": [
+            {
+              "year": 2021,
+              "month": 1,
+              "value": 99.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 2,
+              "value": 99.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 3,
+              "value": 98.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 4,
+              "value": 99.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 5,
+              "value": 103.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 6,
+              "value": 98.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 7,
+              "value": 96.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 8,
+              "value": 104.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 9,
+              "value": 99.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 10,
+              "value": 100.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 11,
+              "value": 101.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 12,
+              "value": 99.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 1,
+              "value": 113.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 2,
+              "value": 116.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 3,
+              "value": 122.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 4,
+              "value": 122.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 5,
+              "value": 127.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 6,
+              "value": 124.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 7,
+              "value": 126.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 8,
+              "value": 128.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 9,
+              "value": 125.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 10,
+              "value": 123.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 11,
+              "value": 132.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 12,
+              "value": 126.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 1,
+              "value": 130.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 2,
+              "value": 131.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 3,
+              "value": 133.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 4,
+              "value": 134.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 5,
+              "value": 136.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 6,
+              "value": 136.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 7,
+              "value": 139.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 8,
+              "value": 139.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 9,
+              "value": 142.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 10,
+              "value": 137.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 11,
+              "value": 148.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 12,
+              "value": 140.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 1,
+              "value": 145.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 2,
+              "value": 147.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 3,
+              "value": 147.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 4,
+              "value": 153.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 5,
+              "value": 152.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 6,
+              "value": 152.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 7,
+              "value": 153.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 8,
+              "value": 151.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 9,
+              "value": 152.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 10,
+              "value": 152.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 11,
+              "value": 160.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 12,
+              "value": 158.0,
+              "quality": "oficial"
+            }
+          ]
         },
         "EC": {
           "name": "Ecuador",
-          "series": []
+          "series": [
+            {
+              "year": 2021,
+              "value": 100.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 103.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 104.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 106.6,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 106.6,
+            "quality": "oficial"
+          },
+          "series_mensual": [
+            {
+              "year": 2021,
+              "month": 1,
+              "value": 148.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 2,
+              "value": 94.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 3,
+              "value": 93.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 4,
+              "value": 106.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 5,
+              "value": 93.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 6,
+              "value": 94.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 7,
+              "value": 92.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 8,
+              "value": 91.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 9,
+              "value": 105.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 10,
+              "value": 92.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 11,
+              "value": 92.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 12,
+              "value": 95.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 1,
+              "value": 147.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 2,
+              "value": 95.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 3,
+              "value": 95.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 4,
+              "value": 108.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 5,
+              "value": 99.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 6,
+              "value": 96.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 7,
+              "value": 95.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 8,
+              "value": 98.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 9,
+              "value": 110.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 10,
+              "value": 96.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 11,
+              "value": 97.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 12,
+              "value": 101.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 1,
+              "value": 148.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 2,
+              "value": 95.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 3,
+              "value": 98.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 4,
+              "value": 113.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 5,
+              "value": 100.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 6,
+              "value": 99.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 7,
+              "value": 97.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 8,
+              "value": 98.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 9,
+              "value": 111.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 10,
+              "value": 98.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 11,
+              "value": 97.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 12,
+              "value": 98.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 1,
+              "value": 149.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 2,
+              "value": 99.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 3,
+              "value": 98.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 4,
+              "value": 115.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 5,
+              "value": 103.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 6,
+              "value": 101.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 7,
+              "value": 101.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 8,
+              "value": 100.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 9,
+              "value": 114.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 10,
+              "value": 98.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 11,
+              "value": 98.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 12,
+              "value": 98.6,
+              "quality": "oficial"
+            }
+          ]
         },
         "PY": {
           "name": "Paraguay",
@@ -12492,11 +14250,566 @@
         },
         "PE": {
           "name": "Perú",
-          "series": []
+          "series": [
+            {
+              "year": 2022,
+              "value": 100.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 109.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 115.6,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 115.6,
+            "quality": "oficial"
+          },
+          "series_mensual": [
+            {
+              "year": 2022,
+              "month": 1,
+              "value": 97.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 2,
+              "value": 97.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 3,
+              "value": 98.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 4,
+              "value": 97.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 5,
+              "value": 97.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 6,
+              "value": 97.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 7,
+              "value": 97.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 8,
+              "value": 100.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 9,
+              "value": 102.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 10,
+              "value": 101.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 11,
+              "value": 105.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 12,
+              "value": 106.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 1,
+              "value": 100.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 2,
+              "value": 109.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 3,
+              "value": 107.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 4,
+              "value": 107.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 5,
+              "value": 111.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 6,
+              "value": 107.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 7,
+              "value": 108.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 8,
+              "value": 112.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 9,
+              "value": 109.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 10,
+              "value": 108.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 11,
+              "value": 111.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 12,
+              "value": 113.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 1,
+              "value": 111.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 2,
+              "value": 113.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 3,
+              "value": 110.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 4,
+              "value": 113.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 5,
+              "value": 117.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 6,
+              "value": 112.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 7,
+              "value": 115.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 8,
+              "value": 118.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 9,
+              "value": 117.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 10,
+              "value": 116.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 11,
+              "value": 119.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 12,
+              "value": 122.3,
+              "quality": "oficial"
+            }
+          ]
         },
         "UY": {
           "name": "Uruguay",
-          "series": []
+          "series": [
+            {
+              "year": 2021,
+              "value": 100.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "value": 105.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "value": 114.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "value": 123.6,
+              "quality": "oficial"
+            }
+          ],
+          "latest": {
+            "year": 2024,
+            "value": 123.6,
+            "quality": "oficial"
+          },
+          "series_mensual": [
+            {
+              "year": 2021,
+              "month": 1,
+              "value": 140.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 2,
+              "value": 95.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 3,
+              "value": 94.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 4,
+              "value": 96.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 5,
+              "value": 95.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 6,
+              "value": 96.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 7,
+              "value": 131.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 8,
+              "value": 86.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 9,
+              "value": 90.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 10,
+              "value": 89.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 11,
+              "value": 93.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2021,
+              "month": 12,
+              "value": 91.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 1,
+              "value": 140.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 2,
+              "value": 93.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 3,
+              "value": 97.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 4,
+              "value": 93.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 5,
+              "value": 97.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 6,
+              "value": 95.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 7,
+              "value": 140.1,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 8,
+              "value": 100.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 9,
+              "value": 100.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 10,
+              "value": 98.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 11,
+              "value": 101.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2022,
+              "month": 12,
+              "value": 105.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 1,
+              "value": 154.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 2,
+              "value": 101.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 3,
+              "value": 101.7,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 4,
+              "value": 110.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 5,
+              "value": 104.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 6,
+              "value": 107.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 7,
+              "value": 153.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 8,
+              "value": 104.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 9,
+              "value": 111.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 10,
+              "value": 106.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 11,
+              "value": 108.3,
+              "quality": "oficial"
+            },
+            {
+              "year": 2023,
+              "month": 12,
+              "value": 108.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 1,
+              "value": 167.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 2,
+              "value": 123.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 3,
+              "value": 110.6,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 4,
+              "value": 113.5,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 5,
+              "value": 114.8,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 6,
+              "value": 124.0,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 7,
+              "value": 164.4,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 8,
+              "value": 111.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 9,
+              "value": 111.9,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 10,
+              "value": 116.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 11,
+              "value": 113.2,
+              "quality": "oficial"
+            },
+            {
+              "year": 2024,
+              "month": 12,
+              "value": 112.2,
+              "quality": "oficial"
+            }
+          ]
         },
         "VE": {
           "name": "Venezuela",

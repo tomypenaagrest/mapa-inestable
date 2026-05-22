@@ -44,6 +44,8 @@ export interface LayerValue {
   bucketIndex: number;
   delta?: number;
   quality: LayerQuality;
+  /** Spec 44 — modulación visual de la saturación del fill (0-1). Solo viento en r1. */
+  intensidad?: number;
 }
 
 /** Spec 42 — Sub-indicador asociado a una capa. Enriquece sin reemplazar el indicador principal. */
@@ -78,6 +80,14 @@ export interface Layer {
   subIndicators?: LayerSubIndicator[];
   /** Spec 42 — Texto editorial curado por país (piloto). Slug en minúsculas → párrafo HTML. */
   editorialByCountry?: Record<string, string>;
+  /** Spec 44 — Eventos clave del último coding publicado para (slug, period). Solo viento en r1. */
+  getEventsForCountry?: (slug: string, period: LayerPeriod) => string[] | null;
+  /** Spec 44 — Justificativo del último coding publicado para (slug, period). Solo viento en r1. */
+  getJustificativoForCountry?: (slug: string, period: LayerPeriod) => string | null;
+  /** Spec 46 §4.2 — Microcopy de 1-2 líneas debajo de la escala en la leyenda. Aclara qué codifica el color. */
+  legendMicrocopy: string;
+  /** Spec 46 §4.3 — Intro editorial (2-4 oraciones) para el accordion "Cómo se lee esta capa". */
+  shortIntro: string;
 }
 
 // ── Registry ──────────────────────────────────────────────────────────────────

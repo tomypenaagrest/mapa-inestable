@@ -1,21 +1,31 @@
 "use client";
 // Spec 39 — Leyenda flotante en esquina superior derecha del mapa.
+// Spec 46 r2 — badge de calidad, microcopy, accordion "Cómo se lee", botón onboarding.
 
 import { useState } from "react";
 import Image from "next/image";
-import type { Layer, LayerPeriod } from "@/lib/layers";
+import type { Layer, LayerPeriod, LayerQuality } from "@/lib/layers";
 
 interface LayerLegendProps {
   layer: Layer;
   period: LayerPeriod;
   sliderDate: string;
   onOpenReadingGuide: () => void;
+  onOpenOnboarding: () => void;
 }
 
-export default function LayerLegend({ layer, period, sliderDate, onOpenReadingGuide }: LayerLegendProps) {
-  const [collapsed, setCollapsed] = useState(false);
+export default function LayerLegend({
+  layer,
+  period,
+  sliderDate,
+  onOpenReadingGuide,
+  onOpenOnboarding,
+}: LayerLegendProps) {
+  const [collapsed,     setCollapsed]     = useState(false);
+  const [accordionOpen, setAccordionOpen] = useState(false);
 
   const isStale = checkStale(layer, period);
+  const qualityBadge = resolveQualityBadge(layer, period, isStale);
 
   return (
     <div style={{
@@ -86,10 +96,25 @@ export default function LayerLegend({ layer, period, sliderDate, onOpenReadingGu
             {sliderDate !== period.date && (
               <span> · dato ≤ {formatSliderDate(sliderDate)}</span>
             )}
-            {isStale && (
-              <span style={{ color: "var(--mi-accent-warn)" }}> · ⚠ congelado</span>
-            )}
           </div>
+
+          {/* Badge de calidad — Spec 46 §4.1 */}
+          {qualityBadge && (
+            <div style={{
+              margin: "0 var(--mi-space-2) var(--mi-space-1)",
+              padding: "3px 6px",
+              background: qualityBadge.bg,
+              border: `1px solid ${qualityBadge.border}`,
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: 8,
+              color: qualityBadge.color,
+              lineHeight: 1.4,
+            }}
+            title={qualityBadge.tooltip}
+            >
+              ⚑ {qualityBadge.label}
+            </div>
+          )}
 
           {/* Unidad */}
           <div style={{
@@ -151,7 +176,7 @@ export default function LayerLegend({ layer, period, sliderDate, onOpenReadingGu
             </div>
           </div>
 
-          {/* Dirección — B.4: solo para capas continuous, aclara que color = magnitud */}
+          {/* Dirección — B.4: solo para capas continuous */}
           {layer.legend.type === "continuous" && (
             <div style={{
               padding: "var(--mi-space-1) var(--mi-space-2)",
@@ -167,14 +192,114 @@ export default function LayerLegend({ layer, period, sliderDate, onOpenReadingGu
               }}>
                 Dirección
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-soft)" }}>
-                  + crecimiento · color = magnitud
-                </span>
-                <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-mute)" }}>
-                  − recesión · mismo color · ver tooltip
-                </span>
-              </div>
+              {layer.id === "viento" ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-soft)" }}>
+                    ← pro-estado · glyph voltea izquierda
+                  </span>
+                  <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-mute)" }}>
+                    — neutro · glyph dashes estáticos
+                  </span>
+                  <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-soft)" }}>
+                    → pro-mercado · glyph apunta derecha
+                  </span>
+                  <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 8, color: "var(--mi-ink-mute)", marginTop: 1 }}>
+                    color = magnitud del cambio semanal
+                  </span>
+                </div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-soft)" }}>
+                    + crecimiento · color = magnitud
+                  </span>
+                  <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-mute)" }}>
+                    − recesión · mismo color · ver tooltip
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Microcopy — Spec 46 §4.2 */}
+          {layer.legendMicrocopy && (
+            <div style={{
+              padding: "var(--mi-space-1) var(--mi-space-2)",
+              borderTop: "1px solid var(--mi-rule-soft)",
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: 8,
+              color: "var(--mi-ink-mute)",
+              lineHeight: 1.5,
+              fontStyle: "italic",
+            }}>
+              {layer.legendMicrocopy}
+            </div>
+          )}
+
+          {/* Accordion "Cómo se lee esta capa" — Spec 46 §4.3 */}
+          {layer.shortIntro && (
+            <div style={{ borderTop: "1px solid var(--mi-rule-soft)" }}>
+              <button
+                onClick={() => setAccordionOpen(o => !o)}
+                aria-expanded={accordionOpen}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  width: "100%",
+                  padding: "var(--mi-space-1) var(--mi-space-2)",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: 9,
+                  color: "var(--mi-ink)",
+                }}
+              >
+                <span style={{ fontSize: 8 }}>{accordionOpen ? "▲" : "▼"}</span>
+                Cómo se lee esta capa
+              </button>
+              {accordionOpen && (
+                <div style={{
+                  padding: "0 var(--mi-space-2) var(--mi-space-2)",
+                  fontFamily: "var(--mi-font-body)",
+                  fontSize: 10,
+                  color: "var(--mi-ink-soft)",
+                  lineHeight: 1.55,
+                  borderTop: "1px solid var(--mi-rule-soft)",
+                  paddingTop: "var(--mi-space-2)",
+                }}>
+                  <p style={{ margin: "0 0 8px" }}>{layer.shortIntro}</p>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    <button
+                      onClick={onOpenReadingGuide}
+                      style={{
+                        fontFamily: "var(--mi-font-mono)",
+                        fontSize: 9,
+                        color: "var(--mi-ink)",
+                        background: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                        padding: 0,
+                        textDecoration: "underline",
+                      }}
+                    >
+                      Leer guía completa →
+                    </button>
+                    <a
+                      href={`/mapa/capas/${layer.id}`}
+                      style={{
+                        fontFamily: "var(--mi-font-mono)",
+                        fontSize: 9,
+                        color: "var(--mi-ink-mute)",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      Documentación ↗
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -189,19 +314,50 @@ export default function LayerLegend({ layer, period, sliderDate, onOpenReadingGu
             {layer.source.name.split("(")[0].trim()} · {layer.source.lastFetched}
           </div>
 
-          {/* Acciones */}
+          {/* Acciones — Spec 46 §4.4: botón onboarding + guía de lectura */}
           <div style={{
             padding: "var(--mi-space-1) var(--mi-space-2) var(--mi-space-2)",
             display: "flex",
             flexDirection: "column",
             gap: 3,
           }}>
+            {!layer.shortIntro && (
+              <button
+                onClick={onOpenReadingGuide}
+                style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: 9,
+                  color: "var(--mi-ink)",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  padding: 0,
+                  textDecoration: "underline",
+                }}
+              >
+                ⓘ Leer guía de lectura
+              </button>
+            )}
+            {!layer.shortIntro && (
+              <a
+                href={`/mapa/capas/${layer.id}`}
+                style={{
+                  fontFamily: "var(--mi-font-mono)",
+                  fontSize: 9,
+                  color: "var(--mi-ink-mute)",
+                  textDecoration: "underline",
+                }}
+              >
+                ↗ Documentación completa
+              </a>
+            )}
             <button
-              onClick={onOpenReadingGuide}
+              onClick={onOpenOnboarding}
               style={{
                 fontFamily: "var(--mi-font-mono)",
                 fontSize: 9,
-                color: "var(--mi-ink)",
+                color: "var(--mi-ink-mute)",
                 background: "transparent",
                 border: "none",
                 cursor: "pointer",
@@ -210,25 +366,16 @@ export default function LayerLegend({ layer, period, sliderDate, onOpenReadingGu
                 textDecoration: "underline",
               }}
             >
-              ⓘ Leer guía de lectura
+              ⓘ Cómo se lee este mapa
             </button>
-            <a
-              href={`/mapa/capas/${layer.id}`}
-              style={{
-                fontFamily: "var(--mi-font-mono)",
-                fontSize: 9,
-                color: "var(--mi-ink-mute)",
-                textDecoration: "underline",
-              }}
-            >
-              ↗ Documentación completa
-            </a>
           </div>
         </div>
       )}
     </div>
   );
 }
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function formatSliderDate(iso: string): string {
   const d = new Date(iso);
@@ -246,9 +393,39 @@ function getISOWeek(d: Date): number {
 }
 
 function checkStale(layer: Layer, period: LayerPeriod): boolean {
-  const lastPeriod = layer.periods[layer.periods.length - 1];
-  if (!lastPeriod) return false;
-  // Considera stale si el período más reciente de la capa es anterior al último en > 2 períodos
   const idx = layer.periods.findIndex(p => p.key === period.key);
   return idx >= 0 && idx < layer.periods.length - 3;
+}
+
+interface QualityBadge {
+  label: string;
+  tooltip: string;
+  bg: string;
+  border: string;
+  color: string;
+}
+
+function resolveQualityBadge(layer: Layer, period: LayerPeriod, isStale: boolean): QualityBadge | null {
+  // Detecta si hay algún país con quality !== "oficial" para este período
+  // Heurística: si el período está marcado stale, asumimos "congelado"
+  if (isStale) {
+    const lastPeriod = layer.periods[layer.periods.length - 1];
+    return {
+      label: `Dato congelado · sin actualización desde ${formatMonthYear(lastPeriod?.date ?? "")} (${layer.source.name.split("(")[0].trim()})`,
+      tooltip: "La fuente no publicó datos más recientes para este período.",
+      bg: "#FFF3CD",
+      border: "#E8C58A",
+      color: "#B45729",
+    };
+  }
+  // Busca si el período actual coincide con el defaultPeriod — si no tiene datos recientes, estimado
+  // Sin más info en el contrato, no renderizamos badge para "estimado" (se deja a futura extensión)
+  return null;
+}
+
+function formatMonthYear(iso: string): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const months = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return `${months[d.getMonth()]} ${d.getFullYear()}`;
 }
