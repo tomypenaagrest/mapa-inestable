@@ -990,6 +990,11 @@ img, svg {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes mi-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* Hint editorial debajo del mapa: solo visible en mobile */
 .mi-mapa-editorial-hint {
   display: none;

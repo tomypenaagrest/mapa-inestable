@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import MapaTorresGarcia from "./MapaTorresGarcia";
 import CountryModalPanel from "./CountryModalPanel";
 import CountryPreviewPanel from "./CountryPreviewPanel";
@@ -19,8 +19,12 @@ interface Props {
 export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, cards, latestDrafts }: Props) {
   const [hoveredCountry, setHoveredCountry]   = useState<string | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  // Slug being rendered in the panel — updated after cross-fade starts
+  const [panelSlug, setPanelSlug] = useState<string | null>(null);
+  const [panelVisible, setPanelVisible] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
+  const crossFadeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px)");
@@ -30,15 +34,51 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, 
     return () => mq.removeEventListener("change", h);
   }, []);
 
-  // Count analyses per country for tooltip
   const countBySlug: Record<string, number> = {};
   for (const c of cards) {
     if (c.countrySlug) countBySlug[c.countrySlug] = (countBySlug[c.countrySlug] ?? 0) + 1;
   }
 
-  const handleClick = useCallback((slug: string) => {
-    setSelectedCountry(prev => prev === slug ? null : slug);
+  // Spec 49 §8 — cross-fade between countries, panel persists
+  const openPanel = useCallback((slug: string) => {
+    if (crossFadeRef.current) clearTimeout(crossFadeRef.current);
+
+    if (panelSlug && panelSlug !== slug) {
+      // Cross-fade: briefly fade out, swap content, fade in
+      setPanelVisible(false);
+      crossFadeRef.current = setTimeout(() => {
+        setPanelSlug(slug);
+        setPanelVisible(true);
+      }, 150);
+    } else {
+      setPanelSlug(slug);
+      setPanelVisible(true);
+    }
+  }, [panelSlug]);
+
+  const closePanel = useCallback(() => {
+    if (crossFadeRef.current) clearTimeout(crossFadeRef.current);
+    setPanelVisible(false);
+    crossFadeRef.current = setTimeout(() => {
+      setPanelSlug(null);
+      setSelectedCountry(null);
+    }, 200);
   }, []);
+
+  const handleTap = useCallback((slug: string) => {
+    if (selectedCountry === slug) {
+      // Tap same country — close panel
+      closePanel();
+    } else {
+      setSelectedCountry(slug);
+      openPanel(slug);
+    }
+  }, [selectedCountry, openPanel, closePanel]);
+
+  const handleClick = useCallback((slug: string) => {
+    if (isMobile) return; // mobile uses handleTap via onCountryTap
+    setSelectedCountry(prev => prev === slug ? null : slug);
+  }, [isMobile]);
 
   const handleHover = useCallback((slug: string | null) => {
     setHoveredCountry(slug);
@@ -70,6 +110,8 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, 
             variant="home"
             onCountryClick={handleClick}
             onCountryHover={handleHover}
+            selectedSlug={selectedCountry}
+            onCountryTap={isMobile ? handleTap : undefined}
           />
         </div>
 
@@ -84,14 +126,21 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, 
         El sur arriba · tap en país
       </div>
 
-      {/* Panel inline debajo del mapa — solo mobile */}
-      {isMobile && selectedCountry && (
-        <div className="mi-mapa-panel-inline">
+      {/* Panel inline debajo del mapa — solo mobile, Spec 49 §7-8 */}
+      {isMobile && panelSlug && (
+        <div
+          className="mi-mapa-panel-inline"
+          style={{
+            opacity: panelVisible ? 1 : 0,
+            transition: "opacity 150ms ease-out",
+            overflow: "hidden",
+          }}
+        >
           <CountryPreviewPanel
-            countrySlug={selectedCountry}
+            countrySlug={panelSlug}
             weeklyCountries={weeklyCountries}
-            agendaSummary={agendasByCountry?.[selectedCountry]}
-            onClose={() => setSelectedCountry(null)}
+            agendaSummary={agendasByCountry?.[panelSlug]}
+            onClose={closePanel}
           />
         </div>
       )}
