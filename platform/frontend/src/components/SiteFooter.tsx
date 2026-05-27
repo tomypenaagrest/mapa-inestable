@@ -37,13 +37,16 @@ export default function SiteFooter() {
       padding: "var(--mi-space-7) var(--mi-space-6)",
       marginTop: "var(--mi-space-8)",
     }}>
-      <div style={{
-        maxWidth: "var(--mi-container)",
-        marginInline: "auto",
-        display: "grid",
-        gridTemplateColumns: "2fr 1fr 1fr 1fr",
-        gap: "var(--mi-space-7)",
-      }}>
+      <div
+        className="mi-footer-grid"
+        style={{
+          maxWidth: "var(--mi-container)",
+          marginInline: "auto",
+          display: "grid",
+          gridTemplateColumns: "2fr 1fr 1fr 1fr",
+          gap: "var(--mi-space-7)",
+        }}
+      >
 
         <div>
           <span style={labelStyle}>Hipótesis</span>

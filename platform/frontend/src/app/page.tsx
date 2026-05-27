@@ -10,6 +10,8 @@ import HeatmapEjes from "@/components/HeatmapEjes";
 import HomeClientLayout from "@/components/HomeClientLayout";
 import NewSinceLastVisit from "@/components/NewSinceLastVisit";
 import WhileYouWereAway from "@/components/WhileYouWereAway";
+import CarruselEditorial from "@/components/CarruselEditorial";
+import type { CarruselSlide } from "@/components/CarruselEditorial";
 
 export const metadata: Metadata = {
   title: { absolute: "Mapa Inestable · Cartografía política del sur" },
@@ -40,6 +42,22 @@ export default function HomePage() {
 
   const weeklyCountrySlugs = data.weeklyCountries.map(c => c.slug);
 
+  // Slides para el carrusel de análisis recientes
+  const carruselSlides: CarruselSlide[] = data.cards.map(p => {
+    const eje = EJES.find(e => e.axisKey === p.ejePrincipal);
+    return {
+      slug:         p.slug,
+      countrySlug:  p.countrySlug ?? "",
+      country:      p.country     ?? "",
+      axis:         eje?.name     ?? p.ejePrincipal,
+      axisKey:      p.ejePrincipal,
+      title:        p.title,
+      lede:         p.subtitle    ?? "",
+      date:         p.published_at,
+      publishedIso: p.fecha,
+    };
+  });
+
   return (
     <HomeClientLayout conceptos={conceptos} autores={autores} weeklyCountrySlugs={weeklyCountrySlugs}>
 
@@ -52,8 +70,8 @@ export default function HomePage() {
 
       {/* ── ABOVE THE FOLD ─────────────────────────────────────── */}
 
-      {/* Mapa Torres García — height-driven, entero en el viewport */}
-      <div style={{ padding: "0 var(--mi-space-5)" }}>
+      {/* Mapa Torres García — a sangre en mobile, con padding en desktop */}
+      <div className="mi-mapa-wrapper">
         <MapaHeatmapSection
           weeklyCountries={data.weeklyCountries}
           agendasByCountry={agendasByCountry}
@@ -62,17 +80,20 @@ export default function HomePage() {
         />
       </div>
 
-      {/* CTA capas analíticas — Spec 39 */}
-      <div style={{
-        padding:       "var(--mi-space-3) var(--mi-space-5)",
-        borderBottom:  "var(--mi-border-bold)",
-        background:    "var(--mi-bg-paper)",
-        display:       "flex",
-        alignItems:    "center",
-        justifyContent:"space-between",
-        gap:           "var(--mi-space-3)",
-        flexWrap:      "wrap",
-      }}>
+      {/* CTA capas analíticas — oculto en mobile (Spec 51) */}
+      <div
+        className="mi-cta-capas"
+        style={{
+          padding:       "var(--mi-space-3) var(--mi-space-5)",
+          borderBottom:  "var(--mi-border-bold)",
+          background:    "var(--mi-bg-paper)",
+          display:       "flex",
+          alignItems:    "center",
+          justifyContent:"space-between",
+          gap:           "var(--mi-space-3)",
+          flexWrap:      "wrap",
+        }}
+      >
         <span style={{
           fontFamily:    "var(--mi-font-mono)",
           fontSize:      "var(--mi-text-xs)",
@@ -181,6 +202,17 @@ export default function HomePage() {
       )}
 
       {/* ── POST-FOLD MEDIO ─────────────────────────────────────── */}
+
+      {/* Carrusel de análisis recientes */}
+      {carruselSlides.length > 0 && (
+        <section className="mi-carousel-section" style={{
+          padding:    "var(--mi-space-6) var(--mi-space-5)",
+          background: "var(--mi-bg-paper)",
+          borderBottom: "var(--mi-border-bold)",
+        }}>
+          <CarruselEditorial slides={carruselSlides} />
+        </section>
+      )}
 
       {/* Último despacho */}
       {data.latestDispatch && (

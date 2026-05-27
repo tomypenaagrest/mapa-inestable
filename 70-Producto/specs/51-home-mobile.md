@@ -1,7 +1,7 @@
 ---
 spec: 51
 titulo: Home (`/`) re-jerarquizada mobile-first — mapa protagonista, orden vertical editorial
-estado: lista
+estado: implementada
 autor: Tomás (con Claude · Cowork)
 fecha: 2026-05-26
 afecta:

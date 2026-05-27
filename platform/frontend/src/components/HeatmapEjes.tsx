@@ -98,9 +98,9 @@ export default function HeatmapEjes({
               <Link
                 key={`${w.week}-${w.year}`}
                 href={`/analisis?eje=${eje.slug}&semana=${w.week}&ano=${w.year}`}
+                className="mi-heatmap-cell"
                 style={{
                   display: "block",
-                  height: 20,
                   background: cellBg(count),
                   border: "1px solid var(--mi-rule-soft)",
                 }}

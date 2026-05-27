@@ -1,7 +1,8 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MapaTorresGarcia from "./MapaTorresGarcia";
 import CountryModalPanel from "./CountryModalPanel";
+import CountryPreviewPanel from "./CountryPreviewPanel";
 import AnalisisColumn from "./AnalisisColumn";
 import { COUNTRY_NAMES } from "@/lib/country-data";
 import type { WeeklyCountryData } from "@/components/MapaCentrico";
@@ -19,6 +20,15 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, 
   const [hoveredCountry, setHoveredCountry]   = useState<string | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    setIsMobile(mq.matches);
+    const h = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", h);
+    return () => mq.removeEventListener("change", h);
+  }, []);
 
   // Count analyses per country for tooltip
   const countBySlug: Record<string, number> = {};
@@ -27,7 +37,7 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, 
   }
 
   const handleClick = useCallback((slug: string) => {
-    setSelectedCountry(slug);
+    setSelectedCountry(prev => prev === slug ? null : slug);
   }, []);
 
   const handleHover = useCallback((slug: string | null) => {
@@ -39,29 +49,23 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, 
   }, []);
 
   return (
-    <div style={{
-      border:        "var(--mi-border-bold)",
-      boxShadow:     "var(--mi-shadow-card)",
-      marginBottom:  "var(--mi-space-5)",
-      background:    "var(--mi-bg-paper)",
-      position:      "relative",
-    }}>
+    <div
+      className="mi-mapa-section"
+      style={{
+        border:       "var(--mi-border-bold)",
+        boxShadow:    "var(--mi-shadow-card)",
+        marginBottom: "var(--mi-space-5)",
+        background:   "var(--mi-bg-paper)",
+        position:     "relative",
+      }}
+    >
       {/* Mapa + columna análisis */}
       <div
-        style={{
-          display:  "flex",
-          height:   "var(--mi-mapa-max-h, calc(100vh - 100px))",
-          overflow: "hidden",
-        }}
+        className="mi-mapa-row"
         onMouseMove={handleMouseMove}
       >
-        {/* Mapa Torres García — height-driven, ancho derivado del aspect ratio */}
-        <div style={{
-          flexShrink:  0,
-          aspectRatio: "1280 / 1380",
-          height:      "100%",
-          overflow:    "hidden",
-        }}>
+        {/* Mapa Torres García */}
+        <div className="mi-mapa-container">
           <MapaTorresGarcia
             variant="home"
             onCountryClick={handleClick}
@@ -69,12 +73,31 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, 
           />
         </div>
 
-        {/* Columna estática de últimos análisis */}
-        <AnalisisColumn drafts={latestDrafts} />
+        {/* Columna estática de últimos análisis — oculta en mobile */}
+        <div className="mi-analisis-col-responsive">
+          <AnalisisColumn drafts={latestDrafts} />
+        </div>
       </div>
 
-      {/* Tooltip hover — sigue el cursor, se renderiza solo si hay hover */}
-      {hoveredCountry && (
+      {/* Hint editorial — solo mobile */}
+      <div className="mi-mapa-editorial-hint" aria-hidden="true">
+        El sur arriba · tap en país
+      </div>
+
+      {/* Panel inline debajo del mapa — solo mobile */}
+      {isMobile && selectedCountry && (
+        <div className="mi-mapa-panel-inline">
+          <CountryPreviewPanel
+            countrySlug={selectedCountry}
+            weeklyCountries={weeklyCountries}
+            agendaSummary={agendasByCountry?.[selectedCountry]}
+            onClose={() => setSelectedCountry(null)}
+          />
+        </div>
+      )}
+
+      {/* Tooltip hover — sigue el cursor, solo desktop */}
+      {!isMobile && hoveredCountry && (
         <div
           aria-hidden="true"
           style={{
@@ -99,8 +122,8 @@ export default function MapaHeatmapSection({ weeklyCountries, agendasByCountry, 
         </div>
       )}
 
-      {/* Modal preview de país */}
-      {selectedCountry && (
+      {/* Modal de país — solo desktop */}
+      {!isMobile && selectedCountry && (
         <CountryModalPanel
           countrySlug={selectedCountry}
           weeklyCountries={weeklyCountries}

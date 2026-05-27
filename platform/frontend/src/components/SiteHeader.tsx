@@ -9,18 +9,21 @@ const NAV_LINKS = [
 
 export default function SiteHeader() {
   return (
-    <header style={{
-      height: "var(--mi-header-h, 70px)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      padding: "0 var(--mi-space-6)",
-      borderBottom: "var(--mi-border-bold)",
-      background: "var(--mi-bg)",
-      position: "sticky",
-      top: 0,
-      zIndex: 100,
-    }}>
+    <header
+      className="mi-header"
+      style={{
+        height: "var(--mi-header-h, 70px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 var(--mi-space-6)",
+        borderBottom: "var(--mi-border-bold)",
+        background: "var(--mi-bg)",
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
+      }}
+    >
       {/* Brand: mark + wordmark + · + tagline */}
       <Link
         href="/"
@@ -77,8 +80,8 @@ export default function SiteHeader() {
         </span>
       </Link>
 
-      {/* Nav */}
-      <nav aria-label="Navegación principal">
+      {/* Nav — oculto en mobile (Spec 53 agrega drawer ☰) */}
+      <nav aria-label="Navegación principal" className="mi-header-nav">
         <ul style={{
           display:   "flex",
           gap:       "var(--mi-space-1)",

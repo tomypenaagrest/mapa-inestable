@@ -980,3 +980,127 @@ img, svg {
     gap: 32px 0;
   }
 }
+
+/* === SPEC 51 — HOME MOBILE ===================================== */
+
+/* Map wrapper: padding lateral en desktop, a sangre en mobile */
+.mi-mapa-wrapper {
+  padding: 0 var(--mi-space-5);
+}
+
+/* Fila mapa + columna: layout flex con altura height-driven en desktop */
+.mi-mapa-row {
+  display: flex;
+  height: var(--mi-mapa-max-h, calc(100vh - 100px));
+  overflow: hidden;
+}
+
+/* Contenedor del mapa: height-driven en desktop (ancho se deriva del aspect-ratio) */
+.mi-mapa-container {
+  flex-shrink: 0;
+  aspect-ratio: 1280 / 1380;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Panel inline debajo del mapa (mobile) */
+.mi-mapa-panel-inline {
+  border-top: var(--mi-border-bold);
+  background: var(--mi-bg-paper);
+  animation: mi-slide-down var(--mi-duration-normal) var(--mi-ease) both;
+}
+
+@keyframes mi-slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Hint editorial debajo del mapa: solo visible en mobile */
+.mi-mapa-editorial-hint {
+  display: none;
+  text-align: center;
+  padding: 6px var(--mi-space-3) 0;
+  font-family: var(--mi-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+}
+
+/* AnalisisColumn: visible en desktop, oculta en mobile */
+.mi-analisis-col-responsive {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Heatmap cell — altura reducida a 18px en mobile (Spec 52) */
+.mi-heatmap-cell {
+  height: 20px;
+}
+
+@media (max-width: 640px) {
+  .mi-heatmap-cell { height: 18px; }
+
+  /* Map wrapper: a sangre */
+  .mi-mapa-wrapper {
+    padding: 0;
+  }
+
+  /* Outer box del mapa: sin borde ni sombra (a sangre) */
+  .mi-mapa-section {
+    border: none;
+    box-shadow: none;
+    margin-bottom: 0;
+  }
+
+  /* Fila mapa: sin altura fija, dirección column */
+  .mi-mapa-row {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Contenedor mapa: width-driven */
+  .mi-mapa-container {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1280 / 1380;
+  }
+
+  /* Ocultar columna análisis */
+  .mi-analisis-col-responsive {
+    display: none;
+  }
+
+  /* Mostrar hint editorial */
+  .mi-mapa-editorial-hint {
+    display: block;
+  }
+
+  /* CTA capas analíticas: oculto en mobile */
+  .mi-cta-capas {
+    display: none;
+  }
+
+  /* Footer grid: stack vertical 1 columna */
+  .mi-footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--mi-space-5);
+  }
+
+  /* Header: 44px en mobile */
+  .mi-header {
+    height: 44px;
+    padding-inline: var(--mi-space-3);
+  }
+
+  /* Nav principal: oculto en mobile (Spec 53 agrega ☰ al header) */
+  .mi-header-nav {
+    display: none;
+  }
+
+  /* Carrusel de análisis: padding ajustado */
+  .mi-carousel-section {
+    padding-top: var(--mi-space-4);
+    padding-bottom: var(--mi-space-4);
+  }
+}

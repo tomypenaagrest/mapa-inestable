@@ -18,7 +18,6 @@ export interface CarruselSlide {
 }
 
 const INTERVAL = 5000;
-const CARD_W   = 320;
 
 export default function CarruselEditorial({ slides }: { slides: CarruselSlide[] }) {
   const [idx, setIdx]         = useState(0);
@@ -36,11 +35,14 @@ export default function CarruselEditorial({ slides }: { slides: CarruselSlide[] 
     return () => mq.removeEventListener("change", h);
   }, []);
 
+  // Usa offsetLeft del card para que funcione con cualquier ancho (mobile full-width o desktop 320px)
   const scrollToCard = useCallback((i: number) => {
-    trackRef.current?.scrollTo({
-      left:     i * CARD_W,
-      behavior: noMotion ? "instant" : "smooth",
-    });
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.children[i] as HTMLElement | undefined;
+    if (card) {
+      track.scrollTo({ left: card.offsetLeft, behavior: noMotion ? "instant" : "smooth" });
+    }
   }, [noMotion]);
 
   const advance = useCallback(() => {
