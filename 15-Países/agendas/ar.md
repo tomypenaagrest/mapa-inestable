@@ -2,61 +2,65 @@
 country_slug: ar
 country_name: Argentina
 estado: publicada
-updated: '2026-05-17'
-week: 21
+updated: '2026-05-27'
+week: 22
 year: 2026
 google_news_gl: AR
 google_news_hl: es-419
 google_news_ceid: AR:es-419
-agent_run_id: 2026-05-16T15:00:00+00:00
+agent_run_id: 2026-05-26T13:10:28+00:00
 agent_version: v1.0
 agendas:
   - rank: 1
-    slug: caso-adorni
-    title: "Caso Adorni: escalada material de la causa"
+    slug: interna-libertaria-caputo-menem
+    title: "Interna libertaria explota: Caputo vs. Menem, Karina veta a Bullrich"
     description: |
-      La causa por enriquecimiento ilicito contra el jefe de Gabinete Manuel Adorni escala con nuevos elementos esta semana: el contratista Matias Tabar se presento el 15/5 en la fiscalia de Pollicita con facturas, remitos y chats que respaldan la version de USD 245.000 pagados en efectivo por la obra en Indio Cua. El mismo dia, la Justicia levanto el secreto fiscal y bancario de Francisco Adorni, hermano del jefe de Gabinete. Milei lo recibio en Olivos y le dio respaldo publico pese al malestar interno del Gabinete.
+      La interna del oficialismo se transforma en la trama dominante de la semana. Santiago Caputo expuso publicamente en X al titular de Diputados Martin Menem republicando una cuenta llamada "PeriodistaRufus"; Milei tuvo que mediar diciendo que Menem era victima de una cuenta "prefabricada" y que Caputo es "como un hermano". En paralelo, Karina Milei vetó a Patricia Bullrich del Cabildo del 25 de Mayo despues de que la senadora adelantara su declaracion jurada para presionar a Adorni y dijera en privado a opositores "todos sabemos que Adorni esta sucio". El martes 26 se reune la mesa politica para forzar el reencuentro Caputo-Menem.
     tendencia: subiendo
     eje: desrepresentacion
-    query: Adorni causa enriquecimiento contratista
+    query: interna libertaria Caputo Menem Bullrich Karina
   - rank: 2
-    slug: universidades-incumplimiento-ley
-    title: "Universidades: marcha federal y desobediencia ejecutiva"
+    slug: adornigate-punta-este
+    title: "Adornigate: revelación Trump Tower y allanamientos al hermano"
     description: |
-      Cuarta Marcha Federal Universitaria el martes 12/5 con epicentro en Plaza de Mayo y replicas en todo el pais. Gobernadores opositores (Kicillof, Llaryora, Pullaro) encabezaron columnas. El reclamo central no es solo presupuestario: el Ejecutivo desobedece la Ley de Financiamiento Universitario ya promulgada por el Congreso (tras rechazo del veto) y fallos judiciales que en dos instancias ordenaron aplicar los articulos 5 y 6. Quiebre institucional sostenido.
-    tendencia: subiendo
-    eje: desrepresentacion
-    query: marcha universitaria ley financiamiento incumplimiento
-  - rank: 3
-    slug: caputo-washington-china
-    title: "Caputo en Washington: alineamiento con EE.UU. y presion por China"
-    description: |
-      Santiago Caputo paso 48 horas en reuniones en Casa Blanca, Departamento de Estado y Capitolio. Estados Unidos le planteo preocupacion por el avance chino en recursos estrategicos argentinos: pidio frenar Ganfeng en Cauchari-Olaroz y cerrar la base espacial china de Neuquen. El mismo dia, el gobierno aprobo incentivos por USD 1.240 millones para la ampliacion de la mina de litio operada por capital chino.
-    tendencia: subiendo
-    eje: mediaciones
-    query: Caputo Washington China Neuquen
-  - rank: 4
-    slug: internas-gabinete
-    title: "Internas del Gabinete: Karina, Caputo, Bullrich"
-    description: |
-      La continuidad de Adorni amplifico las fricciones internas: disputa entre Karina Milei + los Menem y el estratega Santiago Caputo, chispazos por la irrupcion de Patricia Bullrich desmarcandose del jefe de Gabinete. Reportes describen gritos de Milei frente a ministros y un Gabinete en crisis de cohesion interna pese al respaldo publico al vocero-jefe de Gabinete.
+      La causa contra el jefe de Gabinete Manuel Adorni suma una nueva capa: el periodista Sebastian Lacunza revelo que el viaje privado a Punta del Este durante el carnaval no fue vacaciones familiares sino una reunion en la Trump Tower con 12 empresarios argentinos y uruguayos que pagaron USD 1.000 por cabeza para escucharlo, organizada por su amigo Marcelo Grandio. La fiscalia de Pollicita pidio nuevas medidas de prueba sobre patrimonio y movimientos financieros; hubo allanamientos en la causa por Francisco Adorni. Milei lo ratifico y prometio documentacion para refutar las acusaciones.
     tendencia: estable
     eje: desrepresentacion
-    query: internas gabinete Karina Caputo Bullrich
-  - rank: 5
-    slug: inflacion-baja-contranarrativa
-    title: "Inflacion a la baja como contra-narrativa"
+    query: Adorni Trump Tower Punta del Este empresarios
+  - rank: 3
+    slug: tedeum-25-villarruel
+    title: "Tedeum del 25 de Mayo: ruptura abierta con Villarruel"
     description: |
-      El IPC de abril marco 2,6 por ciento, primera desaceleracion significativa en casi un anio y la cifra mensual mas baja del ciclo. El BCRA acumulo mas de USD 7.800 millones desde enero; el dolar mayorista se proyecta estable en torno a 1.410 pesos para fin de mayo. El oficialismo usa el dato como agenda positiva mientras la causa Adorni y la marcha universitaria copan la portada.
+      Por primera vez desde el inicio del gobierno, la vicepresidenta Victoria Villarruel quedo formalmente excluida del Tedeum oficial en la Catedral Metropolitana. La invitacion la maneja Karina Milei y la senadora no recibio convocatoria. Villarruel publico un mensaje hablando de "esta encrucijada de la historia". El arzobispo Garcia Cuerva pidio desde el pulpito una dirigencia "que se anime al dialogo" y "basta de arengar la polarizacion". Milei logro la foto de cohesion con casi todo el Gabinete (Caputo y los Menem incluidos), pero la ausencia de Villarruel marca una ruptura institucional inedita.
     tendencia: subiendo
-    eje: atencion
-    query: inflacion abril Argentina IPC INDEC
+    eje: desrepresentacion
+    query: Tedeum 25 mayo Villarruel exclusion
+  - rank: 4
+    slug: super-rigi-paquete-reformas
+    title: "Súper RIGI: tercer paquete de reformas al Congreso"
+    description: |
+      El Ejecutivo envio el 22/5 al Congreso un tercer mega paquete legislativo. El proyecto estrella es el Super RIGI, ampliacion del Regimen de Incentivos a Grandes Inversiones a data centers, baterias de litio, autos electricos, paneles solares, turbinas eolicas, cobre y cadena del uranio, con reduccion de Ganancias del 25% al 15% y limites al cobro provincial de Ingresos Brutos. Incluye ademas Ley de Lobby, Ley de Ludopatia (apuestas online a menores) y reforma al etiquetado frontal. El anuncio lo hizo Adorni desde sus redes, en pleno escandalo por la charla tarifada con empresarios en Punta del Este.
+    tendencia: subiendo
+    eje: mediaciones
+    query: Super RIGI ludopatia lobby etiquetado reformas
+  - rank: 5
+    slug: gobernadores-desdoblamiento-electoral
+    title: "Gobernadores coordinan desdoblar elecciones provinciales"
+    description: |
+      Llaryora (Cordoba), Pullaro (Santa Fe) y Frigerio (Entre Rios), nucleados en Provincias Unidas, avanzan en una coordinacion explicita de fechas electorales para desdoblar las provinciales de la contienda nacional y armar un "superdomingo electoral" antes de octubre. La movida apunta a despegarse de la polarizacion Milei-kirchnerismo y construir una tercera via federal-productivista. Jorge Macri evalua hacer lo mismo en CABA. Las conversaciones incluyen a Karina Milei y a Mauricio Macri en otra mesa.
+    tendencia: subiendo
+    eje: mediaciones
+    query: gobernadores desdoblamiento elecciones Provincias Unidas
 ---
 
 # Notas editoriales (no se renderiza en el sitio)
 
-Primera corrida de W21. Las tendencias se calculan contra la live W20 (promovida el 2026-05-12). Entre lunes 11/5 y sabado 16/5 pasaron tres cosas estructurales que justifican refrescar la agenda: (1) la causa Adorni dejo de ser conjetural y entro en fase de pruebas materiales (contratista entregando facturas, secreto fiscal levantado al hermano), (2) la Marcha Federal Universitaria del 12/5 cristalizo algo que no estaba prendido en la live anterior: el conflicto ya no es por presupuesto sino por el incumplimiento abierto de una ley vigente y de fallos judiciales, (3) el viaje de Caputo a Washington puso a Argentina en el centro de la pulseada EE.UU.-China por recursos criticos.
+Segunda corrida del ciclo. La live previa es W21 (2026-05-17). En los siete dias entre 19/5 y 26/5 cambia el centro de gravedad: lo que en W21 era "internas del Gabinete" como ruido lateral (rank 4) esta semana se vuelve la trama principal de la portada nacional. La causa Adorni sigue activa pero se desplaza un peldano: ya no es la novedad de la semana, es el trasfondo persistente sobre el que se montan las nuevas escenas (Punta del Este, allanamientos al hermano, el cruce con Bullrich).
 
-Lo que entra: universidades-incumplimiento-ley, caputo-washington-china, inflacion-baja-contranarrativa. Lo que sale: reforma electoral (sin traccion mediatica esta semana), licitacion Via Navegable del Parana (desaparece de portadas), movilizaciones y caida del consumo (se desplaza hacia el cluster universitario, mas nitido). La tension LLA-PRO se reformula: Macri sale del foco; el ruido ahora es endogeno al oficialismo (Karina, Caputo, Bullrich).
+Lo que entra: tedeum-25-villarruel (la ausencia formal de la vicepresidenta marca una ruptura institucional nueva que no estaba en agenda), super-rigi-paquete-reformas (el Ejecutivo intenta recuperar agenda positiva con un tercer mega paquete legislativo), gobernadores-desdoblamiento-electoral (Llaryora-Pullaro-Frigerio coordinan fechas y arman un polo federal). Lo que sale: universidades-incumplimiento-ley (sin marchas ni traccion mediatica esta semana, aunque el conflicto sigue latente), caputo-washington-china (sin nuevas piezas tras el viaje de la semana anterior), inflacion-baja-contranarrativa (el oficialismo no logro instalarla como pivote esta semana — el ruido interno se la tapo).
 
-El eje desrepresentacion sigue dominante (3 de 5 agendas). Aparece mediaciones via la diplomacia geopolitica (Caputo-Washington), y atencion via la macro como contra-narrativa. El patron estructural de la semana: el gobierno desobedece simultaneamente al Congreso (universidades), a la Justicia (fallos universitarios + investigacion Adorni) y a la presion de su principal aliado externo (China en Neuquen/Jujuy), mientras intenta sostener la narrativa con el dato de inflacion.
+Lo que cambia de rank: caso-adorni (1→2, transformado en adornigate-punta-este con nuevo material), internas-gabinete (4→1, transformado en interna-libertaria-caputo-menem con escalada cualitativa).
+
+El eje desrepresentacion sigue dominante (3 de 5 agendas). El patron estructural de la semana: el oficialismo no consigue ordenarse internamente y la portada queda copada por su propia descomposicion en publico — Caputo expone a Menem en X, Bullrich filtra a opositores, Karina veta. El Tedeum funciona como puesta en escena forzada de cohesion, pero la exclusion de Villarruel revela que la cohesion se logra expulsando a quien sobra, no integrando. Sobre ese fondo, el gobierno intenta dos movidas de recuperacion de agenda: el Super RIGI (apuesta legislativa) y los anuncios economicos. En paralelo, los gobernadores de Provincias Unidas trabajan el dia despues — un escenario donde la polarizacion Milei-kirchnerismo deja espacio a una tercera via territorial.
+
+Sobre versionado de semana: `date +%V` devuelve 22 hoy (martes 26/5). Esta corrida se ejecuta dentro de la semana ISO 22, no la prepara. Declaro `week: 22`.

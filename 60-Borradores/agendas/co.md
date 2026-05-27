@@ -2,61 +2,61 @@
 country_slug: co
 country_name: Colombia
 estado: borrador
-updated: 2026-05-16
-week: 20
+updated: 2026-05-27
+week: 22
 year: 2026
 google_news_gl: CO
 google_news_hl: es-419
 google_news_ceid: CO:es-419
-agent_run_id: 2026-05-16T14:37:16+00:00
+agent_run_id: 2026-05-27T02:46:11Z
 agent_version: v1.0
 agendas:
   - rank: 1
-    slug: audios-calarca-campana-sucia
-    title: "Audios 'Calarcá' y campaña sucia contra Cepeda"
+    slug: cierres-campana-recta-final
+    title: "Cierres de campaña: tres plazas, ningún debate común"
     description: |
-      A 15 días de la primera vuelta, el viernes 15/5 Cepeda convoca rueda de prensa y denuncia "campaña sucia" tras audios atribuidos a Rogelio Benavides ('Calarcá'), jefe de disidencias FARC, que lo vinculaban con grupos armados. MinDefensa y Policía descartaron el audio: fue grabado por un extorsionista preso en Picaleña (Ibagué). Cepeda acusa a Uribe, Paloma Valencia, De la Espriella, Claudia López, Fajardo y Oviedo, y exige rectificación. En paralelo circulan imágenes virales falsas (caso Mateo Pérez) y la acusación de complicidad con el asesinato de Miguel Uribe Turbay.
-    tendencia: subiendo
-    eje: desorientacion
-    query: Cepeda Calarcá audio campaña sucia
-  - rank: 2
-    slug: guerra-por-la-derecha
-    title: "Guerra por la derecha: De la Espriella vs. Paloma Valencia"
-    description: |
-      La disputa por encarnar la oposición a Cepeda se vuelve frontal. De la Espriella (Defensores de la Patria) ya aparece arriba de Paloma Valencia (Centro Democrático) en varias encuestas y disputaría la segunda vuelta. Paloma envió carta formal invitándolo a debate; él respondió que ella terminará apoyándolo. La Defensoría advirtió que ambos siguen sin firmar el pacto de paz electoral y reportó 42% de incumplimiento del acuerdo. Reaparecen acusaciones cruzadas de "campaña sucia" también desde el bloque uribista.
-    tendencia: subiendo
-    eje: mediaciones
-    query: De la Espriella Paloma Valencia derecha segunda vuelta
-  - rank: 3
-    slug: recta-final-cierres-debates
-    title: "Recta final al 31/5: cierres, debates y ausencias"
-    description: |
-      Dos semanas para la primera vuelta. Cepeda cierra en Plaza de Bolívar el 22/5, De la Espriella en Barranquilla el 23/5 (con Fuad Char) y luego Medellín, Paloma en Bogotá. El debate de RTVC del 13/5 quedó deslucido por la ausencia conjunta de los tres punteros, lo que abre una discusión pública sobre la calidad deliberativa del cierre. Encuestas (Invamer, GAD3, AtlasIntel, Guarumo-EcoAnalítica, CNC, Génesis Crea) convergen: Cepeda 35–42%, segunda vuelta probable.
+      A cuatro días de la primera vuelta del 31/5, los tres punteros cerraron actos públicos en simultáneo y sin cruce. Iván Cepeda cerró el sábado 23/5 en el par vial de la carrera 50 de Barranquilla, junto a su fórmula Aída Quilcué, declarando que va a "ganar en primera vuelta". Abelardo de la Espriella eligió la Plaza La Macarena de Medellín con José Manuel Restrepo. Paloma Valencia llenó el Movistar Arena de Bogotá con Juan Daniel Oviedo. El debate común entre punteros nunca ocurrió: cada uno construyó su plaza propia. Las críticas al evento público de Cepeda a menos de una semana de la elección abren la última disputa sobre la veda y la calidad deliberativa del cierre.
     tendencia: subiendo
     eje: atencion
-    query: cierre campaña debate RTVC primera vuelta
-  - rank: 4
-    slug: paz-total-bajo-fuego
-    title: "Paz Total como objeto de campaña"
+    query: cierre campaña Cepeda De la Espriella Paloma Valencia
+  - rank: 2
+    slug: violencia-electoral-moe-63-hechos
+    title: "La campaña más violenta en ocho años: 63 hechos en 21 departamentos"
     description: |
-      El balance crítico del programa central de Petro se vuelve munición electoral. Estudios recientes (Infobae 2/4, FIP, IEEE) muestran que las disidencias FARC pasaron de 3.275 a 9.634 miembros bajo Paz Total y que 2025 cerró con 173 uniformados asesinados, cifra más alta de la década. Las negociaciones con el ELN siguen suspendidas desde enero 2025 tras la crisis del Catatumbo. Paloma Valencia y De la Espriella usan la cifra como eje de campaña; Cepeda intenta defender el marco mientras lo asocian con grupos armados vía los audios falsos.
+      La Misión de Observación Electoral (MOE) registró 63 hechos de violencia electoral en 21 departamentos contra las campañas de Cepeda, De la Espriella y Paloma. La Policía detectó 32 municipios con riesgo de acciones violentas y 38 más en alerta por posible fraude; la MOE eleva el universo de riesgo a 386 municipios en 31 departamentos. La FIP cifra los grupos armados ilegales en 27.000+ miembros (+23,5% interanual): Clan del Golfo, ELN (6.450) y Estado Mayor Central de disidencias FARC (3.919) lideran la expansión. Cepeda denunció el 19/5 presión armada en Guaviare; encuestas hablan de 60% reportando intimidación de grupos armados en zonas donde operan. MinDefensa desplegó ~246.000 efectivos para el día D.
+    tendencia: subiendo
+    eje: desrepresentacion
+    query: violencia electoral MOE municipios riesgo
+  - rank: 3
+    slug: encuestas-cepeda-lidera-delaespriella-consolida
+    title: "Encuestas convergentes: Cepeda 38–44%, De la Espriella consolida el 2do lugar"
+    description: |
+      Cinco firmas (Invamer, GAD3, AtlasIntel, Guarumo-EcoAnalítica, CNC) coinciden en el patrón. Promedio: Cepeda 38,6% (rango 36–44,3), De la Espriella 23,2% (rango 20,4–29,4), Paloma 14%. En Invamer: Cepeda 44,6 (+0,3 vs abril), De la Espriella 31,6 (+10,1), Paloma 14 (–5,8). La sub-trama es el desplazamiento: De la Espriella subió ~13 puntos en el trimestre, Paloma cae al tercer puesto. La segunda vuelta queda confirmada como duelo Cepeda vs De la Espriella. Los simuladores de balotaje publicados por encuestadoras ocupan el lugar que en otra elección ocuparía el debate.
     tendencia: subiendo
     eje: estetizacion
-    query: paz total disidencias FARC ELN balance Petro
-  - rank: 5
-    slug: constituyente-firmas-20-julio
-    title: "Asamblea Constituyente: firmas activas hacia el 20 de julio"
+    query: encuesta Invamer Cepeda De la Espriella Paloma
+  - rank: 4
+    slug: herencia-petro-constituyente-paz-total
+    title: "La pelea por la herencia: Constituyente y Paz Total como condición del sucesor"
     description: |
-      La convocatoria formal del 1/5 sigue en marcha. Petro fija meta de 2,5 millones de firmas válidas a entregar al nuevo Congreso el 20 de julio, día de su instalación. La maniobra opera como agenda residual del mandato y como apuesta por dejar piso al sucesor — confirmando que el petrismo lee la elección como un fenómeno que no se cierra el 31/5. Esta semana el tema circula menos que la coyuntura electoral pero sigue como horizonte instalado.
+      El 26/5, Mauricio Pava — ex abogado de Petro — declara públicamente que tiene "miedo de que reemplacen la constitución" y le exige a Cepeda renunciar a la Asamblea Constituyente y desmontar la Paz Total. Petro mantiene la meta de presentar el proyecto el 20/7 al nuevo Congreso, con firmas activas. El balance crítico se mantiene: disidencias FARC pasaron de 3.275 a 9.634 miembros bajo Paz Total; 2025 cerró con 173 uniformados asesinados (récord década); negociaciones con ELN suspendidas desde enero. La disputa no es ya sobre el mandato Petro sino sobre qué porción de ese mandato puede o debe heredar Cepeda — el oficialismo discute con el oficialismo mismo lo que el próximo gobierno tiene permitido hacer.
+    tendencia: subiendo
+    eje: mediaciones
+    query: Petro Constituyente Paz Total herencia Cepeda Pava
+  - rank: 5
+    slug: voto-exterior-ciberseguridad-dia-d-ampliado
+    title: "El día D arranca antes: voto exterior y ciberseguridad activada"
+    description: |
+      La Registraduría habilitó a 1.414.661 colombianos en el exterior para votar en jornada continua desde el lunes 25/5 hasta el domingo 31/5. Más de 6 millones quedan habilitados solo en Bogotá. MinTIC activó plan de ciberseguridad específico para la primera vuelta tras alertas sobre desinformación y posibles ataques al sistema. El día electoral se extiende y se digitaliza: la atención que en elecciones anteriores se concentraba en un día se distribuye en una semana de votaciones, mientras simultáneamente el ecosistema de fake news del episodio "Calarcá" sigue activo como precedente del repertorio que puede repetirse hacia el 31/5.
     tendencia: estable
-    eje: desrepresentacion
-    query: Constituyente firmas Petro Congreso 20 julio
+    eje: desorientacion
+    query: voto exterior Registraduría ciberseguridad MinTIC primera vuelta
 ---
 
 # Notas editoriales (no se renderiza en el sitio)
 
-Colombia entra a la última quincena pre-electoral con un giro que era previsible y aun así llega con violencia: la campaña sucia se vuelve el operador central de la conversación. El episodio del audio de "Calarcá" — desmentido en menos de 48 horas pero ya viralizado — condensa todo el repertorio de la desorientación epistemológica: una fuente con voz aparentemente autorizada (un disidente FARC), un canal verosímil (inteligencia que primero valida, fuerza pública que después descarta), candidatos opositores que lo amplifican sin esperar verificación, y el blanco —el candidato puntero— forzado a ocupar la posición defensiva de quien tiene que demostrar que no es lo que un montaje dice que es.
+Colombia llega al 27/5 con la elección presidencial a cuatro días y la conversación pública reorganizada alrededor de tres operadores simultáneos: el cierre escenográfico de las tres campañas, la violencia electoral como dato estructural (no como evento aislado) y el simulador de balotaje como sustituto del debate común que nunca ocurrió. Lo que la semana muestra es una elección que se está jugando sin haberse jugado todavía en términos deliberativos: las plazas se llenan, las encuestas convergen, la segunda vuelta se da por descontada antes del primer conteo, y la discusión sustantiva — qué hace el próximo gobierno con la Constituyente, con la Paz Total, con las reformas — se desplaza hacia el después del 31/5.
 
-Lo que **entra** esta semana: la guerra por la derecha en su fase de definición — De la Espriella consolida ventaja sobre Paloma y la conversación se reorganiza alrededor de qué tipo de oposición a Cepeda se proyecta para la segunda vuelta. Lo que **sale**: las mesas de paz urbana del Atlántico y la reforma del gas, ambos temas de la live W20, pierden tracción frente al ruido electoral. La Constituyente baja un escalón pero no desaparece — funciona como horizonte de mediano plazo del proyecto petrista.
+Lo que **entra** esta semana: la **violencia electoral** consolidada como rasgo dominante (MOE 63 hechos en 21 departamentos, 386 municipios en riesgo, 246.000 efectivos desplegados) — la elección colombiana se vive bajo una arquitectura de seguridad de guerra; el **voto exterior** y la **ciberseguridad** como extensión del día D; y la **pelea por la herencia Petro** vehiculada por una figura del propio entorno presidencial (Pava). Lo que **sale**: los audios "Calarcá" salen como noticia central pero sobreviven como precedente del repertorio de desinformación que puede activarse el fin de semana; la "guerra por la derecha" entre De la Espriella y Paloma queda **resuelta** por las encuestas — De la Espriella consolida 2do lugar, Paloma cae al 3ro — y se transforma en una sola agenda de duelo Cepeda/De la Espriella.
 
-El cruce entre los audios falsos contra Cepeda y el balance crítico de la Paz Total es el rasgo interpretativo más fuerte de la semana: la oposición no necesita armar un caso, solo activar la sospecha de que "izquierda = complicidad con grupos armados", una equivalencia que el éxito limitado de la Paz Total termina alimentando independientemente de quién la dice. La elección colombiana se está jugando, otra vez, en el terreno donde la realidad y la imagen de la realidad se vuelven indistinguibles.
+El rasgo interpretativo más fuerte de la semana es la **disociación entre la intensidad del cierre y el vacío deliberativo**. Tres plazas llenas, tres relatos paralelos, ningún cruce común. Las encuestas cristalizan el resultado antes del voto; los simuladores de balotaje circulan como reemplazo del debate; el plan de seguridad militariza el día. La elección se vuelve un **evento de atención** (plazas, redes, ciberseguridad, presencia armada) más que un **evento de decisión deliberativa** — y la herencia petrista (Constituyente, Paz Total) se discute como condición previa del sucesor antes de que el sucesor esté electo. La pregunta que el W22 deja abierta es si el 31/5 va a producir un resultado o solo a confirmar lo que las encuestas ya dieron por resuelto, y qué efecto tiene en la legitimidad del próximo mandato haber sido anunciado antes de ser votado.
