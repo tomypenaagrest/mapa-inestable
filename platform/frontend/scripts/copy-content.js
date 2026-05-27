@@ -5,6 +5,7 @@
 // - Recurre subdirectorios (necesario para 15-Paises/agendas/, 60-Borradores/diario/, etc.)
 // - Solo copia archivos .md
 // - Skipea archivos/carpetas que empiezan con "_" para no contaminar el sitio publico
+// - Excepcion: archivos en ALLOWLIST se copian aunque empiecen con "_"
 const fs = require("fs");
 const path = require("path");
 
@@ -12,6 +13,9 @@ const VAULT = path.join(__dirname, "..", "..", "..");
 const OUT = path.join(__dirname, "..", "src", "content");
 
 const DIRS = ["15-Países", "60-Borradores", "30-Autores", "35-Conceptos-clave", "50-Publicaciones", "70-Producto/lecturas-capas"];
+
+// Archivos con "_" que el build necesita (contenido de app, no borradores editoriales)
+const ALLOWLIST = ["_onboarding.md"];
 
 function copyMdRecursive(src, dest) {
   if (!fs.existsSync(src)) {
@@ -22,7 +26,7 @@ function copyMdRecursive(src, dest) {
 
   let count = 0;
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-    if (entry.name.startsWith("_")) continue;
+    if (entry.name.startsWith("_") && !ALLOWLIST.includes(entry.name)) continue;
     const srcPath = path.join(src, entry.name);
     const destPath = path.join(dest, entry.name);
     if (entry.isDirectory()) {
