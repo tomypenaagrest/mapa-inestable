@@ -1,0 +1,443 @@
+/* ==============================================================
+   Mapa Inestable · Article reading experience — Spec 50
+   Mobile-360 calibrated. Import only in reading page components.
+   ============================================================== */
+
+/* === ARTICLE PAGE HEADER ======================================== */
+
+.article-page-header {
+  max-width: var(--mi-container-narrow);
+  margin-inline: auto;
+  padding-inline: 48px;
+  padding-top: 32px;
+}
+
+/* Country display name — Alfa Slab One */
+.article-country {
+  font-family: var(--mi-font-display);
+  font-size: 66px;
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  color: var(--mi-ink);
+  margin-bottom: 0;
+}
+
+/* Article h1 — Fraunces 600 */
+.article-h1 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 1.15;
+  color: var(--mi-ink);
+  margin-top: 14px;
+  margin-bottom: 12px;
+}
+
+/* Meta bar — date, reading time */
+.article-meta-bar {
+  border-top: 1px solid var(--mi-ink);
+  border-bottom: 1px solid var(--mi-ink);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.article-meta-label { color: var(--mi-ink-mute); }
+.article-meta-value { color: var(--mi-ink); }
+.article-meta-sep   { color: var(--mi-ink-mute); }
+
+.article-meta-item {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* Axis pills row */
+.article-axis-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.article-axis-pill {
+  font-family: var(--mi-font-mono);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  color: var(--mi-bg-paper);
+  border-radius: 0;
+  line-height: 1;
+}
+
+.article-axis-pill--atencion {
+  color: var(--mi-accent-gold);
+}
+
+/* Lede — Lora italic */
+.article-lede {
+  font-family: var(--mi-font-body);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.50;
+  color: var(--mi-ink-soft);
+  margin-bottom: 18px;
+  margin-top: 0;
+}
+
+/* === COVER IN-FLOW ============================================== */
+
+.article-cover-inflow {
+  max-width: var(--mi-container-narrow);
+  margin-inline: auto;
+  padding-inline: 48px;
+  margin-bottom: 24px;
+}
+
+.article-cover-caption {
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  margin-top: 8px;
+}
+
+/* === ARTICLE BODY =============================================== */
+
+.article-body {
+  max-width: var(--mi-container-narrow);
+  margin-inline: auto;
+  padding-inline: 48px;
+  padding-bottom: 96px;
+}
+
+/* Paragraphs */
+.article-body p {
+  font-family: var(--mi-font-body);
+  font-size: 17px;
+  line-height: 1.70;
+  color: var(--mi-ink);
+  margin-bottom: 16px;
+}
+
+/* H2 sections */
+.article-body h2 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 1.20;
+  color: var(--mi-ink);
+  margin-top: 40px;
+  margin-bottom: 12px;
+}
+
+/* H3 subsections */
+.article-body h3 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.25;
+  color: var(--mi-ink);
+  margin-top: 28px;
+  margin-bottom: 8px;
+}
+
+.article-body strong { font-weight: 700; }
+.article-body em     { font-style: italic; color: var(--mi-ink-soft); }
+
+/* === LINK TYPES ================================================= */
+
+/* External link — ink underline, no color change */
+.article-link,
+.article-body a {
+  color: var(--mi-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--mi-ink);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+/* Citation link — mono 11px uppercase, muted, bracket style */
+.article-cite {
+  font-family: var(--mi-font-mono) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute) !important;
+  text-decoration: underline !important;
+  text-decoration-color: var(--mi-ink-mute) !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 2px;
+}
+
+/* Internal wikilink — terracota, dashed underline */
+.article-wikilink,
+.article-body a[href^="/ejes/"],
+.article-body a[href^="/pais/"],
+.article-body a[href^="/autores/"],
+.article-body a[href^="/conceptos/"],
+.article-body a[href^="/publicaciones/"],
+.article-body a[href^="/analisis/"] {
+  color: var(--mi-bg-warm) !important;
+  font-weight: 500;
+  text-decoration: underline !important;
+  text-decoration-style: dashed !important;
+  text-decoration-color: var(--mi-bg-warm) !important;
+  text-decoration-thickness: 1.5px !important;
+  text-underline-offset: 3px;
+}
+
+/* === BLOCKQUOTE ================================================= */
+
+.article-blockquote,
+.article-body blockquote {
+  border-left: 4px solid var(--mi-bg-warm);
+  padding-left: 16px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-family: var(--mi-font-body);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--mi-ink-soft);
+}
+
+/* Remove extra paragraph margin inside blockquote */
+.article-blockquote p,
+.article-body blockquote p {
+  margin-bottom: 0;
+}
+
+/* === PULL-QUOTE ================================================= */
+
+.article-pullquote {
+  border-top: 2px solid var(--mi-ink);
+  border-bottom: 2px solid var(--mi-ink);
+  padding-top: 16px;
+  padding-bottom: 16px;
+  margin-top: 28px;
+  margin-bottom: 28px;
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.30;
+  color: var(--mi-ink);
+}
+
+.article-pullquote-attr {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--mi-font-mono);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+}
+
+/* === IMAGE FIGURE =============================================== */
+
+.article-figure {
+  margin-top: 20px;
+  margin-bottom: 24px;
+}
+
+.article-figure img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+  border: 2px solid var(--mi-ink);
+}
+
+.article-figure figcaption {
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  margin-top: 8px;
+}
+
+/* === SEPARATOR — líneas + asterisco dorado ====================== */
+
+.article-separator,
+.article-body hr {
+  border: none;
+  height: 1px;
+  background: var(--mi-ink);
+  margin-top: 28px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.article-separator::after,
+.article-body hr::after {
+  content: '*';
+  position: relative;
+  display: block;
+  font-family: var(--mi-font-display);
+  font-size: 20px;
+  color: var(--mi-brand-gold);
+  background: var(--mi-bg-paper);
+  padding: 0 8px;
+  line-height: 1;
+  margin-top: -1px;
+}
+
+/* === LIST con asterisco terracota =============================== */
+
+.article-list,
+.article-body ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 16px;
+}
+
+.article-list li,
+.article-body ul li {
+  font-family: var(--mi-font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--mi-ink);
+  padding-left: 22px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.article-list li::before,
+.article-body ul li::before {
+  content: '*';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--mi-font-display);
+  font-size: 16px;
+  color: var(--mi-bg-warm);
+  line-height: 1.55;
+}
+
+/* Ordered lists keep native style */
+.article-body ol {
+  padding-left: 22px;
+  margin-bottom: 16px;
+}
+.article-body ol li {
+  font-family: var(--mi-font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--mi-ink);
+  margin-bottom: 8px;
+}
+
+/* === MOBILE-360 OVERRIDES ======================================= */
+
+@media (max-width: 640px) {
+  .article-page-header {
+    padding-inline: 20px;
+    padding-top: 24px;
+  }
+
+  .article-country {
+    font-size: 44px;
+    line-height: 1.0;
+  }
+
+  .article-h1 {
+    font-size: 30px;
+    line-height: 1.15;
+    margin-top: 14px;
+    margin-bottom: 12px;
+  }
+
+  .article-meta-bar {
+    font-size: 11px;
+    gap: 10px;
+  }
+
+  .article-axis-pill {
+    font-size: 10px;
+  }
+
+  .article-lede {
+    font-size: 18px;
+    line-height: 1.50;
+  }
+
+  .article-cover-inflow {
+    padding-inline: 20px;
+  }
+
+  .article-body {
+    padding-inline: 20px;
+    padding-bottom: 64px;
+  }
+
+  .article-body p {
+    font-size: 16px;
+    line-height: 1.60;
+    margin-bottom: 16px;
+  }
+
+  .article-body h2 {
+    font-size: 22px;
+    line-height: 1.20;
+    margin-top: 28px;
+    margin-bottom: 12px;
+  }
+
+  .article-body h3 {
+    font-size: 18px;
+    line-height: 1.25;
+    margin-top: 22px;
+    margin-bottom: 8px;
+  }
+
+  .article-blockquote,
+  .article-body blockquote {
+    font-size: 16px;
+  }
+
+  .article-pullquote {
+    font-size: 20px;
+  }
+
+  /* Imagen a sangre en mobile — margen negativo igual al padding */
+  .article-figure {
+    margin-inline: -20px;
+  }
+
+  .article-figure figcaption {
+    padding-inline: 20px;
+  }
+}
+
+/* === WIDE SCREEN ================================================ */
+
+@media (min-width: 1080px) {
+  .article-country {
+    font-size: 80px;
+  }
+
+  .article-h1 {
+    font-size: 56px;
+  }
+}

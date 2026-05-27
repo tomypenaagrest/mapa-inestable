@@ -1,3 +1,10 @@
+/* Strips HTML tags and counts words to estimate reading time (~250 wpm). */
+export function calcReadingTime(html: string): number {
+  const text = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const words = text.split(" ").filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 250));
+}
+
 export function splitParagraphs(text: string): string[] {
   return text.split(/\n\n+/).map(p => p.trim()).filter(Boolean);
 }

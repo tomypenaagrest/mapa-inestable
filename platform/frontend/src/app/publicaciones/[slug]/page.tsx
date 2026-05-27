@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { getPublicationBySlug, getAllPublications } from "@/lib/content";
 import { AXIS_KEY_TO_SLUG } from "@/lib/ejes";
 import { EJES } from "@/lib/ejes";
+import ArticleBody from "@/components/ArticleBody";
+import { calcReadingTime } from "@/lib/text-utils";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
@@ -32,6 +34,7 @@ export default async function PublicacionPage(
 
   const eje = EJES.find(e => e.axisKey === pub.ejePrincipal);
   const axisSlug = AXIS_KEY_TO_SLUG[pub.ejePrincipal] ?? pub.ejePrincipal;
+  const readingTime = calcReadingTime(pub.html);
 
   const relatedByAxis = getAllPublications()
     .filter(p => p.slug !== pub.slug && p.ejePrincipal === pub.ejePrincipal)
@@ -46,7 +49,7 @@ export default async function PublicacionPage(
   return (
     <div style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
 
-      {/* Meta-bar */}
+      {/* Navegación top */}
       <div style={{
         background:    "var(--mi-ink)",
         color:         "var(--mi-bg-paper)",
@@ -66,8 +69,8 @@ export default async function PublicacionPage(
         </div>
       </div>
 
-      {/* Hero */}
-      <div className="mi-container--narrow" style={{ paddingTop: "var(--mi-space-7)" }}>
+      {/* Article header — Spec 50 §2 layout */}
+      <div className="article-page-header">
 
         {/* Breadcrumb */}
         <div style={{
@@ -93,156 +96,124 @@ export default async function PublicacionPage(
               </Link>
             </>
           )}
-          <span>·</span>
           {eje && (
-            <Link href={`/ejes/${axisSlug}`} style={{ color: "var(--mi-ink-mute)" }}>
-              {eje.name}
-            </Link>
+            <>
+              <span>·</span>
+              <Link href={`/ejes/${axisSlug}`} style={{ color: "var(--mi-ink-mute)" }}>
+                {eje.name}
+              </Link>
+            </>
           )}
         </div>
 
-        {/* Título */}
-        <h1 style={{
-          fontFamily:    "var(--mi-font-title)",
-          fontWeight:    700,
-          fontSize:      "var(--mi-text-4xl)",
-          lineHeight:    "var(--mi-leading-snug)",
-          letterSpacing: "var(--mi-tracking-tight)",
-          color:         "var(--mi-ink)",
-          maxWidth:      "22ch",
-          marginBottom:  "var(--mi-space-3)",
-        }}>
-          {pub.title}
-        </h1>
-
-        {pub.subtitle && (
-          <p style={{
-            fontFamily:   "var(--mi-font-body)",
-            fontStyle:    "italic",
-            fontSize:     "var(--mi-text-lg)",
-            lineHeight:   "var(--mi-leading-normal)",
-            color:        "var(--mi-ink-soft)",
-            maxWidth:     "60ch",
-            marginBottom: "var(--mi-space-4)",
-          }}>
-            {pub.subtitle}
-          </p>
+        {/* Country display — solo si la publicación tiene país */}
+        {pub.countrySlug && pub.country && (
+          <p className="article-country">{pub.country}</p>
         )}
 
-        {/* Eje chip */}
-        {eje && (
-          <div style={{ marginBottom: "var(--mi-space-4)" }}>
-            <Link
-              href={`/ejes/${axisSlug}`}
-              style={{
-                display:       "inline-block",
-                background:    `var(--mi-axis-${pub.ejePrincipal})`,
-                color:         "var(--mi-bg-paper)",
-                fontFamily:    "var(--mi-font-mono)",
-                fontSize:      "var(--mi-text-xs)",
-                letterSpacing: "var(--mi-tracking-wide)",
-                textTransform: "uppercase",
-                padding:       "2px 10px",
-                textDecoration:"none",
-              }}
-            >
-              {eje.name}
-            </Link>
-            {pub.ejes.slice(1).map(k => {
-              const e2 = EJES.find(e => e.axisKey === k);
-              if (!e2) return null;
+        {/* H1 */}
+        <h1 className="article-h1">{pub.title}</h1>
+
+        {/* Meta bar */}
+        <div className="article-meta-bar">
+          <span className="article-meta-item">
+            <span className="article-meta-label">Publicado</span>
+            <span className="article-meta-sep">·</span>
+            <span className="article-meta-value">{pub.published_at}</span>
+          </span>
+          <span className="article-meta-item">
+            <span className="article-meta-label">Lectura</span>
+            <span className="article-meta-sep">·</span>
+            <span className="article-meta-value">{readingTime} min</span>
+          </span>
+        </div>
+
+        {/* Axis pills */}
+        {pub.ejes.length > 0 && (
+          <div className="article-axis-row">
+            {pub.ejes.map((k, i) => {
+              const e = EJES.find(e => e.axisKey === k);
+              if (!e) return null;
               return (
                 <Link
                   key={k}
                   href={`/ejes/${AXIS_KEY_TO_SLUG[k] ?? k}`}
+                  className={`article-axis-pill${k === "atencion" ? " article-axis-pill--atencion" : ""}`}
                   style={{
-                    display:       "inline-block",
-                    marginLeft:    "var(--mi-space-2)",
-                    background:    `var(--mi-axis-${k})`,
-                    color:         "var(--mi-bg-paper)",
-                    fontFamily:    "var(--mi-font-mono)",
-                    fontSize:      "var(--mi-text-xs)",
-                    letterSpacing: "var(--mi-tracking-wide)",
-                    textTransform: "uppercase",
-                    padding:       "2px 10px",
-                    textDecoration:"none",
-                    opacity:       0.7,
+                    background: `var(--mi-axis-${k})`,
+                    opacity: i > 0 ? 0.75 : 1,
+                    textDecoration: "none",
                   }}
                 >
-                  {e2.name}
+                  {e.name}
                 </Link>
               );
             })}
           </div>
         )}
 
-        {/* Byline */}
-        <div style={{
-          fontFamily:    "var(--mi-font-mono)",
-          fontSize:      "var(--mi-text-xs)",
-          letterSpacing: "var(--mi-tracking-wide)",
-          textTransform: "uppercase",
-          color:         "var(--mi-ink-mute)",
-          borderTop:     "var(--mi-border-bold)",
-          paddingTop:    "var(--mi-space-4)",
-          marginBottom:  "var(--mi-space-7)",
-          display:       "flex",
-          gap:           "var(--mi-space-5)",
-          flexWrap:      "wrap",
-        }}>
-          <span>Por <strong style={{ color: "var(--mi-ink)" }}>Mapa Inestable</strong></span>
-          <span>{pub.published_at}</span>
-        </div>
+        {/* Subtitle as lede */}
+        {pub.subtitle && (
+          <p className="article-lede">{pub.subtitle}</p>
+        )}
       </div>
 
-      {/* CTA Substack banner */}
+      {/* Portada in-flow — coverImage se agrega en Spec 37 para publicaciones */}
+
+      {/* CTA Substack */}
       {pub.url && (
         <div style={{
-          borderTop:    "var(--mi-border-bold)",
-          borderBottom: "var(--mi-border-bold)",
-          background:   "var(--mi-bg-dark)",
-          padding:      "var(--mi-space-4) var(--mi-space-6)",
-          display:      "flex",
-          justifyContent: "space-between",
-          alignItems:   "center",
-          gap:          "var(--mi-space-4)",
-          flexWrap:     "wrap",
-          marginBottom: "var(--mi-space-7)",
+          maxWidth:      "var(--mi-container-narrow)",
+          margin:        "0 auto 24px",
+          padding:       "0 48px",
         }}>
-          <span style={{
-            fontFamily:    "var(--mi-font-mono)",
-            fontSize:      "var(--mi-text-xs)",
-            letterSpacing: "var(--mi-tracking-wide)",
-            textTransform: "uppercase",
-            color:         "var(--mi-accent-gold)",
+          <div style={{
+            borderTop:    "var(--mi-border-bold)",
+            borderBottom: "var(--mi-border-bold)",
+            background:   "var(--mi-bg-dark)",
+            padding:      "var(--mi-space-4) var(--mi-space-5)",
+            display:      "flex",
+            justifyContent: "space-between",
+            alignItems:   "center",
+            gap:          "var(--mi-space-4)",
+            flexWrap:     "wrap",
           }}>
-            Publicado en Substack · versión completa disponible
-          </span>
-          <a
-            href={pub.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mi-btn"
-            style={{ whiteSpace: "nowrap" }}
-          >
-            Leer en Substack →
-          </a>
+            <span style={{
+              fontFamily:    "var(--mi-font-mono)",
+              fontSize:      "var(--mi-text-xs)",
+              letterSpacing: "var(--mi-tracking-wide)",
+              textTransform: "uppercase",
+              color:         "var(--mi-accent-gold)",
+            }}>
+              Publicado en Substack · versión completa disponible
+            </span>
+            <a
+              href={pub.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mi-btn"
+              style={{ whiteSpace: "nowrap" }}
+            >
+              Leer en Substack →
+            </a>
+          </div>
         </div>
       )}
 
-      {/* Cuerpo del texto */}
-      <div className="mi-container--narrow" style={{ paddingBottom: "var(--mi-space-8)" }}>
-        <div
-          className="mi-prose"
-          dangerouslySetInnerHTML={{ __html: pub.html }}
-        />
+      {/* Cuerpo */}
+      <ArticleBody html={pub.html} />
 
-        {/* Relacionados */}
-        {(relatedByCountry.length > 0 || relatedByAxis.length > 0) && (
+      {/* Relacionados */}
+      {(relatedByCountry.length > 0 || relatedByAxis.length > 0) && (
+        <div style={{
+          maxWidth:      "var(--mi-container-narrow)",
+          margin:        "0 auto",
+          padding:       "0 48px var(--mi-space-8)",
+        }}>
           <div style={{
             borderTop:  "var(--mi-border-bold)",
             paddingTop: "var(--mi-space-5)",
-            marginTop:  "var(--mi-space-7)",
+            marginTop:  "var(--mi-space-4)",
           }}>
             <div style={{
               fontFamily:    "var(--mi-font-mono)",
@@ -341,8 +312,8 @@ export default async function PublicacionPage(
               )}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

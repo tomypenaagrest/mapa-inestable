@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getAgentDraft } from "@/lib/content";
 import { CoverImage } from "@/components/CoverImage";
+import ArticleBody from "@/components/ArticleBody";
+import { calcReadingTime } from "@/lib/text-utils";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ pais: string; slug: string }> }
@@ -43,10 +45,13 @@ export default async function BorradorAgentePage(
   const draft = getAgentDraft(pais, slug);
   if (!draft) notFound();
 
+  const readingTime = calcReadingTime(draft.html);
+  const ejeKey = draft.ejePrincipal;
+
   return (
     <div style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
 
-      {/* Meta-bar */}
+      {/* Navegación top */}
       <div style={{
         background: "var(--mi-ink)",
         color: "var(--mi-bg-paper)",
@@ -92,13 +97,8 @@ export default async function BorradorAgentePage(
         </div>
       </div>
 
-      {/* Hero visual */}
-      <div className="mi-container--narrow" style={{ paddingTop: "var(--mi-space-7)" }}>
-        <CoverImage piece={draft} variant="hero" priority />
-      </div>
-
-      {/* Hero textual */}
-      <div className="mi-container--narrow" style={{ paddingTop: 0 }}>
+      {/* Article header — Spec 50 §2 layout */}
+      <div className="article-page-header">
 
         {/* Breadcrumb */}
         <div style={{
@@ -118,125 +118,109 @@ export default async function BorradorAgentePage(
           <Link href="/analisis/borradores" style={{ color: "var(--mi-ink-mute)" }}>Borradores</Link>
           <span>·</span>
           <Link href={`/pais/${draft.countrySlug}`} style={{ color: "var(--mi-ink-mute)" }}>{draft.country}</Link>
-          <span>·</span>
-          <span style={{ color: "var(--mi-ink)" }}>Borrador</span>
         </div>
 
-        {/* Título */}
-        <h1 style={{
-          fontFamily: "var(--mi-font-title)",
-          fontWeight: 700,
-          fontSize: "var(--mi-text-4xl)",
-          lineHeight: "var(--mi-leading-snug)",
-          letterSpacing: "var(--mi-tracking-tight)",
-          color: "var(--mi-ink)",
-          maxWidth: "26ch",
-          marginBottom: draft.lede ? "var(--mi-space-5)" : "var(--mi-space-7)",
-        }}>
-          {draft.title}
-        </h1>
+        {/* Country display */}
+        <p className="article-country">{draft.country}</p>
+
+        {/* H1 */}
+        <h1 className="article-h1">{draft.title}</h1>
+
+        {/* Meta bar */}
+        <div className="article-meta-bar">
+          <span className="article-meta-item">
+            <span className="article-meta-label">Publicado</span>
+            <span className="article-meta-sep">·</span>
+            <span className="article-meta-value">{fmtDate(draft.date)}</span>
+          </span>
+          <span className="article-meta-item">
+            <span className="article-meta-label">Lectura</span>
+            <span className="article-meta-sep">·</span>
+            <span className="article-meta-value">{readingTime} min</span>
+          </span>
+          <span className="article-meta-item">
+            <span className="article-meta-label">Autor</span>
+            <span className="article-meta-sep">·</span>
+            <span className="article-meta-value">Agente Mapa Inestable</span>
+          </span>
+        </div>
+
+        {/* Axis pills */}
+        {ejeKey && (
+          <div className="article-axis-row">
+            <span
+              className={`article-axis-pill${ejeKey === "atencion" ? " article-axis-pill--atencion" : ""}`}
+              style={{ background: `var(--mi-axis-${ejeKey})` }}
+            >
+              {EJE_LABEL[ejeKey] ?? ejeKey}
+            </span>
+          </div>
+        )}
 
         {/* Lede */}
         {draft.lede && (
-          <p style={{
-            fontFamily: "var(--mi-font-body)",
-            fontStyle: "italic",
-            fontSize: "var(--mi-text-lg)",
-            lineHeight: "var(--mi-leading-normal)",
-            color: "var(--mi-ink-soft)",
-            maxWidth: "62ch",
-            marginBottom: "var(--mi-space-5)",
-          }}>
-            {draft.lede}
-          </p>
+          <p className="article-lede">{draft.lede}</p>
         )}
-
-        {/* Byline */}
-        <div style={{
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: "var(--mi-text-xs)",
-          letterSpacing: "var(--mi-tracking-wide)",
-          textTransform: "uppercase",
-          color: "var(--mi-ink-mute)",
-          borderTop: "var(--mi-border-bold)",
-          paddingTop: "var(--mi-space-4)",
-          marginBottom: "var(--mi-space-7)",
-        }}>
-          <span>Por <strong style={{ color: "var(--mi-ink)" }}>Agente Mapa Inestable</strong> · borrador no publicado</span>
-        </div>
       </div>
 
-      {/* Eje + Disparador */}
-      {(draft.ejePrincipal || draft.disparador) && (
-        <div className="mi-container--narrow" style={{ marginBottom: "var(--mi-space-6)" }}>
-          {draft.ejePrincipal && (
+      {/* Portada in-flow */}
+      {draft.coverImage && (
+        <div className="article-cover-inflow">
+          <CoverImage piece={draft} variant="in-flow" priority />
+        </div>
+      )}
+
+      {/* Disparador — trazabilidad de la fuente */}
+      {draft.disparador?.url && (
+        <div style={{
+          maxWidth: "var(--mi-container-narrow)",
+          margin: "0 auto",
+          padding: "0 48px 24px",
+        }}>
+          <div style={{
+            borderLeft: `3px solid var(--mi-axis-${ejeKey ?? "mediaciones"})`,
+            paddingLeft: "var(--mi-space-4)",
+          }}>
             <div style={{
-              display: "inline-block",
               fontFamily: "var(--mi-font-mono)",
               fontSize: "var(--mi-text-xs)",
               letterSpacing: "0.08em",
               textTransform: "uppercase",
-              color: "var(--mi-bg-paper)",
-              background: `var(--mi-axis-${draft.ejePrincipal})`,
-              padding: "3px 8px",
-              marginBottom: draft.disparador ? "var(--mi-space-4)" : 0,
+              color: "var(--mi-ink-mute)",
+              marginBottom: "var(--mi-space-1)",
             }}>
-              {EJE_LABEL[draft.ejePrincipal] ?? draft.ejePrincipal}
+              Disparador
             </div>
-          )}
-          {draft.disparador?.url && (
-            <div style={{
-              borderLeft: `3px solid var(--mi-axis-${draft.ejePrincipal ?? "mediaciones"})`,
-              paddingLeft: "var(--mi-space-4)",
-              display: "block",
-            }}>
+            <a
+              href={draft.disparador.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: "var(--mi-font-body)",
+                fontSize: "var(--mi-text-sm)",
+                color: "var(--mi-ink)",
+                textDecoration: "underline",
+                textUnderlineOffset: "2px",
+              }}
+            >
+              {draft.disparador.titulo ?? draft.disparador.url}
+            </a>
+            {(draft.disparador.medio || draft.disparador.fecha_publicacion) && (
               <div style={{
                 fontFamily: "var(--mi-font-mono)",
                 fontSize: "var(--mi-text-xs)",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
                 color: "var(--mi-ink-mute)",
-                marginBottom: "var(--mi-space-1)",
+                marginTop: "var(--mi-space-1)",
               }}>
-                Disparador
+                {[draft.disparador.medio, draft.disparador.fecha_publicacion].filter(Boolean).join(" · ")}
               </div>
-              <a
-                href={draft.disparador.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  fontFamily: "var(--mi-font-body)",
-                  fontSize: "var(--mi-text-sm)",
-                  color: "var(--mi-ink)",
-                  textDecoration: "underline",
-                  textUnderlineOffset: "2px",
-                }}
-              >
-                {draft.disparador.titulo ?? draft.disparador.url}
-              </a>
-              {(draft.disparador.medio || draft.disparador.fecha_publicacion) && (
-                <div style={{
-                  fontFamily: "var(--mi-font-mono)",
-                  fontSize: "var(--mi-text-xs)",
-                  color: "var(--mi-ink-mute)",
-                  marginTop: "var(--mi-space-1)",
-                }}>
-                  {[draft.disparador.medio, draft.disparador.fecha_publicacion].filter(Boolean).join(" · ")}
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
 
-      {/* Cuerpo */}
-      <div className="mi-container--narrow" style={{ paddingBottom: "var(--mi-space-8)" }}>
-        <div
-          className="mi-prose"
-          style={{ maxWidth: "70ch" }}
-          dangerouslySetInnerHTML={{ __html: draft.html }}
-        />
-      </div>
+      {/* Cuerpo — ArticleBody con clases Spec 50 */}
+      <ArticleBody html={draft.html} />
 
     </div>
   );

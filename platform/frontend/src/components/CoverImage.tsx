@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { CoverPlaceholder } from './CoverPlaceholder'
 
-type Variant = 'thumb' | 'hero'
+type Variant = 'thumb' | 'hero' | 'in-flow'
 
 type Props = {
   piece: {
@@ -15,26 +15,33 @@ type Props = {
 }
 
 const DIMS = {
-  thumb: { w: 600,  h: 400  },
-  hero:  { w: 1500, h: 1000 },
+  thumb:     { w: 600,  h: 400  },
+  hero:      { w: 1500, h: 1000 },
+  'in-flow': { w: 900,  h: 600  },
 }
 
 export function CoverImage({ piece, variant, priority }: Props) {
   if (!piece.coverImage) {
-    return <CoverPlaceholder piece={piece} variant={variant} />
+    if (variant === 'in-flow') return null
+    return <CoverPlaceholder piece={piece} variant={variant === 'hero' ? 'hero' : 'thumb'} />
   }
 
   const { w, h } = DIMS[variant]
+
+  const shadow =
+    variant === 'hero'    ? 'var(--mi-shadow-hero)' :
+    variant === 'in-flow' ? 'var(--mi-shadow-card)' :
+    'var(--mi-shadow-card)'
 
   return (
     <div
       className={`mi-cover mi-cover--${variant}`}
       style={{
-        aspectRatio: '3 / 2',
-        border:      '2px solid var(--mi-ink)',
-        boxShadow:   variant === 'hero' ? 'var(--mi-shadow-hero)' : 'var(--mi-shadow-card)',
-        overflow:    'hidden',
-        width:       '100%',
+        aspectRatio:  '3 / 2',
+        border:       '2px solid var(--mi-ink)',
+        boxShadow:    shadow,
+        overflow:     'hidden',
+        width:        '100%',
         marginBottom: variant === 'hero' ? 'var(--mi-space-6)' : undefined,
       }}
     >
@@ -47,7 +54,9 @@ export function CoverImage({ piece, variant, priority }: Props) {
         sizes={
           variant === 'hero'
             ? '(min-width: 1200px) 1200px, 100vw'
-            : '(min-width: 1200px) 400px, 50vw'
+            : variant === 'in-flow'
+              ? '(min-width: 920px) 820px, calc(100vw - 40px)'
+              : '(min-width: 1200px) 400px, 50vw'
         }
         style={{ objectFit: 'cover', width: '100%', height: '100%', display: 'block' }}
       />

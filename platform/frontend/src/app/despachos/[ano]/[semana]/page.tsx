@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getAllDispatches, getDispatchBySemana } from "@/lib/despachos";
 import { EJES, AXIS_KEY_TO_SLUG } from "@/lib/ejes";
+import ArticleBody from "@/components/ArticleBody";
+import { calcReadingTime } from "@/lib/text-utils";
 
 export function generateStaticParams() {
   return getAllDispatches().map(d => ({
@@ -36,6 +38,8 @@ export default async function DespachoPage(
   const d = getDispatchBySemana(Number(ano), Number(semana));
   if (!d) notFound();
 
+  const readingTime = calcReadingTime(d.html);
+
   const ejesObjs = d.ejesActivados
     .map(k => EJES.find(e => e.axisKey === k))
     .filter(Boolean);
@@ -43,7 +47,7 @@ export default async function DespachoPage(
   return (
     <div style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
 
-      {/* Meta-bar */}
+      {/* Navegación top */}
       <div style={{
         background: "var(--mi-ink)",
         color: "var(--mi-bg-paper)",
@@ -60,117 +64,112 @@ export default async function DespachoPage(
         <span>Despacho Nº {d.number}</span>
       </div>
 
-      {/* Hero terracota — portada editorial del despacho. Encapsula header + ejes chips
-          para que la franja terracota termine antes del cuerpo de lectura. */}
+      {/* Hero terracota */}
       <div style={{ background: "var(--mi-bg)" }}>
-
-      {/* Header */}
-      <div style={{
-        borderBottom: "var(--mi-border-bold)",
-        padding: "var(--mi-space-7) var(--mi-space-6) var(--mi-space-6)",
-      }} className="mi-grain">
-        <div className="mi-container--narrow">
-          <div style={{
-            fontFamily: "var(--mi-font-mono)",
-            fontSize: "var(--mi-text-xs)",
-            letterSpacing: "var(--mi-tracking-widest)",
-            textTransform: "uppercase",
-            color: "var(--mi-bg-paper)",
-            opacity: 0.55,
-            marginBottom: "var(--mi-space-3)",
-          }}>
-            Semana {d.week} · {d.year}
-          </div>
-
-          <div style={{
-            fontFamily: "var(--mi-font-mono)",
-            fontSize: "var(--mi-text-display)",
-            lineHeight: 0.85,
-            letterSpacing: "-0.03em",
-            color: "rgba(244,233,210,0.12)",
-            marginBottom: "-0.1em",
-            userSelect: "none",
-          }}>
-            Nº {d.number}
-          </div>
-
-          <h1 style={{
-            fontFamily: "var(--mi-font-display)",
-            fontSize: "var(--mi-text-4xl)",
-            lineHeight: "var(--mi-leading-snug)",
-            letterSpacing: "-0.01em",
-            textTransform: "uppercase",
-            color: "var(--mi-bg-paper)",
-          }}>
-            {d.title}
-          </h1>
-
-          {d.subtitle && (
-            <p style={{
-              fontFamily: "var(--mi-font-body)",
-              fontStyle: "italic",
-              fontSize: "var(--mi-text-lg)",
-              lineHeight: "var(--mi-leading-normal)",
-              color: "rgba(244,233,210,0.75)",
-              maxWidth: "60ch",
-              marginTop: "var(--mi-space-4)",
+        <div style={{
+          borderBottom: "var(--mi-border-bold)",
+          padding: "var(--mi-space-7) var(--mi-space-6) var(--mi-space-6)",
+        }} className="mi-grain">
+          <div className="mi-container--narrow">
+            <div style={{
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: "var(--mi-text-xs)",
+              letterSpacing: "var(--mi-tracking-widest)",
+              textTransform: "uppercase",
+              color: "var(--mi-bg-paper)",
+              opacity: 0.55,
+              marginBottom: "var(--mi-space-3)",
             }}>
-              {d.subtitle}
-            </p>
-          )}
-        </div>
-      </div>
+              Semana {d.week} · {d.year}
+            </div>
 
-      {/* Ejes chips */}
-      {ejesObjs.length > 0 && (
+            <div style={{
+              fontFamily: "var(--mi-font-mono)",
+              fontSize: "var(--mi-text-display)",
+              lineHeight: 0.85,
+              letterSpacing: "-0.03em",
+              color: "rgba(244,233,210,0.12)",
+              marginBottom: "-0.1em",
+              userSelect: "none",
+            }}>
+              Nº {d.number}
+            </div>
+
+            <h1 style={{
+              fontFamily: "var(--mi-font-display)",
+              fontSize: "var(--mi-text-4xl)",
+              lineHeight: "var(--mi-leading-snug)",
+              letterSpacing: "-0.01em",
+              textTransform: "uppercase",
+              color: "var(--mi-bg-paper)",
+            }}>
+              {d.title}
+            </h1>
+
+            {d.subtitle && (
+              <p style={{
+                fontFamily: "var(--mi-font-body)",
+                fontStyle: "italic",
+                fontSize: "var(--mi-text-lg)",
+                lineHeight: "var(--mi-leading-normal)",
+                color: "rgba(244,233,210,0.75)",
+                maxWidth: "60ch",
+                marginTop: "var(--mi-space-4)",
+              }}>
+                {d.subtitle}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Axis pills + meta — debajo del hero terracota */}
         <div style={{
           borderBottom: "1px dashed rgba(244,233,210,0.2)",
-          padding: "var(--mi-space-4) var(--mi-space-6)",
+          padding: "var(--mi-space-3) var(--mi-space-6)",
           display: "flex",
-          gap: "var(--mi-space-2)",
+          alignItems: "center",
+          gap: "var(--mi-space-3)",
           flexWrap: "wrap",
+          justifyContent: "space-between",
         }}>
-          {ejesObjs.map(eje => eje && (
-            <Link
-              key={eje.axisKey}
-              href={`/ejes/${AXIS_KEY_TO_SLUG[eje.axisKey] ?? eje.slug}`}
-              style={{
-                display: "inline-block",
-                background: `var(--mi-axis-${eje.axisKey})`,
-                color: "var(--mi-bg-paper)",
-                fontFamily: "var(--mi-font-mono)",
-                fontSize: "var(--mi-text-xs)",
-                letterSpacing: "var(--mi-tracking-wide)",
-                textTransform: "uppercase",
-                padding: "2px 10px",
-              }}
-            >
-              {eje.name}
-            </Link>
-          ))}
+          <div style={{ display: "flex", gap: "var(--mi-space-2)", flexWrap: "wrap" }}>
+            {ejesObjs.map(eje => eje && (
+              <Link
+                key={eje.axisKey}
+                href={`/ejes/${AXIS_KEY_TO_SLUG[eje.axisKey] ?? eje.slug}`}
+                className={`article-axis-pill${eje.axisKey === "atencion" ? " article-axis-pill--atencion" : ""}`}
+                style={{
+                  background: `var(--mi-axis-${eje.axisKey})`,
+                  textDecoration: "none",
+                }}
+              >
+                {eje.name}
+              </Link>
+            ))}
+          </div>
+          <span style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: "11px",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "rgba(244,233,210,0.5)",
+          }}>
+            Lectura · {readingTime} min
+          </span>
         </div>
-      )}
-
-      </div>
-      {/* fin hero terracota */}
-
-      {/* Cuerpo — fondo crema, tinta verde-negro para lectura larga */}
-      <div className="mi-container--narrow" style={{
-        paddingTop: "var(--mi-space-6)",
-        paddingBottom: "var(--mi-space-8)",
-      }}>
-        <div
-          className="mi-prose"
-          style={{ color: "var(--mi-ink)" }}
-          dangerouslySetInnerHTML={{ __html: d.html }}
-        />
       </div>
 
-      {/* CTA Substack — colores ajustados para fondo crema */}
+      {/* Cuerpo */}
+      <ArticleBody html={d.html} />
+
+      {/* CTA Substack */}
       {d.url && (
         <div style={{
+          maxWidth: "var(--mi-container-narrow)",
+          margin: "0 auto",
+          padding: "0 48px var(--mi-space-8)",
           borderTop: "var(--mi-border-bold)",
-          padding: "var(--mi-space-5) var(--mi-space-6)",
+          paddingTop: "var(--mi-space-5)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -222,7 +221,6 @@ export default async function DespachoPage(
           </div>
         </div>
       )}
-
     </div>
   );
 }

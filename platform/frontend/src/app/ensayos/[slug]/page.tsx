@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { getEssayBySlug } from "@/lib/content";
 import { isEssayDraft } from "@/lib/essay-drafts";
 import { notFound } from "next/navigation";
+import ArticleBody from "@/components/ArticleBody";
+import { calcReadingTime } from "@/lib/text-utils";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
@@ -19,7 +21,6 @@ export async function generateMetadata(
   return {
     title: { absolute: fullTitle },
     description,
-    // Borradores no deben aparecer indexados ni con preview lindo en redes
     robots: draft ? { index: false, follow: false } : undefined,
     openGraph: {
       title: fullTitle,
@@ -35,11 +36,12 @@ export default async function EnsayoPage({ params }: { params: Promise<{ slug: s
   if (!essay) notFound();
 
   const isDraft = isEssayDraft(slug);
+  const readingTime = calcReadingTime(essay.html);
 
   return (
     <div style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
 
-      {/* Meta-bar */}
+      {/* Navegación top */}
       <div style={{
         background: "var(--mi-ink)",
         color: "var(--mi-bg-paper)",
@@ -52,10 +54,10 @@ export default async function EnsayoPage({ params }: { params: Promise<{ slug: s
         gap: "var(--mi-space-6)",
       }}>
         <Link href="/ensayos" style={{ color: "var(--mi-ink-mute)" }}>← Ensayos</Link>
-        <span style={{ color: "var(--mi-accent-gold)" }}>Ensayo</span>
+        <span style={{ color: "var(--mi-accent-gold)" }}>{isDraft ? "Borrador" : "Ensayo"}</span>
       </div>
 
-      {/* Banner BORRADOR — solo cuando el slug está marcado como draft */}
+      {/* Banner BORRADOR */}
       {isDraft && (
         <div style={{
           background: "var(--mi-ink)",
@@ -88,8 +90,8 @@ export default async function EnsayoPage({ params }: { params: Promise<{ slug: s
         </div>
       )}
 
-      {/* Hero */}
-      <div className="mi-container--narrow" style={{ paddingTop: "var(--mi-space-7)" }}>
+      {/* Article header — Spec 50 §2 layout */}
+      <div className="article-page-header">
 
         {/* Breadcrumb */}
         <div style={{
@@ -107,61 +109,36 @@ export default async function EnsayoPage({ params }: { params: Promise<{ slug: s
           <span>·</span>
           <Link href="/ensayos" style={{ color: "var(--mi-ink-mute)" }}>Ensayos</Link>
           <span>·</span>
-          <span style={{ color: "var(--mi-ink)" }}>Ensayo</span>
+          <span style={{ color: "var(--mi-ink)" }}>{isDraft ? "Borrador" : "Ensayo"}</span>
         </div>
 
-        {/* Título */}
-        <h1 style={{
-          fontFamily: "var(--mi-font-title)",
-          fontWeight: 700,
-          fontSize: "var(--mi-text-4xl)",
-          lineHeight: "var(--mi-leading-snug)",
-          letterSpacing: "var(--mi-tracking-tight)",
-          color: "var(--mi-ink)",
-          maxWidth: "24ch",
-          marginBottom: essay.lede ? "var(--mi-space-5)" : "var(--mi-space-7)",
-        }}>
-          {essay.title}
-        </h1>
+        {/* H1 — ensayos no tienen country display */}
+        <h1 className="article-h1">{essay.title}</h1>
+
+        {/* Meta bar */}
+        <div className="article-meta-bar">
+          <span className="article-meta-item">
+            <span className="article-meta-label">Lectura</span>
+            <span className="article-meta-sep">·</span>
+            <span className="article-meta-value">{readingTime} min</span>
+          </span>
+          <span className="article-meta-item">
+            <span className="article-meta-label">Autor</span>
+            <span className="article-meta-sep">·</span>
+            <span className="article-meta-value">Mapa Inestable{isDraft ? " · borrador" : ""}</span>
+          </span>
+        </div>
 
         {/* Lede */}
         {essay.lede && (
-          <p style={{
-            fontFamily: "var(--mi-font-body)",
-            fontStyle: "italic",
-            fontSize: "var(--mi-text-lg)",
-            lineHeight: "var(--mi-leading-normal)",
-            color: "var(--mi-ink-soft)",
-            maxWidth: "60ch",
-            marginBottom: "var(--mi-space-5)",
-          }}>
-            {essay.lede}
-          </p>
+          <p className="article-lede">{essay.lede}</p>
         )}
-
-        {/* Byline */}
-        <div style={{
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: "var(--mi-text-xs)",
-          letterSpacing: "var(--mi-tracking-wide)",
-          textTransform: "uppercase",
-          color: "var(--mi-ink-mute)",
-          borderTop: "var(--mi-border-bold)",
-          paddingTop: "var(--mi-space-4)",
-          marginBottom: "var(--mi-space-7)",
-        }}>
-          <span>Por <strong style={{ color: "var(--mi-ink)" }}>Mapa Inestable</strong>{isDraft ? " · borrador" : ""}</span>
-        </div>
       </div>
 
-      {/* Cuerpo del ensayo */}
-      <div className="mi-container--narrow" style={{ paddingBottom: "var(--mi-space-8)" }}>
-        <div
-          className="mi-prose"
-          style={{ maxWidth: "70ch" }}
-          dangerouslySetInnerHTML={{ __html: essay.html }}
-        />
-      </div>
+      {/* Portada in-flow — coverImage se agrega en Spec 37 para ensayos */}
+
+      {/* Cuerpo */}
+      <ArticleBody html={essay.html} />
 
     </div>
   );
