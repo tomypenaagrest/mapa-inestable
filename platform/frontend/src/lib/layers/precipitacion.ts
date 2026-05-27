@@ -1,7 +1,7 @@
 // Spec 42 — Capa Precipitación: crecimiento económico
 // Implementación real. Reemplaza el stub de Spec 39.
 
-import type { Layer, LayerPeriod, LayerValue, LayerSubIndicator, LayerQuality } from "../layers";
+import type { Layer, LayerPeriod, LayerValue, LayerSubIndicator, LayerQuality, LayerChipFormat } from "../layers";
 import type { MacroCountryData, MacroDataPoint } from "../macro-indicators";
 import { getIndicator, getByCountry } from "../macro-indicators";
 
@@ -199,4 +199,13 @@ export const precipitacionLayer: Layer = {
 
   legendMicrocopy: "El color codifica magnitud · la dirección crecimiento/recesión aparece en el tooltip y en la sección Dirección.",
   shortIntro: "El crecimiento del PBI es la precipitación: lluvia abundante corresponde a expansión, sequía a recesión. La metáfora describe el sistema sin asignarle valor moral. El color codifica solo la magnitud del cambio — no distingue si llueve o si hay sequía. Esa distinción aparece en el tooltip y en el drawer.",
+
+  formatCrossLayerChip(value: LayerValue): LayerChipFormat {
+    const dir = Math.abs(value.raw) <= 0.5 ? "neutro" : value.raw >= 0 ? "crecimiento" : "recesion";
+    const tone: LayerChipFormat["tone"] =
+      dir === "crecimiento" && value.bucketIndex >= 2 ? "positive" :
+      dir === "recesion"   && value.bucketIndex >= 2 ? "negative" :
+      "neutral";
+    return { shortChipLabel: "Prec.", tone, useOrientedGlyph: false };
+  },
 };

@@ -2,111 +2,7 @@
 import { useCallback, useRef, useState } from "react";
 import polygonsJson from "@/data/paises-poligonos.json";
 import type { Layer, LayerPeriod } from "@/lib/layers";
-
-// ── Tooltip ───────────────────────────────────────────────────────────────────
-
-interface TooltipState {
-  slug: string;
-  name: string;
-  x: number;
-  y: number;
-}
-
-function LayerTooltip({
-  tooltip,
-  activeLayer,
-  period,
-}: {
-  tooltip: TooltipState;
-  activeLayer: { layer: Layer; period: LayerPeriod };
-  period: LayerPeriod;
-}) {
-  const value = activeLayer.layer.getValueForCountry(tooltip.slug, period);
-
-  const LEFT_OFFSET = 12;
-  const TOP_OFFSET  = -60;
-
-  return (
-    <div
-      aria-hidden="true"
-      style={{
-        position: "absolute",
-        left: tooltip.x + LEFT_OFFSET,
-        top: tooltip.y + TOP_OFFSET,
-        width: 220,
-        background: "var(--mi-bg-paper)",
-        border: "var(--mi-border-bold)",
-        boxShadow: "4px 4px 0 var(--mi-ink)",
-        padding: "var(--mi-space-2) var(--mi-space-3)",
-        pointerEvents: "none",
-        zIndex: 20,
-      }}
-    >
-      {/* Sello + nombre */}
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--mi-space-1)", marginBottom: 4 }}>
-        <span style={{
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: 9,
-          fontWeight: 700,
-          letterSpacing: "0.1em",
-          color: "var(--mi-ink)",
-          background: "var(--mi-rule-soft)",
-          padding: "2px 5px",
-        }}>
-          {tooltip.slug.toUpperCase()}
-        </span>
-        <span style={{
-          fontFamily: "var(--mi-font-display)",
-          fontSize: "var(--mi-text-sm)",
-          color: "var(--mi-ink)",
-          lineHeight: 1.1,
-        }}>
-          {tooltip.name}
-        </span>
-      </div>
-
-      {/* Período · Capa */}
-      <div style={{
-        fontFamily: "var(--mi-font-mono)",
-        fontSize: 8,
-        color: "var(--mi-ink-mute)",
-        letterSpacing: "0.06em",
-        marginBottom: 6,
-      }}>
-        {period.label} · {activeLayer.layer.shortLabel}
-      </div>
-
-      {/* Valor — usa value.formatted para ser layer-genérico */}
-      {value ? (
-        <div style={{
-          fontFamily: "var(--mi-font-display)",
-          fontSize: "var(--mi-text-xl)",
-          lineHeight: 1,
-          color: "var(--mi-ink)",
-        }}>
-          {value.formatted}
-        </div>
-      ) : (
-        <div style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-mute)" }}>
-          Sin dato
-        </div>
-      )}
-
-      {/* CTA */}
-      <div style={{
-        fontFamily: "var(--mi-font-mono)",
-        fontSize: 8,
-        color: "var(--mi-ink-mute)",
-        marginTop: 6,
-        borderTop: "1px solid var(--mi-rule-soft)",
-        paddingTop: 4,
-        letterSpacing: "0.04em",
-      }}>
-        Click · abrir análisis →
-      </div>
-    </div>
-  );
-}
+import LayerTooltip, { type TooltipState } from "@/components/LayerTooltip";
 
 // ── Data ────────────────────────────────────────────────────────────────────
 
@@ -153,6 +49,10 @@ export interface MapaTorresGarciaProps {
   };
   countryAnalysisCounts?: Record<string, number>;
   activeLayer?: ActiveLayerProps;
+  /** Spec 47 — fecha ISO del slider para el snapshot cruzado del tooltip enriquecido. */
+  sliderDate?: string;
+  /** Spec 47 — callback para pinear un país en la leyenda. */
+  onPinCountry?: (slug: string) => void;
   onCountryClick?: (slug: string) => void;
   onCountryHover?: (slug: string | null) => void;
 }
@@ -164,6 +64,8 @@ export default function MapaTorresGarcia({
   filters,
   countryAnalysisCounts = DEFAULT_ANALYSIS_COUNTS,
   activeLayer,
+  sliderDate,
+  onPinCountry,
   onCountryClick,
   onCountryHover,
 }: MapaTorresGarciaProps) {
@@ -498,12 +400,13 @@ export default function MapaTorresGarcia({
         </g>
       </svg>
 
-      {/* Tooltip on-hover A.4 — solo cuando hay capa activa */}
+      {/* Tooltip on-hover A.4 enriquecido (Spec 47) — solo cuando hay capa activa */}
       {tooltip && activeLayer && (
         <LayerTooltip
           tooltip={tooltip}
           activeLayer={activeLayer}
-          period={activeLayer.period}
+          sliderDate={sliderDate ?? activeLayer.period.date}
+          onPinCountry={onPinCountry ?? (() => {})}
         />
       )}
     </div>

@@ -62,6 +62,15 @@ Conceptos propuestos para sumarse al sistema de ejes. Pendientes de decisión ed
 2. **Expansivo** — aceptar Repatrimonialización + Desterritorialización + Financiarización. Reescribir el marco conceptual para volver explícito el sistema multidimensional.
 3. **Híbrido** — aceptar Repatrimonialización; tratar Desterritorialización + Financiarización como un único eje compuesto.
 
+## Conceptos propios del proyecto
+
+Conceptos elaborados dentro de Mapa Inestable a partir del análisis editorial. No extraídos de un autor único sino construidos como instrumentos interpretativos propios.
+
+| Concepto | Primera aparición | Ejes |
+|----------|-------------------|------|
+| [[Mediación huérfana]] | Bolivia después del MAS (may 2026) | Erosión de mediaciones, Deculturación |
+| [[Significante vacío]] | Bolivia después del MAS (may 2026) — vía Laclau | Desrepresentación, Estetización |
+
 ## Pendientes de procesamiento
 
 Libros del set canónico que aún no fueron procesados a fondo y pueden generar nuevos conceptos / ejes candidatos:

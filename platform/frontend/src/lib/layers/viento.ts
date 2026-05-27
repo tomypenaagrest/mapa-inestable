@@ -3,7 +3,7 @@
 // Indicador principal: rank entero -3..+3 del coding manual editorial (Spec 41).
 // Cadencia: semanal. 4 buckets de magnitud. Glyph orientado sobre el mapa (mecánica V3).
 
-import type { Layer, LayerPeriod, LayerValue } from "../layers";
+import type { Layer, LayerPeriod, LayerValue, LayerChipFormat } from "../layers";
 import {
   VIENTO_DATA,
   getLastVientoBeforeWeek,
@@ -137,4 +137,9 @@ export const vientoLayer: Layer = {
 
   legendMicrocopy: "El color codifica magnitud · el glyph sobre cada país codifica dirección (pro-mercado ↔ pro-estado).",
   shortIntro: "El viento político sopla hacia el mercado o hacia el estado: hacia la derecha indica orientación pro-mercado, hacia la izquierda pro-estado, dashes neutros sin orientación dominante. El color codifica la magnitud del cambio semanal — cuán fuerte sopla — no su dirección.",
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  formatCrossLayerChip(_value: LayerValue): LayerChipFormat {
+    return { shortChipLabel: "Vient.", tone: "neutral", useOrientedGlyph: true };
+  },
 };

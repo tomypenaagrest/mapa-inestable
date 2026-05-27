@@ -6,30 +6,31 @@ Ver spec completa: `70-Producto/specs/41-pipeline-datos-politicos-viento.md`
 
 ---
 
-## Estructura
+## Estructura (r3 — trimestral, 2026-05-21)
 
 ```
 datos-viento/
 ├── _compilado/
-│   ├── viento.json              ← JSON compilado (OUTPUT — no editar a mano)
-│   └── _log-YYYY-W##.md         ← log de cada corrida del build
+│   ├── viento.json              ← JSON compilado v2.0.0 (OUTPUT — no editar a mano)
+│   ├── _log-YYYY-Q#.md          ← log de cada corrida del build (cadencia trimestral)
+│   └── _historico-semanal/      ← logs y recordatorios del régimen semanal r1/r2 (preservados)
 ├── ar/
-│   ├── 2026-W18.md
-│   └── 2026-W19.md
+│   ├── 2026-Q2.md               ← coding trimestral (migración de W18+W19 promediados)
+│   └── _historico-semanal/      ← W18, W19, W21 del régimen semanal r1/r2
 ├── bo/
+│   └── _historico-semanal/      ← W21 (régimen deprecado)
 ├── br/
-├── cl/
-├── co/
-├── ec/
-├── pe/
-├── py/
-├── uy/
+│   └── _historico-semanal/
+├── cl/ ... (y los 6 países restantes con misma estructura)
 └── ve/
 ```
 
 - Una carpeta por país (slug de 2 letras).
-- Un archivo `.md` por semana en cada carpeta.
+- Un archivo `.md` por trimestre en cada carpeta (formato `YYYY-Q#.md`).
 - `_compilado/viento.json` es el output del pipeline — **no se edita a mano**.
+- Subcarpetas `_historico-semanal/` preservan archivos del régimen semanal r1/r2 (deprecado en r3). La regex del build `^\d{4}-Q\d\.md$` los ignora automáticamente.
+
+**Cambio r3 (2026-05-21).** Cadencia editorial bajó de semanal (52/año/país) a trimestral (4/año/país) — decisión de Tomás al revisar Spec 44. Ver Spec 41 §Histórico r3 + Spec 29 §Histórico (2026-05-21) para el detalle.
 
 ---
 

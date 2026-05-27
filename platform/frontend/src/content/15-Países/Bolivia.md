@@ -138,9 +138,33 @@ Ex Ministro de Economía de Evo. Ganó en primera vuelta con **55,1%** vs. Carlo
 
 ### Elecciones 2025 — fin del ciclo MAS
 
-Elecciones del **17 de agosto 2025**: el MAS llegó **fragmentado** (Arce/Andrónico Rodríguez vs. Evo). El **balotaje del 19 de octubre 2025** resultó en victoria opositora — **Rodrigo Paz Pereira** (Partido Demócrata Cristiano, hijo del ex presidente Jaime Paz Zamora) electo presidente, asumiendo el 8 de noviembre 2025.
+Elecciones del **17 de agosto 2025**: el MAS llegó **fragmentado**. En febrero de 2025 Morales formalizó su salida del partido que él fundó; Arce se retiró de la disputa "en nombre de la unidad" y la candidatura presidencial recayó en Eduardo del Castillo, exministro del Interior. En la primera vuelta, el binomio **Paz Pereira–Edmand Lara** (Partido Demócrata Cristiano) obtuvo el **32,44%**. En el **balotaje del 19 de octubre** Paz se impuso a Jorge Quiroga con **54,53% contra 45,4%**. Asumió el **8 de noviembre 2025**.
 
-> **Nota post-cutoff (mayo 2025 - mayo 2026):** las elecciones de agosto/octubre 2025, los resultados específicos y los primeros meses del nuevo gobierno son parcialmente posteriores al knowledge cutoff. Verificar nombres y fechas antes de citar.
+### Rodrigo Paz Pereira (PDC)
+**Período:** noviembre 2025 –
+
+Hijo del ex presidente Jaime Paz Zamora (MIR). Hijo de Paz Zamora, político de perfil centrista, llegó sin estructura partidaria propia. Su vicepresidente **Edmand Lara** — excapitán de la Policía destituido por denunciar corrupción interna, luego activista con 130.000 seguidores en TikTok como "Capitán Lara" — aportó la estética del outsider digital y el electorado evangélico. El binomio no es un equipo: es una superposición de dos figuras que coincidieron por descarte.
+
+**Cuadro económico heredado:** el más severo en cuatro décadas. Inflación interanual 19,69% (enero-noviembre 2025). Reservas internacionales: 3.277 M USD, de los cuales solo 75 M en divisas líquidas. Exportaciones de hidrocarburos: −34% interanual. Desabastecimiento cotidiano de combustibles desde 2023.
+
+**Programa: "capitalismo para todos".** Semántica de inclusión por la vía del mercado. Medidas de los primeros seis meses:
+- Reducción de gabinete de 17 a 12 ministerios
+- Recorte de gasto de **585 millones de dólares** (≈1% del PIB)
+- Abrogación de cuatro impuestos del ciclo MAS: grandes fortunas, transferencias financieras, juego, promociones empresariales (decreto, 26 de noviembre 2025)
+- Retiro de la subvención a combustibles vigente desde hace dos décadas
+- Compromisos de financiamiento externo por más de **8.000 millones de dólares** en tres meses; normalización del suministro de gasolina y diésel
+- Reseteo de relaciones con Chile; ruptura con la República Árabe Saharaui Democrática para acercarse a Marruecos (febrero 2026)
+- Política ambiental en suspenso a 120 días de asumir
+
+**Diciembre 2025:** Lara dispara públicamente contra su propio gobierno — un mes después de asumir.
+
+**Ley 1720 y la crisis de mayo 2026.** El **10 de abril de 2026** el gobierno promulgó la Ley 1720, que autorizaba al INRA a reconvertir pequeñas propiedades rurales en propiedades medianas —usables como garantía bancaria— a solicitud "voluntaria" del titular. Organizaciones indígenas y campesinas leyeron la "voluntariedad" como ficción que habilitaba concentración de tierras.
+
+- **8 de abril:** la **CIDOB** inicia marcha desde Cobija (Pando). Mil kilómetros.
+- **1 de mayo:** la **COB** convoca paro nacional indefinido. Demandas: aumento salarial 20%, solución al desabastecimiento de combustibles, derogación de la Ley 1720.
+- **4 de mayo:** la columna CIDOB llega a La Paz tras 28 días de marcha.
+- **13 de mayo:** Paz Pereira **abroga la Ley 1720** y anuncia 60 días para una nueva legislación de tierras concertada. La COB ratifica el paro.
+- **19 de mayo:** más de 120 detenidos; bloqueos en crecimiento; las demandas escalan de reforma a renuncia presidencial. Paz Pereira no completa seis meses en el cargo.
 
 ## Períodos críticos
 
@@ -153,7 +177,8 @@ Elecciones del **17 de agosto 2025**: el MAS llegó **fragmentado** (Arce/Andró
 | 2019 | Crisis post-elecciones; renuncia de Evo; gobierno Áñez |
 | 2020 | Vuelta del MAS con Arce |
 | 2024 | Intento de toma militar (Zúñiga) |
-| 2025 | Fin del ciclo MAS; alternancia |
+| 2025 | Fin del ciclo MAS; balotaje; asunción Paz Pereira (8 nov) |
+| 2026 | Ley 1720, marcha CIDOB, paro COB; primer choque del nuevo ciclo |
 
 ## Sistema de partidos / coaliciones
 

@@ -1,10 +1,13 @@
 "use client";
 // Spec 39 — Leyenda flotante en esquina superior derecha del mapa.
 // Spec 46 r2 — badge de calidad, microcopy, accordion "Cómo se lee", botón onboarding.
+// Spec 47 — panel pineado con snapshot cruzado del país pineado.
 
 import { useState } from "react";
 import Image from "next/image";
-import type { Layer, LayerPeriod, LayerQuality } from "@/lib/layers";
+import type { Layer, LayerPeriod, LayerQuality, LayerId } from "@/lib/layers";
+import { getCrossLayerSnapshotMemo } from "@/lib/cross-layer";
+import { COUNTRY_NAMES } from "@/lib/country-data";
 
 interface LayerLegendProps {
   layer: Layer;
@@ -12,6 +15,12 @@ interface LayerLegendProps {
   sliderDate: string;
   onOpenReadingGuide: () => void;
   onOpenOnboarding: () => void;
+  /** Spec 47 — país pineado cuyo snapshot cruzado persiste en la leyenda. */
+  pinnedCountry?: string | null;
+  /** Spec 47 — callback para despinear. */
+  onUnpinCountry?: () => void;
+  /** Spec 47 — callback para navegar al país pineado en el mapa + abrir drawer. */
+  onPinnedCountryClick?: (slug: string) => void;
 }
 
 export default function LayerLegend({
@@ -20,6 +29,9 @@ export default function LayerLegend({
   sliderDate,
   onOpenReadingGuide,
   onOpenOnboarding,
+  pinnedCountry,
+  onUnpinCountry,
+  onPinnedCountryClick,
 }: LayerLegendProps) {
   const [collapsed,     setCollapsed]     = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -314,6 +326,16 @@ export default function LayerLegend({
             {layer.source.name.split("(")[0].trim()} · {layer.source.lastFetched}
           </div>
 
+          {/* Panel pineado — Spec 47 §2 */}
+          {pinnedCountry && (
+            <PinnedCountryPanel
+              countrySlug={pinnedCountry}
+              sliderDate={sliderDate}
+              onUnpin={onUnpinCountry ?? (() => {})}
+              onCountryClick={onPinnedCountryClick}
+            />
+          )}
+
           {/* Acciones — Spec 46 §4.4: botón onboarding + guía de lectura */}
           <div style={{
             padding: "var(--mi-space-1) var(--mi-space-2) var(--mi-space-2)",
@@ -428,4 +450,169 @@ function formatMonthYear(iso: string): string {
   const d = new Date(iso);
   const months = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
   return `${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+// ── Panel pineado — Spec 47 §2 ───────────────────────────────────────────────
+
+function PinnedCountryPanel({
+  countrySlug,
+  sliderDate,
+  onUnpin,
+  onCountryClick,
+}: {
+  countrySlug: string;
+  sliderDate: string;
+  onUnpin: () => void;
+  onCountryClick?: (slug: string) => void;
+}) {
+  const snapshot = getCrossLayerSnapshotMemo(countrySlug, sliderDate);
+  const countryName = COUNTRY_NAMES[countrySlug] ?? countrySlug;
+
+  return (
+    <div style={{
+      borderTop: "1px solid var(--mi-rule-soft)",
+      padding: "var(--mi-space-1) var(--mi-space-2) var(--mi-space-2)",
+    }}>
+      {/* Header pineado */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: "var(--mi-space-1)",
+      }}>
+        <div style={{
+          fontFamily: "var(--mi-font-mono)",
+          fontSize: 8,
+          color: "var(--mi-ink-mute)",
+          textTransform: "uppercase",
+          letterSpacing: "0.08em",
+        }}>
+          Lectura pineada
+        </div>
+        <button
+          onClick={onUnpin}
+          style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: 8,
+            color: "var(--mi-ink-mute)",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            padding: 0,
+          }}
+        >
+          × Despinear
+        </button>
+      </div>
+
+      {/* Nombre del país — clickeable para navegar al hot-zone */}
+      <button
+        onClick={() => onCountryClick?.(countrySlug)}
+        style={{
+          fontFamily: "var(--mi-font-mono)",
+          fontSize: 9,
+          color: "var(--mi-ink)",
+          fontWeight: 700,
+          background: "transparent",
+          border: "none",
+          cursor: onCountryClick ? "pointer" : "default",
+          padding: 0,
+          marginBottom: "var(--mi-space-1)",
+          letterSpacing: "0.06em",
+          textDecoration: onCountryClick ? "underline" : "none",
+        }}
+      >
+        {countrySlug.toUpperCase()} · {countryName}
+      </button>
+
+      {/* Chips de las 4 capas */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        {snapshot.chips.map(chip => (
+          <PinnedChipRow key={chip.layerId} chip={chip} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PinnedChipRow({
+  chip,
+}: {
+  chip: ReturnType<typeof getCrossLayerSnapshotMemo>["chips"][number];
+}) {
+  const { layer, period, value, chipFormat } = chip;
+  const isViento = chip.layerId === "viento";
+
+  return (
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: "16px 1fr auto",
+      alignItems: "center",
+      gap: 4,
+    }}>
+      {/* Mini-glyph */}
+      {isViento && value && chipFormat.useOrientedGlyph ? (
+        <VientoMiniGlyph rank={value.raw} />
+      ) : (
+        <Image src={layer.glyphSrc} alt="" width={14} height={14} style={{ flexShrink: 0 }} />
+      )}
+
+      {/* Label + valor */}
+      <div>
+        <span style={{
+          fontFamily: "var(--mi-font-mono)",
+          fontSize: 8,
+          color: "var(--mi-ink-soft)",
+        }}>
+          {chipFormat.shortChipLabel}
+        </span>
+        {value ? (
+          <span style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: 8,
+            color: "var(--mi-ink)",
+            marginLeft: 4,
+          }}>
+            {value.formatted}
+          </span>
+        ) : (
+          <span style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: 8,
+            color: "var(--mi-ink-mute)",
+            marginLeft: 4,
+            fontStyle: "italic",
+          }}>
+            {period ? "sin dato" : "—"}
+          </span>
+        )}
+      </div>
+
+      {/* Indicador */}
+      {value?.quality === "congelado" ? (
+        <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 8, color: "#B45729" }}>⚠</span>
+      ) : value && !isViento && value.delta !== undefined ? (
+        <span style={{ fontFamily: "var(--mi-font-mono)", fontSize: 9, color: "var(--mi-ink-mute)" }}>
+          {value.delta > 0 ? "↗" : "↘"}
+        </span>
+      ) : (
+        <span>—</span>
+      )}
+    </div>
+  );
+}
+
+function VientoMiniGlyph({ rank }: { rank: number }) {
+  const isNeutro = rank === 0;
+  const isProEstado = rank < 0;
+  const src = isNeutro ? "/mapa/glyphs/viento-neutro.svg" : "/mapa/glyphs/viento.svg";
+  return (
+    <Image
+      src={src}
+      alt=""
+      width={14}
+      height={14}
+      style={{ flexShrink: 0, transform: isProEstado ? "scaleX(-1)" : undefined }}
+    />
+  );
 }

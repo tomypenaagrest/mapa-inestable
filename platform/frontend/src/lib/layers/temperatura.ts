@@ -1,7 +1,7 @@
 // Spec 43 — Capa Temperatura: salario real como termómetro del poder adquisitivo
 // Reemplaza el stub sintético de Spec 39.
 
-import type { Layer, LayerPeriod, LayerValue, LayerSubIndicator, LayerQuality } from "../layers";
+import type { Layer, LayerPeriod, LayerValue, LayerSubIndicator, LayerQuality, LayerChipFormat } from "../layers";
 import { getIndicator, getByCountry } from "../macro-indicators";
 
 const PRINCIPAL = "c7-salario-real-mensual";
@@ -237,4 +237,13 @@ export const temperaturaLayer: Layer = {
 
   legendMicrocopy: "El color codifica magnitud · variación interanual del salario real.",
   shortIntro: "El salario real es el termómetro del poder adquisitivo: cuando sube, el bienestar material mejora; cuando baja, el poder de compra se erosiona. El color codifica solo la magnitud del cambio — no distingue si subió o bajó. La dirección aparece en el tooltip y en el drawer.",
+
+  formatCrossLayerChip(value: LayerValue): LayerChipFormat {
+    const dir = Math.abs(value.raw) <= 0.5 ? "estancado" : value.raw >= 0 ? "mejora" : "caida";
+    const tone: LayerChipFormat["tone"] =
+      dir === "mejora" && value.bucketIndex >= 2 ? "positive" :
+      dir === "caida"  && value.bucketIndex >= 2 ? "negative" :
+      "neutral";
+    return { shortChipLabel: "Temp.", tone, useOrientedGlyph: false };
+  },
 };

@@ -1,7 +1,7 @@
 // Spec 39 — Stub de capa Presión (confianza institucional)
 // Datos sintéticos de Latinobarómetro. Spec 45 reemplaza con implementación real.
 
-import type { Layer, LayerPeriod, LayerValue } from "../layers";
+import type { Layer, LayerPeriod, LayerValue, LayerChipFormat } from "../layers";
 
 const SYNTHETIC: Record<string, Record<string, number>> = {
   ar: { "2021": 1, "2022": 1, "2023": 0, "2024": 0 },
@@ -83,4 +83,10 @@ export const presionLayer: Layer = {
 
   legendMicrocopy: "El color codifica el nivel del índice agregado de confianza institucional.",
   shortIntro: "La presión atmosférica equivale a la densidad institucional: cuando baja, las mediaciones se aflojan y la vida colectiva pierde anclaje. El índice agrega confianza en gobierno, parlamento, partidos y tribunales según Latinobarómetro.",
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  formatCrossLayerChip(_value: LayerValue): LayerChipFormat {
+    // Placeholder hasta que Spec 45 cierre la implementación real.
+    return { shortChipLabel: "Pres.", tone: "neutral", useOrientedGlyph: false };
+  },
 };

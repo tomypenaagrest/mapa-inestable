@@ -21,6 +21,7 @@ import type { CountryAgenda } from "@/lib/agendas";
 import type { WeeklyCountryData } from "@/components/MapaCentrico";
 import type { OnboardingContent } from "@/lib/onboarding-content";
 import { hasSeenOnboarding } from "@/lib/onboarding-state";
+import { getPinnedCountry, setPinnedCountry, clearPinnedCountry } from "@/lib/pinned-country-state";
 
 interface MapaExplorerProps {
   readingGuides: ReadingGuides;
@@ -43,6 +44,24 @@ export default function MapaExplorer({
 
   // ── País seleccionado en modo capa (A.4) ──────────────────────────────────
   const [layerCountry, setLayerCountry] = useState<string | null>(null);
+
+  // ── País pineado — Spec 47 (state + handlers simples sin URL state) ─────────
+  // null en SSR; post-hydration useEffect lee localStorage para evitar mismatch de hidratación
+  const [pinnedCountry, setPinnedCountryState] = useState<string | null>(null);
+  useEffect(() => {
+    const stored = getPinnedCountry();
+    if (stored) setPinnedCountryState(stored);
+  }, []);
+
+  const handlePinCountry = useCallback((slug: string) => {
+    setPinnedCountry(slug);
+    setPinnedCountryState(slug);
+  }, []);
+
+  const handleUnpinCountry = useCallback(() => {
+    clearPinnedCountry();
+    setPinnedCountryState(null);
+  }, []);
 
   // ── Onboarding overlay ────────────────────────────────────────────────────
   const [onboardingOpen, setOnboardingOpen] = useState(false);
@@ -112,6 +131,28 @@ export default function MapaExplorer({
     const q = p.toString();
     return `/mapa${q ? `?${q}` : ""}`;
   }
+
+  // ── Handlers Spec 47 (dependen de URL state) ─────────────────────────────
+
+  // Click en el nombre del país pineado → abre drawer o modal
+  const handlePinnedCountryClick = useCallback((slug: string) => {
+    if (activeLayerId) {
+      setLayerCountry(slug);
+    } else {
+      setModalSlug(slug);
+    }
+  }, [activeLayerId]);
+
+  // Cambio de capa desde el drawer — sin cerrar el drawer del país activo
+  const handleLayerChangeFromDrawer = useCallback((id: LayerId) => {
+    const defaultT = getLayer(id).defaultPeriod.date;
+    const params = new URLSearchParams();
+    activePais.forEach(s => params.append("pais", s));
+    activeEjes.forEach(e  => params.append("eje", e));
+    params.set("capa", id);
+    params.set("t", defaultT);
+    router.push(`/mapa?${params.toString()}`);
+  }, [activePais, activeEjes, router]);
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
@@ -221,6 +262,8 @@ export default function MapaExplorer({
               variant="explorer"
               filters={{ pais: activePais, eje: activeEjes }}
               activeLayer={activeLayerProps}
+              sliderDate={sliderDate}
+              onPinCountry={handlePinCountry}
               onCountryClick={handleCountryClick}
             />
 
@@ -232,6 +275,9 @@ export default function MapaExplorer({
                 sliderDate={sliderDate}
                 onOpenReadingGuide={handleOpenGuide}
                 onOpenOnboarding={openOnboarding}
+                pinnedCountry={pinnedCountry}
+                onUnpinCountry={handleUnpinCountry}
+                onPinnedCountryClick={handlePinnedCountryClick}
               />
             )}
 
@@ -288,6 +334,8 @@ export default function MapaExplorer({
             countryName: COUNTRY_NAMES[layerCountry] ?? layerCountry,
             period: activePeriod,
           }}
+          sliderDate={sliderDate}
+          onChangeActiveLayer={handleLayerChangeFromDrawer}
         />
       )}
 

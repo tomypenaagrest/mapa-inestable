@@ -60,6 +60,13 @@ export interface LayerSubIndicator {
   getSeries(countrySlug: string): Array<{ key: string; value: number; quality: LayerQuality }>;
 }
 
+/** Spec 47 §4 — Formato del chip cuando esta capa aparece como NO-activa en el snapshot cruzado. */
+export interface LayerChipFormat {
+  shortChipLabel: string;
+  tone: "neutral" | "positive" | "negative";
+  useOrientedGlyph: boolean;
+}
+
 export interface Layer {
   id: LayerId;
   label: string;
@@ -88,6 +95,9 @@ export interface Layer {
   legendMicrocopy: string;
   /** Spec 46 §4.3 — Intro editorial (2-4 oraciones) para el accordion "Cómo se lee esta capa". */
   shortIntro: string;
+  /** Spec 47 §4 — Formato del chip cuando esta capa aparece como NO-activa en el snapshot cruzado.
+   *  Si no se implementa, se usa: { shortChipLabel: shortLabel.slice(0,5), tone: "neutral", useOrientedGlyph: false } */
+  formatCrossLayerChip?(value: LayerValue): LayerChipFormat;
 }
 
 // ── Registry ──────────────────────────────────────────────────────────────────

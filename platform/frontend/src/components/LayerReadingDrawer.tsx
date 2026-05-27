@@ -2,10 +2,13 @@
 // Spec 39 / 42 — Drawer derecho.
 // Sin capa activa: guía de lectura genérica (HTML del vault).
 // Con capa + país seleccionado: layout A.4 — header PBI + lectura + subindicadores.
+// Spec 47 — bloque "Otras capas para este país" colapsable.
 
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import Image from "next/image";
 import type { LayerId, Layer, LayerPeriod, LayerSubIndicator } from "@/lib/layers";
 import type { ReadingGuides } from "@/lib/reading-guides";
+import { getCrossLayerSnapshotMemo } from "@/lib/cross-layer";
 
 // ── Tipos ─────────────────────────────────────────────────────────────────────
 
@@ -22,6 +25,10 @@ interface LayerReadingDrawerProps {
   onClose: () => void;
   /** Spec 42 A.4 — cuando se abre desde click en país con capa activa. */
   activeCountry?: ActiveCountryForLayer;
+  /** Spec 47 — fecha del slider para el snapshot cruzado. */
+  sliderDate?: string;
+  /** Spec 47 — callback para cambiar la capa activa sin cerrar el drawer del país. */
+  onChangeActiveLayer?: (id: LayerId) => void;
 }
 
 // ── Sparkline ─────────────────────────────────────────────────────────────────
@@ -182,7 +189,15 @@ function SectionLabel({ children }: { children: ReactNode }) {
   );
 }
 
-function CountryLayerContent({ ac }: { ac: ActiveCountryForLayer }) {
+function CountryLayerContent({
+  ac,
+  sliderDate,
+  onChangeActiveLayer,
+}: {
+  ac: ActiveCountryForLayer;
+  sliderDate?: string;
+  onChangeActiveLayer?: (id: LayerId) => void;
+}) {
   const { layer, countrySlug, countryName, period } = ac;
   const value = layer.getValueForCountry(countrySlug, period);
   const editorial = layer.editorialByCountry?.[countrySlug];
@@ -269,6 +284,16 @@ function CountryLayerContent({ ac }: { ac: ActiveCountryForLayer }) {
         }}>
           Sin dato para este período.
         </div>
+      )}
+
+      {/* Spec 47 — Bloque "Otras capas para este país" */}
+      {sliderDate && (
+        <OtrasCapasBlock
+          countrySlug={countrySlug}
+          activeLayerId={layer.id}
+          sliderDate={sliderDate}
+          onChangeActiveLayer={onChangeActiveLayer}
+        />
       )}
 
       {/* Bloque Lectura editorial */}
@@ -365,6 +390,184 @@ function CountryLayerContent({ ac }: { ac: ActiveCountryForLayer }) {
   );
 }
 
+// ── Bloque "Otras capas para este país" — Spec 47 §3 ─────────────────────────
+
+function OtrasCapasBlock({
+  countrySlug,
+  activeLayerId,
+  sliderDate,
+  onChangeActiveLayer,
+}: {
+  countrySlug: string;
+  activeLayerId: LayerId;
+  sliderDate: string;
+  onChangeActiveLayer?: (id: LayerId) => void;
+}) {
+  // Collapsed por default en desktop; useEffect lo expande en mobile post-hydration.
+  const [expanded, setExpanded] = useState(false);
+  useEffect(() => {
+    if (window.innerWidth <= 767) setExpanded(true);
+  }, []);
+
+  const snapshot = getCrossLayerSnapshotMemo(countrySlug, sliderDate);
+  const otherChips = snapshot.chips.filter(c => c.layerId !== activeLayerId);
+
+  return (
+    <div style={{ marginBottom: "var(--mi-space-3)" }}>
+      {/* Toggle */}
+      <button
+        onClick={() => setExpanded(e => !e)}
+        aria-expanded={expanded}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 4,
+          width: "100%",
+          background: "var(--mi-rule-soft)",
+          border: "none",
+          cursor: "pointer",
+          padding: "var(--mi-space-1) var(--mi-space-2)",
+          textAlign: "left",
+          fontFamily: "var(--mi-font-mono)",
+          fontSize: 9,
+          color: "var(--mi-ink)",
+          letterSpacing: "0.04em",
+        }}
+      >
+        <span style={{ fontSize: 8 }}>{expanded ? "▲" : "▼"}</span>
+        Otras capas para este país
+      </button>
+
+      {expanded && (
+        <div style={{
+          border: "1px solid var(--mi-rule-soft)",
+          borderTop: "none",
+          padding: "var(--mi-space-2)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--mi-space-2)",
+        }}>
+          {otherChips.map(chip => (
+            <OtraCapaRow
+              key={chip.layerId}
+              chip={chip}
+              onChangeActiveLayer={onChangeActiveLayer}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function OtraCapaRow({
+  chip,
+  onChangeActiveLayer,
+}: {
+  chip: ReturnType<typeof getCrossLayerSnapshotMemo>["chips"][number];
+  onChangeActiveLayer?: (id: LayerId) => void;
+}) {
+  const { layer, period, value, chipFormat } = chip;
+  const isViento = chip.layerId === "viento";
+
+  return (
+    <div>
+      {/* Header: glyph + label + período */}
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--mi-space-1)", marginBottom: 2 }}>
+        {isViento && value && chipFormat.useOrientedGlyph ? (
+          <DrawerVientoGlyph rank={value.raw} />
+        ) : (
+          <Image src={layer.glyphSrc} alt="" width={14} height={14} style={{ flexShrink: 0 }} />
+        )}
+        <span style={{
+          fontFamily: "var(--mi-font-mono)",
+          fontSize: 9,
+          color: "var(--mi-ink)",
+          fontWeight: 600,
+        }}>
+          {layer.shortLabel}
+        </span>
+        {period && (
+          <span style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: 8,
+            color: "var(--mi-ink-mute)",
+          }}>
+            · {period.label}
+          </span>
+        )}
+      </div>
+
+      {/* Valor + calidad */}
+      {value ? (
+        <div style={{
+          fontFamily: "var(--mi-font-mono)",
+          fontSize: 10,
+          color: "var(--mi-ink-soft)",
+          marginBottom: 4,
+          paddingLeft: 18,
+        }}>
+          {value.formatted}
+          {value.quality === "congelado" && (
+            <span style={{ color: "#B45729", marginLeft: 6 }}>⚠ congelado</span>
+          )}
+          {!isViento && value.delta !== undefined && (
+            <span style={{ color: "var(--mi-ink-mute)", marginLeft: 6 }}>
+              {value.delta > 0 ? "↗" : "↘"}
+            </span>
+          )}
+        </div>
+      ) : (
+        <div style={{
+          fontFamily: "var(--mi-font-mono)",
+          fontSize: 9,
+          color: "var(--mi-ink-mute)",
+          fontStyle: "italic",
+          paddingLeft: 18,
+          marginBottom: 4,
+        }}>
+          {period ? "sin dato" : "sin lectura disponible"}
+        </div>
+      )}
+
+      {/* Acción: cambiar de capa */}
+      {onChangeActiveLayer && (
+        <button
+          onClick={() => onChangeActiveLayer(chip.layerId)}
+          style={{
+            fontFamily: "var(--mi-font-mono)",
+            fontSize: 8,
+            color: "var(--mi-ink)",
+            background: "transparent",
+            border: "1px solid var(--mi-rule-soft)",
+            cursor: "pointer",
+            padding: "2px 6px",
+            marginLeft: 18,
+            letterSpacing: "0.04em",
+          }}
+        >
+          Cambiar a esta capa →
+        </button>
+      )}
+    </div>
+  );
+}
+
+function DrawerVientoGlyph({ rank }: { rank: number }) {
+  const isNeutro = rank === 0;
+  const isProEstado = rank < 0;
+  const src = isNeutro ? "/mapa/glyphs/viento-neutro.svg" : "/mapa/glyphs/viento.svg";
+  return (
+    <Image
+      src={src}
+      alt=""
+      width={14}
+      height={14}
+      style={{ flexShrink: 0, transform: isProEstado ? "scaleX(-1)" : undefined }}
+    />
+  );
+}
+
 // ── Componente principal ──────────────────────────────────────────────────────
 
 export default function LayerReadingDrawer({
@@ -372,6 +575,8 @@ export default function LayerReadingDrawer({
   readingGuides,
   onClose,
   activeCountry,
+  sliderDate,
+  onChangeActiveLayer,
 }: LayerReadingDrawerProps) {
   const html = readingGuides[layerId] ?? "";
 
@@ -463,7 +668,11 @@ export default function LayerReadingDrawer({
         {/* Content */}
         <div style={{ flex: 1 }}>
           {activeCountry ? (
-            <CountryLayerContent ac={activeCountry} />
+            <CountryLayerContent
+              ac={activeCountry}
+              sliderDate={sliderDate}
+              onChangeActiveLayer={onChangeActiveLayer}
+            />
           ) : html ? (
             <div style={{ padding: "var(--mi-space-4) var(--mi-space-4) var(--mi-space-6)" }}>
               <div

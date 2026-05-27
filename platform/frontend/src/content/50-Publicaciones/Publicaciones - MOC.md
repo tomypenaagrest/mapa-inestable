@@ -36,6 +36,7 @@ Cada nota de publicación funciona como ficha:
 | 10 | 4 mar 2026 | [[La atención]] | publicación | [[../10-Ejes/06 - Atención\|Atención]] |
 | 11 | 27 abr 2026 | [[Colombia - la sospecha antes del voto]] | publicación | [[../10-Ejes/05 - Desorientación epistemológica\|Desorientación]] / [[../10-Ejes/03 - Desrepresentación\|Desrepresentación]] |
 | 12 | 11 may 2026 | [[Argentina sin cruzadas]] | publicación | [[../10-Ejes/02 - Erosión de las mediaciones\|Erosión de las mediaciones]] / [[../10-Ejes/05 - Desorientación epistemológica\|Desorientación epistemológica]] / [[../10-Ejes/03 - Desrepresentación\|Desrepresentación]] |
+| 13 | 20 may 2026 | [[Bolivia después del MAS - el ajuste, la calle y la mediación huérfana]] | briefing | [[../10-Ejes/02 - Erosión de las mediaciones\|Erosión de las mediaciones]] / [[../10-Ejes/03 - Desrepresentación\|Desrepresentación]] / [[../10-Ejes/04 - Estetización de la cultura\|Estetización]] / [[../10-Ejes/06 - Atención\|Atención]] |
 
 ## Lectura cronológica sugerida
 
