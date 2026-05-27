@@ -1,163 +1,44 @@
-"use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useReaderState } from "@/hooks/useReaderState";
-import { ANALISIS_ALL } from "@/lib/analisis";
+import type { Metadata } from "next";
+import { getAllPublications, type PublicationMeta } from "@/lib/content";
+import { EJES, AXIS_KEY_TO_SLUG } from "@/lib/ejes";
+import type { AnalisisEntry } from "@/lib/analisis";
+import LeerDespuesContent from "./LeerDespuesContent";
+
+export const metadata: Metadata = {
+  title: "Leer después — Mapa Inestable",
+  description: "Tu lista de análisis guardados para leer más tarde.",
+};
+
+function publicationToAnalisisEntry(p: PublicationMeta): AnalisisEntry | null {
+  if (!p.ejePrincipal) return null;
+  const eje = EJES.find(e => e.axisKey === p.ejePrincipal);
+  if (!eje) return null;
+  return {
+    slug:                   p.slug,
+    countrySlug:            p.countrySlug ?? "",
+    country:                p.country ?? "—",
+    axisSlug:               AXIS_KEY_TO_SLUG[p.ejePrincipal] ?? p.ejePrincipal,
+    axisKey:                p.ejePrincipal,
+    axisName:               eje.name,
+    title:                  p.title,
+    lede:                   p.subtitle ?? "",
+    published_at:           p.published_at,
+    published_iso:          p.fecha,
+    year:                   p.year,
+    week:                   p.week,
+    step_disparador:        "",
+    step_desplazamiento:    "",
+    step_conceptualizacion: "",
+    step_apertura:          "",
+    substackUrl:            p.url,
+    tipo:                   p.tipo === "despacho" ? "despacho" : "publicacion",
+  };
+}
 
 export default function LeerDespuesPage() {
-  const { state, toggleSaved } = useReaderState();
-  const [mounted, setMounted] = useState(false);
+  const allAnalyses = getAllPublications()
+    .map(publicationToAnalisisEntry)
+    .filter((e): e is AnalisisEntry => e !== null);
 
-  useEffect(() => { setMounted(true); }, []);
-
-  const saved = mounted && state
-    ? ANALISIS_ALL.filter(a => state.saved.includes(`${a.countrySlug}-${a.year}-w${a.week}`))
-    : [];
-
-  return (
-    <div style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
-
-      <div style={{
-        background: "var(--mi-ink)",
-        color: "var(--mi-bg-paper)",
-        padding: `6px var(--mi-space-6)`,
-        fontFamily: "var(--mi-font-mono)",
-        fontSize: "var(--mi-text-xs)",
-        letterSpacing: "var(--mi-tracking-wide)",
-        textTransform: "uppercase",
-      }}>
-        <span style={{ color: "var(--mi-accent-gold)" }}>★</span>
-        {" "}Lista de lectura · este navegador
-      </div>
-
-      <div className="mi-container--narrow" style={{ paddingTop: "var(--mi-space-7)", paddingBottom: "var(--mi-space-8)" }}>
-
-        <h1 style={{
-          fontFamily: "var(--mi-font-display)",
-          fontSize: "var(--mi-text-3xl)",
-          textTransform: "uppercase",
-          letterSpacing: "0.02em",
-          color: "var(--mi-ink)",
-          marginBottom: "var(--mi-space-3)",
-        }}>
-          Leer después
-        </h1>
-
-        <p style={{
-          fontFamily: "var(--mi-font-mono)",
-          fontSize: "var(--mi-text-xs)",
-          letterSpacing: "var(--mi-tracking-wide)",
-          textTransform: "uppercase",
-          color: "var(--mi-ink-mute)",
-          marginBottom: "var(--mi-space-6)",
-        }}>
-          Guardado en este navegador — sin cuenta, sin sincronización.
-        </p>
-
-        {!mounted ? (
-          <div style={{ color: "var(--mi-ink-mute)", fontFamily: "var(--mi-font-mono)", fontSize: "var(--mi-text-xs)", textTransform: "uppercase", letterSpacing: "var(--mi-tracking-wide)" }}>
-            Cargando…
-          </div>
-        ) : saved.length === 0 ? (
-          <div style={{
-            border: "var(--mi-border-dashed)",
-            padding: "var(--mi-space-5)",
-            textAlign: "center",
-          }}>
-            <div style={{
-              fontFamily: "var(--mi-font-mono)",
-              fontSize: "var(--mi-text-xs)",
-              letterSpacing: "var(--mi-tracking-widest)",
-              textTransform: "uppercase",
-              color: "var(--mi-ink-mute)",
-              marginBottom: "var(--mi-space-3)",
-            }}>
-              Sin análisis guardados
-            </div>
-            <p style={{
-              fontFamily: "var(--mi-font-body)",
-              fontSize: "var(--mi-text-base)",
-              color: "var(--mi-ink-soft)",
-              marginBottom: "var(--mi-space-4)",
-            }}>
-              Guardá análisis desde cualquier página usando el botón ★.
-            </p>
-            <Link href="/analisis" className="mi-btn">
-              Explorar análisis →
-            </Link>
-          </div>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--mi-space-4)" }}>
-            {saved.map(a => {
-              const slugKey = `${a.countrySlug}-${a.year}-w${a.week}`;
-              return (
-                <div
-                  key={a.slug}
-                  style={{
-                    border: "var(--mi-border-thick)",
-                    boxShadow: "var(--mi-shadow-card)",
-                    background: "var(--mi-bg-paper)",
-                    padding: "var(--mi-space-4)",
-                    display: "flex",
-                    gap: "var(--mi-space-4)",
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <div style={{ flex: 1 }}>
-                    <div style={{
-                      fontFamily: "var(--mi-font-mono)",
-                      fontSize: "var(--mi-text-xs)",
-                      letterSpacing: "var(--mi-tracking-wide)",
-                      textTransform: "uppercase",
-                      color: "var(--mi-ink-mute)",
-                      marginBottom: "var(--mi-space-1)",
-                    }}>
-                      {a.country} · {a.axisName} · {a.published_at}
-                    </div>
-                    <Link
-                      href={`/analisis/${a.countrySlug}/${a.slug}`}
-                      style={{
-                        fontFamily: "var(--mi-font-title)",
-                        fontWeight: 700,
-                        fontSize: "var(--mi-text-xl)",
-                        color: "var(--mi-ink)",
-                        display: "block",
-                        marginBottom: "var(--mi-space-2)",
-                      }}
-                    >
-                      {a.title}
-                    </Link>
-                    <p style={{
-                      fontFamily: "var(--mi-font-body)",
-                      fontSize: "var(--mi-text-base)",
-                      color: "var(--mi-ink-soft)",
-                      lineHeight: "var(--mi-leading-normal)",
-                    }}>
-                      {a.lede}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => toggleSaved(slugKey)}
-                    title="Quitar de la lista"
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      fontFamily: "var(--mi-font-mono)",
-                      fontSize: "var(--mi-text-base)",
-                      color: "var(--mi-accent-gold)",
-                      padding: "var(--mi-space-1)",
-                      flexShrink: 0,
-                    }}
-                  >
-                    ★
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <LeerDespuesContent allAnalyses={allAnalyses} />;
 }

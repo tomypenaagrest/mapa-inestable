@@ -8,6 +8,9 @@ import {
   axisDisplayKey,
 } from "@/lib/latinobarometro";
 import rawLecturas from "@/data/latinobarometro-2024/lecturas.json";
+import IndicadorSelectorSheet from "@/components/IndicadorSelectorSheet";
+import ComparadorRanking from "@/components/ComparadorRanking";
+import "@/styles/mobile-restantes.css";
 
 /* === CONSTANTES ================================================== */
 
@@ -69,8 +72,39 @@ export default async function ComparePage(
     ? ind.regional_value.toFixed(1)
     : `${Math.round(ind.regional_value)}%`;
 
+  /* Shape countries for mobile ranking */
+  const mobileCountries = countries.map(c => ({
+    code:    c.code,
+    name:    c.name,
+    value:   c.value,
+    covered: (COVERED_COUNTRIES as readonly string[]).includes(c.code.toLowerCase()),
+  }));
+
   return (
-    <div style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
+    <>
+      {/* Mobile — Patrón C */}
+      <div className="mr-mobile-only" style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
+        <IndicadorSelectorSheet
+          indicators={INDICATORS}
+          currentId={indicador}
+          currentLabel={ind.label}
+        />
+        <ComparadorRanking
+          axisKey={axisKey}
+          axisLabel={axisLabel}
+          indicatorLabel={ind.label}
+          questionText={ind.question_text}
+          lectura={lectura}
+          countries={mobileCountries}
+          regionalValue={ind.regional_value}
+          regionalStr={regStr}
+          unit={ind.unit}
+          waveLabel={LB_META.wave_label}
+        />
+      </div>
+
+      {/* Desktop */}
+      <div className="mr-desktop-only" style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
 
       {/* Meta-bar */}
       <div style={{
@@ -473,6 +507,8 @@ export default async function ComparePage(
 
         </main>
       </div>
-    </div>
+
+      </div> {/* end mr-desktop-only */}
+    </>
   );
 }

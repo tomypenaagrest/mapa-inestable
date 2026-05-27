@@ -1,6 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { EJES } from "@/lib/ejes";
+import { getAllPublications } from "@/lib/content";
+import GlosarioIndex from "@/components/GlosarioIndex";
+import "@/styles/mobile-restantes.css";
 
 export const metadata: Metadata = {
   title: "Los seis ejes",
@@ -87,8 +90,39 @@ function EjeCard({ eje }: { eje: typeof EJES[0] }) {
 }
 
 export default function EjesPage() {
+  const publications = getAllPublications();
+
+  // Compute per-eje stats for mobile index
+  const ejeItems = EJES.map(eje => {
+    const ejePubs = publications.filter(p => p.ejePrincipal === eje.axisKey);
+    const uniqueCountries = new Set(ejePubs.map(p => p.countrySlug).filter(Boolean));
+    const metaText = ejePubs.length > 0
+      ? `${ejePubs.length} análisis · ${uniqueCountries.size} países →`
+      : "→ ver eje";
+    return {
+      href: `/ejes/${eje.slug}`,
+      pinColor: `var(--mi-axis-${eje.axisKey})`,
+      titulo: eje.name,
+      descripcion: eje.definicion_corta,
+      metaText,
+    };
+  });
+
   return (
-    <div style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
+    <>
+      {/* Mobile — Spec 56 §4: GlosarioIndex reuse */}
+      <div className="mr-mobile-only">
+        <GlosarioIndex
+          label="EJES"
+          title="Ejes conceptuales"
+          bajada="Los 6 ejes son la infraestructura interpretativa del proyecto. Cada uno organiza un conjunto de transformaciones estructurales que atraviesan la región."
+          count={EJES.length}
+          items={ejeItems}
+        />
+      </div>
+
+      {/* Desktop — layout existente */}
+      <div className="mr-desktop-only" style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
 
       {/* Meta-bar */}
       <div style={{
@@ -254,6 +288,8 @@ export default function EjesPage() {
           </div>
         </section>
       </div>
-    </div>
+
+      </div> {/* end mr-desktop-only */}
+    </>
   );
 }

@@ -11,6 +11,8 @@ import {
   formatValue,
   type Indicator,
 } from "@/lib/latinobarometro";
+import EjePageMobile from "@/components/EjePageMobile";
+import "@/styles/mobile-restantes.css";
 
 /* === COMPONENTES LATINOBARÓMETRO ================================= */
 
@@ -232,8 +234,44 @@ export default async function EjePage({ params }: { params: Promise<{ slug: stri
   }
   const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
 
+  /* países con análisis para este eje */
+  const countriesWithCount = (() => {
+    const map: Record<string, { name: string; count: number }> = {};
+    for (const a of analyses) {
+      if (!a.countrySlug) continue;
+      if (!map[a.countrySlug]) map[a.countrySlug] = { name: a.country, count: 0 };
+      map[a.countrySlug].count++;
+    }
+    return Object.entries(map)
+      .map(([slug, { name, count }]) => ({ slug, name, count }))
+      .sort((a, b) => b.count - a.count);
+  })();
+
+  /* analyses shaped for EjePageMobile */
+  const mobileAnalyses = analyses.map(a => ({
+    slug:         a.slug,
+    country:      a.country,
+    countrySlug:  a.countrySlug,
+    title:        a.title,
+    lede:         a.lede,
+    published_at: a.published_at,
+    href:         a.href,
+  }));
+
   return (
-    <div style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
+    <>
+      {/* Mobile — Patrón B */}
+      <EjePageMobile
+        eje={eje}
+        numStr={numStr}
+        totalEjes={totalEjes}
+        analyses={mobileAnalyses}
+        countriesWithCount={countriesWithCount}
+        conceptos={conceptos}
+      />
+
+      {/* Desktop */}
+      <div className="mr-desktop-only" style={{ background: "var(--mi-bg-paper)", minHeight: "100vh" }}>
 
       {/* Meta-bar */}
       <div style={{
@@ -667,6 +705,8 @@ export default async function EjePage({ params }: { params: Promise<{ slug: stri
         </nav>
 
       </div>
-    </div>
+
+      </div> {/* end mr-desktop-only */}
+    </>
   );
 }
