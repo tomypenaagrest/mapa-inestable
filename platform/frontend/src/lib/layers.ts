@@ -36,7 +36,7 @@ export interface LayerSource {
   lastFetched: string;
 }
 
-export type LayerQuality = "oficial" | "estimado" | "congelado";
+export type LayerQuality = "oficial" | "revisado" | "estimado" | "cuestionado" | "congelado";
 
 export interface LayerValue {
   raw: number;

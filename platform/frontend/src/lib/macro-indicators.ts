@@ -2,7 +2,7 @@ import raw from "@/data/indicators-macro/indicators-macro.json";
 
 /* === TIPOS ======================================================= */
 
-export type Quality = "oficial" | "estimado" | "congelado";
+export type Quality = "oficial" | "revisado" | "estimado" | "cuestionado" | "congelado";
 
 export interface MacroDataPoint {
   year: number;

@@ -7,11 +7,15 @@ import Link from "next/link";
 import IndicatorCard from "@/components/IndicatorCard";
 import MacroIndicatorCard from "@/components/MacroIndicatorCard";
 import HeatmapEjes, { type HeatmapCell, type WeekLabel } from "@/components/HeatmapEjes";
+import HeatmapAxisTime from "@/components/HeatmapAxisTime";
+import CountryHeader from "@/components/CountryHeader";
+import TabBarChips, { type TabChip } from "@/components/TabBarChips";
 import type { AxisIntensity, Source } from "@/lib/country-data";
 import type { AnalysisSummary } from "@/lib/analisis";
 import type { Indicator, IndicatorCountryData } from "@/lib/latinobarometro";
 import type { MacroIndicator, MacroCountryData } from "@/lib/macro-indicators";
 import type { CountryAgenda, Agenda } from "@/lib/agendas";
+import "@/styles/country-page.css";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
@@ -136,12 +140,11 @@ export default function CountryDashboard({
   const router   = useRouter();
   const pathname = usePathname();
 
-  const [activeTab,    setActiveTab]    = useState<TabSlug>(
+  const [activeTab, setActiveTab] = useState<TabSlug>(
     TABS.find(t => t.slug === initialTab)?.slug ?? "publicaciones"
   );
-  const [condensed,    setCondensed]    = useState(false);
-  const [isMobile,     setIsMobile]     = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [condensed, setCondensed] = useState(false);
+  const [isMobile,  setIsMobile]  = useState(false);
 
   useEffect(() => {
     const onScroll  = () => setCondensed(window.scrollY > 80);
@@ -157,15 +160,81 @@ export default function CountryDashboard({
 
   function handleTabChange(tab: TabSlug) {
     setActiveTab(tab);
-    setDropdownOpen(false);
     router.push(`${pathname}?tab=${tab}`, { scroll: false });
   }
 
   const activeAxesCount = ejes.filter(e => e.intensity >= 3).length;
 
+  // ── MOBILE RENDER ────────────────────────────────────────────────────────
+  if (isMobile) {
+    const tabsMobile: TabChip[] = [
+      { slug: "publicaciones", label: "Publicaciones", count: analyses.length || undefined },
+      { slug: "agenda",        label: "Agenda" },
+      { slug: "diagnostico",   label: "Diagnóstico" },
+      { slug: "pulso",         label: "Pulso",      count: lbIndicators.length   || undefined },
+      { slug: "estructura",    label: "Estructura", count: macroIndicators.length || undefined },
+      { slug: "contexto",      label: "Contexto" },
+      { slug: "fuentes",       label: "Fuentes" },
+    ];
+
+    return (
+      <div>
+        <CountryHeader
+          slug={slug}
+          name={name}
+          centralQuestion={centralQuestion}
+          ejes={ejes}
+          analysisCount={analyses.length}
+          lastDate={analyses[0]?.date ?? null}
+        />
+        <TabBarChips
+          tabs={tabsMobile}
+          activeTab={activeTab}
+          onTabChange={tab => handleTabChange(tab as TabSlug)}
+        />
+        <div style={{ padding: "var(--mi-space-5) 20px var(--mi-space-8)" }}>
+          {activeTab === "publicaciones" && (
+            <TabPublicaciones analyses={analyses} ejes={ejes} slug={slug} />
+          )}
+          {activeTab === "agenda" && (
+            <TabAgenda agenda={agenda ?? null} />
+          )}
+          {activeTab === "diagnostico" && (
+            <TabDiagnostico
+              tensionesHtml={tensionesHtml}
+              preguntaHtml={preguntaHtml}
+              ejes={ejes}
+              analyses={analyses}
+              isMobile
+            />
+          )}
+          {activeTab === "pulso" && (
+            <TabPulso indicators={lbIndicators} lbMeta={lbMeta} name={name} />
+          )}
+          {activeTab === "estructura" && (
+            <TabEstructura
+              indicators={macroIndicators}
+              families={macroFamilies}
+              macroMeta={macroMeta}
+              name={name}
+              isMobile
+            />
+          )}
+          {activeTab === "contexto" && (
+            <TabContexto sections={contextSections} isMobile />
+          )}
+          {activeTab === "fuentes" && (
+            <TabFuentes fuentes={fuentes} />
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── DESKTOP RENDER ───────────────────────────────────────────────────────
   return (
     <div>
-      {/* ── STICKY SHELL ─────────────────────────────────────────────────── */}
+      {/* Sticky shell: full header + condensed header + desktop tab bar */}
       <div style={{
         position:   "sticky",
         top:        0,
@@ -276,14 +345,14 @@ export default function CountryDashboard({
             }}>
               {name}
             </span>
-            {centralQuestion && !isMobile && (
+            {centralQuestion && (
               <span style={{
-                fontFamily: "var(--mi-font-title)",
-                fontStyle:  "italic",
-                fontSize:   14,
-                color:      "var(--mi-ink-soft)",
-                overflow:   "hidden",
-                whiteSpace: "nowrap",
+                fontFamily:   "var(--mi-font-title)",
+                fontStyle:    "italic",
+                fontSize:     14,
+                color:        "var(--mi-ink-soft)",
+                overflow:     "hidden",
+                whiteSpace:   "nowrap",
                 textOverflow: "ellipsis",
               }}>
                 {centralQuestion}
@@ -292,95 +361,37 @@ export default function CountryDashboard({
           </div>
         )}
 
-        {/* Tab bar */}
+        {/* Desktop tab bar */}
         <div style={{ borderBottom: "var(--mi-border-bold)", background: "var(--mi-bg-paper)" }}>
           <div className="mi-container">
-            {isMobile ? (
-              /* Mobile dropdown */
-              <div style={{ position: "relative" }}>
-                <button
-                  onClick={() => setDropdownOpen(o => !o)}
-                  style={{
-                    width:           "100%",
-                    display:         "flex",
-                    justifyContent:  "space-between",
-                    alignItems:      "center",
-                    padding:         "12px 0",
-                    background:      "none",
-                    border:          "none",
-                    cursor:          "pointer",
-                    ...mono,
-                    color:           "var(--mi-ink)",
-                  }}
-                >
-                  <span>▸ {TABS.find(t => t.slug === activeTab)?.label}</span>
-                  <span>{dropdownOpen ? "▲" : "▼"}</span>
-                </button>
-                {dropdownOpen && (
-                  <div style={{
-                    position:   "absolute",
-                    top:        "100%",
-                    left:       "-1rem",
-                    right:      "-1rem",
-                    background: "var(--mi-bg-paper)",
-                    border:     "var(--mi-border-thick)",
-                    boxShadow:  "var(--mi-shadow-card)",
-                    zIndex:     50,
-                  }}>
-                    {TABS.map(tab => (
-                      <button
-                        key={tab.slug}
-                        onClick={() => handleTabChange(tab.slug)}
-                        style={{
-                          width:        "100%",
-                          display:      "block",
-                          textAlign:    "left",
-                          padding:      "12px var(--mi-space-4)",
-                          background:   activeTab === tab.slug ? "var(--mi-bg-cream)" : "none",
-                          border:       "none",
-                          borderBottom: "var(--mi-border-dashed)",
-                          cursor:       "pointer",
-                          ...mono,
-                          color: activeTab === tab.slug ? "var(--mi-ink)" : "var(--mi-ink-mute)",
-                        }}
-                      >
-                        {activeTab === tab.slug ? `▸ ${tab.label}` : tab.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
-              /* Desktop tab bar */
-              <div style={{ display: "flex", overflowX: "auto" }}>
-                {TABS.map(tab => {
-                  const active = activeTab === tab.slug;
-                  return (
-                    <button
-                      key={tab.slug}
-                      onClick={() => handleTabChange(tab.slug)}
-                      style={{
-                        padding:       "12px var(--mi-space-4)",
-                        background:    "none",
-                        border:        "none",
-                        borderBottom:  active ? "3px solid var(--mi-ink)" : "3px solid transparent",
-                        cursor:        "pointer",
-                        whiteSpace:    "nowrap",
-                        ...mono,
-                        color: active ? "var(--mi-ink)" : "var(--mi-ink-mute)",
-                      }}
-                    >
-                      {tab.label}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
+            <div style={{ display: "flex", overflowX: "auto" }}>
+              {TABS.map(tab => {
+                const active = activeTab === tab.slug;
+                return (
+                  <button
+                    key={tab.slug}
+                    onClick={() => handleTabChange(tab.slug)}
+                    style={{
+                      padding:      "12px var(--mi-space-4)",
+                      background:   "none",
+                      border:       "none",
+                      borderBottom: active ? "3px solid var(--mi-ink)" : "3px solid transparent",
+                      cursor:       "pointer",
+                      whiteSpace:   "nowrap",
+                      ...mono,
+                      color: active ? "var(--mi-ink)" : "var(--mi-ink-mute)",
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* ── TAB CONTENT ──────────────────────────────────────────────────── */}
+      {/* Tab content */}
       <div
         className="mi-container"
         style={{ paddingTop: "var(--mi-space-7)", paddingBottom: "var(--mi-space-8)" }}
@@ -653,13 +664,74 @@ function TabDiagnostico({
   preguntaHtml,
   ejes,
   analyses,
+  isMobile = false,
 }: {
   tensionesHtml: string | null;
   preguntaHtml:  string | null;
   ejes:          AxisIntensity[];
   analyses:      AnalysisSummary[];
+  isMobile?:     boolean;
 }) {
   const { data: heatmapData, weeks } = buildHeatmapData(analyses);
+
+  if (isMobile) {
+    return (
+      <div>
+        {tensionesHtml && (
+          <section style={{ marginBottom: "var(--mi-space-5)" }}>
+            <h2 style={sectionTitle}>Diagnóstico estructural</h2>
+            <div className="mi-prose" dangerouslySetInnerHTML={{ __html: tensionesHtml }} />
+          </section>
+        )}
+
+        {preguntaHtml && (
+          <div style={{
+            background:   "var(--mi-bg-dark)",
+            border:       "var(--mi-border-bold)",
+            padding:      "var(--mi-space-4)",
+            marginBottom: "var(--mi-space-5)",
+          }}>
+            <div style={{ ...mono, color: "var(--mi-accent-gold)", marginBottom: "var(--mi-space-3)" }}>
+              Pregunta central
+            </div>
+            <div
+              className="mi-prose"
+              style={{ "--mi-ink": "var(--mi-bg-paper)" } as CSSProperties}
+              dangerouslySetInnerHTML={{ __html: preguntaHtml }}
+            />
+          </div>
+        )}
+
+        {/* Ejes crónicos — 1 columna mobile */}
+        {ejes.length > 0 && (
+          <section style={{ marginBottom: "var(--mi-space-5)" }}>
+            <h2 style={sectionTitle}>Ejes crónicos</h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--mi-space-3)" }}>
+              {ejes.map(eje => (
+                <ChronicAxisCard key={eje.key} eje={eje} analyses={analyses} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Heatmap 6×12 mobile */}
+        {weeks.length > 0 && (
+          <section>
+            <h2 style={sectionTitle}>Matriz eje × semana</h2>
+            <div style={{ border: "var(--mi-border-thick)", background: "var(--mi-bg-cream)", padding: "var(--mi-space-3)" }}>
+              <HeatmapAxisTime data={heatmapData} weeks={weeks} />
+            </div>
+          </section>
+        )}
+
+        {!tensionesHtml && !preguntaHtml && weeks.length === 0 && (
+          <p style={{ ...mono, color: "var(--mi-ink-mute)", padding: "var(--mi-space-6) 0" }}>
+            Diagnóstico en preparación.
+          </p>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: "flex", gap: "var(--mi-space-7)", alignItems: "start", flexWrap: "wrap" }}>
@@ -881,11 +953,13 @@ function TabEstructura({
   families,
   macroMeta,
   name,
+  isMobile = false,
 }: {
   indicators: MacroIndicatorFull[];
   families:   readonly { key: string; label: string }[];
   macroMeta:  { year_start: number; year_end: number; computed_at: string };
   name:       string;
+  isMobile?:  boolean;
 }) {
   if (indicators.length === 0) {
     return (
@@ -953,24 +1027,34 @@ function TabEstructura({
         Cada cifra muestra el valor más reciente, la trayectoria histórica y la variación respecto a hace cinco años.
       </p>
 
-      {/* Sub-nav */}
+      {/* Sub-nav: vertical in mobile, horizontal in desktop */}
       {presentFamilies.length > 1 && (
-        <div style={{ display: "flex", gap: "var(--mi-space-4)", marginBottom: "var(--mi-space-6)", flexWrap: "wrap" }}>
-          {presentFamilies.map(f => (
-            <a
-              key={f.key}
-              href={`#familia-${f.key}`}
-              style={{
-                ...mono,
-                color:          "var(--mi-ink)",
-                borderBottom:   "1px solid var(--mi-ink)",
-                textDecoration: "none",
-              }}
-            >
-              {f.label}
-            </a>
-          ))}
-        </div>
+        isMobile ? (
+          <ul className="subnav-vertical">
+            {presentFamilies.map(f => (
+              <li key={f.key}>
+                <a href={`#familia-${f.key}`}>{f.label}</a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div style={{ display: "flex", gap: "var(--mi-space-4)", marginBottom: "var(--mi-space-6)", flexWrap: "wrap" }}>
+            {presentFamilies.map(f => (
+              <a
+                key={f.key}
+                href={`#familia-${f.key}`}
+                style={{
+                  ...mono,
+                  color:          "var(--mi-ink)",
+                  borderBottom:   "1px solid var(--mi-ink)",
+                  textDecoration: "none",
+                }}
+              >
+                {f.label}
+              </a>
+            ))}
+          </div>
+        )
       )}
 
       {/* Families */}
@@ -997,7 +1081,7 @@ function TabEstructura({
               gap:                 "var(--mi-space-3)",
             }}>
               {group.map(ind => (
-                <MacroIndicatorCard key={ind.id} indicator={ind} country={ind.country} />
+                <MacroIndicatorCard key={ind.id} indicator={ind} country={ind.country} compact={isMobile} />
               ))}
             </div>
           </div>
@@ -1026,7 +1110,7 @@ function TabEstructura({
 
 // ─── TAB: CONTEXTO ────────────────────────────────────────────────────────────
 
-function TabContexto({ sections }: { sections: { heading: string; html: string }[] }) {
+function TabContexto({ sections, isMobile = false }: { sections: { heading: string; html: string }[]; isMobile?: boolean }) {
   if (sections.length === 0) {
     return (
       <p style={{ ...mono, color: "var(--mi-ink-mute)", padding: "var(--mi-space-6) 0" }}>
@@ -1041,32 +1125,42 @@ function TabContexto({ sections }: { sections: { heading: string; html: string }
 
   return (
     <div>
-      {/* Sub-nav */}
+      {/* Sub-nav: vertical in mobile, horizontal in desktop */}
       {sections.length > 1 && (
-        <div style={{
-          display:      "flex",
-          gap:          "var(--mi-space-4)",
-          marginBottom: "var(--mi-space-6)",
-          flexWrap:     "wrap",
-          padding:      "var(--mi-space-3) var(--mi-space-4)",
-          background:   "var(--mi-bg-cream)",
-          border:       "var(--mi-border-thick)",
-        }}>
-          {sections.map(sec => (
-            <a
-              key={sec.heading}
-              href={`#${anchor(sec.heading)}`}
-              style={{
-                ...mono,
-                color:          "var(--mi-ink)",
-                borderBottom:   "1px solid var(--mi-ink)",
-                textDecoration: "none",
-              }}
-            >
-              {sec.heading}
-            </a>
-          ))}
-        </div>
+        isMobile ? (
+          <ul className="subnav-vertical">
+            {sections.map(sec => (
+              <li key={sec.heading}>
+                <a href={`#${anchor(sec.heading)}`}>{sec.heading}</a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div style={{
+            display:      "flex",
+            gap:          "var(--mi-space-4)",
+            marginBottom: "var(--mi-space-6)",
+            flexWrap:     "wrap",
+            padding:      "var(--mi-space-3) var(--mi-space-4)",
+            background:   "var(--mi-bg-cream)",
+            border:       "var(--mi-border-thick)",
+          }}>
+            {sections.map(sec => (
+              <a
+                key={sec.heading}
+                href={`#${anchor(sec.heading)}`}
+                style={{
+                  ...mono,
+                  color:          "var(--mi-ink)",
+                  borderBottom:   "1px solid var(--mi-ink)",
+                  textDecoration: "none",
+                }}
+              >
+                {sec.heading}
+              </a>
+            ))}
+          </div>
+        )
       )}
 
       {/* Sections */}

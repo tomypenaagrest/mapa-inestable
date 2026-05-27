@@ -1,0 +1,298 @@
+/* ================================================================
+   Mapa Inestable · /pais/[slug] — Spec 52
+   Mobile-first styles para la página de país.
+   No contamina globals.css.
+   ================================================================ */
+
+/* === COUNTRY HEADER (non-sticky, scrolls away in mobile) ======= */
+
+.country-header {
+  padding: 20px 20px 0;
+  background: var(--mi-bg-paper);
+}
+
+.country-name {
+  font-family:    var(--mi-font-display);
+  font-size:      48px;
+  line-height:    1.0;
+  letter-spacing: -0.01em;
+  color:          var(--mi-ink);
+  text-transform: uppercase;
+  margin:         0 0 14px;
+}
+
+.country-question {
+  font-family: var(--mi-font-title);
+  font-style:  italic;
+  font-size:   18px;
+  line-height: 1.35;
+  color:       var(--mi-ink-soft);
+  margin:      0 0 14px;
+  max-width:   52ch;
+}
+
+.country-meta {
+  font-family:    var(--mi-font-mono);
+  font-size:      11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color:          var(--mi-ink-mute);
+  border-top:     1px solid var(--mi-ink);
+  padding-top:    8px;
+  padding-bottom: 14px;
+  display:        flex;
+  gap:            10px;
+  flex-wrap:      wrap;
+}
+
+/* === FRAME STRIP (ejes crónicos) =============================== */
+
+.country-frame-strip {
+  background:    var(--mi-bg-cream);
+  border-top:    1px solid var(--mi-ink);
+  border-bottom: 1px solid var(--mi-ink);
+  padding:       10px 20px;
+  display:       flex;
+  align-items:   center;
+  gap:           8px;
+  overflow-x:    auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.country-frame-strip::-webkit-scrollbar { display: none; }
+
+.frame-strip-label {
+  font-family:    var(--mi-font-mono);
+  font-size:      9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color:          var(--mi-ink-mute);
+  white-space:    nowrap;
+  flex-shrink:    0;
+}
+
+.frame-strip-pills {
+  display: flex;
+  gap:     6px;
+}
+
+.frame-strip-pill {
+  font-family:    var(--mi-font-mono);
+  font-size:      10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border:         1px solid currentColor;
+  padding:        2px 8px;
+  text-decoration: none;
+  white-space:    nowrap;
+  flex-shrink:    0;
+  background:     transparent;
+  display:        inline-block;
+}
+
+.frame-strip-pill:active { opacity: 0.7; }
+
+/* === TAB CHIPS BAR (sticky 44px) =============================== */
+
+.tab-chips-wrap {
+  position:      sticky;
+  top:           var(--mi-header-h, 70px);
+  z-index:       40;
+  background:    var(--mi-bg-cream);
+  border-bottom: 1px solid var(--mi-ink);
+  overflow:      hidden;
+}
+
+/* Right-edge fade to signal horizontal scroll */
+.tab-chips-wrap::after {
+  content:         '';
+  position:        absolute;
+  right:           0;
+  top:             0;
+  bottom:          0;
+  width:           28px;
+  background:      linear-gradient(to right, transparent, var(--mi-bg-cream));
+  pointer-events:  none;
+  z-index:         1;
+}
+
+.tab-chips {
+  display:            flex;
+  gap:                8px;
+  padding:            10px 16px;
+  overflow-x:         auto;
+  scrollbar-width:    none;
+  -ms-overflow-style: none;
+  min-height:         44px;
+  align-items:        center;
+}
+
+.tab-chips::-webkit-scrollbar { display: none; }
+
+.tab-chip {
+  font-family:    var(--mi-font-mono);
+  font-size:      11px;
+  font-weight:    400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border:         1px solid var(--mi-ink);
+  background:     transparent;
+  color:          var(--mi-ink);
+  padding:        5px 12px;
+  cursor:         pointer;
+  white-space:    nowrap;
+  flex-shrink:    0;
+  line-height:    1;
+}
+
+.tab-chip--active {
+  background:  var(--mi-ink);
+  color:       var(--mi-bg-paper);
+  font-weight: 500;
+}
+
+.tab-chip:not(.tab-chip--active):active {
+  background: var(--mi-bg-paper);
+}
+
+.tab-chip-count {
+  opacity:      0.6;
+  margin-left:  4px;
+}
+
+/* === HEATMAP AXIS × TIME (mobile 6×12) ======================== */
+
+.heatmap-mobile {
+  width:     100%;
+  padding:   var(--mi-space-3) 0;
+}
+
+.heatmap-mobile-row {
+  display:     flex;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.heatmap-axis-label {
+  font-family:    var(--mi-font-mono);
+  font-size:      9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color:          var(--mi-ink-soft);
+  white-space:    nowrap;
+  width:          76px;
+  flex-shrink:    0;
+  display:        flex;
+  align-items:    center;
+  gap:            4px;
+}
+
+.heatmap-axis-dot {
+  display:       inline-block;
+  width:         6px;
+  height:        6px;
+  border-radius: 50%;
+  flex-shrink:   0;
+}
+
+.heatmap-cell-row {
+  display: flex;
+  gap:     2px;
+}
+
+.heatmap-cell {
+  display:    block;
+  width:      18px;
+  height:     18px;
+  border:     1px solid var(--mi-rule-soft);
+  flex-shrink: 0;
+}
+
+.heatmap-legend {
+  font-family:    var(--mi-font-mono);
+  font-size:      9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color:          var(--mi-ink-mute);
+  margin-top:     8px;
+}
+
+/* === MACRO INDICATOR CARD COMPACT (mobile 26px sparkline) ====== */
+
+.macro-card-compact {
+  /* Overrides for compact mode */
+}
+
+.macro-card-compact .sparkline-container {
+  height: 26px;
+}
+
+/* === SUB-NAV VERTICAL (Contexto / Estructura en mobile) ======== */
+
+.subnav-vertical {
+  list-style: none;
+  margin:     0 0 var(--mi-space-5);
+  padding:    0;
+}
+
+.subnav-vertical li a {
+  display:        block;
+  font-family:    var(--mi-font-mono);
+  font-size:      11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color:          var(--mi-ink);
+  text-decoration: none;
+  padding:        8px 0;
+  border-bottom:  1px dashed var(--mi-rule-soft);
+}
+
+.subnav-vertical li a::before {
+  content: '• ';
+  color:   var(--mi-ink-mute);
+}
+
+.subnav-vertical li a:active { opacity: 0.7; }
+
+/* === QUALITY MARKER (cuestionado / congelado overrides) ======== */
+
+.quality-cuestionado {
+  border-color: var(--mi-accent-warn) !important;
+}
+
+.quality-badge-cuestionado {
+  color:        var(--mi-accent-warn);
+  border:       1px solid var(--mi-accent-warn);
+  padding:      1px 5px;
+  font-size:    9px;
+  font-family:  var(--mi-font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.quality-badge-congelado {
+  color:       var(--mi-bg-paper);
+  background:  var(--mi-ink);
+  padding:     1px 5px;
+  font-size:   9px;
+  font-family: var(--mi-font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.quality-badge-revisado {
+  color:         var(--mi-ink-mute);
+  font-size:     9px;
+  font-family:   var(--mi-font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.quality-badge-estimado {
+  color:         var(--mi-accent-warn);
+  font-size:     9px;
+  font-family:   var(--mi-font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}

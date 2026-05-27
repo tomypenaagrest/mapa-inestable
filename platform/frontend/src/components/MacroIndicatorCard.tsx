@@ -1,9 +1,11 @@
 import type { MacroIndicator, MacroCountryData } from "@/lib/macro-indicators";
 import { delta, formatMacroValue } from "@/lib/macro-indicators";
+import "@/styles/country-page.css";
 
 interface Props {
   indicator: MacroIndicator;
-  country: MacroCountryData;
+  country:   MacroCountryData;
+  compact?:  boolean;
 }
 
 /* === Sparkline SVG ================================================ */
@@ -61,31 +63,41 @@ function Sparkline({
   );
 }
 
-/* === Quality badge ================================================ */
+/* === Quality badge (5 states) ===================================
+   oficial:    sin badge visible
+   revisado:   "rev." en mute
+   estimado:   "est." en terracota (warn)
+   cuestionado: "!" en terracota + borde terracota en la card
+   congelado:  "cong." fondo tinta + texto crema
+   =============================================================== */
 
-const QUALITY_LABEL: Record<string, string> = {
-  oficial:    "",
-  estimado:   "est.",
-  congelado:  "cong.",
-};
+type QualityState = "oficial" | "revisado" | "estimado" | "cuestionado" | "congelado";
 
-const QUALITY_COLOR: Record<string, string> = {
-  oficial:   "var(--mi-ink-mute)",
-  estimado:  "var(--mi-accent-warn)",
-  congelado: "var(--mi-ink-soft)",
-};
+function QualityBadge({ quality }: { quality: string }) {
+  switch (quality as QualityState) {
+    case "revisado":
+      return <span className="quality-badge-revisado">rev.</span>;
+    case "estimado":
+      return <span className="quality-badge-estimado">est.</span>;
+    case "cuestionado":
+      return <span className="quality-badge-cuestionado">!</span>;
+    case "congelado":
+      return <span className="quality-badge-congelado">cong.</span>;
+    default:
+      return null;
+  }
+}
 
 /* === Card ========================================================= */
 
-export default function MacroIndicatorCard({ indicator, country }: Props) {
+export default function MacroIndicatorCard({ indicator, country, compact = false }: Props) {
   const latest = country.latest;
   if (!latest) return null;
 
   const d = delta(country.series, 5);
   const hasPositiveDelta = d !== null && d > 0;
   const hasNegativeDelta = d !== null && d < 0;
-  const qualityLabel  = QUALITY_LABEL[latest.quality] ?? "";
-  const qualityColor  = QUALITY_COLOR[latest.quality] ?? "var(--mi-ink-mute)";
+  const isCuestionado    = latest.quality === "cuestionado";
 
   const formattedValue = formatMacroValue(indicator, latest.value);
 
@@ -98,17 +110,20 @@ export default function MacroIndicatorCard({ indicator, country }: Props) {
     : indicator.unit;
 
   return (
-    <article style={{
-      background:  "var(--mi-bg-paper)",
-      border:      "var(--mi-border-thick)",
-      boxShadow:   "var(--mi-shadow-card)",
-      padding:     "var(--mi-space-3)",
-      display:     "grid",
-      gridTemplateRows: "auto 1fr auto auto",
-      gap:         "var(--mi-space-2)",
-      position:    "relative",
-      minHeight:   160,
-    }}>
+    <article
+      className={`${compact ? "macro-card-compact" : ""} ${isCuestionado ? "quality-cuestionado" : ""}`}
+      style={{
+        background:  "var(--mi-bg-paper)",
+        border:      isCuestionado ? `2px solid var(--mi-accent-warn)` : "var(--mi-border-thick)",
+        boxShadow:   "var(--mi-shadow-card)",
+        padding:     "var(--mi-space-3)",
+        display:     "grid",
+        gridTemplateRows: "auto 1fr auto auto",
+        gap:         "var(--mi-space-2)",
+        position:    "relative",
+        minHeight:   compact ? 120 : 160,
+      }}
+    >
       {/* Label */}
       <div style={{
         fontFamily:    "var(--mi-font-mono)",
@@ -128,7 +143,7 @@ export default function MacroIndicatorCard({ indicator, country }: Props) {
         justifyContent: "flex-end",
         gap:            "var(--mi-space-2)",
       }}>
-        <Sparkline series={country.series} />
+        <Sparkline series={country.series} height={compact ? 26 : 32} />
         <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
           <span style={{
             fontFamily: "var(--mi-font-display)",
@@ -211,11 +226,7 @@ export default function MacroIndicatorCard({ indicator, country }: Props) {
         >
           {indicator.source.name}
         </a>
-        {qualityLabel && (
-          <span style={{ color: qualityColor, flexShrink: 0 }}>
-            {qualityLabel}
-          </span>
-        )}
+        <QualityBadge quality={latest.quality} />
       </div>
     </article>
   );
