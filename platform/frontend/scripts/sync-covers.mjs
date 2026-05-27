@@ -23,8 +23,13 @@ function walkAndCopy(src, dst) {
   }
 }
 
-if (existsSync(FRONTEND_COVERS)) rmSync(FRONTEND_COVERS, { recursive: true, force: true })
-walkAndCopy(VAULT_PORTADAS, FRONTEND_COVERS)
+if (existsSync(VAULT_PORTADAS)) {
+  if (existsSync(FRONTEND_COVERS)) rmSync(FRONTEND_COVERS, { recursive: true, force: true })
+  walkAndCopy(VAULT_PORTADAS, FRONTEND_COVERS)
+}
 
-const copied = readdirSync(join(FRONTEND_COVERS, 'diario')).filter(f => /\.(png|jpe?g|webp)$/i.test(f)).length
+const diarioDir = join(FRONTEND_COVERS, 'diario')
+const copied = existsSync(diarioDir)
+  ? readdirSync(diarioDir).filter(f => /\.(png|jpe?g|webp)$/i.test(f)).length
+  : 0
 console.log(`[sync-covers] OK — ${copied} imagen(es) en covers/diario/`)
