@@ -51,6 +51,8 @@ El header pasa de flex-row a flex-column. La nav scrollea horizontalmente si no 
 
 No se necesita hamburger — es un sitio editorial, no una app.
 
+> **Reapertura 2026-05-26 (Spec 53):** la decisión "no hamburger" de esta sección queda reemplazada. El header mobile usa botón ☰ con drawer slide-in desde la izquierda (280px, fondo verde-negro, backdrop semitransparente). Ver Spec 53 para anatomía completa, tokens, comportamiento a11y y justificación. El argumento original ("es sitio editorial, no app") se descartó por ausencia de evidencia — los principales sitios editoriales mobile usan el patrón ☰ con drawer. La diferencia editorial vs app la hace el tono del drawer, no la presencia del botón.
+
 ---
 
 ## 3. Contenedores

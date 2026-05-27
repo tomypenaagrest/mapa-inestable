@@ -1,14 +1,16 @@
 ---
 epic: 04
 titulo: Mobile-first como condición de lanzamiento
-estado: borrador-r4
+estado: diseño-completo
 autor: Tomás (con Claude · Cowork)
 fecha: 2026-05-21
-revision: 2026-05-26 (r4) — Spec 52 (página de país) diseñada y mergeada como lista en la misma sesión que Spec 50. Validó visualmente: selector de tabs chips horizontales + sticky mínimo, heatmap eje × tiempo 6×12, card macro con sparkline 26px. Cerró 2 decisiones pendientes de Spec 16 (§7 selector mobile y §12.5 sparkline). No quedaron decisiones abiertas del epic afectadas
+revision: 2026-05-26 (r6) — Specs 49 (touch handlers mapa) y 54 (performance budget) diseñadas y mergeadas. EPIC-04 completo en su fase de diseño — las 6 specs hijas están en estado `lista`. Cero decisiones abiertas. Listo para implementación en VS Code
 historico_revisiones:
   - 2026-05-21 (r1) — creación del documento. 4 decisiones estratégicas cerradas en sesión. Specs hijas planteadas como pendientes
   - 2026-05-26 (r2) — onboarding mobile creado (`70-Producto/onboarding-mobile.md`). Decisión Abierta #1 cerrada: dispositivo de referencia = Samsung A54 (360×800). Decisiones abiertas renumeradas de 4 a 3
   - 2026-05-26 (r3) — Spec 50 (reading experience) diseñada y mergeada como lista. Decisión Abierta #3 cerrada: portada in-flow contenida (Opción 2). Decisiones abiertas renumeradas de 3 a 2
+  - 2026-05-26 (r4) — Spec 52 (página de país) diseñada y mergeada como lista. Cerró 2 decisiones pendientes de Spec 16 (selector mobile + sparkline). No quedaron decisiones abiertas del epic afectadas
+  - 2026-05-26 (r5) — Specs 51 (home) y 53 (navegación) diseñadas y mergeadas juntas. Cerró Decisión Abierta #2 del epic. Reabrió formalmente Spec 02 §2. Quedó 1 decisión abierta (performance budget)
 tipo: documento-epic
 afecta: [platform/frontend (vistas críticas, sistema de tipografía, componente del mapa), 70-Producto/specs (Specs 49-54 nuevas, complementan 02 y 22), 70-Producto/design-system (tokens responsivos)]
 depende_de: [EPIC-03 implementado completo]
@@ -76,15 +78,15 @@ Las cuatro juntas son ~6-7 specs de trabajo. Lo que queda fuera (archivo, ejes, 
 | 2026-05-21 | **PWA diferida a EPIC-05 post-lanzamiento.** Install prompt, manifest, push notifications y offline NO entran en EPIC-04 | El valor de PWA se ve cuando hay base de usuarios para medir engagement diario. Antes del lanzamiento sería trabajo especulativo. Mobile-first web responsive ya cubre el 95% del caso de uso editorial | Acota el scope, evita 2-3 specs adicionales que no son bloqueantes para julio |
 | 2026-05-26 | **Dispositivo de referencia = Samsung A54 (360×800) como base de diseño.** Validación secundaria contra 390 (iPhone 13/14 emulado en devtools) y 412 (Pixel 6 emulado). Mobile-first estricto: si funciona apretado en 360, en 390/412 sobra espacio | Es el único dispositivo de validación física disponible. Diseñar contra un device que no se puede tocar (390/iPhone) es la peor combinación: layouts pensados para un ancho que después no se valida. La elección obliga a comprimir más al inicio pero el resultado es más robusto en Android base, que es ~30% del mercado LATAM | Habilita el arranque de Spec 50 (reading experience) con ancho base concreto y sistema tipográfico calibrado a 360 |
 | 2026-05-26 | **Portada del análisis = in-flow contenida (Opción 2).** La portada NO ocupa hero a sangre arriba del fold. Aparece dentro del flujo, después del lede, con padding lateral igual al texto, caption en IBM Plex Mono debajo. Aspect ratio 3:2 | El producto del proyecto es el análisis, no la imagen. Las portadas Gemini son aún experimentales en calidad y constancia — sostenerlas in-flow es más conservador. El principio "densidad es virtud" + "esto no es Medium" del design system tira para esta opción. Para análisis insignia donde la portada sea particularmente potente, se puede sobreescribir caso por caso con un flag editorial (queda como nota en Spec 50 §6) | Cierra el layout del análisis. Habilita la consolidación de Spec 50 |
+| 2026-05-26 | **Navegación principal mobile = hamburger único con drawer slide-in desde la izquierda (Spec 53 Variante 1).** Reemplaza Spec 02 §2 ("no hamburger"). El drawer (280px, fondo verde-negro) contiene dos secciones: "Secciones" (Despachos · Ensayos · Mapa · Acerca) en mono uppercase + "Recorrer el corpus" (Países · Ejes · Conceptos · Autores · Buscar) en Lora. Header mobile reducido a 44px (logo + wordmark + ☰) | El argumento original de Spec 02 ("no hamburger porque es editorial") era ideológico, no funcional — los principales sitios editoriales mobile (NYT, Guardian, El País, Aeon) usan el patrón. Con 9 destinos navegacionales el scroll horizontal no escala. El drawer en verde-negro con tipografía Alfa Slab + IBM Plex Mono sostiene el tono editorial. Argumento adicional (Tomás): es flexible para crecimiento futuro del menú sin rediseñar chrome | Cierra el header de TODAS las páginas mobile. Habilita Spec 51 (home) que depende del header común |
+| 2026-05-26 | **Above-the-fold del home mobile = mapa Torres García + bloque "Esta semana" (Spec 51 Variante 1).** El mapa entra a sangre con aspect-ratio 1280/1380 (~388px alto en 360). Debajo el bloque "Esta semana · [eje]" en Alfa Slab + count en Lora italic. Ambos arriba del fold de A54. Descarta hero editorial manifiesto y análisis destacado | El mapa Torres García es la identidad signature declarada del proyecto (Spec 01 + Spec 11 arquetipo A + Spec 22 + Spec 34). Sacarlo del above-the-fold mobile contradice esa decisión. V2 hero editorial pesaría al lector recurrente (Spec 15) que ve la misma frase cada vez. V3 análisis destacado exige curaduría editorial semanal extra que no hay capacidad de sostener | Cierra el home mobile. Habilita la implementación del orden vertical en VS Code |
+| 2026-05-26 | **Performance budget target = 4G LATAM (no 3G).** LCP < 2.5s en 4G simulado se confirma como meta. El supuesto operativo: el lector de Mapa Inestable accede desde 4G urbano o WiFi (suscriptor potencial de Substack pago en LATAM urbano). El caso 3G inestable existe pero no es el target | Tomás priorizó: "lectura con WiFi, no me preocupa" la conexión inestable como peor caso. El budget se calibra para 4G LATAM razonable, no para el peor caso de Android low-end con conexión 3G de borde. Decisión consciente que acepta un 5-10% del mercado LATAM en condiciones marginales | Cierra el último parámetro de Spec 54 antes de su diseño. NO quedan decisiones abiertas del epic |
 
 ---
 
 ## Decisiones abiertas
 
-| # | Pregunta | Cuándo se cierra |
-|---|---|---|
-| 1 | **Performance budget concreto: LCP target en 3G LATAM o 4G LATAM?** Spec 22 §18.5 declara LCP < 2.5s en 4G simulado. Para LATAM con conexión inestable, ¿se mantiene esa meta o se sube a 3G como peor caso? La diferencia define presupuesto de bundle, estrategia de imágenes, prioridad de hidratación | Al arrancar Spec 54 (performance budget) — la spec entera depende de esto |
-| 2 | **¿Cómo se accede al menú/navegación principal en mobile?** Spec 02 §2 decidió "no hamburger porque es sitio editorial" — el header pasa a flex-column con scroll horizontal. Pero con 4 vistas críticas + acceso a otras secciones (archivo, ejes, conceptos, acerca), el scroll horizontal de nav puede no escalar. ¿Confirmamos Spec 02 o reconsideramos hamburger sólo para el nav secundario? | Al arrancar Spec 51 (home re-jerarquizada) — primera spec que confronta la decisión |
+(Vacío — todas las decisiones del epic están cerradas. La spec 54 puede arrancar sin parámetros pendientes.)
 
 ---
 
@@ -94,12 +96,12 @@ Ordenadas por dependencia. La numeración arranca en 49 para no colisionar con s
 
 | Spec | Título | Depende de | Estrategia | Estado |
 |---|---|---|---|---|
-| 49 | Touch handlers del mapa Torres García sobre D3 | Spec 22, EPIC-03 implementado | Rediseño (profundiza §16 de Spec 22) | pendiente |
+| 49 | Touch handlers del mapa Torres García sobre D3 | Spec 22, Spec 33, Spec 51, EPIC-03 implementado | Rediseño (profundiza §16 de Spec 22) | **lista** (2026-05-26) |
 | 50 | Reading experience mobile (tipografía, línea, padding) | Spec 02, design-system | Adaptación profunda | **lista** (2026-05-26) |
-| 51 | Home re-jerarquizada mobile-first | Spec 11, Spec 34, Spec 22 | Rediseño (puede cambiar desktop) | pendiente |
+| 51 | Home re-jerarquizada mobile-first | Spec 11, Spec 34, Spec 22, Spec 50, Spec 52, Spec 53 | Rediseño (puede cambiar desktop) | **lista** (2026-05-26) |
 | 52 | Página de país re-pensada desde mobile | Spec 02 §4, Spec 16, Spec 50 | Adaptación profunda | **lista** (2026-05-26) |
-| 53 | Navegación mobile y comportamiento de header | Spec 02 §2 (puede reabrir decisión) | Adaptación + decisión cerrada en §4 abierta | pendiente |
-| 54 | Performance budget LATAM (LCP, FCP, bundle, imágenes) | Spec 22 §18.5 (extiende), Spec 50 | Sistema transversal | pendiente |
+| 53 | Navegación mobile y comportamiento de header | Spec 02 §2 (REABRE decisión) | Reemplazo de Spec 02 §2 | **lista** (2026-05-26) |
+| 54 | Performance budget LATAM (LCP, FCP, bundle, imágenes) | Spec 22 §18.5 (extiende), Spec 37, Spec 49, Spec 50, Spec 51, Spec 52, Spec 53 | Sistema transversal | **lista** (2026-05-26) |
 
 **Estimación gruesa:** 6 specs, ~2 sprints de trabajo bien hecho asumiendo que las 4 decisiones abiertas se cierran al inicio de cada spec relevante, no en bloque.
 
@@ -158,14 +160,87 @@ Si todos los AE pasan, la épica se cierra y el lanzamiento queda habilitado por
 
 ## Próximos pasos
 
-1. **Esperar cierre de EPIC-03.** No bloquear el trabajo en curso. Specs 43-47 + 39B + 41B son prioridad de EPIC-03 antes de arrancar implementación de EPIC-04.
-2. **En paralelo a la implementación final de EPIC-03 en VS Code, arrancar el diseño de Spec 50 (reading experience) en Cowork.** Es la primera porque cierra las decisiones abiertas #1 (dispositivo de referencia) y #4 (portada en mobile) que las otras specs necesitan.
-3. **Diseñar Specs 49, 52 en Cowork** una vez Spec 50 esté mergeada — son independientes entre sí, pueden ir en paralelo si hay sesiones disponibles.
-4. **Diseñar Specs 51, 53 en Cowork** — comparten decisión abierta #3 (navegación).
-5. **Diseñar Spec 54 (performance) al final** con todas las demás cerradas — define presupuestos con base en lo que ya está diseñado.
-6. **Implementación en VS Code en el mismo orden** que el diseño, validando en device real entre specs.
+**EPIC-04 completo en su fase de diseño** (2026-05-26). Las 6 specs hijas están en estado `lista`. La implementación se hace en VS Code con Claude Code en el orden recomendado.
 
-**Recordatorio de flujo de trabajo.** El diseño de cada spec se hace en sesiones de **Claude Cowork** (este entorno). La implementación de cada spec en código va en **VS Code con Claude Code**. El handoff entre ambos es el archivo de spec mergeado. Ver sección "Flujo de trabajo" en `CLAUDE.md` y la convención usada en EPIC-03.
+1. **Spec 50** (reading experience) — sistema tipográfico base. Implementar primero para que las otras specs puedan reusar el `article.css`.
+2. **Spec 53** (navegación mobile) — header común a todas las páginas. Implementar antes que Spec 51 (depende del drawer).
+3. **Spec 51** (home) — usa el header de Spec 53 + tipografía de Spec 50.
+4. **Spec 52** (página país) — usa el header + tipografía + heatmap reutilizable que después usará Spec 51.
+5. **Spec 49** (touch handlers mapa) — implementar después de que Spec 51 esté con el mapa renderizado. Requiere validar en device real.
+6. **Spec 54** (performance budget) — implementar al final como sistema transversal. Lighthouse-ci + size-limit en CI no se activan hasta que las otras 5 estén implementadas (sus bundles definen los presupuestos).
+
+**Estimación total de implementación** (sumada de las 6 specs hijas): ~85-95 horas (~2 sprints de trabajo dedicado bien hecho). Validación en device real entre cada spec.
+
+**Recordatorio de flujo de trabajo.** El diseño de cada spec se hizo en sesiones de **Claude Cowork**. La implementación de cada spec en código va en **VS Code con Claude Code**. El handoff entre ambos es el archivo de spec mergeado. Ver sección "Flujo de trabajo" en `CLAUDE.md`.
+
+---
+
+## Validación cruzada — handoff a VS Code
+
+Revisión de consistencia entre las 6 specs hijas antes del handoff (2026-05-26). Resultado: **aprobada para implementación**. Sin conflictos bloqueantes.
+
+### Consistencia tipográfica
+
+Sistema declarado en Spec 50 (mobile-360) y aplicado en las otras specs. Tokens compartidos:
+
+| Token mobile-360 | Spec 50 | Spec 51 | Spec 52 | Spec 53 |
+|---|---|---|---|---|
+| Country name Alfa Slab | 44px | 48px (home) | 48px (header país) | n/a |
+| h1 Fraunces 600 | 30px | n/a | n/a | n/a |
+| h2 Fraunces 600 | 22px | n/a | 22px (sub-section) | n/a |
+| Body Lora | 16/1.6 | 16/1.6 | 16/1.6 | n/a |
+| Mono metadata | 11px | 11px | 11px | 11px |
+| Padding lateral body | 20px | 20px | 20px | n/a |
+
+**Observación:** la Country name varía entre 44 (lectura) y 48 (home + país). Es deliberado — en lectura está dentro del flujo editorial; en home y país es elemento de header con más peso visual. Consistente con la jerarquía del proyecto.
+
+### Consistencia de header mobile
+
+Spec 53 define el header común (44px sticky, ☰ a la derecha). Specs 50, 51, 52 lo heredan. El header de país (Spec 52) NO es sticky en sí — solo la banda de chips de tab queda sticky (44px). Consistente.
+
+### Consistencia del comportamiento de tap en el mapa
+
+Spec 22 §16.1 declaraba "tap navega directo + tooltip 800ms". Spec 49 reemplaza con "tap abre panel inline". Spec 51 §2.3 ya asumía el comportamiento de Spec 49. Spec 33 (panel preview) confirmado como contenido inline en mobile. **Coherente. Cross-ref aplicado en Spec 22.**
+
+### Consistencia del sistema de portadas
+
+Spec 37 define `cover_image` PNG. Spec 50 declara comportamiento in-flow contenida (no hero). Spec 54 declara conversión a WebP en el sync. **Coherente.** Schema del frontmatter NO cambia.
+
+### Consistencia de performance
+
+Spec 54 declara presupuestos por vista. Las otras specs los respetan:
+
+| Spec | Componente | Peso declarado | Cabe en Spec 54 |
+|---|---|---|---|
+| 50 | article.css | ≤ 8KB gz | ✅ (parte de 25KB CSS lectura) |
+| 51 | home JS total | n/a (no declarado) | ≤ 250KB (Spec 54) |
+| 52 | country-page.css | n/a (no declarado) | ≤ 35KB (Spec 54) |
+| 53 | focus-trap-react | ~3KB gz | ✅ (cabe en home y país) |
+| 49 | useMapGestures hook | ~15KB | ✅ (parte del bundle del mapa, dentro del home 250KB) |
+
+**Sin conflictos.**
+
+### Cross-refs aplicados
+
+Todas las specs declararon sus cross-refs a documentos previos:
+- Spec 02 §2 → reabierta por Spec 53.
+- Spec 02 §4 → deprecada por Spec 52.
+- Spec 22 §16.1 → reemplazada por Spec 49 §7.
+- Spec 22 §18.5 → extendida por Spec 54.
+- Spec 16 §6.3, §7, §12.5 → reemplazadas/resueltas por Spec 52.
+- Spec 11 §4.2 → nota agregada por Spec 53 (sidebar va al drawer en mobile).
+- Spec 33 → confirmado como panel inline en mobile.
+- Spec 34 §12 → fuente de verdad mobile pasa a Spec 51.
+- Spec 37 §2 → extendido por Spec 54 (conversión WebP).
+
+**Acción pendiente para implementación:** aplicar materialmente esas notas en los archivos de Spec 02, 11, 16, 22, 33, 34, 37 al implementar. No bloquean, son housekeeping.
+
+### Observaciones para Claude Code en VS Code
+
+1. **Implementar en el orden recomendado** del epic (50 → 53 → 51 → 52 → 49 → 54). No paralelizar — overlapean en componentes del header, mapa y article.
+2. **Validar en device real (Samsung A54) entre specs**, no solo en emulator. Específicamente para Spec 49 (gestos) y Spec 54 (performance) la validación en device es no-negociable.
+3. **El sub-agente de QA del proyecto** (si existe) puede correr Lighthouse-ci de Spec 54 cuando esté configurado.
+4. **El plan de lanzamiento de julio** asume EPIC-04 implementada para mediados de junio. Si la implementación se desfasa, mover el lanzamiento — no apurar la validación.
 
 ---
 
@@ -178,6 +253,8 @@ Si todos los AE pasan, la épica se cierra y el lanzamiento queda habilitado por
 | 2026-05-26 | r2: creado `70-Producto/onboarding-mobile.md` como base conceptual del epic. Cerrada Decisión Abierta #1 (dispositivo de referencia = Samsung A54 / 360×800). Decisiones abiertas restantes renumeradas de 4→3 | Arranque del trabajo de diseño en Cowork. Tomás no tiene experiencia previa en mobile y necesitaba base conceptual antes de tomar decisiones. La elección de Samsung A54 como base salió de constraint físico: es el device de validación disponible |
 | 2026-05-26 | r3: Spec 50 (reading experience) diseñada, mockeada en widgets HTML inline en Cowork, y consolidada como lista. Cerrada Decisión Abierta #3 (portada in-flow contenida). Decisiones abiertas restantes renumeradas de 3→2 | Primera spec hija de EPIC-04 completada. El ciclo diseño conceptual → mocks comparados → elección → consolidación tomó una sesión de Cowork. Validó que el approach Opción A (mocks desde acá vs herramienta externa) funciona — habilita repetir el patrón para Specs 49, 52, 51, 53, 54 |
 | 2026-05-26 | r4: Spec 52 (página de país) diseñada y mergeada en continuación de la misma sesión. 3 variantes de selector de tabs comparadas → elegida V2 (chips horizontales + sticky mínimo, descarta dropdown de Spec 16 §7). 2 componentes internos validados visualmente en 360: heatmap eje × tiempo 6×12 y card macro con sparkline 26px. Cerradas 2 decisiones pendientes de Spec 16 (§7 selector y §12.5 sparkline) | Segunda spec hija completada en la misma sesión, reusando el sistema tipográfico de Spec 50. Más rápida que Spec 50 porque la estructura conceptual estaba en Spec 16 — el trabajo fue de calibración a 360, no de definición. Quedan 4 specs hijas: 49 (mapa), 51 (home), 53 (nav), 54 (performance) |
+| 2026-05-26 | r5: Specs 51 (home) y 53 (navegación) diseñadas y mergeadas juntas en continuación de la misma sesión. 3 variantes de navegación mobile → elegida V1 hamburger único (cierra Decisión Abierta #2 del epic, reabre Spec 02 §2). 3 variantes de above-the-fold del home → elegida V1 mapa protagonista + "Esta semana" (mantiene signature del proyecto). Orden vertical post-fold derivado de Spec 34 sin variantes adicionales — derivable por la estructura ya validada | Tercera y cuarta specs hijas completadas en la misma sesión. 4 de 6 specs hijas listas. El sistema mobile del proyecto queda definido en sus piezas mayores. Quedan: Spec 49 (touch handlers del mapa, idealmente después de EPIC-03 cerrada) y Spec 54 (performance, al final una vez que todas las otras existan). Pace promedio observado: 1 spec hija cerrada cada 30-45 minutos de Cowork |
+| 2026-05-26 | r6: Specs 49 (touch handlers mapa) y 54 (performance budget) diseñadas y mergeadas. Tomás confirma que EPIC-03 está cerrado (desbloquea Spec 49). LCP target = 4G (cierra última Decisión Abierta del epic). Spec 49 reemplaza el comportamiento de tap declarado en Spec 22 §16.1 (tap abre panel inline, no navega directo). Spec 54 declara presupuestos por vista + Lighthouse-ci + size-limit en CI | Quinta y sexta specs hijas completadas en la misma sesión. EPIC-04 completo en su fase de diseño — las 6 specs hijas están en estado `lista`, cero decisiones abiertas. Listo para implementación en VS Code |
 
 ---
 
@@ -187,6 +264,8 @@ Si todos los AE pasan, la épica se cierra y el lanzamiento queda habilitado por
 |---|---|---|---|
 | 1 (r1) | ¿Qué dispositivo de referencia para diseño y testeo? | Samsung A54 (360×800) como base; 390 y 412 emulados como validación secundaria | 2026-05-26 |
 | 4 (r1) → 3 (r2) | ¿La portada del análisis ocupa hero completo en mobile o queda como elemento dentro del flujo? | In-flow contenida (Opción 2). Hero a sangre se descartó por sacrificar el fold editorial; híbrida overlay se descartó por agregar constraint operativo a las portadas Gemini que no compensa el wow effect | 2026-05-26 |
+| 3 (r1) → 2 (r4) | ¿Cómo se accede al menú/navegación principal en mobile? | Hamburger único (☰) con drawer slide-in desde la izquierda, 280px ancho, dos secciones internas diferenciadas (Secciones + Recorrer el corpus). Reemplaza Spec 02 §2 | 2026-05-26 |
+| 2 (r1) → 1 (r5) | Performance budget concreto: ¿LCP target en 3G LATAM o 4G LATAM? | 4G LATAM. Se acepta degradación gradual en 3G inestable. El target operativo es el lector tipo (4G urbano o WiFi, suscriptor potencial de Substack pago) | 2026-05-26 |
 
 ---
 
