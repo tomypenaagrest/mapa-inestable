@@ -19,6 +19,7 @@ const fraunces = Fraunces({
   axes: ["SOFT", "opsz"],
   variable: "--font-title",
   display: "swap",
+  preload: false,
 });
 
 const lora = Lora({
@@ -33,6 +34,7 @@ const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {

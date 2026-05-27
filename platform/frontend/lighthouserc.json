@@ -1,0 +1,39 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "http://localhost:3000",
+        "http://localhost:3000/pais/argentina",
+        "http://localhost:3000/analisis/borradores/argentina-sin-cruzadas",
+        "http://localhost:3000/mapa"
+      ],
+      "settings": {
+        "preset": "desktop",
+        "throttlingMethod": "simulate",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 360,
+          "height": 800,
+          "deviceScaleFactor": 2.625
+        }
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.85 }],
+        "first-contentful-paint": ["error", { "maxNumericValue": 1800 }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+        "total-blocking-time": ["warn", { "maxNumericValue": 200 }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}

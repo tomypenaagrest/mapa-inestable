@@ -1,7 +1,11 @@
 "use client";
 import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
-import MobileNavDrawer from "./MobileNavDrawer";
+import dynamic from "next/dynamic";
+
+const MobileNavDrawer = dynamic(() => import("./MobileNavDrawer"), {
+  ssr: false,
+});
 
 const NAV_LINKS = [
   { href: "/despachos", label: "Despachos" },

@@ -1,17 +1,27 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { getAllConceptosMeta } from "@/lib/conceptos";
 import { getAllAutores } from "@/lib/autores";
 import { getHomeData } from "@/lib/home";
 import { getAllCountryAgendas } from "@/lib/agendas";
 import { EJES } from "@/lib/ejes";
 import MapaHeatmapSection from "@/components/MapaHeatmapSection";
-import HeatmapEjes from "@/components/HeatmapEjes";
 import HomeClientLayout from "@/components/HomeClientLayout";
 import NewSinceLastVisit from "@/components/NewSinceLastVisit";
 import WhileYouWereAway from "@/components/WhileYouWereAway";
-import CarruselEditorial from "@/components/CarruselEditorial";
 import type { CarruselSlide } from "@/components/CarruselEditorial";
+
+// Post-fold: no van al bundle inicial ni al HTML del servidor
+const CarruselEditorial = dynamic(() => import("@/components/CarruselEditorial"), {
+  ssr: false,
+  loading: () => <div style={{ height: "var(--mi-space-48, 12rem)" }} />,
+});
+
+const HeatmapEjes = dynamic(() => import("@/components/HeatmapEjes"), {
+  ssr: false,
+  loading: () => <div style={{ height: "var(--mi-space-32, 8rem)" }} />,
+});
 
 export const metadata: Metadata = {
   title: { absolute: "Mapa Inestable · Cartografía política del sur" },

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Home JS",
+    "path": ".next/static/chunks/app/page-*.js",
+    "limit": "250 KB"
+  },
+  {
+    "name": "País JS",
+    "path": ".next/static/chunks/app/pais/**/page-*.js",
+    "limit": "220 KB"
+  },
+  {
+    "name": "Lectura JS",
+    "path": [
+      ".next/static/chunks/app/analisis/**/page-*.js",
+      ".next/static/chunks/app/publicaciones/**/page-*.js",
+      ".next/static/chunks/app/despachos/**/page-*.js",
+      ".next/static/chunks/app/ensayos/**/page-*.js"
+    ],
+    "limit": "180 KB"
+  }
+]
