@@ -1,0 +1,533 @@
+/* ==============================================================
+   Mapa Inestable · Pantallas editoriales secundarias — Spec 55
+   Patrones: 1=Índice glosario  2=Detalle corto  3=Estática manifiesto
+   Import only in GlosarioIndex, EditorialShortDetail, StaticPage.
+   ============================================================== */
+
+/* ═══════════════════════════════════════════════════════════════
+   PATRÓN 1 — Índice de glosario (/conceptos, /autores)
+   ══════════════════════════════════════════════════════════════ */
+
+.es-page-header {
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid var(--mi-ink);
+}
+
+.es-label {
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.es-h1 {
+  font-family: var(--mi-font-display);
+  font-size: 36px;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--mi-ink);
+  margin-bottom: 12px;
+}
+
+.es-bajada {
+  font-family: var(--mi-font-title);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--mi-ink-soft);
+  max-width: 52ch;
+  margin: 0;
+}
+
+.es-meta-row {
+  padding: 14px 20px 10px;
+  border-bottom: 1px solid var(--mi-ink);
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+}
+
+/* Items del índice */
+
+.es-item-wrapper {
+  position: relative;
+  padding: 20px 16px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+  background: var(--mi-bg-paper);
+}
+
+.es-item-wrapper:last-child {
+  border-bottom: none;
+}
+
+/* Stretched-link: todo el wrapper es tappable */
+.es-item-main {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.es-item-main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* Tag del eje: z-index 1 para quedar sobre el stretched-link */
+.es-item-tag {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mi-bg-warm);
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.es-item-tag-link {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mi-bg-warm);
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.es-item-tag-link:hover {
+  text-decoration: underline;
+}
+
+.es-item-title {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.15;
+  color: var(--mi-ink);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.es-item-desc {
+  font-family: var(--mi-font-body);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--mi-ink-soft);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.es-item-meta {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  display: block;
+}
+
+/* Estado vacío */
+.es-empty {
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PATRÓN 2 — Detalle editorial corto (/concepto/[slug], /autor/[slug])
+   ══════════════════════════════════════════════════════════════ */
+
+.es-detail-header {
+  padding: 22px 20px 0;
+}
+
+.es-detail-tag {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mi-bg-warm);
+  display: block;
+  margin-bottom: 10px;
+  text-decoration: none;
+}
+
+.es-detail-h1 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.15;
+  color: var(--mi-ink);
+  margin-bottom: 0;
+}
+
+.es-detail-meta {
+  border-top: 1px solid var(--mi-ink);
+  border-bottom: 1px solid var(--mi-ink);
+  padding: 10px 0;
+  margin-top: 14px;
+  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.es-detail-meta-label { color: var(--mi-ink-mute); }
+.es-detail-meta-value { color: var(--mi-ink); }
+
+.es-detail-intro {
+  font-family: var(--mi-font-body);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--mi-ink-soft);
+  margin-top: 18px;
+  margin-bottom: 18px;
+  padding-inline: 20px;
+}
+
+/* Imagen del autor (aspect-ratio 1:1, no a sangre) */
+.es-detail-image {
+  padding-inline: 20px;
+  margin-bottom: 18px;
+}
+
+.es-detail-image img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+.es-detail-image-caption {
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  margin-top: 6px;
+}
+
+/* Bloque "Aparece en" */
+.es-aparece {
+  background: var(--mi-bg-cream);
+  border-top: 2px solid var(--mi-ink);
+  padding: 20px 18px;
+}
+
+.es-aparece-label {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.es-aparece-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.es-aparece-chip {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--mi-ink);
+  color: var(--mi-ink);
+  text-decoration: none;
+  background: transparent;
+  display: inline-block;
+}
+
+.es-aparece-chip:hover {
+  background: var(--mi-ink);
+  color: var(--mi-bg-paper);
+}
+
+.es-aparece-ver-todos {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/* Navegación prev/next */
+.es-detail-nav {
+  padding: 20px;
+  border-top: 1px solid var(--mi-ink);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.es-detail-nav a {
+  color: var(--mi-ink-mute);
+  text-decoration: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PATRÓN 3 — Página estática manifiesto (/acerca, /metodo)
+   ══════════════════════════════════════════════════════════════ */
+
+.es-static-hero {
+  background: var(--mi-bg);
+  border-bottom: 2px solid var(--mi-ink);
+  padding: 28px 20px 22px;
+}
+
+.es-static-hero-mark {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.es-static-hero-h1 {
+  font-family: var(--mi-font-display);
+  font-size: 36px;
+  line-height: 1.05;
+  color: var(--mi-ink);
+  margin-bottom: 14px;
+}
+
+.es-static-hero-manifest {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.35;
+  color: var(--mi-ink);
+  max-width: 52ch;
+  margin: 0;
+}
+
+.es-static-section {
+  padding: 20px 20px;
+  border-bottom: 1px solid var(--mi-ink);
+}
+
+.es-static-section:last-child {
+  border-bottom: none;
+  padding-bottom: 40px;
+}
+
+.es-static-section-label {
+  font-family: var(--mi-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.es-static-section-h2 {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.2;
+  color: var(--mi-ink);
+  margin-bottom: 12px;
+}
+
+.es-static-body {
+  font-family: var(--mi-font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--mi-ink);
+}
+
+.es-static-body p {
+  margin-bottom: 14px;
+}
+
+.es-static-body p:last-child {
+  margin-bottom: 0;
+}
+
+.es-static-body a {
+  color: var(--mi-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* Lista de ejes con pins de color (/acerca) */
+.es-eje-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.es-eje-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.18);
+  font-family: var(--mi-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mi-ink);
+  text-decoration: none;
+}
+
+.es-eje-item:last-child {
+  border-bottom: none;
+}
+
+.es-eje-pin {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* Lista de pasos del método (/metodo) */
+.es-method-step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.18);
+}
+
+.es-method-step:last-child {
+  border-bottom: none;
+}
+
+.es-method-num {
+  font-family: var(--mi-font-title);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--mi-ink);
+  flex-shrink: 0;
+  width: 28px;
+  padding-top: 2px;
+}
+
+.es-method-label {
+  font-family: var(--mi-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mi-ink-mute);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.es-method-text {
+  font-family: var(--mi-font-body);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--mi-ink-soft);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DESKTOP OVERRIDES — preserva el desktop layout existente
+   ══════════════════════════════════════════════════════════════ */
+
+@media (min-width: 641px) {
+  .es-page-header {
+    padding: 40px 48px 28px;
+  }
+
+  .es-meta-row {
+    padding: 14px 48px 10px;
+  }
+
+  .es-item-wrapper {
+    padding: 24px 48px;
+  }
+
+  .es-h1 {
+    font-size: 52px;
+    letter-spacing: -0.02em;
+  }
+
+  .es-bajada {
+    font-size: 18px;
+  }
+
+  .es-detail-header {
+    padding: 32px 48px 0;
+  }
+
+  .es-detail-intro {
+    padding-inline: 48px;
+  }
+
+  .es-detail-image {
+    padding-inline: 48px;
+  }
+
+  .es-aparece {
+    padding: 24px 48px;
+  }
+
+  .es-detail-nav {
+    padding: 20px 48px;
+  }
+
+  .es-static-hero {
+    padding: 48px 48px 36px;
+  }
+
+  .es-static-hero-h1 {
+    font-size: 56px;
+  }
+
+  .es-static-hero-manifest {
+    font-size: 22px;
+  }
+
+  .es-static-section {
+    padding: 32px 48px;
+  }
+
+  .es-static-section:last-child {
+    padding-bottom: 64px;
+  }
+
+  .es-empty {
+    padding: 60px 48px;
+  }
+}

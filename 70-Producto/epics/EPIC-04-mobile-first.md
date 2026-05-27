@@ -4,8 +4,10 @@ titulo: Mobile-first como condición de lanzamiento
 estado: diseño-completo
 autor: Tomás (con Claude · Cowork)
 fecha: 2026-05-21
-revision: 2026-05-26 (r6) — Specs 49 (touch handlers mapa) y 54 (performance budget) diseñadas y mergeadas. EPIC-04 completo en su fase de diseño — las 6 specs hijas están en estado `lista`. Cero decisiones abiertas. Listo para implementación en VS Code
+revision: 2026-05-27 (r8) — Scope expandido segunda vez. Spec 56 (pantallas mobile restantes) sumada como octava spec hija. Cubre /analisis, /ejes (índice + detalle), /comparar/[indicador], /leer-despues con 3 patrones nuevos + 2 reusos. /pipeline declarado fuera de scope detallado por ser vista interna admin. La cobertura mobile del corpus público queda completa
 historico_revisiones:
+  - 2026-05-27 (r7) — Scope expandido primera vez. Spec 55 (pantallas editoriales secundarias mobile) sumada como séptima spec hija. Cubre /conceptos, /concepto/[slug], /autores, /autor/[slug], /acerca, /metodo con 3 patrones reutilizables
+  - 2026-05-26 (r6) — Specs 49 (touch handlers mapa) y 54 (performance budget) diseñadas y mergeadas. EPIC-04 completo en su fase de diseño con 6 specs hijas en estado `lista`. Cero decisiones abiertas
   - 2026-05-21 (r1) — creación del documento. 4 decisiones estratégicas cerradas en sesión. Specs hijas planteadas como pendientes
   - 2026-05-26 (r2) — onboarding mobile creado (`70-Producto/onboarding-mobile.md`). Decisión Abierta #1 cerrada: dispositivo de referencia = Samsung A54 (360×800). Decisiones abiertas renumeradas de 4 a 3
   - 2026-05-26 (r3) — Spec 50 (reading experience) diseñada y mergeada como lista. Decisión Abierta #3 cerrada: portada in-flow contenida (Opción 2). Decisiones abiertas renumeradas de 3 a 2
@@ -46,7 +48,7 @@ Este epic agrupa el trabajo de consolidación mobile-first de las vistas crític
 
 - PWA (install prompt, manifest, push notifications, offline). Diferido a EPIC-05 post-lanzamiento.
 - Reescritura del motor del mapa con librería especializada (Mapbox / MapLibre). Decisión estratégica cerrada: Opción A — adaptar D3 actual. Una eventual reescritura entraría en otra épica futura si las capas analíticas evolucionan a complejidades que D3 no soporte.
-- Vistas secundarias profundas (archivo `/analisis`, página de eje `/ejes/[slug]`, página de autor, página de concepto, pipeline). Estas quedan con responsive parcheado de Spec 02 hasta post-lanzamiento.
+- ~~Vistas secundarias profundas (archivo `/analisis`, página de eje `/ejes/[slug]`, página de autor, página de concepto, pipeline). Estas quedan con responsive parcheado de Spec 02 hasta post-lanzamiento.~~ **Actualizado 2026-05-27 (r7):** `/conceptos`, `/concepto/[slug]`, `/autores`, `/autor/[slug]`, `/acerca`, `/metodo` se sumaron al scope vía Spec 55. **Actualizado 2026-05-27 (r8):** `/analisis`, `/ejes` (índice), `/ejes/[slug]`, `/comparar/[indicador]`, `/leer-despues` se sumaron al scope vía Spec 56. La única pantalla pública del proyecto que queda con responsive de Spec 02 es `/pipeline` (declarada explícitamente como vista interna admin, `robots: noindex`, oculta del nav público — Spec 25).
 - Gestos avanzados (swipe entre despachos, pull-to-refresh, animaciones complejas). Diferidos a EPIC-05.
 - Sistema admin / promote / dashboard interno. No es público, no es prioridad mobile.
 - Cambios al modelo de datos editorial, al sistema de agentes, o a cualquier pipeline backend.
@@ -102,6 +104,8 @@ Ordenadas por dependencia. La numeración arranca en 49 para no colisionar con s
 | 52 | Página de país re-pensada desde mobile | Spec 02 §4, Spec 16, Spec 50 | Adaptación profunda | **lista** (2026-05-26) |
 | 53 | Navegación mobile y comportamiento de header | Spec 02 §2 (REABRE decisión) | Reemplazo de Spec 02 §2 | **lista** (2026-05-26) |
 | 54 | Performance budget LATAM (LCP, FCP, bundle, imágenes) | Spec 22 §18.5 (extiende), Spec 37, Spec 49, Spec 50, Spec 51, Spec 52, Spec 53 | Sistema transversal | **lista** (2026-05-26) |
+| 55 | Pantallas editoriales secundarias mobile (3 patrones reutilizables: índice glosario / detalle corto / estática manifiesto) | Spec 07, Spec 20, Spec 50, Spec 53 | Sumada al scope en r7 | **lista** (2026-05-27) |
+| 56 | Pantallas mobile restantes (archivo, ejes índice + detalle, comparador, leer-después; /pipeline declarado interno) | Spec 04, Spec 05, Spec 13, Spec 15, Spec 25, Spec 50, Spec 52, Spec 53, Spec 55 | Sumada al scope en r8 | **lista** (2026-05-27) |
 
 **Estimación gruesa:** 6 specs, ~2 sprints de trabajo bien hecho asumiendo que las 4 decisiones abiertas se cierran al inicio de cada spec relevante, no en bloque.
 
@@ -160,16 +164,18 @@ Si todos los AE pasan, la épica se cierra y el lanzamiento queda habilitado por
 
 ## Próximos pasos
 
-**EPIC-04 completo en su fase de diseño** (2026-05-26). Las 6 specs hijas están en estado `lista`. La implementación se hace en VS Code con Claude Code en el orden recomendado.
+**EPIC-04 completo en su fase de diseño** (2026-05-27). Las 8 specs hijas están en estado `lista`. La implementación se hace en VS Code con Claude Code en el orden recomendado.
 
 1. **Spec 50** (reading experience) — sistema tipográfico base. Implementar primero para que las otras specs puedan reusar el `article.css`.
 2. **Spec 53** (navegación mobile) — header común a todas las páginas. Implementar antes que Spec 51 (depende del drawer).
 3. **Spec 51** (home) — usa el header de Spec 53 + tipografía de Spec 50.
 4. **Spec 52** (página país) — usa el header + tipografía + heatmap reutilizable que después usará Spec 51.
 5. **Spec 49** (touch handlers mapa) — implementar después de que Spec 51 esté con el mapa renderizado. Requiere validar en device real.
-6. **Spec 54** (performance budget) — implementar al final como sistema transversal. Lighthouse-ci + size-limit en CI no se activan hasta que las otras 5 estén implementadas (sus bundles definen los presupuestos).
+6. **Spec 55** (pantallas editoriales secundarias) — implementar después de Spec 50 y 53. Las 6 pantallas con 3 patrones reutilizables.
+7. **Spec 56** (pantallas mobile restantes) — implementar después de Spec 55 (reusa `GlosarioIndex` de Spec 55 para el índice de ejes). Cubre archivo + ejes individual + comparador + leer-después.
+8. **Spec 54** (performance budget) — implementar al final como sistema transversal. Lighthouse-ci + size-limit en CI no se activan hasta que las otras estén implementadas (sus bundles definen los presupuestos).
 
-**Estimación total de implementación** (sumada de las 6 specs hijas): ~85-95 horas (~2 sprints de trabajo dedicado bien hecho). Validación en device real entre cada spec.
+**Estimación total de implementación** (sumada de las 8 specs hijas): ~125-140 horas (~3 sprints de trabajo dedicado bien hecho). Spec 56 suma ~24-26h sobre el total previo. Validación en device real entre cada spec.
 
 **Recordatorio de flujo de trabajo.** El diseño de cada spec se hizo en sesiones de **Claude Cowork**. La implementación de cada spec en código va en **VS Code con Claude Code**. El handoff entre ambos es el archivo de spec mergeado. Ver sección "Flujo de trabajo" en `CLAUDE.md`.
 
@@ -255,6 +261,8 @@ Todas las specs declararon sus cross-refs a documentos previos:
 | 2026-05-26 | r4: Spec 52 (página de país) diseñada y mergeada en continuación de la misma sesión. 3 variantes de selector de tabs comparadas → elegida V2 (chips horizontales + sticky mínimo, descarta dropdown de Spec 16 §7). 2 componentes internos validados visualmente en 360: heatmap eje × tiempo 6×12 y card macro con sparkline 26px. Cerradas 2 decisiones pendientes de Spec 16 (§7 selector y §12.5 sparkline) | Segunda spec hija completada en la misma sesión, reusando el sistema tipográfico de Spec 50. Más rápida que Spec 50 porque la estructura conceptual estaba en Spec 16 — el trabajo fue de calibración a 360, no de definición. Quedan 4 specs hijas: 49 (mapa), 51 (home), 53 (nav), 54 (performance) |
 | 2026-05-26 | r5: Specs 51 (home) y 53 (navegación) diseñadas y mergeadas juntas en continuación de la misma sesión. 3 variantes de navegación mobile → elegida V1 hamburger único (cierra Decisión Abierta #2 del epic, reabre Spec 02 §2). 3 variantes de above-the-fold del home → elegida V1 mapa protagonista + "Esta semana" (mantiene signature del proyecto). Orden vertical post-fold derivado de Spec 34 sin variantes adicionales — derivable por la estructura ya validada | Tercera y cuarta specs hijas completadas en la misma sesión. 4 de 6 specs hijas listas. El sistema mobile del proyecto queda definido en sus piezas mayores. Quedan: Spec 49 (touch handlers del mapa, idealmente después de EPIC-03 cerrada) y Spec 54 (performance, al final una vez que todas las otras existan). Pace promedio observado: 1 spec hija cerrada cada 30-45 minutos de Cowork |
 | 2026-05-26 | r6: Specs 49 (touch handlers mapa) y 54 (performance budget) diseñadas y mergeadas. Tomás confirma que EPIC-03 está cerrado (desbloquea Spec 49). LCP target = 4G (cierra última Decisión Abierta del epic). Spec 49 reemplaza el comportamiento de tap declarado en Spec 22 §16.1 (tap abre panel inline, no navega directo). Spec 54 declara presupuestos por vista + Lighthouse-ci + size-limit en CI | Quinta y sexta specs hijas completadas en la misma sesión. EPIC-04 completo en su fase de diseño — las 6 specs hijas están en estado `lista`, cero decisiones abiertas. Listo para implementación en VS Code |
+| 2026-05-27 | r7: Scope expandido. Spec 55 (pantallas editoriales secundarias mobile) sumada como séptima spec hija. Cubre 6 pantallas (/conceptos, /concepto/[slug], /autores, /autor/[slug], /acerca, /metodo) con 3 patrones reutilizables (índice glosario / detalle corto / estática manifiesto). Mockups validados con widget HTML inline. Cross-refs a Specs 07, 20, 50, 53. Las pantallas afectadas se movieron del scope "Lo que NO entra" al scope activo | Tomás identificó que /acerca y /conceptos son condición real del lanzamiento — los lectores nuevos desde WhatsApp/Substack van a /acerca antes de cualquier otra cosa. El scope original de r1 las había excluido por error de framing (asumió que eran post-lanzamiento). Spec 55 minimiza trabajo nuevo reusando Spec 50 (tipografía) y Spec 53 (header). Pace observado: 1 spec adicional cerrada en 25 minutos de Cowork (más rápido que las anteriores porque reusa todo) |
+| 2026-05-27 | r8: Scope expandido segunda vez. Spec 56 (pantallas mobile restantes) sumada como octava spec hija. Cubre /analisis (archivo + buscador), /ejes (índice), /ejes/[slug] (detalle), /comparar/[indicador] (ranking), /leer-despues. /pipeline declarado fuera de scope detallado por ser vista interna admin (`robots: noindex`). Mockups validados con widget HTML inline de los 3 patrones nuevos (Patrón A archivo, Patrón B eje individual, Patrón C comparador) + 2 derivaciones (/ejes índice reusa Spec 55 P1, /leer-despues reusa Patrón A) | Tras revisar qué quedaba afuera del epic, Tomás pidió cubrir TODAS las pantallas mobile sin tratamiento dedicado. /pipeline quedó fuera por ser vista interna admin — el responsive de Spec 02 alcanza. La cobertura mobile del corpus público queda completa antes del lanzamiento de julio. Pace observado: 1 spec adicional cerrada en ~25 minutos de Cowork |
 
 ---
 
